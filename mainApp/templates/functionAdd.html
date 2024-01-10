@@ -1,0 +1,80 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+functionAdd
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">functionAdd jobCollector</h1>
+    <div class="container">
+    
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ formCollector.hidden_tag() }}
+
+            {{ formCollector.deviceId.label() }}
+            {{ formCollector.deviceId(class="form-control" , placeholder = 'deviceId:') }}
+            <small class="form-text text-danger">{{ formCollector.deviceId.errors[0] }}</small>
+
+            <!-- {{ formCollector.jobType.label() }}
+            {{ formCollector.jobType(class="form-control" , placeholder = 'jobType:') }}
+            <small class="form-text text-danger">{{ formCollector.jobType.errors[0] }}</small> -->
+
+            <!-- {{ formExecutor.actionLink.label() }}
+            {{ formExecutor.actionLink(class="form-control" , placeholder = 'actionLink:') }}
+            <small class="form-text text-danger">{{ formExecutor.actionLink.errors[0] }}</small> -->
+
+            {{ formCollector.functionDescription.label() }}
+            {{ formCollector.functionDescription(class="form-control" , placeholder = 'functionDescription:') }}
+            <small class="form-text text-danger">{{ formCollector.functionDescription.errors[0] }}</small>
+
+            <!-- {{ formCollector.functionParameters.label() }}
+            {{ formCollector.functionParameters(class="form-control" , placeholder = 'functionParameters:') }}
+            <small class="form-text text-danger">{{ formCollector.functionParameters.errors[0] }}</small> -->
+
+            <br>
+
+            {{ formCollector.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+    </div>
+</div>
+
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">functionAdd jobExecutor</h1>
+    <div class="container">
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ formExecutor.hidden_tag() }}
+
+            {{ formExecutor.deviceId.label() }}
+            {{ formExecutor.deviceId(class="form-control" , placeholder = 'deviceId:') }}
+            <small class="form-text text-danger">{{ formExecutor.deviceId.errors[0] }}</small>
+
+            <!-- {{ formExecutor.jobType.label() }}
+            {{ formExecutor.jobType(class="form-control" , placeholder = 'jobType:') }}
+            <small class="form-text text-danger">{{ formExecutor.jobType.errors[0] }}</small> -->
+
+            {{ formExecutor.actionLink.label() }}
+            {{ formExecutor.actionLink(class="form-control" , placeholder = 'actionLink:') }}
+            <small class="form-text text-danger">{{ formExecutor.actionLink.errors[0] }}</small>
+
+            {{ formExecutor.functionDescription.label() }}
+            {{ formExecutor.functionDescription(class="form-control" , placeholder = 'functionDescription:') }}
+            <small class="form-text text-danger">{{ formExecutor.functionDescription.errors[0] }}</small>
+
+            {{ formExecutor.functionParameters.label() }}
+            {{ formExecutor.functionParameters(class="form-control" , placeholder = 'functionParameters:') }}
+            <small class="form-text text-danger">{{ formExecutor.functionParameters.errors[0] }}</small>
+
+            <br>
+
+            {{ formExecutor.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+    </div>
+</div>
+{% endblock %}

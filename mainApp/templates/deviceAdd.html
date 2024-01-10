@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+deviceAdd
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">deviceAdd</h1>
+    <div class="container">
+    
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ form.hidden_tag() }}
+
+            {{ form.deviceName.label() }}
+            {{ form.deviceName(class="form-control" , placeholder = 'deviceName:') }}
+            <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+
+            {{ form.deviceIP.label() }}
+            {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
+            <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
+
+            {{ form.deviceDescription.label() }}
+            {{ form.deviceDescription(class="form-control" , placeholder = 'deviceDescription:') }}
+            <small class="form-text text-danger">{{ form.deviceDescription.errors[0] }}</small>
+
+            <br>
+
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}

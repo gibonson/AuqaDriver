@@ -1,0 +1,82 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+scheduler_list
+{% endblock %}
+
+functionsScheduler
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">Scheduler List</h1>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-striped table-dark" style="width: 100%">
+                <tr>
+                    <th>Scheduler Name</th>
+                    <th>IP - name</th>
+                    <th>Job Type</th>
+                    <th>Action Link</th>
+                    <th>Parameters</th>
+                    <th>DB Trigger [Y:M:D-day-H:M:S]</th>
+                    <th>Real Trigger</th>
+                    <th>Next Run</th>
+                    <th>Job Actions</th>
+                    <th>Sch Actions</th>
+                </tr>
+                {% for functionScheduler in functionsScheduler %}
+                <tr>    
+                    <td>{{functionScheduler.schedulerID}}</td>
+                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP}} - {{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].jobType}}</td>
+                    {% if devicesFunctions[functionScheduler.functionId-1].actionLink == "" %}
+                    <td>-</td>
+                    {% else %}
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].actionLink}}</td>
+                    {% endif %}
+
+                    {% if devicesFunctions[functionScheduler.functionId-1].functionParameters == "" %}
+                    <td>-</td>
+                    {% else %}
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionParameters}}</td>
+                    {% endif %}
+
+                    <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]</td>
+
+                    {% set ns = namespace(found=false) %}
+                    {% for job in get_jobs %}
+                        {% if job.id == functionScheduler.schedulerID%}
+                            {% set ns.found = true %}
+                            <td>{{job.trigger}}</td>
+                            {% if job.next_run_time == None %}
+                            <td>-</td>
+                            {% else %}
+                            <td>{{job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                            {% endif %}
+                            <td>                        
+                                <div class="btn-group">
+                                    <a href="{{url_for('pause_job',id=job.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Pause</a>
+                                    <a href="{{url_for('resume_job',id=job.id)}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Resume</a>
+                                    <a href="{{url_for('remove_job',id=job.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
+                                </div></td>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if ns.found == false %}
+                    <td>-</td>
+                    <td>-</td>
+                    <td>
+                        <a href="{{url_for('start_job',runSchedulerID=functionScheduler.schedulerID)}}" class="btn btn-success btn-lg active d-grid gap-2" role="button" aria-pressed="true">Start</a>
+                    </td>
+                    {% endif %}
+                    <td>
+                        <a href="{{url_for('scheduler_remove',id=functionScheduler.id)}}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-lg active d-grid gap-2" role="button" aria-pressed="true">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

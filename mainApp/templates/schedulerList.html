@@ -1,0 +1,62 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+scheduler_list
+{% endblock %}
+
+functionsScheduler
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">scheduler_list</h1>
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-striped table-dark" style="width: 100%">
+                <tr>
+                    <th>id</th>
+                    <th>schedulerID</th>
+                    <th>functionId</th>
+                    <th>deviceIP</th>
+                    <th>deviceName</th>
+                    <th>deviceId</th>                    
+                    <th>jobType</th>
+                    <th>actionLink</th>
+                    <th>functionDescription</th>
+                    <th>functionParameters</th>
+                    <th>trigger</th>
+                    <th>year</th>
+                    <th>month</th>
+                    <th>day</th>
+                    <th>day_of_week</th>
+                    <th>hour</th>
+                    <th>minute</th>
+                    <th>second</th>
+                </tr>
+                {% for functionScheduler in functionsScheduler %}
+                <tr>    
+                    <td>{{functionScheduler.id}}</td>
+                    <td>{{functionScheduler.schedulerID}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].id}}</td>
+                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP}}</td>
+                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].deviceId}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].jobType}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].actionLink}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionDescription}}</td>
+                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionParameters}}</td>
+                    <td>{{functionScheduler.trigger}}</td>
+                    <td>{{functionScheduler.year}}</td>
+                    <td>{{functionScheduler.month}}</td>
+                    <td>{{functionScheduler.day}}</td>
+                    <td>{{functionScheduler.day_of_week}}</td>
+                    <td>{{functionScheduler.hour}}</td>
+                    <td>{{functionScheduler.minute}}</td>
+                    <td>{{functionScheduler.second}}</td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+schedulerAdd
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">schedulerAdd</h1>
+    <div class="container">
+    
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ form.hidden_tag() }}
+
+            {{ form.functionId.label() }}
+            {{ form.functionId(class="form-control" , placeholder = 'functionId:') }}
+            <small class="form-text text-danger">{{ form.functionId.errors[0] }}</small>
+
+            {{ form.schedulerID.label() }}
+            {{ form.schedulerID(class="form-control" , placeholder = 'schedulerID:') }}
+            <small class="form-text text-danger">{{ form.schedulerID.errors[0] }}</small>
+
+            {{ form.trigger.label() }}
+            {{ form.trigger(class="form-control" , placeholder = 'trigger:') }}
+            <small class="form-text text-danger">{{ form.trigger.errors[0] }}</small>
+
+            {{ form.year.label() }}
+            {{ form.year(class="form-control" , placeholder = 'year:') }}
+            <small class="form-text text-danger">{{ form.year.errors[0] }}</small>
+
+            {{ form.month.label() }}
+            {{ form.month(class="form-control" , placeholder = 'month:') }}
+            <small class="form-text text-danger">{{ form.month.errors[0] }}</small>
+
+            {{ form.day.label() }}
+            {{ form.day(class="form-control" , placeholder = 'day:') }}
+            <small class="form-text text-danger">{{ form.day.errors[0] }}</small>
+
+            {{ form.day_of_week.label() }}
+            {{ form.day_of_week(class="form-control" , placeholder = 'day_of_week:') }}
+            <small class="form-text text-danger">{{ form.day_of_week.errors[0] }}</small>
+
+            {{ form.hour.label() }}
+            {{ form.hour(class="form-control" , placeholder = 'hour:') }}
+            <small class="form-text text-danger">{{ form.hour.errors[0] }}</small>
+
+            {{ form.minute.label() }}
+            {{ form.minute(class="form-control" , placeholder = 'minute:') }}
+            <small class="form-text text-danger">{{ form.minute.errors[0] }}</small>
+
+            {{ form.second.label() }}
+            {{ form.second(class="form-control" , placeholder = 'second:') }}
+            <small class="form-text text-danger">{{ form.second.errors[0] }}</small>
+
+            <br>
+
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
