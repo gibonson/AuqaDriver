@@ -2,3 +2,4 @@
 .vscode
 ___old
 __pycache__
+satelite/esp01-dht11/pass.txt

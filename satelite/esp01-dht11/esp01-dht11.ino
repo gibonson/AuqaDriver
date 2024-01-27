@@ -6,8 +6,8 @@
 // 3	5201	5204
 // 4	5393	5396
 
-const char* ssid = "Monkey_town";
-const char* password = "Avika666";
+const char* ssid = "";
+const char* password = "";
 WiFiServer server(80);                 // Set web server port number to 80
 // IPAddress local_IP(192, 168, 0, 184);  // Set your Static IP address
 IPAddress local_IP(192, 168, 0, 185);  // Set your Static IP address
