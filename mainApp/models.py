@@ -17,17 +17,17 @@ class Devices(db.Model):
 class DevicesFunctions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceId = db.Column(db.Integer(), db.ForeignKey(Devices.id))
-    jobType = db.Column(db.String())
     actionLink = db.Column(db.String())
-    functionDescription = db.Column(db.String())
     functionParameters = db.Column(db.String())
+    functionDescription = db.Column(db.String())
+    functionStatus = db.Column(db.String())
 
-    def __init__(self, deviceId, jobType, actionLink, functionDescription, functionParameters):
+    def __init__(self, deviceId, actionLink, functionParameters, functionDescription, functionStatus):
         self.deviceId = deviceId
-        self.jobType = jobType
         self.actionLink = actionLink
-        self.functionDescription = functionDescription
         self.functionParameters = functionParameters
+        self.functionDescription = functionDescription
+        self.functionStatus = functionStatus
 
 
 class FunctionScheduler(db.Model):
@@ -42,8 +42,9 @@ class FunctionScheduler(db.Model):
     hour = db.Column(db.Integer()) #(0-23)
     minute = db.Column(db.Integer()) #(0-59)
     second = db.Column(db.Integer()) #(0-59)
+    schedulerStatus = db.Column(db.String())
 
-    def __init__(self, functionId , trigger, schedulerID, year , month , day , day_of_week , hour , minute, second):
+    def __init__(self, functionId , trigger, schedulerID, year , month , day , day_of_week , hour , minute, second, schedulerStatus):
         self.functionId = functionId
         self.trigger = trigger
         self.schedulerID = schedulerID
@@ -54,31 +55,22 @@ class FunctionScheduler(db.Model):
         self.hour = hour
         self.minute = minute
         self.second = second
+        self.schedulerStatus = schedulerStatus
 
-class TypeAndUnits(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
-    unitNameFull = db.Column(db.String())
-    unitNameShort = db.Column(db.String())
-    isActive = db.Column(db.String())
-
-    def __init__(self, name, unitNameFull, unitNameShort, isActive):
-        self.name = name
-        self.unitNameFull = unitNameFull
-        self.unitNameShort = unitNameShort
-        self.isActive = isActive
 
 class Archive(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.Integer())
-    deviceId = db.Column(db.String())
-    value = db.Column(db.Integer())
-    unit = db.Column(db.String())
+    deviceIP = db.Column(db.String())
+    deviceName = db.Column(db.String())
     addInfo = db.Column(db.String())
+    value = db.Column(db.Integer())
+    type = db.Column(db.String())
 
-    def __init__(self, timestamp, deviceId, value, unit, addInfo):
+    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type):
         self.timestamp = timestamp
-        self.deviceId = deviceId
-        self.value = value
-        self.unit = unit
+        self.deviceIP = deviceIP
+        self.deviceName = deviceName
         self.addInfo = addInfo
+        self.value = value
+        self.type = type     

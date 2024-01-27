@@ -2,7 +2,7 @@ import requests
 import time
 from mainApp.models import Devices, DevicesFunctions
 from mainApp.models import Archive
-from mainApp import app, db
+from mainApp import app, db, flash
 
 class LinkCreator:
     def __init__(self, id):
@@ -12,51 +12,47 @@ class LinkCreator:
         deviceFunctions = DevicesFunctions.query.get(self.id)
         devices = Devices.query.get(deviceFunctions.deviceId)
         IP = devices.deviceIP
-        jobType = deviceFunctions.jobType
         actionLink = deviceFunctions.actionLink
-        parameters = deviceFunctions.functionParameters
-        httpLink = ""
-        if jobType == "jobCollector":
-            httpLink = "http://" + IP + "/NoGui"
-
-        if jobType == "jobExecutor":
+        if deviceFunctions.functionParameters != "":
+            parameters = deviceFunctions.functionParameters
             httpLink = "http://" + IP + actionLink + "?" + parameters
-
+        else:
+            httpLink = "http://" + IP + actionLink
         return httpLink
 
 
-class WebContentExecutor:
-    def __init__(self, httpAddress):
-        self.httpAddress = httpAddress
-        httpAddress = httpAddress.replace("http://","")
-        self.ip = httpAddress.split("/")[0]
-        self.addInfo = "/" + httpAddress.split("/")[1]
+# class WebContentExecutor:
+#     def __init__(self, httpAddress):
+#         self.httpAddress = httpAddress
+#         httpAddress = httpAddress.replace("http://","")
+#         self.ip = httpAddress.split("/")[0]
+#         self.addInfo = "/" + httpAddress.split("/")[1]
     
-    def execute(self):
-        try:
-            timestamp = round(time.time())
-            print(timestamp)
-            response = requests.get(self.httpAddress,timeout=50)
-            with app.app_context():
-                addInfo = self.addInfo
-                deviceId = self.ip
-                value = 0
-                unit = "OK"
-                add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
-                db.session.add(add_to_archiwe)
-                db.session.commit()
+#     def execute(self):
+#         try:
+#             timestamp = round(time.time())
+#             print(timestamp)
+#             response = requests.get(self.httpAddress,timeout=50)
+#             with app.app_context():
+#                 addInfo = self.addInfo
+#                 deviceId = self.ip
+#                 value = 0
+#                 unit = "OK"
+#                 add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
+#                 db.session.add(add_to_archiwe)
+#                 db.session.commit()
 
 
-        except requests.exceptions.RequestException:
-            print("connection issue")
-            with app.app_context():
-                addInfo = self.addInfo
-                deviceId = self.ip
-                value = 0
-                unit = "Fail"
-                add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
-                db.session.add(add_to_archiwe)
-                db.session.commit()
+#         except requests.exceptions.RequestException:
+#             print("connection issue")
+#             with app.app_context():
+#                 addInfo = self.addInfo
+#                 deviceId = self.ip
+#                 value = 0
+#                 unit = "Fail"
+#                 add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
+#                 db.session.add(add_to_archiwe)
+#                 db.session.commit()
 
 
 class WebContentCollector:
@@ -66,7 +62,7 @@ class WebContentCollector:
         ip = httpAddress.replace("http://","")
         ip = ip.split("/")[0]
         self.deviceIP = ip
-        self.deviceName = ""
+        self.addInfo = ""
         self.deviceRecieveFunctionValues = []
         self.deviceSendFunctionValues = [] 
     
@@ -78,7 +74,8 @@ class WebContentCollector:
             response = requests.get(self.httpAddress,timeout=5)
             print(response.content)
             response = str(response.content)
-            response = response.replace("b'","")
+            response = response.replace("b\"","")
+            response = response.replace("\\n","")
             response = response.replace("'","")
             response = response.replace("<body>","")
             response = response.replace("</body>","")
@@ -95,6 +92,7 @@ class WebContentCollector:
 
             openFormName = ""
             openFormLink = ""
+            deviceName = ""
             
             for i in range(len(responseContent)):
                 print(responseContent[i])
@@ -137,10 +135,10 @@ class WebContentCollector:
                 with app.app_context():
                     print(row)
                     addInfo = row[3]
-                    deviceId = self.deviceIP
+                    deviceIP = self.deviceIP
                     value = row[4]
-                    unit = row[5]
-                    add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
+                    type = row[5]
+                    add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
                     db.session.add(add_to_archiwe)
                     db.session.commit()
 
@@ -152,4 +150,13 @@ class WebContentCollector:
                 print(row)
         except requests.exceptions.Timeout:
             print("connection issue")
+            with app.app_context():
+                addInfo = "Fail"
+                deviceIP = self.deviceIP
+                deviceName = "Connection error"
+                type = "404"
+                value = 0
+                add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
+                db.session.add(add_to_archiwe)
+                db.session.commit()
 

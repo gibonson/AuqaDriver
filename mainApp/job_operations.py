@@ -1,5 +1,4 @@
 from mainApp.webContent import WebContentCollector
-from mainApp.webContent import WebContentExecutor
 from mainApp.webContent import LinkCreator
 from mainApp import app, db
 from datetime import datetime
@@ -11,12 +10,6 @@ def jobCollector(httpAddress):
    print("jobCollector: " + httpAddress)
    webContentCollector = WebContentCollector(httpAddress)
    webContentCollector.collect()
-   print()
-
-def jobExecutor(httpAddress): 
-   print("jobExecutor: " + httpAddress)
-   webContentExecutor = WebContentExecutor(httpAddress)
-   webContentExecutor.execute()
    print()
 
 def schedStart(sched, runSchedulerID = None):
@@ -40,7 +33,8 @@ def schedStart(sched, runSchedulerID = None):
          print(devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP)
          print(devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName)
          print(devicesFunctions[functionScheduler.functionId-1].deviceId)
-         jobType = devicesFunctions[functionScheduler.functionId-1].jobType
+         jobType = "jobCollector"
+         # jobType = devicesFunctions[functionScheduler.functionId-1].jobType
          print("jobType = " + jobType)
          print(devicesFunctions[functionScheduler.functionId-1].actionLink)
          print(devicesFunctions[functionScheduler.functionId-1].functionDescription)

@@ -15,10 +15,24 @@
       {% block title %}
       {% endblock %}
    </title>
+   <style>
+      table {
+         width: 80%;
+         margin: auto;
+      }
+
+      th,
+      td {
+         width: 50%;
+         padding: 8px;
+         text-align: left;
+         border-top: 1px solid #ddd;
+      }
+   </style>
+
 </head>
 
 <body>
-
    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <div class="container-fluid">
          <a class="navbar-brand" href="#"><img src="/static/LogoBIG.png" alt="Logo" style="width:40px;"
@@ -101,32 +115,33 @@
                         class='fa fa-gears'></i> Jobs and scheduler</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('archive_list')}}"><i class='fa fa-table'></i>
                      Archive</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('archive_search')}}"><i class='fa fa-search'></i>
-                  Archive search</a></li>
+               <li class="nav-item"><a class="nav-link" href="{{url_for('archive_search')}}"><i
+                        class='fa fa-search'></i>
+                     Archive search</a></li>
             </ul>
          </div>
       </div>
    </nav>
    <br>
-   <div style="margin-top:40px">
-   </div>
+   <div style="margin-top:40px"></div>
 
-   {% with messages = get_flashed_messages(with_categories=true)%}
-   {% if messages%}
-   {% for category, message in messages %}
-   <div class="alert alert-{{ category }}">
-      <button type="button" class="m1-2 mb-1 close" data-dismiss="alert" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-      </button>
-      {{ message }}
+   <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true)%}
+      {% if messages%}
+      {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+         <strong>{{ message }}</strong>
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
    </div>
    {% endfor %}
    {% endif %}
    {% endwith%}
+   <div class="container">
    {% block content %}
    {% endblock %}
    </div>
-   <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+   <div class="text-center p-4">
       © 2023 Copyright: Jakub Palica
    </div>
 </body>

@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}
@@ -10,57 +9,116 @@ schedulerAdd
 <div class="text-center">
     <h1 class="h2 mb-3 font-weight-normal">schedulerAdd</h1>
     <div class="container">
-    
+
         <form method="POST" class="form-register" style="color:white" novalidate>
 
             {{ form.hidden_tag() }}
-
-            {{ form.functionId.label() }}
-            {{ form.functionId(class="form-control" , placeholder = 'functionId:') }}
-            <small class="form-text text-danger">{{ form.functionId.errors[0] }}</small>
-
-            {{ form.schedulerID.label() }}
-            {{ form.schedulerID(class="form-control" , placeholder = 'schedulerID:') }}
-            <small class="form-text text-danger">{{ form.schedulerID.errors[0] }}</small>
-
-            {{ form.trigger.label() }}
-            {{ form.trigger(class="form-control" , placeholder = 'trigger:') }}
-            <small class="form-text text-danger">{{ form.trigger.errors[0] }}</small>
-
-            {{ form.year.label() }}
-            {{ form.year(class="form-control" , placeholder = 'year:') }}
-            <small class="form-text text-danger">{{ form.year.errors[0] }}</small>
-
-            {{ form.month.label() }}
-            {{ form.month(class="form-control" , placeholder = 'month:') }}
-            <small class="form-text text-danger">{{ form.month.errors[0] }}</small>
-
-            {{ form.day.label() }}
-            {{ form.day(class="form-control" , placeholder = 'day:') }}
-            <small class="form-text text-danger">{{ form.day.errors[0] }}</small>
-
-            {{ form.day_of_week.label() }}
-            {{ form.day_of_week(class="form-control" , placeholder = 'day_of_week:') }}
-            <small class="form-text text-danger">{{ form.day_of_week.errors[0] }}</small>
-
-            {{ form.hour.label() }}
-            {{ form.hour(class="form-control" , placeholder = 'hour:') }}
-            <small class="form-text text-danger">{{ form.hour.errors[0] }}</small>
-
-            {{ form.minute.label() }}
-            {{ form.minute(class="form-control" , placeholder = 'minute:') }}
-            <small class="form-text text-danger">{{ form.minute.errors[0] }}</small>
-
-            {{ form.second.label() }}
-            {{ form.second(class="form-control" , placeholder = 'second:') }}
-            <small class="form-text text-danger">{{ form.second.errors[0] }}</small>
-
-            <br>
-
+            <table>
+                <tr>
+                    <td>
+                        {{ form.schedulerID.label() }}
+                    </td>
+                    <td>
+                        {{ form.schedulerID(class="form-control" , placeholder = 'schedulerID:') }}
+                        <small class="form-text text-danger">{{ form.schedulerID.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.functionId.label() }}
+                    </td>
+                    <td>
+                        {{ form.functionId(class="form-select" , placeholder = 'functionId:') }}
+                        <small class="form-text text-danger">{{ form.functionId.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.trigger.label() }}
+                    </td>
+                    <td>
+                        {{ form.trigger(class="form-select" , placeholder = 'trigger:') }}
+                        <small class="form-text text-danger">{{ form.trigger.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.year.label() }}
+                    </td>
+                    <td>
+                        {{ form.year(class="form-select" , placeholder = 'year:') }}
+                        <small class="form-text text-danger">{{ form.year.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.month.label() }}
+                    </td>
+                    <td>
+                        {{ form.month(class="form-select" , placeholder = 'month:') }}
+                        <small class="form-text text-danger">{{ form.month.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.day.label() }}
+                    </td>
+                    <td>
+                        {{ form.day(class="form-select" , placeholder = 'day:') }}
+                        <small class="form-text text-danger">{{ form.day.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.day_of_week.label() }}
+                    </td>
+                    <td>
+                        {{ form.day_of_week(class="form-select" , placeholder = 'day_of_week:') }}
+                        <small class="form-text text-danger">{{ form.day_of_week.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.hour.label() }}
+                    </td>
+                    <td>
+                        {{ form.hour(class="form-control" , placeholder = 'hour:') }}
+                        <small class="form-text text-danger">{{ form.hour.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.minute.label() }}
+                    </td>
+                    <td>
+                        {{ form.minute(class="form-control" , placeholder = 'minute:') }}
+                        <small class="form-text text-danger">{{ form.minute.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.second.label() }}
+                    </td>
+                    <td>
+                        {{ form.second(class="form-control" , placeholder = 'second:') }}
+                        <small class="form-text text-danger">{{ form.second.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.schedulerStatus.label() }}
+                    </td>
+                    <td>
+                        {{ form.schedulerStatus(class="form-select" , placeholder = 'schedulerStatus:') }}
+                        <small class="form-text text-danger">{{ form.schedulerStatus.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
             {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
-
         </form>
-
     </div>
 </div>
 {% endblock %}

@@ -1,12 +1,15 @@
 from mainApp import app, db, sched
 from flask import Flask, render_template ,redirect, url_for, request, flash
-from mainApp.forms import AddDevice, AddDeviceFunctionsCollector, AddDeviceFunctionsExecutor, AddFunctionScheduler, ArchiveSearch
+from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive
-from mainApp.webContent import LinkCreator, WebContentExecutor, WebContentCollector
+from mainApp.webContent import LinkCreator, WebContentCollector
 import time
 from datetime import datetime, timedelta
 from mainApp.job_operations import schedStart
 
+# -----------------------------------------
+# create new DB
+# -----------------------------------------
 @app.route("/create")
 def create():
     with app.app_context():
@@ -22,6 +25,79 @@ def create():
     return "OK"
 
 
+# -----------------------------------------
+# device section
+# -----------------------------------------
+
+@app.route("/device_add", methods=['POST', 'GET'])
+def device_add():
+    form = AddDevice()
+    if form.validate_on_submit():
+        devcice_to_add = Devices(deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, deviceDescription=form.deviceDescription.data, deviceStatus=form.deviceStatus.data)
+        db.session.add(devcice_to_add)
+        db.session.commit()
+        flash('Device added', category='success')
+        return redirect(url_for("device_list"))
+    
+    if form.errors != {}:  # validation errors
+        print(form.errors)
+        flash(form.errors, category='danger')
+        # for err_msg in form.errors.values():
+        #     print(err_msg)
+        #     flash(err_msg[0], category='danger')
+    return render_template("deviceAdd.html", form = form, state = str(sched.state))
+
+@app.route("/device_list")
+def device_list():
+    devices = Devices.query.all()
+    return render_template("devicesList.html", devices = devices, state = str(sched.state))
+
+
+# -----------------------------------------
+# function section
+# -----------------------------------------
+
+@app.route("/function_add", methods=['POST', 'GET'])
+def function_add():
+    AddDeviceFunctions.deviceIdList.clear()
+    devices = Devices.query.all()
+    for device in devices:
+        print(device.id)
+        print(device.deviceIP)
+        print(device.deviceName)
+        print(device.deviceDescription)
+        print(device.deviceStatus)
+        AddDeviceFunctions.deviceIdList.append((device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceDescription + " " + device.deviceStatus))
+
+    form = AddDeviceFunctions()
+    if form.validate_on_submit():
+        function_to_add = DevicesFunctions(deviceId=form.deviceId.data, actionLink=form.actionLink.data, functionDescription=form.functionDescription.data, functionParameters=form.functionParameters.data, functionStatus=form.functionStatus.data)
+        db.session.add(function_to_add)
+        db.session.commit()
+        flash('OK', category='success')
+        return redirect(url_for("functions_list"))
+       
+    if form.errors != {}:  # validation errors
+        print(form.errors)
+        flash(form.errors, category='danger')
+
+    return render_template("functionAdd.html", form = form, state = str(sched.state))
+
+
+@app.route("/functions_list")
+def functions_list():
+    devicesFunctions = DevicesFunctions.query.all()
+    devices = Devices.query.all()
+    return render_template("functionsList.html", devicesFunctions = devicesFunctions, devices = devices, state = str(sched.state))
+
+
+@app.route("/functions_list_link_creator/<id>")
+def functions_list_link_creator(id):
+    linkCreator = LinkCreator(id)
+    flash(linkCreator.functions_list_link_creator(), category='success')
+    return redirect(url_for("functions_list"))
+
+
 @app.route("/scheduler_add", methods=['POST', 'GET'])
 def scheduler_add():
     AddFunctionScheduler.functionIdList.clear()
@@ -30,16 +106,15 @@ def scheduler_add():
     for devicesFunction in devicesFunctions:
         print(devicesFunction.id)
         print(devicesFunction.deviceId)
-        print(devicesFunction.jobType)
         print(devicesFunction.actionLink)
         print(devicesFunction.functionDescription)
         print(devicesFunction.functionParameters)
         device = Devices.query.get(devicesFunction.deviceId)
-        AddFunctionScheduler.functionIdList.append((devicesFunction.id, str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(devicesFunction.jobType) + " " + str(devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters)))
+        AddFunctionScheduler.functionIdList.append((devicesFunction.id, str(device.deviceIP) + " - " + str(device.deviceName) + ": " +  " " + str(devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters) ))
 
     form = AddFunctionScheduler()
     if form.validate_on_submit():
-        function_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = form.schedulerID.data, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data)
+        function_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = form.schedulerID.data, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data, schedulerStatus = form.schedulerStatus.data)
         db.session.add(function_to_add)
         db.session.commit()
         flash('OK', category='success')
@@ -50,6 +125,15 @@ def scheduler_add():
         flash(form.errors, category='danger')
 
     return render_template("schedulerAdd.html", form = form, state = str(sched.state))
+
+
+
+
+
+
+
+
+
 
 
 @app.route("/scheduler_remove/<id>")
@@ -75,102 +159,9 @@ def functions_scheduler_list_get_jobs():
     return render_template("SchedulerListWithJobs.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, get_jobs=sched.get_jobs(), state = str(sched.state))
 
 
-@app.route("/function_add", methods=['POST', 'GET'])
-def function_add():
-    AddDeviceFunctionsCollector.deviceIdList.clear()
-    AddDeviceFunctionsExecutor.deviceIdList.clear()
-    devices = Devices.query.all()
-    for device in devices:
-        print(device.id)
-        print(device.deviceIP)
-        print(device.deviceName)
-        print(device.deviceDescription)
-        print(device.deviceStatus)
-        AddDeviceFunctionsCollector.deviceIdList.append((device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceDescription + " " + device.deviceStatus))
-        AddDeviceFunctionsExecutor.deviceIdList.append((device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceDescription + " " + device.deviceStatus))
-
-    formCollector = AddDeviceFunctionsCollector()
-    if formCollector.validate_on_submit():
-        function_to_add = DevicesFunctions(deviceId=formCollector.deviceId.data, jobType=formCollector.jobType.data, actionLink=formCollector.actionLink.data, functionDescription=formCollector.functionDescription.data, functionParameters=formCollector.functionParameters.data)
-        db.session.add(function_to_add)
-        db.session.commit()
-        flash('OK', category='success')
-        return redirect(url_for("functions_list"))
-    
-    formExecutor = AddDeviceFunctionsExecutor()
-    if formExecutor.validate_on_submit():
-        function_to_add = DevicesFunctions(deviceId=formExecutor.deviceId.data, jobType=formExecutor.jobType.data, actionLink=formExecutor.actionLink.data, functionDescription=formExecutor.functionDescription.data, functionParameters=formExecutor.functionParameters.data)
-        db.session.add(function_to_add)
-        db.session.commit()
-        flash('OK', category='success')
-        return redirect(url_for("functions_list"))
-   
-    if formCollector.errors != {}:  # validation errors
-        print(formCollector.errors)
-        flash(formCollector.errors, category='danger')
-    if formExecutor.errors != {}:  # validation errors
-        print(formExecutor.errors)
-        flash(formExecutor.errors, category='danger')
-
-    return render_template("functionAdd.html", formCollector = formCollector, formExecutor = formExecutor, state = str(sched.state))
 
 
-@app.route("/functions_list")
-def functions_list():
-    devicesFunctions = DevicesFunctions.query.all()
-    devices = Devices.query.all()
-    return render_template("functionsList.html", devicesFunctions = devicesFunctions, devices = devices, state = str(sched.state))
 
-
-@app.route("/functions_list_link_creator/<id>")
-def functions_list_link_creator(id):
-    linkCreator = LinkCreator(id)
-    return linkCreator.functions_list_link_creator()
-
-
-@app.route("/functions_list_link_creator_test_exec/<id>")
-def functions_list_link_creator_test_exec(id):
-    linkCreator = LinkCreator(id)
-    httpLink = linkCreator.functions_list_link_creator()
-    print(httpLink)
-    webContentExecutor = WebContentExecutor(httpLink)
-    webContentExecutor.execute()
-    return "OK"
-
-
-@app.route("/functions_list_link_creator_test_coll/<id>")
-def functions_list_link_creator_test_coll(id):
-    linkCreator = LinkCreator(id)
-    httpLink = linkCreator.functions_list_link_creator()
-    print(httpLink)
-    webContentExecutor = WebContentCollector(httpLink)
-    webContentExecutor.collect()
-    return webContentExecutor.deviceSendFunctionValues
-
-
-@app.route("/device_add", methods=['POST', 'GET'])
-def device_add():
-    form = AddDevice()
-    if form.validate_on_submit():
-        devcice_to_add = Devices(deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, deviceDescription=form.deviceDescription.data, deviceStatus="Not checked")
-        db.session.add(devcice_to_add)
-        db.session.commit()
-        flash('OK', category='success')
-        return redirect(url_for("device_list"))
-    
-    if form.errors != {}:  # validation errors
-        print(form.errors)
-        flash(form.errors, category='danger')
-        # for err_msg in form.errors.values():
-        #     print(err_msg)
-        #     flash(err_msg[0], category='danger')
-    return render_template("deviceAdd.html", form = form, state = str(sched.state))
-
-
-@app.route("/device_list")
-def device_list():
-    devices = Devices.query.all()
-    return render_template("devicesList.html", devices = devices, state = str(sched.state))
 
 
 @app.route("/archive_list")
