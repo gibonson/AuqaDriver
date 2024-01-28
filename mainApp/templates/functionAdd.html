@@ -19,17 +19,8 @@ functionAdd
                         {{ form.deviceId.label() }}
                     </td>
                     <td>
-                        {{ form.deviceId(class="form-select" , placeholder = 'deviceId:') }}
+                        {{ form.deviceId(class="form-select" , placeholder = 'deviceId') }}
                         <small class="form-text text-danger">{{ form.deviceId.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.actionLink.label() }}
-                    </td>
-                    <td>
-                        {{ form.actionLink(class="form-control" , placeholder = 'actionLink:') }}
-                        <small class="form-text text-danger">{{ form.actionLink.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -37,8 +28,17 @@ functionAdd
                         {{ form.functionDescription.label() }}
                     </td>
                     <td>
-                        {{ form.functionDescription(class="form-control" , placeholder = 'functionDescription:') }}
+                        {{ form.functionDescription(class="form-control" , placeholder = 'functionDescription') }}
                         <small class="form-text text-danger">{{ form.functionDescription.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.actionLink.label() }}
+                    </td>
+                    <td>
+                        {{ form.actionLink(class="form-control" , placeholder = 'actionLink') }}
+                        <small class="form-text text-danger">{{ form.actionLink.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +46,7 @@ functionAdd
                         {{ form.functionParameters.label() }}
                     </td>
                     <td>
-                        {{ form.functionParameters(class="form-control" , placeholder = 'functionParameters:') }}
+                        {{ form.functionParameters(class="form-control" , placeholder = 'functionParameters') }}
                         <small class="form-text text-danger">{{ form.functionParameters.errors[0] }}</small>
                     </td>
                 </tr>
@@ -55,7 +55,7 @@ functionAdd
                         {{ form.functionStatus.label() }}
                     </td>
                     <td>
-                        {{ form.functionStatus(class="form-select" , placeholder = 'functionStatus:') }}
+                        {{ form.functionStatus(class="form-select" , placeholder = 'functionStatus') }}
                         <small class="form-text text-danger">{{ form.functionStatus.errors[0] }}</small>
                     </td>
                 </tr>

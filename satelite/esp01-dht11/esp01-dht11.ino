@@ -8,9 +8,10 @@
 
 const char* ssid = "";
 const char* password = "";
-WiFiServer server(80);                 // Set web server port number to 80
+String deviceName = "Korytarz";
 // IPAddress local_IP(192, 168, 0, 184);  // Set your Static IP address
 IPAddress local_IP(192, 168, 0, 185);  // Set your Static IP address
+WiFiServer server(80);                 // Set web server port number to 80
 IPAddress gateway(192, 168, 1, 1);     // Set your Gateway IP address
 IPAddress subnet(255, 255, 0, 0);
 IPAddress primaryDNS(8, 8, 8, 8);    //optional
@@ -28,7 +29,7 @@ int LED4 = 13;
 int LED5 = 15;
 
 String webContent[31][4] = {
-  { "hHtml", "ESP8266 - Korytarz", "", "" },
+  { "hHtml", deviceName , "", "" },
   { "pHtml", "Temperatura", "", " stC" },
   { "pHtml", "Wilgotnosc", "", " %" },
   { "", "", "", "" },
@@ -196,7 +197,7 @@ void loop() {
               digitalWrite(LED5, LOW);  // turn the LED off
               delay(100);
               String value = String(value1) + String(value2) + String(value3) + String(value4);
-              client.print(webGui.resultLog(value, "Done"));
+              client.print(webGui.resultLog(value, "Nawozy", deviceName));
             }
             else if (header.indexOf("GET /gpioON") >= 0) {
               digitalWrite(LED1, HIGH);  // turn the LED on
@@ -204,7 +205,7 @@ void loop() {
               digitalWrite(LED3, HIGH);  // turn the LED on
               digitalWrite(LED4, HIGH);  // turn the LED on
               digitalWrite(LED5, HIGH);  // turn the LED on
-              client.print(webGui.resultLog("12345", "All High"));
+              client.print(webGui.resultLog("12345", "All High", deviceName));
             }
             else if (header.indexOf("GET /gpioOFF") >= 0) {
               digitalWrite(LED1, LOW);  // turn the LED off
@@ -212,27 +213,27 @@ void loop() {
               digitalWrite(LED3, LOW);  // turn the LED off
               digitalWrite(LED4, LOW);  // turn the LED off
               digitalWrite(LED5, LOW);  // turn the LED off
-              client.print(webGui.resultLog("12345", "All Low"));
+              client.print(webGui.resultLog("12345", "All Low", deviceName));
             } else if (header.indexOf("GET /socket1ON") >= 0) {
               mySwitch.send(4433, 24);
-              client.print(webGui.resultLog("4433", "S1 On"));
+              client.print(webGui.resultLog("4433", "S1 On", deviceName));
             } else if (header.indexOf("GET /socket1OFF") >= 0) {
               mySwitch.send(4436, 24);
-              client.print(webGui.resultLog("4436", "S1 Off"));
+              client.print(webGui.resultLog("4436", "S1 Off", deviceName));
             } else if (header.indexOf("GET /socket2ON") >= 0) {
               mySwitch.send(5201, 24);
-              client.print(webGui.resultLog("5201", "S2 On"));
+              client.print(webGui.resultLog("5201", "S2 On", deviceName));
             } else if (header.indexOf("GET /socket2OFF") >= 0) {
               mySwitch.send(5204, 24);
-              client.print(webGui.resultLog("5204", "S2 Off"));
+              client.print(webGui.resultLog("5204", "S2 Off", deviceName));
             } else if (header.indexOf("GET /socket3ON") >= 0) {
               mySwitch.send(5393, 24);
-              client.print(webGui.resultLog("5393", "S3 On"));
+              client.print(webGui.resultLog("5393", "S3 On", deviceName));
             } else if (header.indexOf("GET /socket3OFF") >= 0) {
               mySwitch.send(5396, 24);
-              client.print(webGui.resultLog("5396", "S3 Off"));
+              client.print(webGui.resultLog("5396", "S3 Off", deviceName));
             } else {
-              client.print(webGui.resultLog("404", "Not Found"));
+              client.print(webGui.resultLog("0", "Not Found", deviceName));
             }
             break;
           } else {  // if you got a newline, then clear currentLine

@@ -4,13 +4,11 @@ class Devices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceIP = db.Column(db.String())
     deviceName = db.Column(db.String())
-    deviceDescription = db.Column(db.String())
     deviceStatus = db.Column(db.String())
 
-    def __init__(self, deviceIP, deviceName, deviceDescription, deviceStatus):
+    def __init__(self, deviceIP, deviceName, deviceStatus):
         self.deviceIP = deviceIP
         self.deviceName = deviceName
-        self.deviceDescription = deviceDescription
         self.deviceStatus = deviceStatus
 
 

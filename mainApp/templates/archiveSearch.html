@@ -19,24 +19,24 @@ archiveSearch
             <small class="form-text text-danger">{{ form.limit.errors[0] }}</small>
 
             {{ form.timestampStart.label() }}
-            {{ form.timestampStart(class="form-control" ,  value = datetime.now().strftime("%Y-%m-%d %H:%M")) }}
+            {{ form.timestampStart(class="form-control" ,  value = dataSubOneDay) }}
             <small class="form-text text-danger">{{ form.timestampStart.errors[0] }}</small>
 
             {{ form.timestampEnd.label() }}
-            {{ form.timestampEnd(class="form-control" , value = dataSubOneDay) }}
+            {{ form.timestampEnd(class="form-control" , value = datetime.now().strftime("%Y-%m-%d %H:%M")) }}
             <small class="form-text text-danger">{{ form.timestampEnd.errors[0] }}</small>
 
-            {{ form.deviceId.label() }}
-            {{ form.deviceId(class="form-control" , placeholder = 'deviceId:') }}
-            <small class="form-text text-danger">{{ form.deviceId.errors[0] }}</small>
+            {{ form.deviceIP.label() }}
+            {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
+            <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
 
             {{ form.addInfo.label() }}
             {{ form.addInfo(class="form-control" , placeholder = 'addInfo:') }}
             <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
 
-            {{ form.unit.label() }}
-            {{ form.unit(class="form-control" , placeholder = 'unit:') }}
-            <small class="form-text text-danger">{{ form.unit.errors[0] }}</small>
+            {{ form.type.label() }}
+            {{ form.type(class="form-control" , placeholder = 'type:') }}
+            <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
 
             <br>
 
@@ -56,19 +56,19 @@ archiveSearch
                 <tr>
                     <th>id</th>
                     <th>timestamp</th>
-                    <th>deviceId</th>
+                    <th>deviceIP</th>
                     <th>addInfo</th>
                     <th>value</th>
-                    <th>unit</th>
+                    <th>type</th>
                 </tr>
                 {% for archiveRow in archive %}
                 <tr>    
                     <td>{{archiveRow.id}}</td>
                     <td>{{datetime.fromtimestamp(archiveRow.timestamp).strftime("%Y-%m-%d %H:%M:%S")}}</td>
-                    <td>{{archiveRow.deviceId}}</td>
+                    <td>{{archiveRow.deviceIP}}</td>
                     <td>{{archiveRow.addInfo}}</td>
                     <td>{{archiveRow.value}}</td>
-                    <td>{{archiveRow.unit}}</td>
+                    <td>{{archiveRow.type}}</td>
                 </tr>
                 {% endfor %}
             </table>

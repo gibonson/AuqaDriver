@@ -131,6 +131,7 @@ class WebContentCollector:
             print("deviceRecieveFunctionValues = " + str(self.deviceRecieveFunctionValues))
             print()
 
+
             for row in self.deviceRecieveFunctionValues:
                 with app.app_context():
                     print(row)
@@ -142,19 +143,31 @@ class WebContentCollector:
                     db.session.add(add_to_archiwe)
                     db.session.commit()
 
-            print()
-            print("deviceSendFunctionValues = " + str(self.deviceSendFunctionValues))
-            print()
+            if self.deviceRecieveFunctionValues == []:
+                print("Unrecognized device")
+                with app.app_context():
+                    addInfo = "Unrecognized device"
+                    deviceIP = self.deviceIP
+                    deviceName = "-"
+                    type = "Log"
+                    value = 0
+                    add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
+                    db.session.add(add_to_archiwe)
+                    db.session.commit()
 
-            for row in self.deviceSendFunctionValues:
-                print(row)
+            # print()
+            # print("deviceSendFunctionValues = " + str(self.deviceSendFunctionValues))
+            # print()
+
+            # for row in self.deviceSendFunctionValues:
+            #     print(row)
         except requests.exceptions.Timeout:
             print("connection issue")
             with app.app_context():
-                addInfo = "Fail"
+                addInfo = "Connection error"
                 deviceIP = self.deviceIP
-                deviceName = "Connection error"
-                type = "404"
+                deviceName = "-"
+                type = "Log"
                 value = 0
                 add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
                 db.session.add(add_to_archiwe)

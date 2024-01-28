@@ -15,14 +15,16 @@ def create():
     with app.app_context():
         db.create_all()
         timestamp = round(time.time())
-        addInfo = "db creation"
-        deviceId = 0
-        unit = 0
-        add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= 0, unit = unit, addInfo = addInfo)
+        addInfo = "BD creation"
+        deviceName = "Server"
+        deviceIP = "127.0.0.1"
+        type = "Log"
+        value = 0
+        add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
         db.session.add(add_to_archiwe)
         db.session.commit()
-        flash('OK', category='success')
-    return "OK"
+        flash('DB creation Success', category='success')
+    return redirect(url_for("get_jobs"))
 
 
 # -----------------------------------------
@@ -33,7 +35,7 @@ def create():
 def device_add():
     form = AddDevice()
     if form.validate_on_submit():
-        devcice_to_add = Devices(deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, deviceDescription=form.deviceDescription.data, deviceStatus=form.deviceStatus.data)
+        devcice_to_add = Devices(deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, deviceStatus=form.deviceStatus.data)
         db.session.add(devcice_to_add)
         db.session.commit()
         flash('Device added', category='success')
@@ -65,9 +67,8 @@ def function_add():
         print(device.id)
         print(device.deviceIP)
         print(device.deviceName)
-        print(device.deviceDescription)
         print(device.deviceStatus)
-        AddDeviceFunctions.deviceIdList.append((device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceDescription + " " + device.deviceStatus))
+        AddDeviceFunctions.deviceIdList.append((device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceStatus))
 
     form = AddDeviceFunctions()
     if form.validate_on_submit():
@@ -98,6 +99,10 @@ def functions_list_link_creator(id):
     return redirect(url_for("functions_list"))
 
 
+# -----------------------------------------
+# scheduler section
+# -----------------------------------------
+
 @app.route("/scheduler_add", methods=['POST', 'GET'])
 def scheduler_add():
     AddFunctionScheduler.functionIdList.clear()
@@ -114,8 +119,15 @@ def scheduler_add():
 
     form = AddFunctionScheduler()
     if form.validate_on_submit():
-        function_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = form.schedulerID.data, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data, schedulerStatus = form.schedulerStatus.data)
-        db.session.add(function_to_add)
+        # scheduler_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = form.schedulerID.data, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data, schedulerStatus = form.schedulerStatus.data)
+        schedulerID = str(form.functionId.data) + str(form.trigger.data) + str(form.year.data) + str(form.month.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)
+        number = FunctionScheduler.query.filter_by(schedulerID=schedulerID).first()
+        if number:
+            flash(schedulerID + " record exists in the DB", category='danger')
+            return render_template("schedulerAdd.html", form = form, state = str(sched.state))
+
+        scheduler_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = schedulerID, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data, schedulerStatus = form.schedulerStatus.data)
+        db.session.add(scheduler_to_add)
         db.session.commit()
         flash('OK', category='success')
         return redirect(url_for("scheduler_list"))
@@ -125,6 +137,70 @@ def scheduler_add():
         flash(form.errors, category='danger')
 
     return render_template("schedulerAdd.html", form = form, state = str(sched.state))
+
+
+# -----------------------------------------
+# archive section
+# -----------------------------------------
+
+@app.route("/archive_list")
+def archive_list():
+    # archive = Archive.query.all()
+    archive = Archive.query.order_by(Archive.id.desc()).limit(10)
+    return render_template("archiveList.html", archive = archive, datetime = datetime, state = str(sched.state))
+
+@app.route("/archive_search", methods=['POST', 'GET'])
+def archive_search():
+    ArchiveSearch.deviceIPList.clear()
+    ArchiveSearch.addInfoList.clear()
+    ArchiveSearch.typeList.clear()
+
+    archiveAddInfos = Archive.query.distinct(Archive.addInfo).group_by(Archive.addInfo)
+    for archiveAddInfo in archiveAddInfos:
+        print(archiveAddInfo.addInfo)
+        ArchiveSearch.addInfoList.append((archiveAddInfo.addInfo, archiveAddInfo.addInfo))
+
+    deviceIds = Archive.query.distinct(Archive.deviceIP).group_by(Archive.deviceIP)
+    for deviceId in deviceIds:
+        print(deviceId.deviceIP)
+        ArchiveSearch.deviceIPList.append((deviceId.deviceIP, deviceId.deviceIP))
+
+    types = Archive.query.distinct(Archive.type).group_by(Archive.type)
+    for type in types:
+        print(type.type)
+        ArchiveSearch.typeList.append((type.type, type.type))
+
+    form = ArchiveSearch()
+    # archive = Archive.query.all()
+    archive = Archive.query.order_by(Archive.id.desc()).limit(100)
+    dataSubOne = datetime.now() - timedelta(days=1)
+    dataSubOneDay = dataSubOne.strftime("%Y-%m-%d %H:%M")
+
+    if form.validate_on_submit():
+        print(form.limit.data)
+        print(form.timestampStart.data)
+        print(datetime.timestamp(form.timestampStart.data))
+        print(form.timestampEnd.data)
+        print(datetime.timestamp(form.timestampEnd.data))
+        print(form.deviceIP.data)
+        print(form.addInfo.data)
+        print(form.type.data)
+        archive = Archive.query.filter(
+            Archive.deviceIP.in_(form.deviceIP.data),
+            Archive.addInfo.in_(form.addInfo.data),
+            Archive.timestamp >= datetime.timestamp(form.timestampStart.data),
+            Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
+            Archive.type.in_(form.type.data)
+            ).order_by(Archive.id.desc()).limit(form.limit.data)
+    return render_template("archiveSearch.html",archive = archive, datetime = datetime, form = form, state = str(sched.state), dataSubOneDay = dataSubOneDay)
+
+
+
+
+
+
+
+
 
 
 
@@ -157,83 +233,6 @@ def functions_scheduler_list_get_jobs():
     devicesFunctions = DevicesFunctions.query.all()
     devices = Devices.query.all()
     return render_template("SchedulerListWithJobs.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, get_jobs=sched.get_jobs(), state = str(sched.state))
-
-
-
-
-
-
-
-@app.route("/archive_list")
-def archive_list():
-    # archive = Archive.query.all()
-    archive = Archive.query.order_by(Archive.id.desc()).limit(10)
-    return render_template("archiveList.html", archive = archive, datetime = datetime, state = str(sched.state))
-
-
-
-
-
-
-
-
-
-
-
-@app.route("/archive_search", methods=['POST', 'GET'])
-def archive_search():
-    ArchiveSearch.deviceIdList.clear()
-    ArchiveSearch.addInfoList.clear()
-    ArchiveSearch.unitList.clear()
-
-    archiveAddInfos = Archive.query.distinct(Archive.addInfo).group_by(Archive.addInfo)
-    for archiveAddInfo in archiveAddInfos:
-        print(archiveAddInfo.addInfo)
-        ArchiveSearch.addInfoList.append((archiveAddInfo.addInfo, archiveAddInfo.addInfo))
-
-    deviceIds = Archive.query.distinct(Archive.deviceId).group_by(Archive.deviceId)
-    for deviceId in deviceIds:
-        print(deviceId.deviceId)
-        ArchiveSearch.deviceIdList.append((deviceId.deviceId, deviceId.deviceId))
-
-    units = Archive.query.distinct(Archive.unit).group_by(Archive.unit)
-    for unit in units:
-        print(unit.unit)
-        ArchiveSearch.unitList.append((unit.unit, unit.unit))
-
-    form = ArchiveSearch()
-    # archive = Archive.query.all()
-    archive = Archive.query.order_by(Archive.id.desc()).limit(10)
-    dataSubOne = datetime.now() - timedelta(days=1)
-    dataSubOneDay = dataSubOne.strftime("%Y-%m-%d %H:%M")
-
-    if form.validate_on_submit():
-        print(form.limit.data)
-        print(form.timestampStart.data)
-        print(datetime.timestamp(form.timestampStart.data))
-        print(form.timestampEnd.data)
-        print(datetime.timestamp(form.timestampEnd.data))
-        print(form.deviceId.data)
-        print(form.addInfo.data)
-        print(form.unit.data)
-        archive = Archive.query.filter(
-            Archive.deviceId.in_(form.deviceId.data),
-            Archive.addInfo.in_(form.addInfo.data),
-            Archive.timestamp >= datetime.timestamp(form.timestampStart.data),
-            Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
-            Archive.unit.in_(form.unit.data)).order_by(Archive.id.desc()).limit(form.limit.data)
-
-
-
-    return render_template("archiveSearch.html",archive = archive, datetime = datetime, form = form, state = str(sched.state), dataSubOneDay = dataSubOneDay)
-
-
-
-
-
-
-
-
 
 
 

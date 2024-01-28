@@ -14,12 +14,13 @@ public:
     return html;
   }
 
-  String resultLog (String value, String status) {
+  String resultLog (String value, String status, String deviceName) {
     String html = htmlBegin();
     String endLine = "</br>\n";
     String sep = "<sep>";
     String sepEnd = "</sep>";
-    html = html + sep + "pHtml" + sepEnd + sep + "log" + sepEnd + sep + value + sepEnd + sep + status + sepEnd + endLine;
+    html = html + sep + "hHtml" + sepEnd + sep + deviceName + sepEnd + endLine;
+    html = html + sep + "pHtml" + sepEnd + sep + status + sepEnd + sep + value + sepEnd + sep + "Log" + sepEnd + endLine;
     html = html + "</body>\n";
     html = html + "<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
     return html;

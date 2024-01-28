@@ -19,7 +19,7 @@ deviceAdd
                         {{ form.deviceName.label() }}
                     </td>
                     <td>
-                        {{ form.deviceName(class="form-control" , placeholder = 'deviceName:') }}
+                        {{ form.deviceName(class="form-control" , placeholder = 'deviceName') }}
                         <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
                     </td>
                 </tr>
@@ -28,17 +28,8 @@ deviceAdd
                         {{ form.deviceIP.label() }}
                     </td>
                     <td>
-                        {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
+                        {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP') }}
                         <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.deviceDescription.label() }}
-                    </td>
-                    <td>
-                        {{ form.deviceDescription(class="form-control" , placeholder = 'deviceDescription:') }}
-                        <small class="form-text text-danger">{{ form.deviceDescription.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -46,7 +37,7 @@ deviceAdd
                         {{ form.deviceStatus.label() }}
                     </td>
                     <td>
-                        {{ form.deviceStatus(class="form-select" , placeholder = 'deviceStatus:') }}
+                        {{ form.deviceStatus(class="form-select" , placeholder = 'deviceStatus') }}
                         <small class="form-text text-danger">{{ form.deviceStatus.errors[0] }}</small>
                     </td>
                 </tr>
