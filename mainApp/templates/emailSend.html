@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+emailSend
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">emailSend</h1>
+    <div class="container">
+
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ form.hidden_tag() }}
+            <table>
+                <tr>
+                    <td>
+                        {{ form.subject.label() }}
+                    </td>
+                    <td>
+                        {{ form.subject(class="form-control" , placeholder = 'subject') }}
+                        <small class="form-text text-danger">{{ form.subject.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.message.label() }}
+                    </td>
+                    <td>
+                        {{ form.message(class="form-control" , placeholder = 'message') }}
+                        <small class="form-text text-danger">{{ form.message.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}

@@ -3,3 +3,4 @@
 ___old
 __pycache__
 satelite/esp01-dht11/pass.txt
+userFiles/config_email.ini

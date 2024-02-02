@@ -1,11 +1,12 @@
 from mainApp import app, db, sched
 from flask import Flask, render_template ,redirect, url_for, request, flash
-from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch
+from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive
 from mainApp.webContent import LinkCreator, WebContentCollector
 import time
 from datetime import datetime, timedelta
-from mainApp.job_operations import schedStart
+from mainApp.jobOperations import schedStart
+from mainApp.emailSender import emailTestSender, emailSender
 
 # -----------------------------------------
 # create new DB
@@ -195,13 +196,24 @@ def archive_search():
     return render_template("archiveSearch.html",archive = archive, datetime = datetime, form = form, state = str(sched.state), dataSubOneDay = dataSubOneDay)
 
 
+# -----------------------------------------
+# email test
+# -----------------------------------------
+
+@app.route('/testEmailSend')
+def test_email_send():
+    emailTestSender()
+    return redirect((url_for('get_jobs')))
 
 
-
-
-
-
-
+@app.route('/emailSend', methods=['POST', 'GET'])
+def email_send():
+    form = EmailForm()
+    if form.validate_on_submit():
+        print(form.subject.data)
+        print(form.message.data)
+        emailSender(form.subject.data, form.message.data)
+    return render_template("emailSend.html", form = form, state = str(sched.state))
 
 
 

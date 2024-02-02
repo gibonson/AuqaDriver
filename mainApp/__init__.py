@@ -56,7 +56,7 @@ from mainApp import routes
 #     devicesFunctions = DevicesFunctions.query.all()
 #     devices = Devices.query.all()
 
-from mainApp.job_operations import schedStart
+from mainApp.jobOperations import schedStart
 
 
 

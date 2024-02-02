@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateTimeLocalField, SelectMultipleField
+from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateTimeLocalField, SelectMultipleField, TextAreaField
 from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError
 from mainApp import db
 from mainApp.models import FunctionScheduler
@@ -69,3 +69,8 @@ class ArchiveSearch(FlaskForm):
     type = SelectMultipleField(label='type', choices=typeList)
     submit = SubmitField(label='Search')
 
+class EmailForm(FlaskForm):
+
+    subject = StringField(label='subject', validators = [Length(min=3, max=40, message='subject: must be between 3 and 40 characters.')])
+    message = TextAreaField(label='Your message')
+    submit = SubmitField(label='Send message')
