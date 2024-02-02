@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 
 {% block title %}
@@ -18,21 +17,14 @@ functionsScheduler
                     <th>functionId</th>
                     <th>deviceIP</th>
                     <th>deviceName</th>
-                    <th>deviceId</th>                    
+                    <th>deviceId</th>
                     <th>actionLink</th>
                     <th>functionDescription</th>
                     <th>functionParameters</th>
-                    <th>trigger</th>
-                    <th>year</th>
-                    <th>month</th>
-                    <th>day</th>
-                    <th>day_of_week</th>
-                    <th>hour</th>
-                    <th>minute</th>
-                    <th>second</th>
+                    <th>DB Trigger [Y:M:D-day-H:M:S]</th>
                 </tr>
                 {% for functionScheduler in functionsScheduler %}
-                <tr>    
+                <tr>
                     <td>{{functionScheduler.id}}</td>
                     <td>{{functionScheduler.schedulerID}}</td>
                     <td>{{devicesFunctions[functionScheduler.functionId-1].id}}</td>
@@ -42,14 +34,9 @@ functionsScheduler
                     <td>{{devicesFunctions[functionScheduler.functionId-1].actionLink}}</td>
                     <td>{{devicesFunctions[functionScheduler.functionId-1].functionDescription}}</td>
                     <td>{{devicesFunctions[functionScheduler.functionId-1].functionParameters}}</td>
-                    <td>{{functionScheduler.trigger}}</td>
-                    <td>{{functionScheduler.year}}</td>
-                    <td>{{functionScheduler.month}}</td>
-                    <td>{{functionScheduler.day}}</td>
-                    <td>{{functionScheduler.day_of_week}}</td>
-                    <td>{{functionScheduler.hour}}</td>
-                    <td>{{functionScheduler.minute}}</td>
-                    <td>{{functionScheduler.second}}</td>
+                    <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]
+                    </td>
+
                 </tr>
                 {% endfor %}
 

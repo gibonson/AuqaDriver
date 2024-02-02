@@ -21,40 +21,6 @@ class LinkCreator:
         return httpLink
 
 
-# class WebContentExecutor:
-#     def __init__(self, httpAddress):
-#         self.httpAddress = httpAddress
-#         httpAddress = httpAddress.replace("http://","")
-#         self.ip = httpAddress.split("/")[0]
-#         self.addInfo = "/" + httpAddress.split("/")[1]
-    
-#     def execute(self):
-#         try:
-#             timestamp = round(time.time())
-#             print(timestamp)
-#             response = requests.get(self.httpAddress,timeout=50)
-#             with app.app_context():
-#                 addInfo = self.addInfo
-#                 deviceId = self.ip
-#                 value = 0
-#                 unit = "OK"
-#                 add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
-#                 db.session.add(add_to_archiwe)
-#                 db.session.commit()
-
-
-#         except requests.exceptions.RequestException:
-#             print("connection issue")
-#             with app.app_context():
-#                 addInfo = self.addInfo
-#                 deviceId = self.ip
-#                 value = 0
-#                 unit = "Fail"
-#                 add_to_archiwe = Archive(timestamp=timestamp,deviceId = deviceId, value= value, unit = unit, addInfo = addInfo)
-#                 db.session.add(add_to_archiwe)
-#                 db.session.commit()
-
-
 class WebContentCollector:
 
     def __init__(self, httpAddress):

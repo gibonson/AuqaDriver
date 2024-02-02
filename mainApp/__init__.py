@@ -31,16 +31,18 @@ db.init_app(app)
 
 if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
     print('-=DB exist!=-')
-    # from sqlalchemy import create_engine, text
-    # engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-    # with engine.connect() as conn:
-    #     timestamp = round(time.time())
-    #     addInfo = "db creation"
-    #     deviceId = 0
-    #     value = 0
-    #     unit = 0
-    #     conn.execute(text('INSERT INTO archive (timestamp, deviceId, value, unit, addInfo) VALUES ("1704669620", "192.168.0.0", "0", "0", "12")'))
-    # flash('OK', category='success')
+    from sqlalchemy import create_engine, text
+    engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
+    with engine.connect() as conn:
+        timestamp = str(round(time.time()))
+        addInfo = "App Start"
+        deviceName = "Server"
+        deviceIP = "127.0.0.1"
+        type = "Log"
+        value = 0
+        conn.execute(text('INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("' +
+                     timestamp + '" , "' + deviceIP + '" , "' + deviceName + '" ," ' + addInfo + '", "0", "Log")'))
+        conn.commit()
 else:
     print('-=db does not exist=-')
 
