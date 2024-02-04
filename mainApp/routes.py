@@ -7,6 +7,7 @@ import time
 from datetime import datetime, timedelta
 from mainApp.jobOperations import schedStart
 from mainApp.emailSender import emailTestSender, emailSender
+from mainApp import os
 
 # -----------------------------------------
 # create new DB
@@ -215,7 +216,17 @@ def email_send():
         emailSender(form.subject.data, form.message.data)
     return render_template("emailSend.html", form = form, state = str(sched.state))
 
+# -----------------------------------------
+# DB status
+# -----------------------------------------
 
+@app.route('/dashboard')
+def dashboard():
+    DBFile = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles/db.sqlite"
+    dbSizeKB = os.path.getsize(DBFile) / 1024
+    print(str(dbSizeKB) + "KB")
+
+    return render_template("dashboard.html", dbSizeKB = dbSizeKB, state = str(sched.state))
 
 
 

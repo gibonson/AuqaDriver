@@ -59,4 +59,4 @@ try:
     schedStart(sched)
     sched.start()
 except exc.OperationalError:
-        print("no DB please create")
+        print("-=db does not exist=-")

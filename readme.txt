@@ -11,8 +11,12 @@ select deviceIP, deviceName ,type, addInfo  , count(value) as ilosc  FROM archiv
 virtualenv venv/
 source ./venv/bin/activate
 
-
-
-
 gh repo clone gibonson/AuqaDriver
+
+
+git stash
+gh repo sync
+ln  /home/gibon/www/AuqaDriver/userFiles/db.sqlite /home/gibon/www/AuqaDriver/AuqaDriver/userFiles/db.sqlite
+
+
 
