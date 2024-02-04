@@ -1,6 +1,6 @@
 from flask import Flask, flash
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import insert
+from sqlalchemy import insert, exc
 from sqlalchemy_utils.functions import database_exists
 from flask_apscheduler import APScheduler
 
@@ -8,7 +8,7 @@ import time
 import os
 
 class Config(object):
-    baseDir = os.path.abspath(os.path.dirname(__file__))   + "\\..\\userFiles"
+    baseDir = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles"
 
     print(baseDir)
     # Config app
@@ -20,7 +20,6 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(baseDir, 'db.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-baseDir = os.path.abspath(os.path.dirname(__file__))   + "\\..\\userFiles"
 # Init app
 app = Flask(__name__, static_folder='../static')
 app.config.from_object(Config())
@@ -51,19 +50,13 @@ sched = APScheduler()
 
 
 from mainApp import routes
-# from mainApp.routes import Devices, DevicesFunctions, FunctionScheduler
-# from mainApp.webContent import WebContentCollector, WebContentExecutor, LinkCreator
-# with app.app_context():
-#     functionsScheduler = FunctionScheduler.query.all()
-#     devicesFunctions = DevicesFunctions.query.all()
-#     devices = Devices.query.all()
-
 from mainApp.jobOperations import schedStart
 
 
 
 # start process in scheduler
-schedStart(sched)
-sched.start()
-
-
+try:
+    schedStart(sched)
+    sched.start()
+except exc.OperationalError:
+        print("no DB please create")
