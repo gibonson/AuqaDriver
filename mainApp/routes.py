@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from mainApp.jobOperations import schedStart
 from mainApp.emailSender import emailTestSender, emailSender
 from mainApp import os
-
+from sqlalchemy import create_engine, text
 
 # -----------------------------------------
 # create new DB
@@ -312,10 +312,15 @@ def dashboard():
     print(str(dbSizeKB) + "KB")
     engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
     with engine.connect() as conn:
-        sqlSelect = conn.execute(text('select deviceIP, deviceName ,type, addInfo  , count(value) as ilosc  FROM archive GROUP BY deviceIP, type, addInfo'))
+        sqlSelect = conn.execute(text('select deviceIP, deviceName, type, addInfo, count(value) as number_of_queries, avg(value) as average FROM archive GROUP BY deviceIP, type, addInfo'))
+        print(sqlSelect)
+        sqlTable = []
         for row in sqlSelect:
             print(row)
-    return render_template("dashboard.html", dbSizeKB = dbSizeKB, state = str(sched.state))
+            sqlTable.append(row)
+        print(sqlTable)
+        
+    return render_template("dashboard.html", dbSizeKB = dbSizeKB, sqlTable = sqlTable,  state = str(sched.state))
 
 
 # -----------------------------------------
