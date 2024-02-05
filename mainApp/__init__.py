@@ -52,8 +52,6 @@ sched = APScheduler()
 from mainApp import routes
 from mainApp.jobOperations import schedStart
 
-
-
 # start process in scheduler
 try:
     schedStart(sched)

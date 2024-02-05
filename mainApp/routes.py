@@ -9,6 +9,7 @@ from mainApp.jobOperations import schedStart
 from mainApp.emailSender import emailTestSender, emailSender
 from mainApp import os
 
+
 # -----------------------------------------
 # create new DB
 # -----------------------------------------
@@ -26,6 +27,21 @@ def create():
         db.session.add(add_to_archiwe)
         db.session.commit()
         flash('DB creation Success', category='success')
+    return redirect(url_for("get_jobs"))
+
+
+# -----------------------------------------
+# start page and 404
+# -----------------------------------------
+
+@ app.errorhandler(404)
+def not_found(e):
+    flash(f'404!', category='danger')
+    return render_template('404.html', state = str(sched.state))
+
+
+@app.route("/")
+def hello_world():
     return redirect(url_for("get_jobs"))
 
 
@@ -121,8 +137,22 @@ def scheduler_add():
 
     form = AddFunctionScheduler()
     if form.validate_on_submit():
-        # scheduler_to_add = FunctionScheduler(functionId = str(form.functionId.data), trigger = form.trigger.data, schedulerID = form.schedulerID.data, year = form.year.data, month = form.month.data, day = form.day.data, day_of_week = form.day_of_week.data, hour = form.hour.data, minute = form.minute.data, second = form.second.data, schedulerStatus = form.schedulerStatus.data)
-        schedulerID = str(form.functionId.data) + str(form.trigger.data) + str(form.year.data) + str(form.month.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)
+        year = form.year.data
+        if year == "None": year = "-"
+        month = form.month.data
+        if month == "None": month = "-"
+        day = form.day.data
+        if day == "None": day = "-"
+        day_of_week = form.day_of_week.data
+        if day_of_week == "None": day_of_week = "-"
+        hour = form.hour.data
+        if hour == "None": hour = "-"
+        minute = form.minute.data
+        if minute == "None": minute = "-"
+        second = form.second.data
+        if second == "None": second = "-"
+
+        schedulerID = str(form.functionId.data) + str(form.trigger.data) + str(year) + str(month) + str(day) + str(day_of_week) + str(hour) + str(minute) + str(second)
         number = FunctionScheduler.query.filter_by(schedulerID=schedulerID).first()
         if number:
             flash(schedulerID + " record exists in the DB", category='danger')
@@ -139,6 +169,61 @@ def scheduler_add():
         flash(form.errors, category='danger')
 
     return render_template("schedulerAdd.html", form = form, state = str(sched.state))
+
+
+@app.route("/scheduler_list")
+def scheduler_list():
+    functionsScheduler = FunctionScheduler.query.all()
+    devicesFunctions = DevicesFunctions.query.all()
+    devices = Devices.query.all()
+    return render_template("schedulerList.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, state = str(sched.state))
+
+
+# -----------------------------------------
+# job section
+# -----------------------------------------
+
+@app.route("/get_jobs")
+def get_jobs():
+    print(sched.get_jobs())
+    for job in sched.get_jobs():
+        print("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" + str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
+    return render_template('getJobs.html', get_jobs=sched.get_jobs(), state = str(sched.state))
+
+@app.route("/functions_scheduler_list_get_jobs")
+def functions_scheduler_list_get_jobs():
+    functionsScheduler = FunctionScheduler.query.all()
+    devicesFunctions = DevicesFunctions.query.all()
+    devices = Devices.query.all()
+    return render_template("SchedulerListWithJobs.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, get_jobs=sched.get_jobs(), state = str(sched.state))
+
+@app.route("/scheduler_remove/<id>")
+def scheduler_remove(id):
+    FunctionScheduler.query.filter(FunctionScheduler.id == id).delete()
+    db.session.commit()
+    return redirect(url_for("get_jobs"))
+
+@app.route("/pause_job/<id>")
+def pause_job(id):
+    sched.pause_job(id)
+    return redirect(url_for("get_jobs"))
+
+@app.route("/resume_job/<id>")
+def resume_job(id):
+    sched.resume_job(id)
+    return redirect(url_for("get_jobs"))
+
+@app.route("/remove_job/<id>")
+def remove_job(id):
+    sched.remove_job(id)
+    return redirect(url_for("get_jobs"))
+
+@app.route("/start_job/<runSchedulerID>")
+def start_job(runSchedulerID):
+    if sched.state == 0:
+            sched.start()
+    schedStart(sched, runSchedulerID)
+    return redirect(url_for("get_jobs"))
 
 
 # -----------------------------------------
@@ -198,14 +283,13 @@ def archive_search():
 
 
 # -----------------------------------------
-# email test
+# email sender
 # -----------------------------------------
 
 @app.route('/testEmailSend')
 def test_email_send():
     emailTestSender()
     return redirect((url_for('get_jobs')))
-
 
 @app.route('/emailSend', methods=['POST', 'GET'])
 def email_send():
@@ -216,8 +300,9 @@ def email_send():
         emailSender(form.subject.data, form.message.data)
     return render_template("emailSend.html", form = form, state = str(sched.state))
 
+
 # -----------------------------------------
-# DB status
+# DB Dashboard
 # -----------------------------------------
 
 @app.route('/dashboard')
@@ -225,98 +310,33 @@ def dashboard():
     DBFile = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles/db.sqlite"
     dbSizeKB = os.path.getsize(DBFile) / 1024
     print(str(dbSizeKB) + "KB")
-
+    engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
+    with engine.connect() as conn:
+        sqlSelect = conn.execute(text('select deviceIP, deviceName ,type, addInfo  , count(value) as ilosc  FROM archive GROUP BY deviceIP, type, addInfo'))
+        for row in sqlSelect:
+            print(row)
     return render_template("dashboard.html", dbSizeKB = dbSizeKB, state = str(sched.state))
 
 
-
-
-
-
-
-
-@app.route("/scheduler_remove/<id>")
-def scheduler_remove(id):
-    FunctionScheduler.query.filter(FunctionScheduler.id == id).delete()
-    db.session.commit()
-    return redirect(url_for("get_jobs"))
-
-
-@app.route("/scheduler_list")
-def scheduler_list():
-    functionsScheduler = FunctionScheduler.query.all()
-    devicesFunctions = DevicesFunctions.query.all()
-    devices = Devices.query.all()
-    return render_template("schedulerList.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, state = str(sched.state))
-
-
-@app.route("/functions_scheduler_list_get_jobs")
-def functions_scheduler_list_get_jobs():
-    functionsScheduler = FunctionScheduler.query.all()
-    devicesFunctions = DevicesFunctions.query.all()
-    devices = Devices.query.all()
-    return render_template("SchedulerListWithJobs.html", functionsScheduler = functionsScheduler, devicesFunctions = devicesFunctions, devices = devices, get_jobs=sched.get_jobs(), state = str(sched.state))
-
-
-
-
-
-@app.route("/")
-def hello_world():
-    return redirect(url_for("get_jobs"))
-
-
-@app.route("/get_jobs")
-def get_jobs():
-    print(sched.get_jobs())
-    for job in sched.get_jobs():
-        print("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" + str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
-    return render_template('getJobs.html', get_jobs=sched.get_jobs(), state = str(sched.state))
-
-
-@app.route("/pause_job/<id>")
-def pause_job(id):
-    sched.pause_job(id)
-    return redirect(url_for("get_jobs"))
-
-
-@app.route("/resume_job/<id>")
-def resume_job(id):
-    sched.resume_job(id)
-    return redirect(url_for("get_jobs"))
-
-
-@app.route("/remove_job/<id>")
-def remove_job(id):
-    sched.remove_job(id)
-    return redirect(url_for("get_jobs"))
-
-@app.route("/start_job/<runSchedulerID>")
-def start_job(runSchedulerID):
-    if sched.state == 0:
-            sched.start()
-    schedStart(sched, runSchedulerID)
-    return redirect(url_for("get_jobs"))
-
+# -----------------------------------------
+# Global Scheduler Operation
+# -----------------------------------------
 
 @app.route("/pause")
 def pause():
     sched.pause()
     return redirect(url_for("get_jobs"))
 
-
 @app.route("/resume")
 def resume():
     sched.resume()
     return redirect(url_for("get_jobs"))
-
 
 @app.route("/start")
 def start():
     sched.start()
     schedStart(sched)
     return redirect(url_for("get_jobs"))
-
 
 @app.route("/shutdown")
 def shutdown():
