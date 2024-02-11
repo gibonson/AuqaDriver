@@ -14,17 +14,36 @@ public:
     return html;
   }
 
-  String resultLog (String value, String status, String deviceName) {
+
+
+
+  String resultLogBegin (String deviceName) {
     String html = htmlBegin();
     String endLine = "</br>\n";
     String sep = "<sep>";
     String sepEnd = "</sep>";
     html = html + sep + "hHtml" + sepEnd + sep + deviceName + sepEnd + endLine;
+    return html;
+  }
+
+  String resultLogContent (int value, String status) {
+    String html = "";
+    String endLine = "</br>\n";
+    String sep = "<sep>";
+    String sepEnd = "</sep>";
     html = html + sep + "pHtml" + sepEnd + sep + status + sepEnd + sep + value + sepEnd + sep + "Log" + sepEnd + endLine;
+    return html;
+  }
+  
+  String resultLogEnd () {
+    String html = "";
     html = html + "</body>\n";
     html = html + "<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
     return html;
-  }  
+  }
+
+  
+
 
   String generator(String webContent[31][4]) {
     String html = "";

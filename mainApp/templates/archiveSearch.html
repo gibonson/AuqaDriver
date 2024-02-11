@@ -57,6 +57,7 @@ archiveSearch
                     <th>id</th>
                     <th>timestamp</th>
                     <th>deviceIP</th>
+                    <th>deviceName</th>
                     <th>addInfo</th>
                     <th>value</th>
                     <th>type</th>
@@ -66,6 +67,7 @@ archiveSearch
                     <td>{{archiveRow.id}}</td>
                     <td>{{datetime.fromtimestamp(archiveRow.timestamp).strftime("%Y-%m-%d %H:%M:%S")}}</td>
                     <td>{{archiveRow.deviceIP}}</td>
+                    <td>{{archiveRow.deviceName}}</td>
                     <td>{{archiveRow.addInfo}}</td>
                     <td>{{archiveRow.value}}</td>
                     <td>{{archiveRow.type}}</td>

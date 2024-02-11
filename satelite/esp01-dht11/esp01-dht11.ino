@@ -8,9 +8,9 @@
 
 const char* ssid = "";
 const char* password = "";
-String deviceName = "Korytarz";
-// IPAddress local_IP(192, 168, 0, 184);  // Set your Static IP address
-IPAddress local_IP(192, 168, 0, 185);  // Set your Static IP address
+String deviceName = "Akwarium";
+IPAddress local_IP(192, 168, 0, 184);  // Set your Static IP address
+//IPAddress local_IP(192, 168, 0, 185);  // Set your Static IP address
 WiFiServer server(80);                 // Set web server port number to 80
 IPAddress gateway(192, 168, 1, 1);     // Set your Gateway IP address
 IPAddress subnet(255, 255, 0, 0);
@@ -196,8 +196,14 @@ void loop() {
               delay(value4 * 1000);
               digitalWrite(LED5, LOW);  // turn the LED off
               delay(100);
-              String value = String(value1) + String(value2) + String(value3) + String(value4);
-              client.print(webGui.resultLog(value, "Nawozy", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(value1, "Mikroelementy [s]");
+              resultHtml = resultHtml + webGui.resultLogContent(value2, "Makroelementy [s]");
+              resultHtml = resultHtml + webGui.resultLogContent(value3, "Carbo [s]");
+              resultHtml = resultHtml + webGui.resultLogContent(value4, "Jack Daniels [s]");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             }
             else if (header.indexOf("GET /gpioON") >= 0) {
               digitalWrite(LED1, HIGH);  // turn the LED on
@@ -205,7 +211,14 @@ void loop() {
               digitalWrite(LED3, HIGH);  // turn the LED on
               digitalWrite(LED4, HIGH);  // turn the LED on
               digitalWrite(LED5, HIGH);  // turn the LED on
-              client.print(webGui.resultLog("12345", "All High", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(1, "Mikroelementy - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(1, "Makroelementy - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(1, "Carbo - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(1, "Jack Daniels - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             }
             else if (header.indexOf("GET /gpioOFF") >= 0) {
               digitalWrite(LED1, LOW);  // turn the LED off
@@ -213,27 +226,62 @@ void loop() {
               digitalWrite(LED3, LOW);  // turn the LED off
               digitalWrite(LED4, LOW);  // turn the LED off
               digitalWrite(LED5, LOW);  // turn the LED off
-              client.print(webGui.resultLog("12345", "All Low", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Mikroelementy - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Makroelementy - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Carbo - stan");
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Jack Daniels - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket1ON") >= 0) {
               mySwitch.send(4433, 24);
-              client.print(webGui.resultLog("4433", "S1 On", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(1, "S1 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket1OFF") >= 0) {
               mySwitch.send(4436, 24);
-              client.print(webGui.resultLog("4436", "S1 Off", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(0, "S1 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket2ON") >= 0) {
               mySwitch.send(5201, 24);
-              client.print(webGui.resultLog("5201", "S2 On", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(1, "S2 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket2OFF") >= 0) {
               mySwitch.send(5204, 24);
-              client.print(webGui.resultLog("5204", "S2 Off", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(0, "S2 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket3ON") >= 0) {
               mySwitch.send(5393, 24);
-              client.print(webGui.resultLog("5393", "S3 On", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(1, "S3 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else if (header.indexOf("GET /socket3OFF") >= 0) {
               mySwitch.send(5396, 24);
-              client.print(webGui.resultLog("5396", "S3 Off", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(0, "S3 - stan");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             } else {
-              client.print(webGui.resultLog("0", "Not Found", deviceName));
+              String resultHtml = "";
+              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Not Found");
+              resultHtml = resultHtml + webGui.resultLogEnd();
+              client.print(resultHtml);
             }
             break;
           } else {  // if you got a newline, then clear currentLine

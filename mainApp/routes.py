@@ -1,6 +1,6 @@
 from mainApp import app, db, sched
-from flask import Flask, render_template ,redirect, url_for, request, flash
-from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm
+from flask import Flask, render_template ,redirect, url_for, request, flash, Markup
+from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive
 from mainApp.webContent import LinkCreator, WebContentCollector
 import time
@@ -113,7 +113,7 @@ def functions_list():
 @app.route("/functions_list_link_creator/<id>")
 def functions_list_link_creator(id):
     linkCreator = LinkCreator(id)
-    flash(linkCreator.functions_list_link_creator(), category='success')
+    flash(Markup('<a href="'+ linkCreator.functions_list_link_creator() + '">' + linkCreator.functions_list_link_creator() + '</a>'), category='success')
     return redirect(url_for("functions_list"))
 
 
@@ -282,6 +282,16 @@ def archive_search():
     return render_template("archiveSearch.html",archive = archive, datetime = datetime, form = form, state = str(sched.state), dataSubOneDay = dataSubOneDay)
 
 
+
+@app.route("/archive_report", methods=['POST', 'GET'])
+def archive_report():
+    AddArchiveReport.deviceIPList.clear()
+    AddArchiveReport.deviceNameList.clear()
+    AddArchiveReport.addInfoList.clear()
+    AddArchiveReport.typeList.clear()
+    form = AddArchiveReport()
+    return render_template("archiveReport.html", form = form, state = str(sched.state))
+
 # -----------------------------------------
 # email sender
 # -----------------------------------------
@@ -312,7 +322,7 @@ def dashboard():
     print(str(dbSizeKB) + "KB")
     engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
     with engine.connect() as conn:
-        sqlSelect = conn.execute(text('select deviceIP, deviceName, type, addInfo, count(value) as number_of_queries, avg(value) as average FROM archive GROUP BY deviceIP, type, addInfo'))
+        sqlSelect = conn.execute(text('select deviceIP, deviceName, type, addInfo, count(value) as number_of_queries, round(avg(value),2) as average FROM archive GROUP BY deviceIP, type, addInfo'))
         print(sqlSelect)
         sqlTable = []
         for row in sqlSelect:
