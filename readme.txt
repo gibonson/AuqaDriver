@@ -23,3 +23,20 @@ ln /home/gibon/www/AuqaDriver/userFiles/config_email.ini /home/gibon/www/AuqaDri
 
 
 
+
+select *  FROM archive WHERE timestamp > 1707759123 AND deviceName = "Server" GROUP BY deviceIP, type, addInfo;
+
+
+--         print(form.title.data)
+--         print(form.description.data)
+--         print(form.deviceIP.data)
+--         print(form.deviceName.data)
+--         print(form.addInfo.data)
+--         print(form.type.data)
+--         print(form.avgOrSum.data)
+--         print(form.timerRangeHours.data)
+--         print(form.quantityValues.data)
+--         print(form.minValue.data)
+--         print(form.okMinValue.data)
+--         print(form.okMaxValue.data)
+--         print(form.maxValue.data) 

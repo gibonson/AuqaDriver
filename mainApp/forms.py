@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateTimeLocalField, SelectMultipleField, TextAreaField
-from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError
+from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError, Optional
 from mainApp import db
 from mainApp.models import FunctionScheduler
 
@@ -94,8 +94,8 @@ class AddArchiveReport(FlaskForm):
     avgOrSum = SelectField(label='avgOrSum', choices=avgOrSumList)
     timerRangeHours = SelectField(label='timerRangeHours', choices=timerRangeHoursList)
     quantityValues = SelectField(label='quantityValues', choices=quantityValuesList)
-    minValue = IntegerField(label='minValue')
-    okMinValue = IntegerField(label='okMinValue')
-    okMaxValue = IntegerField(label='okMaxValue')
-    maxValue = IntegerField(label='maxValue')
+    minValue = IntegerField(label='minValue',validators=[Optional()])
+    okMinValue = IntegerField(label='okMinValue',validators=[Optional()])
+    okMaxValue = IntegerField(label='okMaxValue',validators=[Optional()])
+    maxValue = IntegerField(label='maxValue',validators=[Optional()])
     submit = SubmitField(label='Add Report')

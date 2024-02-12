@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+archiveReportList
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">archiveReportList</h1>
+    <div class="container">
+            <table class="table table-striped table-dark  table-fixed" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th>title</th>
+                        <th>description</th>
+                        <th>deviceIP</th>
+                        <th>deviceName</th>
+                        <th>addInfo</th>
+                        <th>type</th>
+                        <th>avgOrSum</th>
+                        <th>timerRangeHours</th>
+                        <th>quantityValues</th>
+                        <th>minValue</th>
+                        <th>okMinValue</th>
+                        <th>okMaxValue</th>
+                        <th>maxValue</th>>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for archiveReporRow in archiveReportList %}
+                    <tr>
+                        <td>{{archiveReporRow.title}}</td>
+                        <td>{{archiveReporRow.description}}</td>
+                        <td>{{archiveReporRow.deviceIP}}</td>
+                        <td>{{archiveReporRow.deviceName}}</td>
+                        <td>{{archiveReporRow.addInfo}}</td>
+                        <td>{{archiveReporRow.type}}</td>
+                        <td>{{archiveReporRow.avgOrSum}}</td>
+                        <td>{{archiveReporRow.timerRangeHours}}</td>
+                        <td>{{archiveReporRow.quantityValues}}</td>
+                        <td>{{archiveReporRow.minValue}}</td>
+                        <td>{{archiveReporRow.okMinValue}}</td>
+                        <td>{{archiveReporRow.okMaxValue}}</td>
+                        <td>{{archiveReporRow.maxValue}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+</div>
+{% endblock %}
