@@ -45,7 +45,7 @@ def emailSender(subject, message):
     password = config['EMAIL']['password']
     context = ssl.create_default_context()
 
-    msg = MIMEText(message)
+    msg = MIMEText(message,"html")
 
     msg['Subject'] = subject
     msg['From'] = sender

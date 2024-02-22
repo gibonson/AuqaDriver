@@ -381,10 +381,16 @@ def archive_report_list():
 
 @app.route("/get_archive_report/<id>")
 def get_archive_report(id):
-    reportCreator = ReportCreator(id)
-    reportCreator.create()
-    print(reportCreator.create())
-    return redirect(url_for("functions_list"))
+    reportCreator = ReportCreator()
+    reportCreator.create(id)
+    return reportCreator.create(id)
+
+@app.route("/get_archive_report_all")
+def get_archive_report_all():
+    reportCreator = ReportCreator()
+    report = reportCreator.createAll()
+    return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
+
 
 # -----------------------------------------
 # email sender
