@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+archiveReportFunctionsAdd
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">archiveReportFunctionsAdd</h1>
+    <div class="container">
+
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ form.hidden_tag() }}
+            <table>
+                <tr>
+                    <td>
+                        {{ form.title.label() }}
+                    </td>
+                    <td>
+                        {{ form.title(class="form-control" , placeholder = 'title') }}
+                        <small class="form-text text-danger">{{ form.title.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.description.label() }}
+                    </td>
+                    <td>
+                        {{ form.description(class="form-control" , placeholder = 'description') }}
+                        <small class="form-text text-danger">{{ form.description.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.archiveReportIds.label() }}
+                    </td>
+                    <td>
+                        {{ form.archiveReportIds(class="form-select" , placeholder = 'archiveReportIds') }}
+                        <small class="form-text text-danger">{{ form.archiveReportIds.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.functionStatus.label() }}
+                    </td>
+                    <td>
+                        {{ form.functionStatus(class="form-select" , placeholder = 'functionStatus') }}
+                        <small class="form-text text-danger">{{ form.functionStatus.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}

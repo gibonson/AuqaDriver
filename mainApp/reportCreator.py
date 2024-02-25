@@ -1,5 +1,6 @@
 from mainApp.models import Archive, ArchiveReport
-from mainApp import app, create_engine, text, time
+import time
+from mainApp.routes import app, create_engine, text
 from datetime import datetime, timedelta
 
 class ReportCreator:

@@ -1,7 +1,8 @@
 from mainApp import app, db, sched
+from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup
-from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport
-from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport
+from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction
+from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
 import time
@@ -9,7 +10,6 @@ from datetime import datetime, timedelta
 from mainApp.jobOperations import schedStart
 from mainApp.emailSender import emailTestSender, emailSender
 from mainApp import os
-from sqlalchemy import create_engine, text
 
 # -----------------------------------------
 # create new DB
@@ -372,6 +372,31 @@ def archive_report_add():
         return redirect(url_for("get_jobs"))
 
     return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
+
+@app.route("/archive_report_functions_add", methods=['POST', 'GET'])
+def archive_report_functions_add():
+    AddArchiveReportFunction.archiveReportIdList.clear()
+
+    archiveReports = ArchiveReport.query.all()
+    for archiveReport in archiveReports:
+        print(archiveReport.id)
+        AddArchiveReportFunction.archiveReportIdList.append(
+            (archiveReport.id, archiveReport.title))
+    form = AddArchiveReportFunction()
+
+    if form.validate_on_submit():
+        print(form.title.data)
+        print(form.description.data)
+        print(form.archiveReportIds.data)
+        print(form.functionStatus.data)
+
+        archive_report_function_to_add = ArchiveFunctions(title=form.title.data, description=form.description.data, archiveReportIds=str(form.archiveReportIds.data), functionStatus=form.functionStatus.data,)
+        db.session.add(archive_report_function_to_add)
+        db.session.commit()
+        flash('Archive Report Functions added', category='success')
+        return redirect(url_for("archive_report_functions_add"))
+
+    return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
 
 @app.route("/archive_report_list")
 def archive_report_list():

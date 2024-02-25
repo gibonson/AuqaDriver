@@ -64,9 +64,9 @@ class ArchiveSearch(FlaskForm):
     limit = IntegerField(label='limit',default=100, validators= [DataRequired(),NumberRange(min=0, max=1000, message='limit: must be between 1 and 1000')])
     timestampStart = DateTimeLocalField(label="Start Date:", format='%Y-%m-%dT%H:%M')
     timestampEnd = DateTimeLocalField(label="End Date:", format='%Y-%m-%dT%H:%M')
-    deviceIP = SelectMultipleField(label='deviceIP', choices=deviceIPList)
-    addInfo = SelectMultipleField(label='addInfo', choices=addInfoList)
-    type = SelectMultipleField(label='type', choices=typeList)
+    deviceIP = SelectMultipleField(label='deviceIP', choices=deviceIPList, validators=[Optional()])
+    addInfo = SelectMultipleField(label='addInfo', choices=addInfoList, validators=[Optional()])
+    type = SelectMultipleField(label='type', choices=typeList, validators=[Optional()])
     submit = SubmitField(label='Search')
 
 class EmailForm(FlaskForm):
@@ -98,4 +98,15 @@ class AddArchiveReport(FlaskForm):
     okMinValue = IntegerField(label='okMinValue',validators=[Optional()])
     okMaxValue = IntegerField(label='okMaxValue',validators=[Optional()])
     maxValue = IntegerField(label='maxValue',validators=[Optional()])
+    submit = SubmitField(label='Add Report')
+
+class AddArchiveReportFunction(FlaskForm):
+
+    archiveReportIdList = []
+    archiveFunctionStatus = [("Ready", "Ready"),("Not Ready", "Not Ready")]
+
+    title = StringField(label='title', validators = [DataRequired(),Length(min=3, max=20, message='title: must be between 3 and 20 characters.')])
+    description = StringField(label='description', validators=[Optional()])
+    archiveReportIds = SelectMultipleField(coerce=int, label='archiveReportIds', choices=archiveReportIdList)
+    functionStatus = SelectField(label='functionStatus',choices = archiveFunctionStatus, validators=[DataRequired()])
     submit = SubmitField(label='Add Report')
