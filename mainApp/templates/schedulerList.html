@@ -25,18 +25,30 @@ functionsScheduler
                 </tr>
                 {% for functionScheduler in functionsScheduler %}
                 <tr>
+                    {% if functionScheduler.schedulerID.startswith("R")%}
                     <td>{{functionScheduler.id}}</td>
                     <td>{{functionScheduler.schedulerID}}</td>
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].id}}</td>
-                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP}}</td>
-                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName}}</td>
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].deviceId}}</td>
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].actionLink}}</td>
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionDescription}}</td>
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionParameters}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{archiveFunctions[int(functionScheduler.functionId.replace("R", ''))-1].title}}</td>
+                    <td>{{archiveFunctions[int(functionScheduler.functionId.replace("R", ''))-1].archiveReportIds}}</td>
+                    <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]
+                    {% else %}
+                    <td>{{functionScheduler.id}}</td>
+                    <td>{{functionScheduler.schedulerID}}</td>
+                    <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].id}}</td>
+                    <td>{{devices[devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].deviceId-1].deviceIP}}</td>
+                    <td>{{devices[devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].deviceId-1].deviceName}}</td>
+                    <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].deviceId}}</td>
+                    <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].actionLink}}</td>
+                    <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].functionDescription}}</td>
+                    <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].functionParameters}}</td>
                     <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]
                     </td>
-
+                    {% endif %}
                 </tr>
                 {% endfor %}
 

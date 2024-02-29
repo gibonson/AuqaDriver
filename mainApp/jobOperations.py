@@ -1,8 +1,9 @@
 from mainApp.webContent import WebContentCollector
 from mainApp.webContent import LinkCreator
+from mainApp.reportCreator import ReportSender
 from mainApp import app, db
 from datetime import datetime
-from mainApp.models import FunctionScheduler, DevicesFunctions, Devices
+from mainApp.models import FunctionScheduler, DevicesFunctions, Devices, ArchiveFunctions
 
 
 
@@ -10,6 +11,12 @@ def jobCollector(httpAddress):
    print("jobCollector: " + httpAddress)
    webContentCollector = WebContentCollector(httpAddress)
    webContentCollector.collect()
+   print()
+
+def reportSender(schedulerID):
+   print("reportSender" + schedulerID)
+   reportSender = ReportSender(schedulerID)
+   reportSender.collectAndSend()
    print()
 
 def schedStart(sched, runSchedulerID = None):
@@ -23,22 +30,31 @@ def schedStart(sched, runSchedulerID = None):
       devices = Devices.query.all()
       for functionScheduler in functionsScheduler:
          print()
-         linkCreator = LinkCreator(devicesFunctions[functionScheduler.functionId-1].id)
-         httpLink =  linkCreator.functions_list_link_creator()
-         print("httpLink = " + httpLink)
-         schedulerID = functionScheduler.schedulerID
-         print("schedulerID = " + schedulerID)         
-         print(functionScheduler.id)
-         print(devicesFunctions[functionScheduler.functionId-1].id)
-         print(devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP)
-         print(devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName)
-         print(devicesFunctions[functionScheduler.functionId-1].deviceId)
-         jobType = "jobCollector"
-         # jobType = devicesFunctions[functionScheduler.functionId-1].jobType
-         print("jobType = " + jobType)
-         print(devicesFunctions[functionScheduler.functionId-1].actionLink)
-         print(devicesFunctions[functionScheduler.functionId-1].functionDescription)
-         print(devicesFunctions[functionScheduler.functionId-1].functionParameters)
+         if str(functionScheduler.functionId).startswith("R"):
+            jobType = "reportSender"
+            schedulerID = functionScheduler.schedulerID
+            httpLink = functionScheduler.functionId
+            print("jobType = " + jobType)
+         else:
+            linkCreator = LinkCreator(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].id)
+            httpLink =  linkCreator.functions_list_link_creator()
+            print("httpLink = " + httpLink)
+            schedulerID = functionScheduler.schedulerID
+            print("schedulerID = " + schedulerID)         
+            print(functionScheduler.id)
+            print(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].id)
+            print(devices[devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].deviceId-1].deviceIP)
+            print(devices[devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].deviceId-1].deviceName)
+            print(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].deviceId)
+            print(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].actionLink)
+            print(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].functionDescription)
+            print(devicesFunctions[int(functionScheduler.functionId.replace("S",""))-1].functionParameters)
+
+            jobType = "jobCollector"
+            print("jobType = " + jobType)
+
+            # jobType = devicesFunctions[functionScheduler.functionId-1].jobType
+
          trigger = functionScheduler.trigger
          print("trigger = " + trigger)
          year = functionScheduler.year

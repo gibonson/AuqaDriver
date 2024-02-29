@@ -142,8 +142,16 @@ def scheduler_add():
         print(devicesFunction.functionDescription)
         print(devicesFunction.functionParameters)
         device = Devices.query.get(devicesFunction.deviceId)
-        AddFunctionScheduler.functionIdList.append((devicesFunction.id, str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+        AddFunctionScheduler.functionIdList.append((str(devicesFunction.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
             devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters)))
+    archiveFunctions = ArchiveFunctions.query.all()
+    for archiveFunction in archiveFunctions:
+        print(archiveFunction.id)
+        print(archiveFunction.title)
+        print(archiveFunction.description)
+        print(archiveFunction.archiveReportIds)
+        AddFunctionScheduler.functionIdList.append(("R" + str(archiveFunction.id), "Report: " + str(archiveFunction.title) + " - " + archiveFunction.description + " - " + archiveFunction.archiveReportIds))
+
 
     form = AddFunctionScheduler()
     if form.validate_on_submit():
@@ -195,8 +203,9 @@ def scheduler_add():
 def scheduler_list():
     functionsScheduler = FunctionScheduler.query.all()
     devicesFunctions = DevicesFunctions.query.all()
+    archiveFunctions = ArchiveFunctions.query.all()
     devices = Devices.query.all()
-    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, state=str(sched.state))
+    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), startswith = str.startswith, int = int)
 
 
 # -----------------------------------------
@@ -217,7 +226,7 @@ def functions_scheduler_list_get_jobs():
     functionsScheduler = FunctionScheduler.query.all()
     devicesFunctions = DevicesFunctions.query.all()
     devices = Devices.query.all()
-    return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state))
+    return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state), str = str, int = int)
 
 
 @app.route("/scheduler_remove/<id>")
@@ -373,6 +382,7 @@ def archive_report_add():
 
     return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
 
+
 @app.route("/archive_report_functions_add", methods=['POST', 'GET'])
 def archive_report_functions_add():
     AddArchiveReportFunction.archiveReportIdList.clear()
@@ -397,6 +407,7 @@ def archive_report_functions_add():
         return redirect(url_for("archive_report_functions_add"))
 
     return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
+
 
 @app.route("/archive_report_list")
 def archive_report_list():

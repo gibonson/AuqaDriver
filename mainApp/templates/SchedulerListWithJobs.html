@@ -7,6 +7,12 @@ scheduler_list
 
 functionsScheduler
 {% block content %}
+
+ if functionScheduler.schedulerID.startswith("R")
+<td>Report</td>
+ else  
+
+
 <div class="text-center">
     <h1 class="h2 mb-3 font-weight-normal">Scheduler List</h1>
     <div class="container">
@@ -24,19 +30,20 @@ functionsScheduler
                     <th>Sch Actions</th>
                 </tr>
                 {% for functionScheduler in functionsScheduler %}
-                <tr>    
+                <tr>
+ 
                     <td>{{functionScheduler.schedulerID}}</td>
-                    <td>{{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceIP}} - {{devices[devicesFunctions[functionScheduler.functionId-1].deviceId-1].deviceName}}</td>
-                    {% if devicesFunctions[functionScheduler.functionId-1].actionLink == "" %}
+                    <td>{{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceIP}} - {{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceName}}</td>
+                    {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink == "" %}
                     <td>-</td>
                     {% else %}
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].actionLink}}</td>
+                    <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink}}</td>
                     {% endif %}
 
-                    {% if devicesFunctions[functionScheduler.functionId-1].functionParameters == "" %}
+                    {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters == "" %}
                     <td>-</td>
                     {% else %}
-                    <td>{{devicesFunctions[functionScheduler.functionId-1].functionParameters}}</td>
+                    <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters}}</td>
                     {% endif %}
 
                     <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]</td>

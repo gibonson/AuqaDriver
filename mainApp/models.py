@@ -14,7 +14,7 @@ class Devices(db.Model):
 
 class DevicesFunctions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    deviceId = db.Column(db.Integer(), db.ForeignKey(Devices.id))
+    deviceId = db.Column(db.Integer())
     actionLink = db.Column(db.String())
     functionParameters = db.Column(db.String())
     functionDescription = db.Column(db.String())
@@ -30,7 +30,7 @@ class DevicesFunctions(db.Model):
 
 class FunctionScheduler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    functionId = db.Column(db.Integer(), db.ForeignKey(DevicesFunctions.id))
+    functionId = db.Column(db.String())
     trigger = db.Column(db.String())
     schedulerID = db.Column(db.String())
     year = db.Column(db.Integer()) #4-digit year

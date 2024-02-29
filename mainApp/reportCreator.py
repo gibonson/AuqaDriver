@@ -1,7 +1,10 @@
-from mainApp.models import Archive, ArchiveReport
+from mainApp.models import Archive, ArchiveReport, ArchiveFunctions
 import time
 from mainApp.routes import app, create_engine, text
 from datetime import datetime, timedelta
+from mainApp import app, db, flash
+from mainApp.emailSender import emailSenderWithoutFlash
+
 
 class ReportCreator:
 
@@ -28,7 +31,7 @@ class ReportCreator:
         print(formatedDateTo)
         print(formatedDateFrom)
         report = "<tr>"
-        report = "<td>" + archiveReportConfig.title + "</td>"
+        report = report + "<td>" + archiveReportConfig.title + "</td>"
         report = report + "<td>" + archiveReportConfig.description + "</td>"
         engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
         with engine.connect() as conn:
@@ -57,20 +60,43 @@ class ReportCreator:
                 report = report + "<td>błąd</td>"
             else:
                 report = report + "<td>" + str(sqlTable[0][0]) + " " + archiveReportConfig.type + "</td>"
-                if sqlTable[0][0] < archiveReportConfig.minValue:
-                    print("za malo")
-                    report = report + '<td><progress value="5" max="100">' + str(sqlTable[0][0]) + '</progress></td>'
-                elif archiveReportConfig.minValue <= sqlTable[0][0] < archiveReportConfig.okMinValue:
-                    print("srednio zamało")
-                    report = report + '<td><progress value="25" max="100">' + str(sqlTable[0][0]) + '</progress></td>'
-                elif archiveReportConfig.okMinValue <= sqlTable[0][0] <= archiveReportConfig.okMaxValue:
-                    print("ok")
-                    report = report + '<td><progress value="50" max="100">' + str(sqlTable[0][0]) + '</progress></td>'
-                elif archiveReportConfig.okMaxValue < sqlTable[0][0] <= archiveReportConfig.maxValue:
-                    print("sredno za duzoa")
-                    report = report + '<td><progress value="75" max="100">' + str(sqlTable[0][0]) + '</progress></td>'
-                elif archiveReportConfig.maxValue < sqlTable[0][0]:
-                    report = report + '<td><progress value="95" max="100">' + str(sqlTable[0][0]) + '</progress></td>'
+                if sqlTable[0][0] < archiveReportConfig.minValue: #za malo
+                    report = report + "<td><span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>↓↓</td>"
+                elif archiveReportConfig.minValue <= sqlTable[0][0] < archiveReportConfig.okMinValue: #srednio za malo
+                    report = report + "<td><span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>↓</td>"
+                elif archiveReportConfig.okMinValue <= sqlTable[0][0] <= archiveReportConfig.okMaxValue: #ok
+                    report = report + "<td><span style='height: 20px;  width: 20px;  background-color: green;  border-radius: 50%;  display: inline-block;'></span>↔</td>"
+                elif archiveReportConfig.okMaxValue < sqlTable[0][0] <= archiveReportConfig.maxValue: # srednio za duzo
+                    report = report + "<td><span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>↑</td>"
+                elif archiveReportConfig.maxValue < sqlTable[0][0]: #za duzo
+                    report = report + "<td><span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>↑↑</td>"
         report = report + "</tr>"
         return report
         
+class ReportSender:
+    def __init__(self, functionId):
+        print(functionId)
+        functionId = str(functionId).replace("R","")
+        print(functionId)
+        self.functionId = functionId
+
+    def collectAndSend(self):
+        with app.app_context():
+            archiveFunctions = ArchiveFunctions.query.filter_by(id=self.functionId).first()
+            print(archiveFunctions.archiveReportIds)
+            idToReportList = archiveFunctions.archiveReportIds.replace("[","").replace("]","").replace(" ","")
+            print(idToReportList)
+            idToReportList = idToReportList.split(',')
+            reportAll = '<html><body><style>table, th, td {  border: 1px solid black;  border-collapse: collapse;}"<table style="width:100%"></style><table style="width:50%">'
+
+            for idToReport in idToReportList:
+                print(idToReport)
+                archiveReportConfig = ArchiveReport.query.filter_by(id = idToReport).first()
+                print(archiveReportConfig)
+                print(archiveReportConfig.id)
+                id = str(archiveReportConfig.id)
+                reportAll = reportAll + ReportCreator.create(self, id)
+
+            reportAll = reportAll + '</table></body></html>'
+            print(reportAll)
+            emailSenderWithoutFlash( "raport", reportAll)
