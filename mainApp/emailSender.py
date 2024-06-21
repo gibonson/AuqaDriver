@@ -99,7 +99,6 @@ def emailSenderWithoutFlash(subject, message):
         server.login(user, password)
         server.sendmail(sender, receiver, msg.as_string())
 
-    print("connection issue")
     with app.app_context():
         timestamp = round(time.time())
         addInfo = "Report sent"
