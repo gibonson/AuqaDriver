@@ -17,7 +17,7 @@ cd /home/gibon/www/AuqaDriver/AuqaDriver
 git stash
 gh repo sync
 
-ln  /home/gibon/www/AuqaDriver/userFiles/db.sqlite /home/gibon/www/AuqaDriver/AuqaDriver/userFiles/db.sqlite
+ln  /home/gibon/www/AuqaDriver/userFiles/db.sqlite /home/gibon/www/AuqaDriver/AuqaDriver/userFiles/
 ln /home/gibon/www/AuqaDriver/userFiles/config_email.ini /home/gibon/www/AuqaDriver/AuqaDriver/userFiles/
 
 
