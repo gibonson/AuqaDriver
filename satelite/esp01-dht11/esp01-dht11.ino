@@ -8,7 +8,8 @@
 
 const char* ssid = "";
 const char* password = "";
-String deviceName = "Akwarium";
+//String deviceName = "Akwarium";
+String deviceName = "Korytarz";
 IPAddress local_IP(192, 168, 0, 184);  // Set your Static IP address
 //IPAddress local_IP(192, 168, 0, 185);  // Set your Static IP address
 WiFiServer server(80);                 // Set web server port number to 80
