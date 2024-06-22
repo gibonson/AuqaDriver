@@ -19,6 +19,8 @@ archiveList
                         <th>addInfo</th>
                         <th>value</th>
                         <th>type</th>
+                        <th scope="col">actions</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +33,10 @@ archiveList
                         <td>{{archiveRow.addInfo}}</td>
                         <td>{{archiveRow.value}}</td>
                         <td>{{archiveRow.type}}</td>
+                        <td>                        
+                            <div class="btn-group">
+                                <a href="{{url_for('archive_remove',id=archiveRow.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">archive_remove</a>
+                            </div></td>
                     </tr>
                     {% endfor %}
                 </tbody>

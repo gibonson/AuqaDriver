@@ -15,6 +15,7 @@ devicesList
                 <th scope="col">deviceIP</th>
                 <th scope="col">deviceName</th>
                 <th scope="col">deviceStatus</th>
+                <th scope="col">actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,10 @@ devicesList
                 <td>{{device.deviceIP}}</td>
                 <td>{{device.deviceName}}</td>
                 <td>{{device.deviceStatus}}</td>
+                <td>                        
+                    <div class="btn-group">
+                        <a href="{{url_for('device_remove',id=device.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">device_remove</a>
+                    </div></td>
             </tr>
             {% endfor %}
         </tbody>

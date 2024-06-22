@@ -78,6 +78,12 @@ def device_list():
     devices = Devices.query.all()
     return render_template("devicesList.html", devices=devices, state=str(sched.state))
 
+@app.route("/device_remove/<id>")
+def device_remove(id):
+    Devices.query.filter(Devices.id == id).delete()
+    db.session.commit()
+    flash('Device: ' + id + ' removed', category='danger')
+    return redirect(url_for("device_list"))
 
 # -----------------------------------------
 # function section
@@ -269,8 +275,15 @@ def start_job(runSchedulerID):
 @app.route("/archive_list")
 def archive_list():
     # archive = Archive.query.all()
-    archive = Archive.query.order_by(Archive.id.desc()).limit(10)
+    archive = Archive.query.order_by(Archive.id.desc()).limit(100)
     return render_template("archiveList.html", archive=archive, datetime=datetime, state=str(sched.state))
+
+@app.route("/archive_remove/<id>")
+def archive_remove(id):
+    Archive.query.filter(Archive.id == id).delete()
+    db.session.commit()
+    flash('Record: ' + id + ' removed', category='danger')
+    return redirect(url_for("archive_list"))
 
 
 @app.route("/archive_search", methods=['POST', 'GET'])
@@ -426,6 +439,7 @@ def get_archive_report_all():
     reportCreator = ReportCreator()
     report = reportCreator.createAll()
     return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
+
 
 
 # -----------------------------------------
