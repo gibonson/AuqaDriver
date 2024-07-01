@@ -1,6 +1,6 @@
 from mainApp import app, db, sched
 from sqlalchemy import create_engine, text
-from flask import Flask, render_template, redirect, url_for, request, flash, Markup
+from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
 from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions
 from mainApp.webContent import LinkCreator, WebContentCollector
@@ -517,3 +517,32 @@ def shutdown():
     # sched.pause()
     # sched.shutdown(wait=False)
     return redirect(url_for("get_jobs"))
+
+# -----------------------------------------
+# json
+# -----------------------------------------
+
+@app.post('/api/addEvent')
+def create_friend():
+    request_data = request.get_json()
+    print(request_data)
+    print(request_data["addInfo"])
+    print(request_data["deviceName"])
+    print(request_data["deviceIP"])
+    print(request_data["type"])
+    print(request_data["value"])
+    with app.app_context():
+        db.create_all()
+        timestamp = round(time.time())
+        addInfo = request_data["addInfo"]
+        deviceName = request_data["deviceName"]
+        deviceIP = request_data["deviceIP"]
+        type = request_data["type"]
+        value = request_data["value"]
+        add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
+                                 deviceName=deviceName, addInfo=addInfo, value=value, type=type)
+        db.session.add(add_to_archiwe)
+        db.session.commit()
+        flash('DB creation Success', category='success')
+    return request_data
+
