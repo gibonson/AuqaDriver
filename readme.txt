@@ -47,3 +47,19 @@ select *  FROM archive WHERE timestamp > 1707759123 AND deviceName = "Server" GR
 "type":"Alert",
 "value":10
 }
+
+CREATE TABLE notification (
+	id INTEGER NOT NULL, 
+	"description" VARCHAR, 
+	"deviceIP" VARCHAR, 
+	"deviceName" VARCHAR, 
+	"addInfo" VARCHAR, 
+	"type" VARCHAR, 
+	"condition" VARCHAR, 
+	"value" VARCHAR, 
+	"notificationStatus" VARCHAR, 
+	"notificationType" VARCHAR, 
+	"functionId" VARCHAR, 
+	"message" VARCHAR,
+	PRIMARY KEY (id)
+)

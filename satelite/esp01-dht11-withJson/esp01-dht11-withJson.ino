@@ -77,6 +77,7 @@ RCSwitch mySwitch = RCSwitch();
 // Set GPIOs for LED and PIR Motion Sensor
 const int led = 5;
 const int motionSensor = 14;
+String alertName = "przycisk";
 
 String serverName = "http://192.168.0.101:5000/api/addEvent";
 HTTPClient http;
@@ -86,10 +87,7 @@ String sthToSend = "";
 
 // Checks if motion was detected, sets LED HIGH and starts a timer
 ICACHE_RAM_ATTR void detectsMovement() {
-  Serial.println("MOTION DETECTED!!!");
-  Serial.println("MOTION DETECTED!!!");
-  Serial.println("MOTION DETECTED!!!");
-  Serial.println("MOTION DETECTED!!!");
+  Serial.println("Alert!!!");
   sthToSend = "yes";
   //  analogWrite(led, 5);
   //  delay(700);
@@ -161,11 +159,12 @@ void loop() {
   WebGui webGui;
   delay(5000);
   WiFiClient client = server.available();  // Listen for incoming clients
-  if (sthToSend == "yes"){
+  if (sthToSend == "yes") {
     Serial.println("zamiana");
     http.begin(client, serverName);
     http.addHeader("Content-Type", "application/json");
-    int httpResponseCode = http.POST("{\"addInfo\":\"Door open\",\"deviceIP\":\"127.0.0.1\",\"deviceName\":\"Server\",\"type\":\"Info\",\"value\":10}");
+    String jsonString = "{\"addInfo\":\"" + alertName + "\",\"deviceIP\":\"" + local_IP[0] + "." + local_IP[1] + "." + local_IP[2] + "." + local_IP[3] + "\",\"deviceName\":\"" + deviceName + "\",\"type\":\"Alert\",\"value\":0}";
+    int httpResponseCode = http.POST(jsonString);
     Serial.println(httpResponseCode);
     sthToSend = "";
   }

@@ -1,8 +1,8 @@
 from mainApp import app, db, sched
 from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
-from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction
-from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions
+from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
+from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions, Notification
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
 import time
@@ -546,3 +546,19 @@ def create_friend():
         flash('DB creation Success', category='success')
     return request_data
 
+# -----------------------------------------
+# notification
+# -----------------------------------------
+
+@app.route("/notification_add", methods=['POST', 'GET'])
+def notification_add():
+    form = AddNotification()
+    if form.validate_on_submit():
+
+        notification_to_add = Notification(description=form.description.data, deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, addInfo =form.addInfo.data, type =form.type.data, condition =form.condition.data, value =form.value.data, notificationStatus =form.notificationStatus.data, notificationType =form.notificationType.data, functionId =form.functionId.data, message=form.message.data)
+        db.session.add(notification_to_add)
+        db.session.commit()
+        flash('Notification added', category='success')
+        return redirect(url_for("notification_add"))
+
+    return render_template("notificationAdd.html", form=form, state=str(sched.state))
