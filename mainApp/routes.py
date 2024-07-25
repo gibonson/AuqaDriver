@@ -3,36 +3,26 @@ from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
 from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions, Notification
+from mainApp.models import AddDeviceDB, ChangeDeviceStatusDB, RemoveDeviceDB, ListDeviceDB, AddArchiveDB
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
 import time
 from datetime import datetime, timedelta
 from mainApp.jobOperations import schedStart
-from mainApp.emailSender import emailTestSender, emailSender
+from mainApp.emailSender import emailSender
 from mainApp import os
 
 # -----------------------------------------
 # create new DB
 # -----------------------------------------
 
-
 @app.route("/create")
 def create():
     with app.app_context():
         db.create_all()
-        timestamp = round(time.time())
-        addInfo = "BD creation"
-        deviceName = "Server"
-        deviceIP = "127.0.0.1"
-        type = "Log"
-        value = 0
-        add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                 deviceName=deviceName, addInfo=addInfo, value=value, type=type)
-        db.session.add(add_to_archiwe)
-        db.session.commit()
-        flash('DB creation Success', category='success')
+        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
+        addArchiveDB = AddArchiveDB(requestData)
     return redirect(url_for("get_jobs"))
-
 
 # -----------------------------------------
 # start page and 404
@@ -43,11 +33,9 @@ def not_found(e):
     flash(f'404!', category='danger')
     return render_template('404.html', state=str(sched.state))
 
-
 @app.route("/")
 def hello_world():
     return redirect(url_for("get_jobs"))
-
 
 # -----------------------------------------
 # device section
@@ -57,32 +45,31 @@ def hello_world():
 def device_add():
     form = AddDevice()
     if form.validate_on_submit():
-        devcice_to_add = Devices(
-            deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, deviceStatus=form.deviceStatus.data)
-        db.session.add(devcice_to_add)
-        db.session.commit()
-        flash('Device added', category='success')
+        addDeviceDB = AddDeviceDB(request.form.to_dict(flat=False))
+        flash(str(addDeviceDB), category='success')
         return redirect(url_for("device_list"))
-
     if form.errors != {}:  # validation errors
         print(form.errors)
         flash(form.errors, category='danger')
-        # for err_msg in form.errors.values():
-        #     print(err_msg)
-        #     flash(err_msg[0], category='danger')
     return render_template("deviceAdd.html", form=form, state=str(sched.state))
-
 
 @app.route("/device_list")
 def device_list():
-    devices = Devices.query.all()
+    # devices = Devices.query.all()
+    listDeviceDB = ListDeviceDB()
+    devices = listDeviceDB.getList()
     return render_template("devicesList.html", devices=devices, state=str(sched.state))
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
-    Devices.query.filter(Devices.id == id).delete()
-    db.session.commit()
-    flash('Device: ' + id + ' removed', category='danger')
+    removeDeviceDB = RemoveDeviceDB(id)
+    flash(str(removeDeviceDB), category='danger')
+    return redirect(url_for("device_list"))
+
+@app.route("/change_device_status/<id>")
+def change_device_status(id):
+    changeDeviceStatusDB = ChangeDeviceStatusDB(id)
+    flash(str(changeDeviceStatusDB), category='info')
     return redirect(url_for("device_list"))
 
 # -----------------------------------------
@@ -94,10 +81,7 @@ def function_add():
     AddDeviceFunctions.deviceIdList.clear()
     devices = Devices.query.all()
     for device in devices:
-        print(device.id)
-        print(device.deviceIP)
-        print(device.deviceName)
-        print(device.deviceStatus)
+        print(device.__dict__)
         AddDeviceFunctions.deviceIdList.append(
             (device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceStatus))
 
@@ -142,20 +126,13 @@ def scheduler_add():
 
     devicesFunctions = DevicesFunctions.query.all()
     for devicesFunction in devicesFunctions:
-        print(devicesFunction.id)
-        print(devicesFunction.deviceId)
-        print(devicesFunction.actionLink)
-        print(devicesFunction.functionDescription)
-        print(devicesFunction.functionParameters)
+        print(devicesFunction.__dict__)
         device = Devices.query.get(devicesFunction.deviceId)
         AddFunctionScheduler.functionIdList.append((str(devicesFunction.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
             devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters)))
     archiveFunctions = ArchiveFunctions.query.all()
     for archiveFunction in archiveFunctions:
-        print(archiveFunction.id)
-        print(archiveFunction.title)
-        print(archiveFunction.description)
-        print(archiveFunction.archiveReportIds)
+        print(archiveFunction.__dict__)
         AddFunctionScheduler.functionIdList.append(("R" + str(archiveFunction.id), "Report: " + str(archiveFunction.title) + " - " + archiveFunction.description + " - " + archiveFunction.archiveReportIds))
 
 
@@ -318,14 +295,9 @@ def archive_search():
     dataSubOneDay = dataSubOne.strftime("%Y-%m-%d %H:%M")
 
     if form.validate_on_submit():
-        print(form.limit.data)
-        print(form.timestampStart.data)
+        print(request.form.to_dict(flat=False))
         print(datetime.timestamp(form.timestampStart.data))
-        print(form.timestampEnd.data)
         print(datetime.timestamp(form.timestampEnd.data))
-        print(form.deviceIP.data)
-        print(form.addInfo.data)
-        print(form.type.data)
         archive = Archive.query.filter(
             Archive.deviceIP.in_(form.deviceIP.data),
             Archive.addInfo.in_(form.addInfo.data),
@@ -373,25 +345,13 @@ def archive_report_add():
     form = AddArchiveReport()
 
     if form.validate_on_submit():
-        print(form.title.data)
-        print(form.description.data)
-        print(form.deviceIP.data)
-        print(form.deviceName.data)
-        print(form.addInfo.data)
-        print(form.type.data)
-        print(form.avgOrSum.data)
-        print(form.timerRangeHours.data)
-        print(form.quantityValues.data)
-        print(form.minValue.data)
-        print(form.okMinValue.data)
-        print(form.okMaxValue.data)
-        print(form.maxValue.data)
+        print(request.form.to_dict(flat=False))
         srchive_report_to_add = ArchiveReport(title=form.title.data, description=form.description.data, deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, addInfo=form.addInfo.data, type=form.type.data, avgOrSum=form.avgOrSum.data,
                                               timerRangeHours=form.timerRangeHours.data, quantityValues=form.quantityValues.data, minValue=form.minValue.data, okMinValue=form.okMinValue.data, okMaxValue=form.okMaxValue.data, maxValue=form.maxValue.data)
         db.session.add(srchive_report_to_add)
         db.session.commit()
         flash('Archive Report added', category='success')
-        return redirect(url_for("get_jobs"))
+        return redirect(url_for("archive_report_list"))
 
     return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
 
@@ -402,17 +362,12 @@ def archive_report_functions_add():
 
     archiveReports = ArchiveReport.query.all()
     for archiveReport in archiveReports:
-        print(archiveReport.id)
         AddArchiveReportFunction.archiveReportIdList.append(
             (archiveReport.id, archiveReport.title))
     form = AddArchiveReportFunction()
 
     if form.validate_on_submit():
-        print(form.title.data)
-        print(form.description.data)
-        print(form.archiveReportIds.data)
-        print(form.functionStatus.data)
-
+        print(request.form.to_dict(flat=False))
         archive_report_function_to_add = ArchiveFunctions(title=form.title.data, description=form.description.data, archiveReportIds=str(form.archiveReportIds.data), functionStatus=form.functionStatus.data,)
         db.session.add(archive_report_function_to_add)
         db.session.commit()
@@ -421,12 +376,15 @@ def archive_report_functions_add():
 
     return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
 
+@app.route("/archive_functions_list")
+def archive_functions_list():
+    archiveFunctionsList = ArchiveFunctions.query.order_by(ArchiveFunctions.id.desc()).all()
+    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, datetime=datetime, state=str(sched.state))
 
 @app.route("/archive_report_list")
 def archive_report_list():
     archiveReportList = ArchiveReport.query.all()
     return render_template("archiveReportList.html", archiveReportList=archiveReportList, state=str(sched.state))
-
 
 @app.route("/get_archive_report/<id>")
 def get_archive_report(id):
@@ -440,17 +398,9 @@ def get_archive_report_all():
     report = reportCreator.createAll()
     return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
 
-
-
 # -----------------------------------------
 # email sender
 # -----------------------------------------
-
-@app.route('/testEmailSend')
-def test_email_send():
-    emailTestSender()
-    return redirect((url_for('get_jobs')))
-
 
 @app.route('/emailSend', methods=['POST', 'GET'])
 def email_send():
@@ -458,9 +408,8 @@ def email_send():
     if form.validate_on_submit():
         print(form.subject.data)
         print(form.message.data)
-        emailSender(form.subject.data, form.message.data)
+        emailSender(form.subject.data, form.message.data, flashMessage=False)
     return render_template("emailSend.html", form=form, state=str(sched.state))
-
 
 # -----------------------------------------
 # DB Dashboard
@@ -485,7 +434,6 @@ def dashboard():
 
     return render_template("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
-
 # -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
@@ -495,19 +443,16 @@ def pause():
     sched.pause()
     return redirect(url_for("get_jobs"))
 
-
 @app.route("/resume")
 def resume():
     sched.resume()
     return redirect(url_for("get_jobs"))
-
 
 @app.route("/start")
 def start():
     sched.start()
     schedStart(sched)
     return redirect(url_for("get_jobs"))
-
 
 @app.route("/shutdown")
 def shutdown():
@@ -524,27 +469,9 @@ def shutdown():
 
 @app.post('/api/addEvent')
 def create_friend():
-    request_data = request.get_json()
-    print(request_data)
-    print(request_data["addInfo"])
-    print(request_data["deviceName"])
-    print(request_data["deviceIP"])
-    print(request_data["type"])
-    print(request_data["value"])
-    with app.app_context():
-        db.create_all()
-        timestamp = round(time.time())
-        addInfo = request_data["addInfo"]
-        deviceName = request_data["deviceName"]
-        deviceIP = request_data["deviceIP"]
-        type = request_data["type"]
-        value = request_data["value"]
-        add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                 deviceName=deviceName, addInfo=addInfo, value=value, type=type)
-        db.session.add(add_to_archiwe)
-        db.session.commit()
-        flash('DB creation Success', category='success')
-    return request_data
+    requestData = request.get_json()
+    AddArchiveDB(requestData)
+    return "OK"
 
 # -----------------------------------------
 # notification
@@ -554,11 +481,29 @@ def create_friend():
 def notification_add():
     form = AddNotification()
     if form.validate_on_submit():
-
         notification_to_add = Notification(description=form.description.data, deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, addInfo =form.addInfo.data, type =form.type.data, condition =form.condition.data, value =form.value.data, notificationStatus =form.notificationStatus.data, notificationType =form.notificationType.data, functionId =form.functionId.data, message=form.message.data)
         db.session.add(notification_to_add)
         db.session.commit()
         flash('Notification added', category='success')
         return redirect(url_for("notification_add"))
-
     return render_template("notificationAdd.html", form=form, state=str(sched.state))
+
+@app.route("/notification_list")
+def notification_list():
+    notificationList = Notification.query.order_by(Notification.id.desc()).all()
+    return render_template("notificationList.html", notificationList=notificationList, datetime=datetime, state=str(sched.state))
+
+@app.route("/change_notification_status/<id>")
+def change_notification_status(id):
+    notification = Notification.query.filter_by(id = id).first()
+    if notification.notificationStatus == "Ready":
+        notification.notificationStatus = "Not ready"
+        flash('ID: '+ id + ', Notification status chnged to: ' +' Not ready', category='info')
+        db.session.commit()
+    elif notification.notificationStatus == "Not ready":
+        notification.notificationStatus = "Ready"
+        db.session.commit()
+        flash('ID: '+ id + ', Notification status chnged to: ' + ' Ready', category='info')
+    else:
+        flash('ID: '+ id + ', Status error: ', category='info')
+    return redirect(url_for("notification_list"))

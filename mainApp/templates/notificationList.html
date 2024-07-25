@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+notificationList
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">notificationList</h1>
+    <div class="container">
+        <table class="table table-striped table-dark  table-fixed" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>description</th>
+                    <th>deviceIP</th>
+                    <th>deviceName</th>
+                    <th>addInfo</th>
+                    <th>type</th>
+                    <th>condition</th>
+                    <th>value</th>
+                    <th>notificationStatus</th>
+                    <th>notificationType</th>
+                    <th>functionId</th>
+                    <th>message</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notification in notificationList %}
+                <tr>
+                    <td>{{notification.id}}</td>
+                    <td>{{notification.description}}</td>
+                    <td>{{notification.deviceIP}}</td>
+                    <td>{{notification.deviceName}}</td>
+                    <td>{{notification.addInfo}}</td>
+                    <td>{{notification.type}}</td>
+                    <td>{{notification.condition}}</td>
+                    <td>{{notification.value}}</td>
+                    <td>{{notification.notificationStatus}}</td>
+                    <td>{{notification.notificationType}}</td>
+                    <td>{{notification.functionId}}</td>
+                    <td>{{notification.message}}</td>
+                    <td>                        
+                        <div class="btn-group">
+                            <a href="{{url_for('change_notification_status',id=notification.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">change_notification_status</a>
+                        </div></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

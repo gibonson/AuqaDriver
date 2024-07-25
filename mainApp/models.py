@@ -1,4 +1,5 @@
 from mainApp.routes import db
+import time
 
 class Devices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -10,6 +11,52 @@ class Devices(db.Model):
         self.deviceIP = deviceIP
         self.deviceName = deviceName
         self.deviceStatus = deviceStatus
+
+class AddDeviceDB():
+    def __init__(self, formData, notification = False, debug = False):
+        self.message = 'Device added'
+        print("Add device to DB")
+        print(formData)
+        devcice_to_add = Devices(deviceIP=formData["deviceIP"][0], deviceName=formData["deviceName"][0], deviceStatus=formData["deviceStatus"][0])
+        db.session.add(devcice_to_add)
+        db.session.commit()
+    def __str__(self):
+        return self.message
+
+class RemoveDeviceDB():
+    def __init__(self, id):
+        self.id = id
+        print("Device removed")
+        self.message = 'Device: ' + self.id + ' removed'
+        Devices.query.filter(Devices.id == id).delete()
+        db.session.commit()
+    def __str__(self):
+        return self.message
+
+class ChangeDeviceStatusDB():
+    def __init__(self, id):
+        self.message = ""
+        self.id = id
+        print("Status change")
+        devices = Devices.query.filter_by(id = id).first()
+        if devices.deviceStatus == "Ready":
+            devices.deviceStatus = "Not ready"
+            self.message = "Device status chnged to: Not ready"
+            db.session.commit()
+        elif devices.deviceStatus == "Not ready":
+            devices.deviceStatus = "Ready"
+            db.session.commit()
+            self.message = "Device status chnged to: Ready"
+        else:
+            self.message = "Status error!"
+    def __str__(self):
+        return "ID: " + self.id + " -> " + self.message
+    
+class ListDeviceDB():
+    def __init__(self):
+        self.devices = Devices.query.all()
+    def getList(self):
+        return self.devices
 
 
 class DevicesFunctions(db.Model):
@@ -71,7 +118,29 @@ class Archive(db.Model):
         self.deviceName = deviceName
         self.addInfo = addInfo
         self.value = value
-        self.type = type     
+        self.type = type
+
+class AddArchiveDB():
+    def __init__(self, requestData, notification = False, debug = False):
+        self.message = 'Added to archive'
+        print("Added to archive")
+        self.requestData = requestData
+        print(self.requestData)
+        timestamp = round(time.time())
+        addInfo = self.requestData["addInfo"]
+        deviceName = self.requestData["deviceName"]
+        deviceIP = self.requestData["deviceIP"]
+        type = self.requestData["type"]
+        value = self.requestData["value"]
+        add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
+                                 deviceName=deviceName, addInfo=addInfo, value=value, type=type)
+        db.session.add(add_to_archiwe)
+        db.session.commit()
+    def __str__(self):
+        return self.message
+
+
+
 
 class ArchiveReport(db.Model):
     id = db.Column(db.Integer, primary_key=True)

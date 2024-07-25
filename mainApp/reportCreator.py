@@ -3,7 +3,7 @@ import time
 from mainApp.routes import app, create_engine, text
 from datetime import datetime, timedelta
 from mainApp import app, db, flash
-from mainApp.emailSender import emailSenderWithoutFlash
+from mainApp.emailSender import emailSender
 
 
 class ReportCreator:
@@ -99,4 +99,4 @@ class ReportSender:
 
             reportAll = reportAll + '</table></body></html>'
             print(reportAll)
-            emailSenderWithoutFlash( "raport", reportAll)
+            emailSender( "raport", reportAll)

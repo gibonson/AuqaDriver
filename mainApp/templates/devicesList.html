@@ -25,10 +25,15 @@ devicesList
                 <td>{{device.deviceIP}}</td>
                 <td>{{device.deviceName}}</td>
                 <td>{{device.deviceStatus}}</td>
-                <td>                        
+                <td>
                     <div class="btn-group">
-                        <a href="{{url_for('device_remove',id=device.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">device_remove</a>
-                    </div></td>
+                        <a href="{{url_for('device_remove',id=device.id)}}" class="btn btn-danger btn-lg active"
+                            role="button" aria-pressed="true">device_remove</a>
+                        <a href="{{url_for('change_device_status',id=device.id)}}"
+                            class="btn btn-warning btn-lg active" role="button"
+                            aria-pressed="true">change_device_status</a>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

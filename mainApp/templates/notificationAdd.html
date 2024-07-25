@@ -65,7 +65,7 @@ notificationAdd
                         {{ form.condition.label() }}
                     </td>
                     <td>
-                        {{ form.condition(class="form-control" , placeholder = 'condition') }}
+                        {{ form.condition(class="form-select" , placeholder = 'condition') }}
                         <small class="form-text text-danger">{{ form.condition.errors[0] }}</small>
                     </td>
                 </tr>
@@ -84,7 +84,7 @@ notificationAdd
                         {{ form.notificationStatus.label() }}
                     </td>
                     <td>
-                        {{ form.notificationStatus(class="form-control" , placeholder = 'notificationStatus') }}
+                        {{ form.notificationStatus(class="form-select" , placeholder = 'notificationStatus') }}
                         <small class="form-text text-danger">{{ form.notificationStatus.errors[0] }}</small>
                     </td>
                 </tr>
@@ -93,7 +93,7 @@ notificationAdd
                         {{ form.notificationType.label() }}
                     </td>
                     <td>
-                        {{ form.notificationType(class="form-control" , placeholder = 'notificationType') }}
+                        {{ form.notificationType(class="form-select" , placeholder = 'notificationType') }}
                         <small class="form-text text-danger">{{ form.notificationType.errors[0] }}</small>
                     </td>
                 </tr>
