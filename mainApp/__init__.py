@@ -7,10 +7,15 @@ from flask_apscheduler import APScheduler
 import time 
 import os
 
+from mainApp.logging_config import setup_logging
+logger = setup_logging()
+logger.critical("\n")
+logger.critical("App start")
+
+
 class Config(object):
     baseDir = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles"
-
-    print(baseDir)
+    logger.debug("Path to DB: " + baseDir)
     # Config app
     SECRET_KEY = '7d441f27d441f27567d441f2b6176a'
     # Config scheduler
@@ -29,7 +34,7 @@ db = SQLAlchemy()
 db.init_app(app)
 
 if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
-    print('-=DB exist!=-')
+    logger.info("Database exists")
     from sqlalchemy import create_engine, text
     engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
     with engine.connect() as conn:
@@ -39,22 +44,25 @@ if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
         deviceIP = "127.0.0.1"
         type = "Log"
         value = 0
-        conn.execute(text('INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("' +
+        try:
+            conn.execute(text('INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("' +
                      timestamp + '" , "' + deviceIP + '" , "' + deviceName + '" ," ' + addInfo + '", "0", "Log")'))
-        conn.commit()
+            conn.commit()
+        except exc.SQLAlchemyError as e:
+            logger.error(f"Database error: {e}")
 else:
-    print('-=db does not exist=-')
+    logger.critical("Database does not exist")
 
 # Init scheduler
 sched = APScheduler()
 
-
 from mainApp import routes
-from mainApp.jobOperations import schedStart
+from mainApp.scheduler_operations import sched_start
 
 # start process in scheduler
 try:
-    schedStart(sched)
+    sched_start(sched)
     sched.start()
+    logger.critical("Scheduler started")
 except exc.OperationalError:
-        print("-=db does not exist=-")
+    logger.critical("Scheduler startup error")

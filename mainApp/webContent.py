@@ -2,7 +2,7 @@ import requests
 import time
 from mainApp.models import Devices, DevicesFunctions
 from mainApp.models import Archive
-from mainApp import app, db, flash
+from mainApp import app, db, logger
 
 class LinkCreator:
     def __init__(self, id):

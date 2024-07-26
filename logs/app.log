@@ -1,0 +1,259 @@
+2024-07-26 23:44:17,914 - CRITICAL - 
+
+2024-07-26 23:44:17,914 - CRITICAL - App start
+2024-07-26 23:44:17,914 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:44:17,921 - INFO - Database exists
+2024-07-26 23:44:18,039 - INFO - Scheduler starts running
+2024-07-26 23:44:18,048 - DEBUG - 
+
+2024-07-26 23:44:18,049 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-26 23:44:18,051 - DEBUG - jobType = job_collector
+2024-07-26 23:44:18,051 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-26 23:44:18,051 - DEBUG - trigger = interval
+2024-07-26 23:44:18,051 - DEBUG - year = None
+2024-07-26 23:44:18,051 - DEBUG - month = None
+2024-07-26 23:44:18,052 - DEBUG - day = 0
+2024-07-26 23:44:18,052 - DEBUG - day_of_week = None
+2024-07-26 23:44:18,052 - DEBUG - hour = 0
+2024-07-26 23:44:18,052 - DEBUG - minute = 5
+2024-07-26 23:44:18,052 - DEBUG - second = 0
+2024-07-26 23:44:18,052 - DEBUG - 
+
+2024-07-26 23:44:18,053 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:44:18,053 - DEBUG - jobType = report_sender
+2024-07-26 23:44:18,053 - DEBUG - httpLink = R1
+2024-07-26 23:44:18,053 - DEBUG - trigger = interval
+2024-07-26 23:44:18,053 - DEBUG - year = None
+2024-07-26 23:44:18,053 - DEBUG - month = None
+2024-07-26 23:44:18,053 - DEBUG - day = 0
+2024-07-26 23:44:18,053 - DEBUG - day_of_week = None
+2024-07-26 23:44:18,053 - DEBUG - hour = 1
+2024-07-26 23:44:18,053 - DEBUG - minute = 0
+2024-07-26 23:44:18,053 - DEBUG - second = 0
+2024-07-26 23:44:18,055 - CRITICAL - Scheduler started
+2024-07-26 23:49:18,057 - INFO - Job collects: http://192.168.0.184/noGui
+2024-07-26 23:49:19,625 - INFO - Job collected
+2024-07-26 23:50:28,992 - CRITICAL - 
+
+2024-07-26 23:50:28,992 - CRITICAL - App start
+2024-07-26 23:50:28,992 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:50:28,998 - INFO - Database exists
+2024-07-26 23:50:43,434 - CRITICAL - 
+
+2024-07-26 23:50:43,435 - CRITICAL - App start
+2024-07-26 23:50:43,435 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:50:43,440 - INFO - Database exists
+2024-07-26 23:50:43,563 - INFO - Scheduler starts running
+2024-07-26 23:50:43,572 - DEBUG - 
+
+2024-07-26 23:50:43,572 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-26 23:50:43,575 - DEBUG - jobType = job_collector
+2024-07-26 23:50:43,575 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-26 23:50:43,575 - DEBUG - trigger = interval
+2024-07-26 23:50:43,575 - DEBUG - year = None
+2024-07-26 23:50:43,575 - DEBUG - month = None
+2024-07-26 23:50:43,576 - DEBUG - day = 0
+2024-07-26 23:50:43,576 - DEBUG - day_of_week = None
+2024-07-26 23:50:43,576 - DEBUG - hour = 0
+2024-07-26 23:50:43,576 - DEBUG - minute = 5
+2024-07-26 23:50:43,576 - DEBUG - second = 0
+2024-07-26 23:50:43,576 - DEBUG - 
+
+2024-07-26 23:50:43,577 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:50:43,577 - DEBUG - jobType = report_sender
+2024-07-26 23:50:43,577 - DEBUG - httpLink = R1
+2024-07-26 23:50:43,577 - DEBUG - trigger = interval
+2024-07-26 23:50:43,577 - DEBUG - year = None
+2024-07-26 23:50:43,577 - DEBUG - month = None
+2024-07-26 23:50:43,577 - DEBUG - day = 0
+2024-07-26 23:50:43,577 - DEBUG - day_of_week = None
+2024-07-26 23:50:43,577 - DEBUG - hour = 1
+2024-07-26 23:50:43,577 - DEBUG - minute = 0
+2024-07-26 23:50:43,578 - DEBUG - second = 0
+2024-07-26 23:50:43,579 - CRITICAL - Scheduler started
+2024-07-26 23:51:37,584 - CRITICAL - 
+
+2024-07-26 23:51:37,584 - CRITICAL - App start
+2024-07-26 23:51:37,584 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:51:37,589 - INFO - Database exists
+2024-07-26 23:51:37,704 - INFO - Scheduler starts running
+2024-07-26 23:51:37,714 - DEBUG - 
+
+2024-07-26 23:51:37,714 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-26 23:51:37,716 - DEBUG - jobType = job_collector
+2024-07-26 23:51:37,716 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-26 23:51:37,716 - DEBUG - trigger = interval
+2024-07-26 23:51:37,716 - DEBUG - year = None
+2024-07-26 23:51:37,716 - DEBUG - month = None
+2024-07-26 23:51:37,716 - DEBUG - day = 0
+2024-07-26 23:51:37,716 - DEBUG - day_of_week = None
+2024-07-26 23:51:37,716 - DEBUG - hour = 0
+2024-07-26 23:51:37,716 - DEBUG - minute = 5
+2024-07-26 23:51:37,716 - DEBUG - second = 0
+2024-07-26 23:51:37,716 - DEBUG - 
+
+2024-07-26 23:51:37,717 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:51:37,717 - DEBUG - jobType = report_sender
+2024-07-26 23:51:37,717 - DEBUG - httpLink = R1
+2024-07-26 23:51:37,717 - DEBUG - trigger = interval
+2024-07-26 23:51:37,717 - DEBUG - year = None
+2024-07-26 23:51:37,717 - DEBUG - month = None
+2024-07-26 23:51:37,717 - DEBUG - day = 0
+2024-07-26 23:51:37,717 - DEBUG - day_of_week = None
+2024-07-26 23:51:37,717 - DEBUG - hour = 1
+2024-07-26 23:51:37,717 - DEBUG - minute = 0
+2024-07-26 23:51:37,718 - DEBUG - second = 0
+2024-07-26 23:51:37,720 - CRITICAL - Scheduler started
+2024-07-26 23:51:45,532 - INFO - Scheduler starts running
+2024-07-26 23:51:45,534 - DEBUG - 
+
+2024-07-26 23:51:45,535 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:51:45,535 - DEBUG - jobType = report_sender
+2024-07-26 23:51:45,535 - DEBUG - httpLink = R1
+2024-07-26 23:51:45,535 - DEBUG - trigger = interval
+2024-07-26 23:51:45,535 - DEBUG - year = None
+2024-07-26 23:51:45,535 - DEBUG - month = None
+2024-07-26 23:51:45,536 - DEBUG - day = 0
+2024-07-26 23:51:45,536 - DEBUG - day_of_week = None
+2024-07-26 23:51:45,536 - DEBUG - hour = 1
+2024-07-26 23:51:45,536 - DEBUG - minute = 0
+2024-07-26 23:51:45,536 - DEBUG - second = 0
+2024-07-26 23:53:42,783 - CRITICAL - 
+
+2024-07-26 23:53:42,783 - CRITICAL - App start
+2024-07-26 23:53:42,783 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:53:42,789 - INFO - Database exists
+2024-07-26 23:53:42,904 - INFO - Scheduler starts running
+2024-07-26 23:53:42,914 - DEBUG - 
+
+2024-07-26 23:53:42,915 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-26 23:53:42,916 - DEBUG - job_type = job_collector
+2024-07-26 23:53:42,917 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-26 23:53:42,917 - DEBUG - trigger = interval
+2024-07-26 23:53:42,917 - DEBUG - year = None
+2024-07-26 23:53:42,917 - DEBUG - month = None
+2024-07-26 23:53:42,917 - DEBUG - day = 0
+2024-07-26 23:53:42,917 - DEBUG - day_of_week = None
+2024-07-26 23:53:42,918 - DEBUG - hour = 0
+2024-07-26 23:53:42,918 - DEBUG - minute = 5
+2024-07-26 23:53:42,919 - DEBUG - second = 0
+2024-07-26 23:53:42,919 - DEBUG - 
+
+2024-07-26 23:53:42,919 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:53:42,920 - DEBUG - job_type = report_sender
+2024-07-26 23:53:42,920 - DEBUG - httpLink = R1
+2024-07-26 23:53:42,920 - DEBUG - trigger = interval
+2024-07-26 23:53:42,920 - DEBUG - year = None
+2024-07-26 23:53:42,921 - DEBUG - month = None
+2024-07-26 23:53:42,921 - DEBUG - day = 0
+2024-07-26 23:53:42,921 - DEBUG - day_of_week = None
+2024-07-26 23:53:42,921 - DEBUG - hour = 1
+2024-07-26 23:53:42,921 - DEBUG - minute = 0
+2024-07-26 23:53:42,921 - DEBUG - second = 0
+2024-07-26 23:53:42,923 - CRITICAL - Scheduler started
+2024-07-26 23:58:42,921 - INFO - Job collects: http://192.168.0.184/noGui
+2024-07-26 23:58:50,167 - INFO - Job collected
+2024-07-26 23:59:01,757 - CRITICAL - 
+
+2024-07-26 23:59:01,757 - CRITICAL - App start
+2024-07-26 23:59:01,758 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-26 23:59:01,764 - INFO - Database exists
+2024-07-26 23:59:01,884 - INFO - Scheduler starts running
+2024-07-26 23:59:01,894 - DEBUG - 
+
+2024-07-26 23:59:01,894 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-26 23:59:01,897 - DEBUG - job_type = job_collector
+2024-07-26 23:59:01,897 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-26 23:59:01,898 - DEBUG - trigger = interval
+2024-07-26 23:59:01,898 - DEBUG - year = None
+2024-07-26 23:59:01,898 - DEBUG - month = None
+2024-07-26 23:59:01,898 - DEBUG - day = 0
+2024-07-26 23:59:01,899 - DEBUG - day_of_week = None
+2024-07-26 23:59:01,899 - DEBUG - hour = 0
+2024-07-26 23:59:01,899 - DEBUG - minute = 5
+2024-07-26 23:59:01,899 - DEBUG - second = 0
+2024-07-26 23:59:01,899 - DEBUG - 
+
+2024-07-26 23:59:01,900 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-26 23:59:01,900 - DEBUG - job_type = report_sender
+2024-07-26 23:59:01,900 - DEBUG - httpLink = R1
+2024-07-26 23:59:01,900 - DEBUG - trigger = interval
+2024-07-26 23:59:01,900 - DEBUG - year = None
+2024-07-26 23:59:01,900 - DEBUG - month = None
+2024-07-26 23:59:01,900 - DEBUG - day = 0
+2024-07-26 23:59:01,900 - DEBUG - day_of_week = None
+2024-07-26 23:59:01,900 - DEBUG - hour = 1
+2024-07-26 23:59:01,900 - DEBUG - minute = 0
+2024-07-26 23:59:01,901 - DEBUG - second = 0
+2024-07-26 23:59:01,902 - CRITICAL - Scheduler started
+2024-07-27 00:04:01,908 - INFO - Job collects: http://192.168.0.184/noGui
+2024-07-27 00:04:05,704 - INFO - Job collected
+2024-07-27 00:04:49,326 - CRITICAL - 
+
+2024-07-27 00:04:49,327 - CRITICAL - App start
+2024-07-27 00:04:49,327 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-27 00:04:49,333 - INFO - Database exists
+2024-07-27 00:04:49,450 - INFO - Scheduler starts running
+2024-07-27 00:04:49,459 - DEBUG - 
+
+2024-07-27 00:04:49,460 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-27 00:04:49,461 - DEBUG - job_type = job_collector
+2024-07-27 00:04:49,461 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-27 00:04:49,462 - DEBUG - trigger = interval
+2024-07-27 00:04:49,462 - DEBUG - year = None
+2024-07-27 00:04:49,462 - DEBUG - month = None
+2024-07-27 00:04:49,462 - DEBUG - day = 0
+2024-07-27 00:04:49,462 - DEBUG - day_of_week = None
+2024-07-27 00:04:49,463 - DEBUG - hour = 0
+2024-07-27 00:04:49,463 - DEBUG - minute = 5
+2024-07-27 00:04:49,463 - DEBUG - second = 0
+2024-07-27 00:04:49,463 - DEBUG - 
+
+2024-07-27 00:04:49,464 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-27 00:04:49,464 - DEBUG - job_type = report_sender
+2024-07-27 00:04:49,464 - DEBUG - httpLink = R1
+2024-07-27 00:04:49,464 - DEBUG - trigger = interval
+2024-07-27 00:04:49,465 - DEBUG - year = None
+2024-07-27 00:04:49,465 - DEBUG - month = None
+2024-07-27 00:04:49,465 - DEBUG - day = 0
+2024-07-27 00:04:49,466 - DEBUG - day_of_week = None
+2024-07-27 00:04:49,466 - DEBUG - hour = 1
+2024-07-27 00:04:49,466 - DEBUG - minute = 0
+2024-07-27 00:04:49,466 - DEBUG - second = 0
+2024-07-27 00:04:49,468 - CRITICAL - Scheduler started
+2024-07-27 00:09:49,477 - INFO - Job collects: http://192.168.0.184/noGui
+2024-07-27 00:09:53,332 - INFO - Job collected
+2024-07-27 00:14:49,476 - INFO - Job collects: http://192.168.0.184/noGui
+2024-07-27 00:14:54,651 - CRITICAL - 
+
+2024-07-27 00:14:54,651 - CRITICAL - App start
+2024-07-27 00:14:54,652 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-07-27 00:14:54,658 - INFO - Database exists
+2024-07-27 00:14:54,783 - INFO - Scheduler starts running
+2024-07-27 00:14:54,792 - DEBUG - 
+
+2024-07-27 00:14:54,792 - DEBUG - schedulerID = S1interval--0-0020
+2024-07-27 00:14:54,795 - DEBUG - job_type = job_collector
+2024-07-27 00:14:54,795 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-07-27 00:14:54,795 - DEBUG - trigger = interval
+2024-07-27 00:14:54,795 - DEBUG - year = None
+2024-07-27 00:14:54,796 - DEBUG - month = None
+2024-07-27 00:14:54,796 - DEBUG - day = 0
+2024-07-27 00:14:54,796 - DEBUG - day_of_week = None
+2024-07-27 00:14:54,796 - DEBUG - hour = 0
+2024-07-27 00:14:54,796 - DEBUG - minute = 5
+2024-07-27 00:14:54,797 - DEBUG - second = 0
+2024-07-27 00:14:54,797 - DEBUG - 
+
+2024-07-27 00:14:54,797 - DEBUG - schedulerID = R1interval--0-0030
+2024-07-27 00:14:54,798 - DEBUG - job_type = report_sender
+2024-07-27 00:14:54,798 - DEBUG - httpLink = R1
+2024-07-27 00:14:54,798 - DEBUG - trigger = interval
+2024-07-27 00:14:54,799 - DEBUG - year = None
+2024-07-27 00:14:54,799 - DEBUG - month = None
+2024-07-27 00:14:54,799 - DEBUG - day = 0
+2024-07-27 00:14:54,799 - DEBUG - day_of_week = None
+2024-07-27 00:14:54,800 - DEBUG - hour = 1
+2024-07-27 00:14:54,800 - DEBUG - minute = 0
+2024-07-27 00:14:54,800 - DEBUG - second = 0
+2024-07-27 00:14:54,801 - CRITICAL - Scheduler started

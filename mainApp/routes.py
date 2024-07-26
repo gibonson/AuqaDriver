@@ -3,14 +3,16 @@ from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
 from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
 from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions, Notification
-from mainApp.models import AddDeviceDB, ChangeDeviceStatusDB, RemoveDeviceDB, ListDeviceDB, AddArchiveDB
+from mainApp.models import DeviceAdder, DeviceLister, AddArchiveDB, DeviceManager
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
 import time
 from datetime import datetime, timedelta
-from mainApp.jobOperations import schedStart
+from mainApp.scheduler_operations import sched_start
 from mainApp.emailSender import emailSender
 from mainApp import os
+
+from mainApp import logger
 
 # -----------------------------------------
 # create new DB
@@ -22,6 +24,7 @@ def create():
         db.create_all()
         requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
         addArchiveDB = AddArchiveDB(requestData)
+        logger.critical("New database has been created")
     return redirect(url_for("get_jobs"))
 
 # -----------------------------------------
@@ -45,31 +48,32 @@ def hello_world():
 def device_add():
     form = AddDevice()
     if form.validate_on_submit():
-        addDeviceDB = AddDeviceDB(request.form.to_dict(flat=False))
-        flash(str(addDeviceDB), category='success')
+        deviceAdder = DeviceAdder(request.form.to_dict(flat=False))
+        flash(str(deviceAdder), category='success')
         return redirect(url_for("device_list"))
-    if form.errors != {}:  # validation errors
+    if form.errors != {}:
         print(form.errors)
         flash(form.errors, category='danger')
     return render_template("deviceAdd.html", form=form, state=str(sched.state))
 
 @app.route("/device_list")
 def device_list():
-    # devices = Devices.query.all()
-    listDeviceDB = ListDeviceDB()
-    devices = listDeviceDB.getList()
+    deviceLister = DeviceLister()
+    devices = deviceLister.getList()
     return render_template("devicesList.html", devices=devices, state=str(sched.state))
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
-    removeDeviceDB = RemoveDeviceDB(id)
-    flash(str(removeDeviceDB), category='danger')
+    manager = DeviceManager(id)
+    manager.remove_device()
+    flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
 @app.route("/change_device_status/<id>")
 def change_device_status(id):
-    changeDeviceStatusDB = ChangeDeviceStatusDB(id)
-    flash(str(changeDeviceStatusDB), category='info')
+    manager = DeviceManager(id)
+    manager.change_status()
+    flash(str(manager), category='info')
     return redirect(url_for("device_list"))
 
 # -----------------------------------------
@@ -241,9 +245,8 @@ def remove_job(id):
 def start_job(runSchedulerID):
     if sched.state == 0:
         sched.start()
-    schedStart(sched, runSchedulerID)
+    sched_start(sched, runSchedulerID)
     return redirect(url_for("get_jobs"))
-
 
 # -----------------------------------------
 # archive section

@@ -12,51 +12,68 @@ class Devices(db.Model):
         self.deviceName = deviceName
         self.deviceStatus = deviceStatus
 
-class AddDeviceDB():
-    def __init__(self, formData, notification = False, debug = False):
-        self.message = 'Device added'
-        print("Add device to DB")
-        print(formData)
-        devcice_to_add = Devices(deviceIP=formData["deviceIP"][0], deviceName=formData["deviceName"][0], deviceStatus=formData["deviceStatus"][0])
-        db.session.add(devcice_to_add)
-        db.session.commit()
-    def __str__(self):
-        return self.message
 
-class RemoveDeviceDB():
-    def __init__(self, id):
-        self.id = id
-        print("Device removed")
-        self.message = 'Device: ' + self.id + ' removed'
-        Devices.query.filter(Devices.id == id).delete()
-        db.session.commit()
-    def __str__(self):
-        return self.message
-
-class ChangeDeviceStatusDB():
-    def __init__(self, id):
-        self.message = ""
-        self.id = id
-        print("Status change")
-        devices = Devices.query.filter_by(id = id).first()
-        if devices.deviceStatus == "Ready":
-            devices.deviceStatus = "Not ready"
-            self.message = "Device status chnged to: Not ready"
-            db.session.commit()
-        elif devices.deviceStatus == "Not ready":
-            devices.deviceStatus = "Ready"
-            db.session.commit()
-            self.message = "Device status chnged to: Ready"
-        else:
-            self.message = "Status error!"
-    def __str__(self):
-        return "ID: " + self.id + " -> " + self.message
-    
-class ListDeviceDB():
+class DeviceLister():
     def __init__(self):
-        self.devices = Devices.query.all()
+        try:
+            self.devices = Devices.query.all()
+        except Exception as e:
+            print(f"An error occurred while fetching devices: {e}")
+            self.devices = []
     def getList(self):
         return self.devices
+
+
+class DeviceAdder():
+    def __init__(self, formData: dict):
+        self.message = 'Device added'
+        print("Adding device to DB")
+        
+        try:
+            device_ip = formData["deviceIP"][0]
+            device_name = formData["deviceName"][0]
+            device_status = formData["deviceStatus"][0]
+            device_to_add = Devices(deviceIP=device_ip, deviceName=device_name, deviceStatus=device_status)
+            db.session.add(device_to_add)
+            db.session.commit()
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            self.message = "Error: Device could not be added"
+    def __str__(self) -> str:
+        return self.message
+
+
+class DeviceManager:
+    def __init__(self, id):
+        self.id = id
+        self.message = ""
+        self.device = Devices.query.filter_by(id=self.id).first()
+
+    def remove_device(self):
+        if self.device:
+            Devices.query.filter(Devices.id == self.id).delete()
+            db.session.commit()
+            self.message = f'Device with ID {self.id} removed'
+        else:
+            self.message = f'Device with ID {self.id} does not exist'
+    
+    def change_status(self):
+        if self.device:
+            if self.device.deviceStatus == "Ready":
+                self.device.deviceStatus = "Not ready"
+                self.message = "Device status changed to: Not ready"
+            elif self.device.deviceStatus == "Not ready":
+                self.device.deviceStatus = "Ready"
+                self.message = "Device status changed to: Ready"
+            else:
+                self.message = "Status error!"
+            db.session.commit()
+        else:
+            self.message = f'Device with ID {self.id} does not exist'
+    
+    def __str__(self) -> str:
+        return self.message
 
 
 class DevicesFunctions(db.Model):
