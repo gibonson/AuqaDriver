@@ -2,15 +2,15 @@ from mainApp import app, db, sched
 from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
 from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
-from mainApp.models import Devices, DevicesFunctions, FunctionScheduler, Archive, ArchiveReport, ArchiveFunctions, Notification
-from mainApp.models import DeviceAdder, DeviceLister, AddArchiveDB, DeviceManager
+from mainApp.models.model import DevicesFunctions, FunctionScheduler, ArchiveReport, ArchiveFunctions, Notification
+from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
+from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
-import time
 from datetime import datetime, timedelta
 from mainApp.scheduler_operations import sched_start
-from mainApp.emailSender import emailSender
-from mainApp import os
+from mainApp.email_operations import emailSender
+from mainApp.dashboard_data import DashboardData
 
 from mainApp import logger
 
@@ -23,7 +23,7 @@ def create():
     with app.app_context():
         db.create_all()
         requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
-        addArchiveDB = AddArchiveDB(requestData)
+        archiveAdder = ArchiveAdder(requestData)
         logger.critical("New database has been created")
     return redirect(url_for("get_jobs"))
 
@@ -52,7 +52,7 @@ def device_add():
         flash(str(deviceAdder), category='success')
         return redirect(url_for("device_list"))
     if form.errors != {}:
-        print(form.errors)
+        logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
     return render_template("deviceAdd.html", form=form, state=str(sched.state))
 
@@ -73,7 +73,7 @@ def device_remove(id):
 def change_device_status(id):
     manager = DeviceManager(id)
     manager.change_status()
-    flash(str(manager), category='info')
+    flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
 # -----------------------------------------
@@ -254,17 +254,16 @@ def start_job(runSchedulerID):
 
 @app.route("/archive_list")
 def archive_list():
-    # archive = Archive.query.all()
-    archive = Archive.query.order_by(Archive.id.desc()).limit(100)
+    archiveLister = ArchiveLister()
+    archive = archiveLister.getList()
     return render_template("archiveList.html", archive=archive, datetime=datetime, state=str(sched.state))
 
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
-    Archive.query.filter(Archive.id == id).delete()
-    db.session.commit()
-    flash('Record: ' + id + ' removed', category='danger')
+    manager = ArchiveManager(id)
+    manager.remove_archive()
+    flash(str(manager), category='danger')
     return redirect(url_for("archive_list"))
-
 
 @app.route("/archive_search", methods=['POST', 'GET'])
 def archive_search():
@@ -409,9 +408,7 @@ def get_archive_report_all():
 def email_send():
     form = EmailForm()
     if form.validate_on_submit():
-        print(form.subject.data)
-        print(form.message.data)
-        emailSender(form.subject.data, form.message.data, flashMessage=False)
+        emailSender(form.subject.data, form.message.data, flashMessage=True)
     return render_template("emailSend.html", form=form, state=str(sched.state))
 
 # -----------------------------------------
@@ -420,21 +417,9 @@ def email_send():
 
 @app.route('/dashboard')
 def dashboard():
-    DBFile = os.path.abspath(os.path.dirname(
-        __file__)) + "/../userFiles/db.sqlite"
-    dbSizeKB = os.path.getsize(DBFile) / 1024
-    print(str(dbSizeKB) + "KB")
-    engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-    with engine.connect() as conn:
-        sqlSelect = conn.execute(text(
-            'select deviceIP, deviceName, type, addInfo, count(value) as number_of_queries, round(avg(value),2) as average FROM archive GROUP BY deviceIP, type, addInfo'))
-        print(sqlSelect)
-        sqlTable = []
-        for row in sqlSelect:
-            print(row)
-            sqlTable.append(row)
-        print(sqlTable)
-
+    dashboard_data = DashboardData()
+    dbSizeKB = dashboard_data.getDbSizeKB()
+    sqlTable = dashboard_data.getSqlTable()
     return render_template("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
 # -----------------------------------------
@@ -454,7 +439,7 @@ def resume():
 @app.route("/start")
 def start():
     sched.start()
-    schedStart(sched)
+    sched_start(sched)
     return redirect(url_for("get_jobs"))
 
 @app.route("/shutdown")
@@ -473,7 +458,7 @@ def shutdown():
 @app.post('/api/addEvent')
 def create_friend():
     requestData = request.get_json()
-    AddArchiveDB(requestData)
+    ArchiveAdder(requestData)
     return "OK"
 
 # -----------------------------------------

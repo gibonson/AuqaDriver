@@ -2,16 +2,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateTimeLocalField, SelectMultipleField, TextAreaField
 from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError, Optional
 from mainApp import db
-from mainApp.models import Devices
+from mainApp.models.device import Devices
 
 class AddDevice(FlaskForm):
     deviceStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready"),("Old", "Old")]
 
     def validate_deviceIP(self, deviceIP_to_check):
         deviceIP = Devices.query.filter(Devices.deviceIP == deviceIP_to_check.data).first()
-        print(deviceIP)
         if deviceIP:
-            print(deviceIP)
             raise ValidationError('DevieIP already exist')
 
     deviceIP = StringField(label='deviceIP', validators=[DataRequired(), IPAddress(ipv4=True, ipv6=False, message="deviceIP: wrong IP format")])

@@ -1,79 +1,6 @@
 from mainApp.routes import db
+from mainApp import logger
 import time
-
-class Devices(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    deviceIP = db.Column(db.String())
-    deviceName = db.Column(db.String())
-    deviceStatus = db.Column(db.String())
-
-    def __init__(self, deviceIP, deviceName, deviceStatus):
-        self.deviceIP = deviceIP
-        self.deviceName = deviceName
-        self.deviceStatus = deviceStatus
-
-
-class DeviceLister():
-    def __init__(self):
-        try:
-            self.devices = Devices.query.all()
-        except Exception as e:
-            print(f"An error occurred while fetching devices: {e}")
-            self.devices = []
-    def getList(self):
-        return self.devices
-
-
-class DeviceAdder():
-    def __init__(self, formData: dict):
-        self.message = 'Device added'
-        print("Adding device to DB")
-        
-        try:
-            device_ip = formData["deviceIP"][0]
-            device_name = formData["deviceName"][0]
-            device_status = formData["deviceStatus"][0]
-            device_to_add = Devices(deviceIP=device_ip, deviceName=device_name, deviceStatus=device_status)
-            db.session.add(device_to_add)
-            db.session.commit()
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            self.message = "Error: Device could not be added"
-    def __str__(self) -> str:
-        return self.message
-
-
-class DeviceManager:
-    def __init__(self, id):
-        self.id = id
-        self.message = ""
-        self.device = Devices.query.filter_by(id=self.id).first()
-
-    def remove_device(self):
-        if self.device:
-            Devices.query.filter(Devices.id == self.id).delete()
-            db.session.commit()
-            self.message = f'Device with ID {self.id} removed'
-        else:
-            self.message = f'Device with ID {self.id} does not exist'
-    
-    def change_status(self):
-        if self.device:
-            if self.device.deviceStatus == "Ready":
-                self.device.deviceStatus = "Not ready"
-                self.message = "Device status changed to: Not ready"
-            elif self.device.deviceStatus == "Not ready":
-                self.device.deviceStatus = "Ready"
-                self.message = "Device status changed to: Ready"
-            else:
-                self.message = "Status error!"
-            db.session.commit()
-        else:
-            self.message = f'Device with ID {self.id} does not exist'
-    
-    def __str__(self) -> str:
-        return self.message
 
 
 class DevicesFunctions(db.Model):
@@ -120,41 +47,41 @@ class FunctionScheduler(db.Model):
         self.schedulerStatus = schedulerStatus
 
 
-class Archive(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.Integer())
-    deviceIP = db.Column(db.String())
-    deviceName = db.Column(db.String())
-    addInfo = db.Column(db.String())
-    value = db.Column(db.Integer())
-    type = db.Column(db.String())
+# class Archive(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     timestamp = db.Column(db.Integer())
+#     deviceIP = db.Column(db.String())
+#     deviceName = db.Column(db.String())
+#     addInfo = db.Column(db.String())
+#     value = db.Column(db.Integer())
+#     type = db.Column(db.String())
 
-    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type):
-        self.timestamp = timestamp
-        self.deviceIP = deviceIP
-        self.deviceName = deviceName
-        self.addInfo = addInfo
-        self.value = value
-        self.type = type
+#     def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type):
+#         self.timestamp = timestamp
+#         self.deviceIP = deviceIP
+#         self.deviceName = deviceName
+#         self.addInfo = addInfo
+#         self.value = value
+#         self.type = type
 
-class AddArchiveDB():
-    def __init__(self, requestData, notification = False, debug = False):
-        self.message = 'Added to archive'
-        print("Added to archive")
-        self.requestData = requestData
-        print(self.requestData)
-        timestamp = round(time.time())
-        addInfo = self.requestData["addInfo"]
-        deviceName = self.requestData["deviceName"]
-        deviceIP = self.requestData["deviceIP"]
-        type = self.requestData["type"]
-        value = self.requestData["value"]
-        add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                 deviceName=deviceName, addInfo=addInfo, value=value, type=type)
-        db.session.add(add_to_archiwe)
-        db.session.commit()
-    def __str__(self):
-        return self.message
+# class ArchiveAdder():
+#     def __init__(self, requestData, notification = False, debug = False):
+#         self.message = 'Added to archive'
+#         print("Added to archive")
+#         self.requestData = requestData
+#         print(self.requestData)
+#         timestamp = round(time.time())
+#         addInfo = self.requestData["addInfo"]
+#         deviceName = self.requestData["deviceName"]
+#         deviceIP = self.requestData["deviceIP"]
+#         type = self.requestData["type"]
+#         value = self.requestData["value"]
+#         add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
+#                                  deviceName=deviceName, addInfo=addInfo, value=value, type=type)
+#         db.session.add(add_to_archiwe)
+#         db.session.commit()
+#     def __str__(self):
+#         return self.message
 
 
 

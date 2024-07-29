@@ -1,9 +1,10 @@
-from mainApp.models import Archive, ArchiveReport, ArchiveFunctions
+from mainApp.models.model import ArchiveReport, ArchiveFunctions
+from mainApp.models.archive import Archive
 import time
 from mainApp.routes import app, create_engine, text
 from datetime import datetime, timedelta
 from mainApp import app, db, flash
-from mainApp.emailSender import emailSender
+from mainApp.email_operations import emailSender
 
 
 class ReportCreator:

@@ -1,5 +1,6 @@
-from mainApp.models import Notification, Archive
-from mainApp.emailSender import emailSender
+from mainApp.models.model import Notification
+from mainApp.models.archive import Archive
+from mainApp.email_operations import emailSender
 
 
 class Notification:

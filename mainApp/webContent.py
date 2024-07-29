@@ -1,7 +1,8 @@
 import requests
 import time
-from mainApp.models import Devices, DevicesFunctions
-from mainApp.models import Archive
+from mainApp.models.model import DevicesFunctions
+from mainApp.models.device import Devices
+from mainApp.models.archive import Archive
 from mainApp import app, db, logger
 
 class LinkCreator:
