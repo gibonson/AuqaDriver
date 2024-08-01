@@ -1,22 +1,21 @@
 from mainApp.routes import db
-from mainApp import logger
-import time
 
 
-class DevicesFunctions(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    deviceId = db.Column(db.Integer())
-    actionLink = db.Column(db.String())
-    functionParameters = db.Column(db.String())
-    functionDescription = db.Column(db.String())
-    functionStatus = db.Column(db.String())
 
-    def __init__(self, deviceId, actionLink, functionParameters, functionDescription, functionStatus):
-        self.deviceId = deviceId
-        self.actionLink = actionLink
-        self.functionParameters = functionParameters
-        self.functionDescription = functionDescription
-        self.functionStatus = functionStatus
+# class DevicesFunctions(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     deviceId = db.Column(db.Integer())
+#     actionLink = db.Column(db.String())
+#     functionParameters = db.Column(db.String())
+#     functionDescription = db.Column(db.String())
+#     functionStatus = db.Column(db.String())
+
+#     def __init__(self, deviceId, actionLink, functionParameters, functionDescription, functionStatus):
+#         self.deviceId = deviceId
+#         self.actionLink = actionLink
+#         self.functionParameters = functionParameters
+#         self.functionDescription = functionDescription
+#         self.functionStatus = functionStatus
 
 
 class FunctionScheduler(db.Model):

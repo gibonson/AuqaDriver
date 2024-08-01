@@ -2,9 +2,10 @@ from mainApp import app, db, sched
 from sqlalchemy import create_engine, text
 from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
 from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
-from mainApp.models.model import DevicesFunctions, FunctionScheduler, ArchiveReport, ArchiveFunctions, Notification
+from mainApp.models.model import FunctionScheduler, ArchiveReport, ArchiveFunctions, Notification
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
 from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
+from mainApp.models.function import DevicesFunctions, DeviceFunctionsLister, DeviceFunctionAdder
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.reportCreator import ReportCreator
 from datetime import datetime, timedelta
@@ -82,33 +83,24 @@ def change_device_status(id):
 
 @app.route("/function_add", methods=['POST', 'GET'])
 def function_add():
-    AddDeviceFunctions.deviceIdList.clear()
-    devices = Devices.query.all()
-    for device in devices:
-        print(device.__dict__)
-        AddDeviceFunctions.deviceIdList.append(
-            (device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceStatus))
-
+    AddDeviceFunctions.deviceIdListUpdate()
     form = AddDeviceFunctions()
     if form.validate_on_submit():
-        function_to_add = DevicesFunctions(deviceId=form.deviceId.data, actionLink=form.actionLink.data, functionDescription=form.functionDescription.data,
-                                           functionParameters=form.functionParameters.data, functionStatus=form.functionStatus.data)
-        db.session.add(function_to_add)
-        db.session.commit()
-        flash('OK', category='success')
+        deviceFunctionAdder = DeviceFunctionAdder(request.form.to_dict(flat=False))
+        flash(str(deviceFunctionAdder), category='success')
         return redirect(url_for("functions_list"))
-
-    if form.errors != {}:  # validation errors
-        print(form.errors)
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-
     return render_template("functionAdd.html", form=form, state=str(sched.state))
 
 
 @app.route("/functions_list")
 def functions_list():
-    devicesFunctions = DevicesFunctions.query.all()
-    devices = Devices.query.all()
+    deviceFunctionsLister = DeviceFunctionsLister()
+    devicesFunctions = deviceFunctionsLister.getList()
+    deviceLister = DeviceLister()
+    devices = deviceLister.getList()
     return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, state=str(sched.state))
 
 

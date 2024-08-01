@@ -1,6 +1,6 @@
 import requests
 import time
-from mainApp.models.model import DevicesFunctions
+from mainApp.models.function import DevicesFunctions
 from mainApp.models.device import Devices
 from mainApp.models.archive import Archive
 from mainApp import app, db, logger

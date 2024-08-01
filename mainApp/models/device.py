@@ -1,6 +1,7 @@
 from mainApp.routes import db
 from mainApp import logger
 
+
 class Devices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     deviceIP = db.Column(db.String())
@@ -36,7 +37,6 @@ class DeviceAdder():
             device_to_add = Devices(deviceIP=device_ip, deviceName=device_name, deviceStatus=device_status)
             db.session.add(device_to_add)
             db.session.commit()
-
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             self.message = "Error: Device could not be added"

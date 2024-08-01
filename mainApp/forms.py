@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
+from flask_wtf.form import _Auto
 from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenField, DateTimeLocalField, SelectMultipleField, TextAreaField
 from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError, Optional
-from mainApp import db
+from mainApp import db, app
 from mainApp.models.device import Devices
 
 class AddDevice(FlaskForm):
@@ -18,14 +19,20 @@ class AddDevice(FlaskForm):
     submit = SubmitField(label='submit new')
 
 class AddDeviceFunctions(FlaskForm):
-
+    functionStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
     deviceIdList = []
+
+    def deviceIdListUpdate():
+        AddDeviceFunctions.deviceIdList.clear()
+        with app.app_context():
+            devices = Devices.query.all()
+            for device in devices:
+                AddDeviceFunctions.deviceIdList.append(
+                    (device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceStatus))
 
     def validate_actionLink(self, actionLink_to_check):
         if "/"  not in actionLink_to_check.data: 
             raise ValidationError('actionLink: no / in actionLink')
-
-    functionStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
 
 
     deviceId = SelectField(label='deviceId',choices = deviceIdList, validators=[DataRequired()])
