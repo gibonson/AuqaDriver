@@ -2606,3 +2606,7 @@
 2024-08-04 22:50:25,037 - DEBUG - minute = 0
 2024-08-04 22:50:25,037 - DEBUG - second = 0
 2024-08-04 22:50:25,039 - CRITICAL - Scheduler started
+2024-08-04 22:55:25,046 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-04 22:55:30,259 - INFO - Job collected
+2024-08-04 23:00:25,035 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-04 23:00:26,154 - INFO - Job collected
