@@ -28,7 +28,7 @@ class ArchiveLister():
         except Exception as e:
             logger.error(f"An error occurred while fetching archive: {e}")
             self.archive = []
-    def getList(self):
+    def get_list(self):
         return self.archive
 
 

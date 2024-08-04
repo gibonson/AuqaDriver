@@ -21,7 +21,7 @@ class DeviceLister():
         except Exception as e:
             logger.error(f"An error occurred while fetching devices: {e}")
             self.devices = []
-    def getList(self):
+    def get_list(self):
         return self.devices
 
 

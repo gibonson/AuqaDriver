@@ -1,11 +1,11 @@
 from mainApp.webContent import WebContentCollector, LinkCreator
-from mainApp.reportCreator import ReportSender
+from mainApp.report_creator import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
-from mainApp.models.model import FunctionScheduler, ArchiveFunctions
+from mainApp.models.model import ArchiveFunctions
 from mainApp.models.device import Devices
 from mainApp.models.function import DevicesFunctions
-
+from mainApp.models.scheduler import FunctionScheduler
 
 def job_collector(http_address):
    logger.info(f"Job collects: {http_address}")

@@ -25,7 +25,7 @@ class DeviceFunctionsLister():
         except Exception as e:
             logger.error(f"An error occurred while fetching devices functions: {e}")
             self.deviceFunctions = []
-    def getList(self):
+    def get_list(self):
         return self.deviceFunctions
     
 

@@ -4,6 +4,9 @@ from wtforms import StringField, SelectField, IntegerField, SubmitField, HiddenF
 from wtforms.validators import DataRequired, Length, IPAddress, NumberRange, AnyOf ,ValidationError, Optional
 from mainApp import db, app
 from mainApp.models.device import Devices
+from mainApp.models.function import DevicesFunctions
+from mainApp.models.model import ArchiveFunctions
+from mainApp.models.archive import Archive
 
 class AddDevice(FlaskForm):
     deviceStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready"),("Old", "Old")]
@@ -44,7 +47,7 @@ class AddDeviceFunctions(FlaskForm):
 
 
 class AddFunctionScheduler(FlaskForm):
-        
+       
     triggerList = [("interval", "interval"),("date", "date"),("cron", "cron")]
     dayOfWeekList = [(None, None),("mon", "mon"),("tue", "tue"),("wed", "wed"),("thu", "thu"),("fri", "fri"),("sat", "sat")]
     yearList = [(None, None),(2023, 2023),(2024, 2024),(2025, 2025)]
@@ -52,6 +55,21 @@ class AddFunctionScheduler(FlaskForm):
     dayList = [(0,"0"),(1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"),(6,"6"),(7,"7"),(8,"8"),(9,"9"),(10,"10"),(11,"11"),(12,"12"),(13,"13"),(14,"14"),(15,"15"),(16,"16"),(17,"17"),(18,"18"),(19,"19"),(20,"20"),(21,"21"),(22,"22"),(23,"23"),(24,"24"),(25,"25"),(26,"26"),(27,"27"),(28,"28"),(29,"29"),(30,"30"),(31,"31")]
     schedulerStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
     functionIdList = []
+
+    def functionIdListUpdate():
+        AddFunctionScheduler.functionIdList.clear()
+        with app.app_context():
+            devicesFunctions = DevicesFunctions.query.all()
+            for devicesFunction in devicesFunctions:
+                print(devicesFunction.__dict__)
+                device = Devices.query.get(devicesFunction.deviceId)
+                AddFunctionScheduler.functionIdList.append((str(devicesFunction.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+                    devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters)))
+            
+            archiveFunctions = ArchiveFunctions.query.all()
+            for archiveFunction in archiveFunctions:
+                print(archiveFunction.__dict__)
+                AddFunctionScheduler.functionIdList.append(("R" + str(archiveFunction.id), "Report: " + str(archiveFunction.title) + " - " + archiveFunction.description + " - " + archiveFunction.archiveReportIds))
 
     functionId = SelectField(label='functionId',choices = functionIdList, validators=[DataRequired()])
     trigger = SelectField(label='jobType', choices=triggerList)
@@ -71,6 +89,30 @@ class ArchiveSearch(FlaskForm):
     deviceIPList = []
     addInfoList = []
     typeList = []
+
+    def archive_search_lists_update():
+        ArchiveSearch.deviceIPList.clear()
+        ArchiveSearch.addInfoList.clear()
+        ArchiveSearch.typeList.clear()
+        with app.app_context():
+            archiveAddInfos = Archive.query.distinct(
+                Archive.addInfo).group_by(Archive.addInfo)
+            for archiveAddInfo in archiveAddInfos:
+                # print(archiveAddInfo.addInfo)
+                ArchiveSearch.addInfoList.append(
+                    (archiveAddInfo.addInfo, archiveAddInfo.addInfo))
+
+            deviceIds = Archive.query.distinct(
+                Archive.deviceIP).group_by(Archive.deviceIP)
+            for deviceId in deviceIds:
+                # print(deviceId.deviceIP)
+                ArchiveSearch.deviceIPList.append(
+                    (deviceId.deviceIP, deviceId.deviceIP))
+
+            types = Archive.query.distinct(Archive.type).group_by(Archive.type)
+            for type in types:
+                # print(type.type)
+                ArchiveSearch.typeList.append((type.type, type.type))
 
     limit = IntegerField(label='limit',default=100, validators= [DataRequired(),NumberRange(min=0, max=1000, message='limit: must be between 1 and 1000')])
     timestampStart = DateTimeLocalField(label="Start Date:", format='%Y-%m-%dT%H:%M')
@@ -95,6 +137,41 @@ class AddArchiveReport(FlaskForm):
     avgOrSumList = [("avg","Average"),("sum","Sum")]
     timerRangeHoursList = [(24,"Day"),(168,"Week"),(720,"30 days"),(8544,"356 days")]
     quantityValuesList = [(0,"0"),(10,"10"),(50,"50"),(100,"100")]
+
+    def add_archive_report_lists_update():
+        AddArchiveReport.deviceIPList.clear()
+        AddArchiveReport.deviceNameList.clear()
+        AddArchiveReport.addInfoList.clear()
+        AddArchiveReport.typeList.clear()
+        with app.app_context():
+            deviceIPs = Archive.query.distinct(
+                Archive.deviceIP).group_by(Archive.deviceIP)
+            for deviceIP in deviceIPs:
+                # print(deviceIP.deviceIP)
+                AddArchiveReport.deviceIPList.append(
+                    (deviceIP.deviceIP, deviceIP.deviceIP))
+
+            deviceNames = Archive.query.distinct(
+                Archive.deviceName).group_by(Archive.deviceName)
+            for deviceName in deviceNames:
+                # print(deviceName.deviceName)
+                AddArchiveReport.deviceNameList.append(
+                    (deviceName.deviceName, deviceName.deviceName))
+
+            addInfos = Archive.query.distinct(
+                Archive.addInfo).group_by(Archive.addInfo)
+            for addInfo in addInfos:
+                # print(addInfo.addInfo)
+                AddArchiveReport.addInfoList.append((addInfo.addInfo, addInfo.addInfo))
+
+            types = Archive.query.distinct(Archive.type).group_by(Archive.type)
+            # print(deviceIPs)
+            # print("deviceIPs")
+            for type in types:
+                # print(type.type)
+                AddArchiveReport.typeList.append((type.type, type.type))
+
+
 
     title = StringField(label='title', validators= [DataRequired(),Length(min=1, max=30, message='title: must be between 1 and 30 characters.')])
     description = StringField(label='description', validators= [DataRequired(),Length(min=1, max=60, message='description: must be between 1 and 60 characters.')])
