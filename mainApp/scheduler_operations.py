@@ -2,7 +2,7 @@ from mainApp.webContent import WebContentCollector, LinkCreator
 from mainApp.report_creator import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
-from mainApp.models.model import ArchiveFunctions
+from mainApp.models.archive_functions import ArchiveFunctions
 from mainApp.models.device import Devices
 from mainApp.models.function import DevicesFunctions
 from mainApp.models.scheduler import FunctionScheduler

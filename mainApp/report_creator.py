@@ -1,4 +1,4 @@
-from mainApp.models.model import ArchiveFunctions
+from mainApp.models.archive_functions import ArchiveFunctions
 from mainApp.models.archive import Archive
 from mainApp.models.archive_report import ArchiveReport
 import time

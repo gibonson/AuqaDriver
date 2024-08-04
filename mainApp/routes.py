@@ -1,21 +1,33 @@
-from mainApp import app, db, sched
-from sqlalchemy import create_engine, text
-from flask import Flask, render_template, redirect, url_for, request, flash, Markup, jsonify
-from mainApp.forms import AddDevice, AddDeviceFunctions, AddFunctionScheduler, ArchiveSearch, EmailForm, AddArchiveReport, AddArchiveReportFunction, AddNotification
-from mainApp.models.model import ArchiveFunctions, Notification
-from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
-from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
-from mainApp.models.function import DevicesFunctions, DeviceFunctionsLister, DeviceFunctionAdder
-from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder
-from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
-from mainApp.webContent import LinkCreator, WebContentCollector
-from mainApp.report_creator import ReportCreator
+# Standard library imports
 from datetime import datetime, timedelta
-from mainApp.scheduler_operations import sched_start
-from mainApp.email_operations import emailSender
-from mainApp.dashboard_data import DashboardData
 
-from mainApp import logger
+# Third-party imports
+from flask import Flask, Markup, flash, jsonify, redirect, render_template, request, url_for
+from sqlalchemy import create_engine, text
+
+# Local application/library specific imports
+from mainApp import app, db, logger, sched
+from mainApp.dashboard_data import DashboardData
+from mainApp.email_operations import emailSender
+from mainApp.forms.add_archive_report import AddArchiveReport
+from mainApp.forms.add_archive_report_fnction import AddArchiveReportFunction
+from mainApp.forms.add_device import AddDevice
+from mainApp.forms.add_device_functions import AddDeviceFunctions
+from mainApp.forms.add_function_scheduler import AddFunctionScheduler
+from mainApp.forms.add_notification import AddNotification
+from mainApp.forms.archive_search import ArchiveSearch
+from mainApp.forms.send_email import EmailSend
+from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
+from mainApp.models.archive_functions import ArchiveFunctions
+from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
+from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager, Devices
+from mainApp.models.function import DeviceFunctionAdder, DeviceFunctionsLister, DevicesFunctions
+from mainApp.models.notification import Notification, NotificationLister
+from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder
+from mainApp.report_creator import ReportCreator
+from mainApp.scheduler_operations import sched_start
+from mainApp.webContent import LinkCreator, WebContentCollector
+
 
 # -----------------------------------------
 # create new DB
@@ -311,7 +323,7 @@ def get_archive_report_all():
 
 @app.route('/emailSend', methods=['POST', 'GET'])
 def email_send():
-    form = EmailForm()
+    form = EmailSend()
     if form.validate_on_submit():
         emailSender(form.subject.data, form.message.data, flashMessage=True)
     return render_template("emailSend.html", form=form, state=str(sched.state))
@@ -383,7 +395,8 @@ def notification_add():
 
 @app.route("/notification_list")
 def notification_list():
-    notificationList = Notification.query.order_by(Notification.id.desc()).all()
+    notificationLister = NotificationLister()
+    notificationList = notificationLister.get_list()
     return render_template("notificationList.html", notificationList=notificationList, datetime=datetime, state=str(sched.state))
 
 @app.route("/change_notification_status/<id>")
