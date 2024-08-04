@@ -7,7 +7,7 @@ from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, Archive
 from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
 from mainApp.models.function import DevicesFunctions, DeviceFunctionsLister, DeviceFunctionAdder
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder
-from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister
+from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
 from mainApp.webContent import LinkCreator, WebContentCollector
 from mainApp.report_creator import ReportCreator
 from datetime import datetime, timedelta
@@ -253,13 +253,12 @@ def archive_report_add():
     AddArchiveReport.add_archive_report_lists_update()
     form = AddArchiveReport()
     if form.validate_on_submit():
-        logger.debug(request.form.to_dict(flat=False))
-        srchive_report_to_add = ArchiveReport(title=form.title.data, description=form.description.data, deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, addInfo=form.addInfo.data, type=form.type.data, avgOrSum=form.avgOrSum.data,
-                                              timerRangeHours=form.timerRangeHours.data, quantityValues=form.quantityValues.data, minValue=form.minValue.data, okMinValue=form.okMinValue.data, okMaxValue=form.okMaxValue.data, maxValue=form.maxValue.data)
-        db.session.add(srchive_report_to_add)
-        db.session.commit()
-        flash('Archive Report added', category='success')
+        archiveReporAdder = ArchiveReporAdder(request.form.to_dict(flat=False))
+        flash(str(archiveReporAdder), category='success')
         return redirect(url_for("archive_report_list"))
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
+        flash(form.errors, category='danger')
     return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
 
 

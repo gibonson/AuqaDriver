@@ -1,0 +1,50 @@
+2024-08-04 23:14:18,262 - CRITICAL - 
+
+2024-08-04 23:14:18,262 - CRITICAL - App start
+2024-08-04 23:14:18,262 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-04 23:14:18,270 - INFO - Database exists
+2024-08-04 23:14:18,427 - INFO - Scheduler starts running
+2024-08-04 23:14:18,437 - DEBUG - 
+
+2024-08-04 23:14:18,437 - DEBUG - schedulerID = 1interval--0-223
+2024-08-04 23:14:18,439 - DEBUG - job_type = job_collector
+2024-08-04 23:14:18,439 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-04 23:14:18,440 - DEBUG - trigger = interval
+2024-08-04 23:14:18,440 - DEBUG - year = None
+2024-08-04 23:14:18,440 - DEBUG - month = None
+2024-08-04 23:14:18,440 - DEBUG - day = 0
+2024-08-04 23:14:18,440 - DEBUG - day_of_week = None
+2024-08-04 23:14:18,440 - DEBUG - hour = 2
+2024-08-04 23:14:18,440 - DEBUG - minute = 2
+2024-08-04 23:14:18,440 - DEBUG - second = 4
+2024-08-04 23:14:18,440 - DEBUG - 
+
+2024-08-04 23:14:18,440 - DEBUG - schedulerID = S1interval--0-0020
+2024-08-04 23:14:18,441 - DEBUG - job_type = job_collector
+2024-08-04 23:14:18,441 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-04 23:14:18,441 - DEBUG - trigger = interval
+2024-08-04 23:14:18,442 - DEBUG - year = None
+2024-08-04 23:14:18,442 - DEBUG - month = None
+2024-08-04 23:14:18,442 - DEBUG - day = 0
+2024-08-04 23:14:18,442 - DEBUG - day_of_week = None
+2024-08-04 23:14:18,442 - DEBUG - hour = 0
+2024-08-04 23:14:18,442 - DEBUG - minute = 5
+2024-08-04 23:14:18,442 - DEBUG - second = 0
+2024-08-04 23:14:18,442 - DEBUG - 
+
+2024-08-04 23:14:18,443 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-04 23:14:18,443 - DEBUG - job_type = report_sender
+2024-08-04 23:14:18,443 - DEBUG - httpLink = R1
+2024-08-04 23:14:18,443 - DEBUG - trigger = interval
+2024-08-04 23:14:18,443 - DEBUG - year = None
+2024-08-04 23:14:18,443 - DEBUG - month = None
+2024-08-04 23:14:18,443 - DEBUG - day = 0
+2024-08-04 23:14:18,443 - DEBUG - day_of_week = None
+2024-08-04 23:14:18,443 - DEBUG - hour = 1
+2024-08-04 23:14:18,443 - DEBUG - minute = 0
+2024-08-04 23:14:18,444 - DEBUG - second = 0
+2024-08-04 23:14:18,445 - CRITICAL - Scheduler started
+2024-08-04 23:14:38,243 - ERROR - An error occurred while adding : {'title': ['This field is required.'], 'description': ['This field is required.']}
+2024-08-04 23:14:46,650 - INFO - Archive Repor to DB
+2024-08-04 23:15:12,731 - INFO - Archive Repor to DB
+2024-08-04 23:15:45,100 - INFO - Archive Repor to DB
