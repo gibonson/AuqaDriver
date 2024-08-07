@@ -44,8 +44,10 @@ notificationList
                     <td>{{notification.message}}</td>
                     <td>                        
                         <div class="btn-group">
-                            <a href="{{url_for('change_notification_status',id=notification.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">change_notification_status</a>
-                        </div></td>
+                            <a href="{{url_for('change_notification_status',id=notification.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">change_notification_status</a>
+                            <a href="{{url_for('remove_notification',id=notification.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">remove_notification</a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

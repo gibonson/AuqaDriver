@@ -22,6 +22,7 @@ functionsScheduler
                     <th>functionDescription</th>
                     <th>functionParameters</th>
                     <th>DB Trigger [Y:M:D-day-H:M:S]</th>
+                    <th>Action</th>
                 </tr>
                 {% for functionScheduler in functionsScheduler %}
                 <tr>
@@ -47,6 +48,11 @@ functionsScheduler
                     <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].functionDescription}}</td>
                     <td>{{devicesFunctions[int(functionScheduler.functionId.replace("S", ''))-1].functionParameters}}</td>
                     <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]
+                    </td>
+                    <td><div class="btn-group">
+                            <a href="{{url_for('scheduler_remove', id = functionScheduler.id)}}"
+                                class="btn btn-danger btn-lg active" role="button" aria-pressed="true">remove_device_function</a>
+                        </div>
                     </td>
                     {% endif %}
                 </tr>

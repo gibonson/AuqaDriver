@@ -49,3 +49,23 @@ class DeviceFunctionAdder():
             self.message = "Error: Device function could not be added"
     def __str__(self) -> str:
         return self.message
+    
+
+class DeviceFunctionsManager:
+    def __init__(self, id):
+        self.id = id
+        self.message = ""
+        self.device = DevicesFunctions.query.filter_by(id=self.id).first()
+
+    def remove_device_function(self):
+        if self.device:
+            DevicesFunctions.query.filter(DevicesFunctions.id == self.id).delete()
+            db.session.commit()
+            logger.info(f'DevicesFunctions with ID {self.id} removed')
+            self.message = f'DevicesFunctions with ID {self.id} removed'
+        else:
+            logger.error(f'DevicesFunctions with ID {self.id} does not exist')
+            self.message = f'DevicesFunctions with ID {self.id} does not exist'
+    
+    def __str__(self) -> str:
+        return self.message

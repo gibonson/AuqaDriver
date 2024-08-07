@@ -18,11 +18,11 @@ from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
-from mainApp.models.archive_functions import ArchiveFunctions
+from mainApp.models.archive_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
 from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
-from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager, Devices
-from mainApp.models.function import DeviceFunctionAdder, DeviceFunctionsLister, DevicesFunctions
-from mainApp.models.notification import Notification, NotificationLister
+from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager 
+from mainApp.models.function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
+from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder
 from mainApp.report_creator import ReportCreator
 from mainApp.scheduler_operations import sched_start
@@ -174,18 +174,21 @@ def scheduler_list():
 
 @app.route("/get_jobs")
 def get_jobs():
-    print(sched.get_jobs())
+    logger.debug(sched.get_jobs())
     for job in sched.get_jobs():
-        print("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
+        logger.info("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
               str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
     return render_template('getJobs.html', get_jobs=sched.get_jobs(), state=str(sched.state))
 
 
 @app.route("/functions_scheduler_list_get_jobs")
 def functions_scheduler_list_get_jobs():
-    functionsScheduler = FunctionScheduler.query.all()
-    devicesFunctions = DevicesFunctions.query.all()
-    devices = Devices.query.all()
+    deviceLister = DeviceLister()
+    devices = deviceLister.get_list()
+    deviceFunctionsLister = DeviceFunctionsLister()
+    devicesFunctions = deviceFunctionsLister.get_list()
+    functionSchedulerLister = FunctionSchedulerLister()
+    functionsScheduler = functionSchedulerLister.get_list()
     return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state), str = str, int = int)
 
 
@@ -259,6 +262,9 @@ def archive_search():
         ).order_by(Archive.id.desc()).limit(form.limit.data)
     return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), dataSubOneDay=dataSubOneDay)
 
+# -----------------------------------------
+# archive report section
+# -----------------------------------------
 
 @app.route("/archive_report_add", methods=['POST', 'GET'])
 def archive_report_add():
@@ -273,48 +279,51 @@ def archive_report_add():
         flash(form.errors, category='danger')
     return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
 
-
-@app.route("/archive_report_functions_add", methods=['POST', 'GET'])
-def archive_report_functions_add():
-    AddArchiveReportFunction.archiveReportIdList.clear()
-
-    archiveReports = ArchiveReport.query.all()
-    for archiveReport in archiveReports:
-        AddArchiveReportFunction.archiveReportIdList.append(
-            (archiveReport.id, archiveReport.title))
-    form = AddArchiveReportFunction()
-
-    if form.validate_on_submit():
-        print(request.form.to_dict(flat=False))
-        archive_report_function_to_add = ArchiveFunctions(title=form.title.data, description=form.description.data, archiveReportIds=str(form.archiveReportIds.data), functionStatus=form.functionStatus.data,)
-        db.session.add(archive_report_function_to_add)
-        db.session.commit()
-        flash('Archive Report Functions added', category='success')
-        return redirect(url_for("archive_report_functions_add"))
-
-    return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
-
-@app.route("/archive_functions_list")
-def archive_functions_list():
-    archiveFunctionsList = ArchiveFunctions.query.order_by(ArchiveFunctions.id.desc()).all()
-    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, datetime=datetime, state=str(sched.state))
-
 @app.route("/archive_report_list")
 def archive_report_list():
     archiveReportLister = ArchiveReportLister()
     archiveReportList = archiveReportLister.get_list()
     return render_template("archiveReportList.html", archiveReportList=archiveReportList, state=str(sched.state))
 
+
+# -----------------------------------------
+# archive report functions section
+# -----------------------------------------
+
+@app.route("/archive_report_functions_add", methods=['POST', 'GET'])
+def archive_report_functions_add():
+    AddArchiveReportFunction.archiveReportIdList.clear()
+    archiveReports = ArchiveReport.query.all()
+    for archiveReport in archiveReports:
+        AddArchiveReportFunction.archiveReportIdList.append(
+            (archiveReport.id, archiveReport.title))
+    form = AddArchiveReportFunction()
+    if form.validate_on_submit():
+        archiveFunctionsAdder = ArchiveFunctionsAdder(request.form.to_dict(flat=False))
+        flash(str(archiveFunctionsAdder), category='success')
+        return redirect(url_for("archive_functions_list"))
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
+        flash(form.errors, category='danger')
+        return redirect(url_for("archive_report_functions_add"))
+    return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
+
+@app.route("/archive_functions_list")
+def archive_functions_list():
+    archiveFunctionsLister = ArchiveFunctionsLister()
+    archiveFunctionsList = archiveFunctionsLister.get_list()
+    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, datetime=datetime, state=str(sched.state))
+
 @app.route("/get_archive_report/<id>")
 def get_archive_report(id):
     reportCreator = ReportCreator()
-    reportCreator.create(id)
-    return reportCreator.create(id)
+    one_line = reportCreator.create_one_line(id)
+    return one_line
 
 @app.route("/get_archive_report_all")
 def get_archive_report_all():
     reportCreator = ReportCreator()
-    report = reportCreator.createAll()
+    report = reportCreator.create_all()
     return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
 
 # -----------------------------------------
@@ -386,11 +395,12 @@ def create_friend():
 def notification_add():
     form = AddNotification()
     if form.validate_on_submit():
-        notification_to_add = Notification(description=form.description.data, deviceIP=form.deviceIP.data, deviceName=form.deviceName.data, addInfo =form.addInfo.data, type =form.type.data, condition =form.condition.data, value =form.value.data, notificationStatus =form.notificationStatus.data, notificationType =form.notificationType.data, functionId =form.functionId.data, message=form.message.data)
-        db.session.add(notification_to_add)
-        db.session.commit()
-        flash('Notification added', category='success')
-        return redirect(url_for("notification_add"))
+        notificationAdder = NotificationAdder(request.form.to_dict(flat=False))
+        flash(str(notificationAdder), category='success')
+        return redirect(url_for("notification_list"))
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
+        flash(form.errors, category='danger')
     return render_template("notificationAdd.html", form=form, state=str(sched.state))
 
 @app.route("/notification_list")
@@ -401,15 +411,14 @@ def notification_list():
 
 @app.route("/change_notification_status/<id>")
 def change_notification_status(id):
-    notification = Notification.query.filter_by(id = id).first()
-    if notification.notificationStatus == "Ready":
-        notification.notificationStatus = "Not ready"
-        flash('ID: '+ id + ', Notification status chnged to: ' +' Not ready', category='info')
-        db.session.commit()
-    elif notification.notificationStatus == "Not ready":
-        notification.notificationStatus = "Ready"
-        db.session.commit()
-        flash('ID: '+ id + ', Notification status chnged to: ' + ' Ready', category='info')
-    else:
-        flash('ID: '+ id + ', Status error: ', category='info')
+    manager = NotificationManager(id)
+    manager.change_status()
+    flash(str(manager), category='danger')
+    return redirect(url_for("notification_list"))
+
+@app.route("/remove_notification/<id>")
+def remove_notification(id):
+    manager = NotificationManager(id)
+    manager.remove_notification()
+    flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))

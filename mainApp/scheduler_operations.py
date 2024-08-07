@@ -17,7 +17,7 @@ def job_collector(http_address):
 def report_sender(scheduler_id):
    logger.info(f"Report sends: {scheduler_id}")
    reportSender = ReportSender(scheduler_id)
-   reportSender.collectAndSend()
+   reportSender.collect_and_send()
    logger.info(f"Report sent")
 
 

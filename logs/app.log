@@ -1,996 +1,1482 @@
-2024-08-04 23:14:18,262 - CRITICAL - 
-
-2024-08-04 23:14:18,262 - CRITICAL - App start
-2024-08-04 23:14:18,262 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:14:18,270 - INFO - Database exists
-2024-08-04 23:14:18,427 - INFO - Scheduler starts running
-2024-08-04 23:14:18,437 - DEBUG - 
-
-2024-08-04 23:14:18,437 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:14:18,439 - DEBUG - job_type = job_collector
-2024-08-04 23:14:18,439 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:14:18,440 - DEBUG - trigger = interval
-2024-08-04 23:14:18,440 - DEBUG - year = None
-2024-08-04 23:14:18,440 - DEBUG - month = None
-2024-08-04 23:14:18,440 - DEBUG - day = 0
-2024-08-04 23:14:18,440 - DEBUG - day_of_week = None
-2024-08-04 23:14:18,440 - DEBUG - hour = 2
-2024-08-04 23:14:18,440 - DEBUG - minute = 2
-2024-08-04 23:14:18,440 - DEBUG - second = 4
-2024-08-04 23:14:18,440 - DEBUG - 
-
-2024-08-04 23:14:18,440 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:14:18,441 - DEBUG - job_type = job_collector
-2024-08-04 23:14:18,441 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:14:18,441 - DEBUG - trigger = interval
-2024-08-04 23:14:18,442 - DEBUG - year = None
-2024-08-04 23:14:18,442 - DEBUG - month = None
-2024-08-04 23:14:18,442 - DEBUG - day = 0
-2024-08-04 23:14:18,442 - DEBUG - day_of_week = None
-2024-08-04 23:14:18,442 - DEBUG - hour = 0
-2024-08-04 23:14:18,442 - DEBUG - minute = 5
-2024-08-04 23:14:18,442 - DEBUG - second = 0
-2024-08-04 23:14:18,442 - DEBUG - 
-
-2024-08-04 23:14:18,443 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:14:18,443 - DEBUG - job_type = report_sender
-2024-08-04 23:14:18,443 - DEBUG - httpLink = R1
-2024-08-04 23:14:18,443 - DEBUG - trigger = interval
-2024-08-04 23:14:18,443 - DEBUG - year = None
-2024-08-04 23:14:18,443 - DEBUG - month = None
-2024-08-04 23:14:18,443 - DEBUG - day = 0
-2024-08-04 23:14:18,443 - DEBUG - day_of_week = None
-2024-08-04 23:14:18,443 - DEBUG - hour = 1
-2024-08-04 23:14:18,443 - DEBUG - minute = 0
-2024-08-04 23:14:18,444 - DEBUG - second = 0
-2024-08-04 23:14:18,445 - CRITICAL - Scheduler started
-2024-08-04 23:14:38,243 - ERROR - An error occurred while adding : {'title': ['This field is required.'], 'description': ['This field is required.']}
-2024-08-04 23:14:46,650 - INFO - Archive Repor to DB
-2024-08-04 23:15:12,731 - INFO - Archive Repor to DB
-2024-08-04 23:15:45,100 - INFO - Archive Repor to DB
-2024-08-04 23:24:05,125 - CRITICAL - 
-
-2024-08-04 23:24:05,125 - CRITICAL - App start
-2024-08-04 23:24:05,126 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:24:05,131 - INFO - Database exists
-2024-08-04 23:24:05,260 - INFO - Scheduler starts running
-2024-08-04 23:24:05,269 - DEBUG - 
-
-2024-08-04 23:24:05,269 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:24:05,270 - DEBUG - job_type = job_collector
-2024-08-04 23:24:05,271 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:24:05,271 - DEBUG - trigger = interval
-2024-08-04 23:24:05,271 - DEBUG - year = None
-2024-08-04 23:24:05,271 - DEBUG - month = None
-2024-08-04 23:24:05,271 - DEBUG - day = 0
-2024-08-04 23:24:05,271 - DEBUG - day_of_week = None
-2024-08-04 23:24:05,271 - DEBUG - hour = 2
-2024-08-04 23:24:05,271 - DEBUG - minute = 2
-2024-08-04 23:24:05,271 - DEBUG - second = 4
-2024-08-04 23:24:05,272 - DEBUG - 
-
-2024-08-04 23:24:05,272 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:24:05,273 - DEBUG - job_type = job_collector
-2024-08-04 23:24:05,273 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:24:05,273 - DEBUG - trigger = interval
-2024-08-04 23:24:05,273 - DEBUG - year = None
-2024-08-04 23:24:05,273 - DEBUG - month = None
-2024-08-04 23:24:05,273 - DEBUG - day = 0
-2024-08-04 23:24:05,273 - DEBUG - day_of_week = None
-2024-08-04 23:24:05,273 - DEBUG - hour = 0
-2024-08-04 23:24:05,274 - DEBUG - minute = 5
-2024-08-04 23:24:05,274 - DEBUG - second = 0
-2024-08-04 23:24:05,274 - DEBUG - 
-
-2024-08-04 23:24:05,274 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:24:05,274 - DEBUG - job_type = report_sender
-2024-08-04 23:24:05,275 - DEBUG - httpLink = R1
-2024-08-04 23:24:05,275 - DEBUG - trigger = interval
-2024-08-04 23:24:05,275 - DEBUG - year = None
-2024-08-04 23:24:05,275 - DEBUG - month = None
-2024-08-04 23:24:05,275 - DEBUG - day = 0
-2024-08-04 23:24:05,275 - DEBUG - day_of_week = None
-2024-08-04 23:24:05,275 - DEBUG - hour = 1
-2024-08-04 23:24:05,275 - DEBUG - minute = 0
-2024-08-04 23:24:05,275 - DEBUG - second = 0
-2024-08-04 23:24:05,277 - CRITICAL - Scheduler started
-2024-08-04 23:26:23,923 - CRITICAL - 
-
-2024-08-04 23:26:23,923 - CRITICAL - App start
-2024-08-04 23:26:23,923 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:26:23,929 - INFO - Database exists
-2024-08-04 23:26:36,559 - CRITICAL - 
-
-2024-08-04 23:26:36,559 - CRITICAL - App start
-2024-08-04 23:26:36,560 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:26:36,567 - INFO - Database exists
-2024-08-04 23:26:50,809 - CRITICAL - 
-
-2024-08-04 23:26:50,810 - CRITICAL - App start
-2024-08-04 23:26:50,810 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:26:50,816 - INFO - Database exists
-2024-08-04 23:27:01,508 - CRITICAL - 
-
-2024-08-04 23:27:01,508 - CRITICAL - App start
-2024-08-04 23:27:01,509 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:27:01,515 - INFO - Database exists
-2024-08-04 23:27:01,638 - INFO - Scheduler starts running
-2024-08-04 23:27:01,648 - DEBUG - 
-
-2024-08-04 23:27:01,648 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:27:01,651 - DEBUG - job_type = job_collector
-2024-08-04 23:27:01,651 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:27:01,652 - DEBUG - trigger = interval
-2024-08-04 23:27:01,652 - DEBUG - year = None
-2024-08-04 23:27:01,652 - DEBUG - month = None
-2024-08-04 23:27:01,652 - DEBUG - day = 0
-2024-08-04 23:27:01,653 - DEBUG - day_of_week = None
-2024-08-04 23:27:01,653 - DEBUG - hour = 2
-2024-08-04 23:27:01,653 - DEBUG - minute = 2
-2024-08-04 23:27:01,653 - DEBUG - second = 4
-2024-08-04 23:27:01,653 - DEBUG - 
-
-2024-08-04 23:27:01,654 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:27:01,655 - DEBUG - job_type = job_collector
-2024-08-04 23:27:01,655 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:27:01,655 - DEBUG - trigger = interval
-2024-08-04 23:27:01,656 - DEBUG - year = None
-2024-08-04 23:27:01,656 - DEBUG - month = None
-2024-08-04 23:27:01,656 - DEBUG - day = 0
-2024-08-04 23:27:01,656 - DEBUG - day_of_week = None
-2024-08-04 23:27:01,657 - DEBUG - hour = 0
-2024-08-04 23:27:01,657 - DEBUG - minute = 5
-2024-08-04 23:27:01,657 - DEBUG - second = 0
-2024-08-04 23:27:01,657 - DEBUG - 
-
-2024-08-04 23:27:01,657 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:27:01,658 - DEBUG - job_type = report_sender
-2024-08-04 23:27:01,658 - DEBUG - httpLink = R1
-2024-08-04 23:27:01,658 - DEBUG - trigger = interval
-2024-08-04 23:27:01,658 - DEBUG - year = None
-2024-08-04 23:27:01,659 - DEBUG - month = None
-2024-08-04 23:27:01,659 - DEBUG - day = 0
-2024-08-04 23:27:01,659 - DEBUG - day_of_week = None
-2024-08-04 23:27:01,659 - DEBUG - hour = 1
-2024-08-04 23:27:01,660 - DEBUG - minute = 0
-2024-08-04 23:27:01,660 - DEBUG - second = 0
-2024-08-04 23:27:01,661 - CRITICAL - Scheduler started
-2024-08-04 23:31:49,284 - CRITICAL - 
-
-2024-08-04 23:31:49,285 - CRITICAL - App start
-2024-08-04 23:31:49,285 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:31:49,291 - INFO - Database exists
-2024-08-04 23:31:49,413 - INFO - Scheduler starts running
-2024-08-04 23:31:49,423 - DEBUG - 
-
-2024-08-04 23:31:49,423 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:31:49,425 - DEBUG - job_type = job_collector
-2024-08-04 23:31:49,426 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:31:49,426 - DEBUG - trigger = interval
-2024-08-04 23:31:49,426 - DEBUG - year = None
-2024-08-04 23:31:49,426 - DEBUG - month = None
-2024-08-04 23:31:49,426 - DEBUG - day = 0
-2024-08-04 23:31:49,426 - DEBUG - day_of_week = None
-2024-08-04 23:31:49,427 - DEBUG - hour = 2
-2024-08-04 23:31:49,427 - DEBUG - minute = 2
-2024-08-04 23:31:49,427 - DEBUG - second = 4
-2024-08-04 23:31:49,427 - DEBUG - 
-
-2024-08-04 23:31:49,428 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:31:49,428 - DEBUG - job_type = job_collector
-2024-08-04 23:31:49,429 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:31:49,429 - DEBUG - trigger = interval
-2024-08-04 23:31:49,429 - DEBUG - year = None
-2024-08-04 23:31:49,429 - DEBUG - month = None
-2024-08-04 23:31:49,429 - DEBUG - day = 0
-2024-08-04 23:31:49,429 - DEBUG - day_of_week = None
-2024-08-04 23:31:49,429 - DEBUG - hour = 0
-2024-08-04 23:31:49,430 - DEBUG - minute = 5
-2024-08-04 23:31:49,430 - DEBUG - second = 0
-2024-08-04 23:31:49,430 - DEBUG - 
-
-2024-08-04 23:31:49,430 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:31:49,430 - DEBUG - job_type = report_sender
-2024-08-04 23:31:49,430 - DEBUG - httpLink = R1
-2024-08-04 23:31:49,430 - DEBUG - trigger = interval
-2024-08-04 23:31:49,430 - DEBUG - year = None
-2024-08-04 23:31:49,431 - DEBUG - month = None
-2024-08-04 23:31:49,431 - DEBUG - day = 0
-2024-08-04 23:31:49,431 - DEBUG - day_of_week = None
-2024-08-04 23:31:49,431 - DEBUG - hour = 1
-2024-08-04 23:31:49,431 - DEBUG - minute = 0
-2024-08-04 23:31:49,431 - DEBUG - second = 0
-2024-08-04 23:31:49,432 - CRITICAL - Scheduler started
-2024-08-04 23:35:29,409 - CRITICAL - 
-
-2024-08-04 23:35:29,410 - CRITICAL - App start
-2024-08-04 23:35:29,410 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:35:29,415 - INFO - Database exists
-2024-08-04 23:35:29,556 - INFO - Scheduler starts running
-2024-08-04 23:35:29,565 - DEBUG - 
-
-2024-08-04 23:35:29,566 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:35:29,567 - DEBUG - job_type = job_collector
-2024-08-04 23:35:29,568 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:35:29,568 - DEBUG - trigger = interval
-2024-08-04 23:35:29,569 - DEBUG - year = None
-2024-08-04 23:35:29,569 - DEBUG - month = None
-2024-08-04 23:35:29,569 - DEBUG - day = 0
-2024-08-04 23:35:29,569 - DEBUG - day_of_week = None
-2024-08-04 23:35:29,569 - DEBUG - hour = 2
-2024-08-04 23:35:29,570 - DEBUG - minute = 2
-2024-08-04 23:35:29,570 - DEBUG - second = 4
-2024-08-04 23:35:29,570 - DEBUG - 
-
-2024-08-04 23:35:29,570 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:35:29,572 - DEBUG - job_type = job_collector
-2024-08-04 23:35:29,572 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:35:29,572 - DEBUG - trigger = interval
-2024-08-04 23:35:29,572 - DEBUG - year = None
-2024-08-04 23:35:29,573 - DEBUG - month = None
-2024-08-04 23:35:29,573 - DEBUG - day = 0
-2024-08-04 23:35:29,573 - DEBUG - day_of_week = None
-2024-08-04 23:35:29,573 - DEBUG - hour = 0
-2024-08-04 23:35:29,574 - DEBUG - minute = 5
-2024-08-04 23:35:29,574 - DEBUG - second = 0
-2024-08-04 23:35:29,574 - DEBUG - 
-
-2024-08-04 23:35:29,575 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:35:29,575 - DEBUG - job_type = report_sender
-2024-08-04 23:35:29,575 - DEBUG - httpLink = R1
-2024-08-04 23:35:29,576 - DEBUG - trigger = interval
-2024-08-04 23:35:29,576 - DEBUG - year = None
-2024-08-04 23:35:29,576 - DEBUG - month = None
-2024-08-04 23:35:29,576 - DEBUG - day = 0
-2024-08-04 23:35:29,576 - DEBUG - day_of_week = None
-2024-08-04 23:35:29,577 - DEBUG - hour = 1
-2024-08-04 23:35:29,577 - DEBUG - minute = 0
-2024-08-04 23:35:29,577 - DEBUG - second = 0
-2024-08-04 23:35:29,579 - CRITICAL - Scheduler started
-2024-08-04 23:39:01,630 - CRITICAL - 
-
-2024-08-04 23:39:01,631 - CRITICAL - App start
-2024-08-04 23:39:01,631 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:39:01,660 - INFO - Database exists
-2024-08-04 23:39:02,322 - INFO - Scheduler starts running
-2024-08-04 23:39:02,332 - DEBUG - 
-
-2024-08-04 23:39:02,332 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:39:02,334 - DEBUG - job_type = job_collector
-2024-08-04 23:39:02,334 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:39:02,335 - DEBUG - trigger = interval
-2024-08-04 23:39:02,335 - DEBUG - year = None
-2024-08-04 23:39:02,335 - DEBUG - month = None
-2024-08-04 23:39:02,335 - DEBUG - day = 0
-2024-08-04 23:39:02,335 - DEBUG - day_of_week = None
-2024-08-04 23:39:02,335 - DEBUG - hour = 2
-2024-08-04 23:39:02,335 - DEBUG - minute = 2
-2024-08-04 23:39:02,335 - DEBUG - second = 4
-2024-08-04 23:39:02,336 - DEBUG - 
-
-2024-08-04 23:39:02,336 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:39:02,336 - DEBUG - job_type = job_collector
-2024-08-04 23:39:02,337 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:39:02,337 - DEBUG - trigger = interval
-2024-08-04 23:39:02,337 - DEBUG - year = None
-2024-08-04 23:39:02,337 - DEBUG - month = None
-2024-08-04 23:39:02,337 - DEBUG - day = 0
-2024-08-04 23:39:02,337 - DEBUG - day_of_week = None
-2024-08-04 23:39:02,337 - DEBUG - hour = 0
-2024-08-04 23:39:02,337 - DEBUG - minute = 5
-2024-08-04 23:39:02,337 - DEBUG - second = 0
-2024-08-04 23:39:02,338 - DEBUG - 
-
-2024-08-04 23:39:02,338 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:39:02,338 - DEBUG - job_type = report_sender
-2024-08-04 23:39:02,338 - DEBUG - httpLink = R1
-2024-08-04 23:39:02,338 - DEBUG - trigger = interval
-2024-08-04 23:39:02,338 - DEBUG - year = None
-2024-08-04 23:39:02,338 - DEBUG - month = None
-2024-08-04 23:39:02,338 - DEBUG - day = 0
-2024-08-04 23:39:02,339 - DEBUG - day_of_week = None
-2024-08-04 23:39:02,339 - DEBUG - hour = 1
-2024-08-04 23:39:02,339 - DEBUG - minute = 0
-2024-08-04 23:39:02,339 - DEBUG - second = 0
-2024-08-04 23:39:02,349 - CRITICAL - Scheduler started
-2024-08-04 23:44:12,018 - CRITICAL - 
-
-2024-08-04 23:44:12,018 - CRITICAL - App start
-2024-08-04 23:44:12,019 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:44:12,024 - INFO - Database exists
-2024-08-04 23:44:12,179 - INFO - Scheduler starts running
-2024-08-04 23:44:12,188 - DEBUG - 
-
-2024-08-04 23:44:12,188 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:44:12,190 - DEBUG - job_type = job_collector
-2024-08-04 23:44:12,190 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:44:12,191 - DEBUG - trigger = interval
-2024-08-04 23:44:12,191 - DEBUG - year = None
-2024-08-04 23:44:12,191 - DEBUG - month = None
-2024-08-04 23:44:12,191 - DEBUG - day = 0
-2024-08-04 23:44:12,191 - DEBUG - day_of_week = None
-2024-08-04 23:44:12,192 - DEBUG - hour = 2
-2024-08-04 23:44:12,192 - DEBUG - minute = 2
-2024-08-04 23:44:12,192 - DEBUG - second = 4
-2024-08-04 23:44:12,192 - DEBUG - 
-
-2024-08-04 23:44:12,192 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:44:12,193 - DEBUG - job_type = job_collector
-2024-08-04 23:44:12,193 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:44:12,194 - DEBUG - trigger = interval
-2024-08-04 23:44:12,194 - DEBUG - year = None
-2024-08-04 23:44:12,194 - DEBUG - month = None
-2024-08-04 23:44:12,195 - DEBUG - day = 0
-2024-08-04 23:44:12,195 - DEBUG - day_of_week = None
-2024-08-04 23:44:12,195 - DEBUG - hour = 0
-2024-08-04 23:44:12,195 - DEBUG - minute = 5
-2024-08-04 23:44:12,195 - DEBUG - second = 0
-2024-08-04 23:44:12,196 - DEBUG - 
-
-2024-08-04 23:44:12,196 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:44:12,196 - DEBUG - job_type = report_sender
-2024-08-04 23:44:12,196 - DEBUG - httpLink = R1
-2024-08-04 23:44:12,197 - DEBUG - trigger = interval
-2024-08-04 23:44:12,197 - DEBUG - year = None
-2024-08-04 23:44:12,197 - DEBUG - month = None
-2024-08-04 23:44:12,197 - DEBUG - day = 0
-2024-08-04 23:44:12,197 - DEBUG - day_of_week = None
-2024-08-04 23:44:12,197 - DEBUG - hour = 1
-2024-08-04 23:44:12,198 - DEBUG - minute = 0
-2024-08-04 23:44:12,198 - DEBUG - second = 0
-2024-08-04 23:44:12,199 - CRITICAL - Scheduler started
-2024-08-04 23:44:17,942 - ERROR - An error occurred while adding : {'deviceIP': ['This field is required.'], 'deviceName': ['This field is required.']}
-2024-08-04 23:48:10,063 - CRITICAL - 
-
-2024-08-04 23:48:10,063 - CRITICAL - App start
-2024-08-04 23:48:10,063 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:48:10,069 - INFO - Database exists
-2024-08-04 23:48:10,231 - INFO - Scheduler starts running
-2024-08-04 23:48:10,241 - DEBUG - 
-
-2024-08-04 23:48:10,241 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:48:10,243 - DEBUG - job_type = job_collector
-2024-08-04 23:48:10,244 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:48:10,244 - DEBUG - trigger = interval
-2024-08-04 23:48:10,244 - DEBUG - year = None
-2024-08-04 23:48:10,245 - DEBUG - month = None
-2024-08-04 23:48:10,245 - DEBUG - day = 0
-2024-08-04 23:48:10,245 - DEBUG - day_of_week = None
-2024-08-04 23:48:10,246 - DEBUG - hour = 2
-2024-08-04 23:48:10,246 - DEBUG - minute = 2
-2024-08-04 23:48:10,246 - DEBUG - second = 4
-2024-08-04 23:48:10,247 - DEBUG - 
-
-2024-08-04 23:48:10,247 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:48:10,248 - DEBUG - job_type = job_collector
-2024-08-04 23:48:10,249 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:48:10,249 - DEBUG - trigger = interval
-2024-08-04 23:48:10,249 - DEBUG - year = None
-2024-08-04 23:48:10,249 - DEBUG - month = None
-2024-08-04 23:48:10,250 - DEBUG - day = 0
-2024-08-04 23:48:10,250 - DEBUG - day_of_week = None
-2024-08-04 23:48:10,250 - DEBUG - hour = 0
-2024-08-04 23:48:10,250 - DEBUG - minute = 5
-2024-08-04 23:48:10,250 - DEBUG - second = 0
-2024-08-04 23:48:10,251 - DEBUG - 
-
-2024-08-04 23:48:10,251 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:48:10,251 - DEBUG - job_type = report_sender
-2024-08-04 23:48:10,252 - DEBUG - httpLink = R1
-2024-08-04 23:48:10,252 - DEBUG - trigger = interval
-2024-08-04 23:48:10,252 - DEBUG - year = None
-2024-08-04 23:48:10,252 - DEBUG - month = None
-2024-08-04 23:48:10,253 - DEBUG - day = 0
-2024-08-04 23:48:10,253 - DEBUG - day_of_week = None
-2024-08-04 23:48:10,253 - DEBUG - hour = 1
-2024-08-04 23:48:10,253 - DEBUG - minute = 0
-2024-08-04 23:48:10,254 - DEBUG - second = 0
-2024-08-04 23:48:10,255 - CRITICAL - Scheduler started
-2024-08-04 23:52:40,881 - CRITICAL - 
-
-2024-08-04 23:52:40,881 - CRITICAL - App start
-2024-08-04 23:52:40,882 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:52:40,887 - INFO - Database exists
-2024-08-04 23:52:55,221 - CRITICAL - 
-
-2024-08-04 23:52:55,221 - CRITICAL - App start
-2024-08-04 23:52:55,222 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:52:55,228 - INFO - Database exists
-2024-08-04 23:52:55,371 - INFO - Scheduler starts running
-2024-08-04 23:52:55,381 - DEBUG - 
-
-2024-08-04 23:52:55,382 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:52:55,384 - DEBUG - job_type = job_collector
-2024-08-04 23:52:55,384 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:52:55,384 - DEBUG - trigger = interval
-2024-08-04 23:52:55,385 - DEBUG - year = None
-2024-08-04 23:52:55,385 - DEBUG - month = None
-2024-08-04 23:52:55,385 - DEBUG - day = 0
-2024-08-04 23:52:55,385 - DEBUG - day_of_week = None
-2024-08-04 23:52:55,385 - DEBUG - hour = 2
-2024-08-04 23:52:55,386 - DEBUG - minute = 2
-2024-08-04 23:52:55,386 - DEBUG - second = 4
-2024-08-04 23:52:55,386 - DEBUG - 
-
-2024-08-04 23:52:55,386 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:52:55,387 - DEBUG - job_type = job_collector
-2024-08-04 23:52:55,387 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:52:55,388 - DEBUG - trigger = interval
-2024-08-04 23:52:55,388 - DEBUG - year = None
-2024-08-04 23:52:55,388 - DEBUG - month = None
-2024-08-04 23:52:55,388 - DEBUG - day = 0
-2024-08-04 23:52:55,388 - DEBUG - day_of_week = None
-2024-08-04 23:52:55,389 - DEBUG - hour = 0
-2024-08-04 23:52:55,389 - DEBUG - minute = 5
-2024-08-04 23:52:55,389 - DEBUG - second = 0
-2024-08-04 23:52:55,389 - DEBUG - 
-
-2024-08-04 23:52:55,389 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:52:55,389 - DEBUG - job_type = report_sender
-2024-08-04 23:52:55,389 - DEBUG - httpLink = R1
-2024-08-04 23:52:55,390 - DEBUG - trigger = interval
-2024-08-04 23:52:55,390 - DEBUG - year = None
-2024-08-04 23:52:55,390 - DEBUG - month = None
-2024-08-04 23:52:55,390 - DEBUG - day = 0
-2024-08-04 23:52:55,390 - DEBUG - day_of_week = None
-2024-08-04 23:52:55,390 - DEBUG - hour = 1
-2024-08-04 23:52:55,390 - DEBUG - minute = 0
-2024-08-04 23:52:55,390 - DEBUG - second = 0
-2024-08-04 23:52:55,391 - CRITICAL - Scheduler started
-2024-08-04 23:53:57,810 - CRITICAL - 
-
-2024-08-04 23:53:57,810 - CRITICAL - App start
-2024-08-04 23:53:57,811 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:53:57,816 - INFO - Database exists
-2024-08-04 23:53:57,946 - INFO - Scheduler starts running
-2024-08-04 23:53:57,956 - DEBUG - 
-
-2024-08-04 23:53:57,957 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:53:57,959 - DEBUG - job_type = job_collector
-2024-08-04 23:53:57,960 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:53:57,960 - DEBUG - trigger = interval
-2024-08-04 23:53:57,960 - DEBUG - year = None
-2024-08-04 23:53:57,960 - DEBUG - month = None
-2024-08-04 23:53:57,960 - DEBUG - day = 0
-2024-08-04 23:53:57,961 - DEBUG - day_of_week = None
-2024-08-04 23:53:57,961 - DEBUG - hour = 2
-2024-08-04 23:53:57,961 - DEBUG - minute = 2
-2024-08-04 23:53:57,961 - DEBUG - second = 4
-2024-08-04 23:53:57,962 - DEBUG - 
-
-2024-08-04 23:53:57,962 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:53:57,963 - DEBUG - job_type = job_collector
-2024-08-04 23:53:57,963 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:53:57,963 - DEBUG - trigger = interval
-2024-08-04 23:53:57,963 - DEBUG - year = None
-2024-08-04 23:53:57,964 - DEBUG - month = None
-2024-08-04 23:53:57,964 - DEBUG - day = 0
-2024-08-04 23:53:57,965 - DEBUG - day_of_week = None
-2024-08-04 23:53:57,965 - DEBUG - hour = 0
-2024-08-04 23:53:57,965 - DEBUG - minute = 5
-2024-08-04 23:53:57,965 - DEBUG - second = 0
-2024-08-04 23:53:57,965 - DEBUG - 
-
-2024-08-04 23:53:57,966 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:53:57,966 - DEBUG - job_type = report_sender
-2024-08-04 23:53:57,966 - DEBUG - httpLink = R1
-2024-08-04 23:53:57,966 - DEBUG - trigger = interval
-2024-08-04 23:53:57,966 - DEBUG - year = None
-2024-08-04 23:53:57,966 - DEBUG - month = None
-2024-08-04 23:53:57,967 - DEBUG - day = 0
-2024-08-04 23:53:57,967 - DEBUG - day_of_week = None
-2024-08-04 23:53:57,967 - DEBUG - hour = 1
-2024-08-04 23:53:57,967 - DEBUG - minute = 0
-2024-08-04 23:53:57,968 - DEBUG - second = 0
-2024-08-04 23:53:57,969 - CRITICAL - Scheduler started
-2024-08-04 23:54:38,577 - ERROR - An error occurred while adding : {'title': ['This field is required.'], 'description': ['This field is required.']}
-2024-08-04 23:58:57,967 - INFO - Job collects: http://192.168.0.184/noGui
-2024-08-04 23:59:01,918 - INFO - Job collected
-2024-08-04 23:59:38,600 - CRITICAL - 
-
-2024-08-04 23:59:38,601 - CRITICAL - App start
-2024-08-04 23:59:38,601 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-04 23:59:38,607 - INFO - Database exists
-2024-08-04 23:59:38,753 - INFO - Scheduler starts running
-2024-08-04 23:59:38,762 - DEBUG - 
-
-2024-08-04 23:59:38,763 - DEBUG - schedulerID = 1interval--0-223
-2024-08-04 23:59:38,765 - DEBUG - job_type = job_collector
-2024-08-04 23:59:38,765 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:59:38,766 - DEBUG - trigger = interval
-2024-08-04 23:59:38,766 - DEBUG - year = None
-2024-08-04 23:59:38,766 - DEBUG - month = None
-2024-08-04 23:59:38,767 - DEBUG - day = 0
-2024-08-04 23:59:38,767 - DEBUG - day_of_week = None
-2024-08-04 23:59:38,767 - DEBUG - hour = 2
-2024-08-04 23:59:38,767 - DEBUG - minute = 2
-2024-08-04 23:59:38,767 - DEBUG - second = 4
-2024-08-04 23:59:38,768 - DEBUG - 
-
-2024-08-04 23:59:38,768 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-04 23:59:38,769 - DEBUG - job_type = job_collector
-2024-08-04 23:59:38,769 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-04 23:59:38,769 - DEBUG - trigger = interval
-2024-08-04 23:59:38,769 - DEBUG - year = None
-2024-08-04 23:59:38,769 - DEBUG - month = None
-2024-08-04 23:59:38,769 - DEBUG - day = 0
-2024-08-04 23:59:38,769 - DEBUG - day_of_week = None
-2024-08-04 23:59:38,769 - DEBUG - hour = 0
-2024-08-04 23:59:38,769 - DEBUG - minute = 5
-2024-08-04 23:59:38,770 - DEBUG - second = 0
-2024-08-04 23:59:38,770 - DEBUG - 
-
-2024-08-04 23:59:38,770 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-04 23:59:38,770 - DEBUG - job_type = report_sender
-2024-08-04 23:59:38,770 - DEBUG - httpLink = R1
-2024-08-04 23:59:38,770 - DEBUG - trigger = interval
-2024-08-04 23:59:38,770 - DEBUG - year = None
-2024-08-04 23:59:38,770 - DEBUG - month = None
-2024-08-04 23:59:38,770 - DEBUG - day = 0
-2024-08-04 23:59:38,771 - DEBUG - day_of_week = None
-2024-08-04 23:59:38,771 - DEBUG - hour = 1
-2024-08-04 23:59:38,771 - DEBUG - minute = 0
-2024-08-04 23:59:38,771 - DEBUG - second = 0
-2024-08-04 23:59:38,772 - CRITICAL - Scheduler started
-2024-08-05 00:03:27,844 - CRITICAL - 
-
-2024-08-05 00:03:27,844 - CRITICAL - App start
-2024-08-05 00:03:27,844 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:03:27,850 - INFO - Database exists
-2024-08-05 00:03:27,995 - INFO - Scheduler starts running
-2024-08-05 00:03:28,004 - DEBUG - 
-
-2024-08-05 00:03:28,004 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:03:28,006 - DEBUG - job_type = job_collector
-2024-08-05 00:03:28,006 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:03:28,007 - DEBUG - trigger = interval
-2024-08-05 00:03:28,007 - DEBUG - year = None
-2024-08-05 00:03:28,007 - DEBUG - month = None
-2024-08-05 00:03:28,007 - DEBUG - day = 0
-2024-08-05 00:03:28,007 - DEBUG - day_of_week = None
-2024-08-05 00:03:28,008 - DEBUG - hour = 2
-2024-08-05 00:03:28,008 - DEBUG - minute = 2
-2024-08-05 00:03:28,008 - DEBUG - second = 4
-2024-08-05 00:03:28,008 - DEBUG - 
-
-2024-08-05 00:03:28,009 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:03:28,009 - DEBUG - job_type = job_collector
-2024-08-05 00:03:28,009 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:03:28,010 - DEBUG - trigger = interval
-2024-08-05 00:03:28,010 - DEBUG - year = None
-2024-08-05 00:03:28,010 - DEBUG - month = None
-2024-08-05 00:03:28,011 - DEBUG - day = 0
-2024-08-05 00:03:28,011 - DEBUG - day_of_week = None
-2024-08-05 00:03:28,011 - DEBUG - hour = 0
-2024-08-05 00:03:28,012 - DEBUG - minute = 5
-2024-08-05 00:03:28,012 - DEBUG - second = 0
-2024-08-05 00:03:28,012 - DEBUG - 
-
-2024-08-05 00:03:28,013 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:03:28,013 - DEBUG - job_type = report_sender
-2024-08-05 00:03:28,013 - DEBUG - httpLink = R1
-2024-08-05 00:03:28,013 - DEBUG - trigger = interval
-2024-08-05 00:03:28,014 - DEBUG - year = None
-2024-08-05 00:03:28,014 - DEBUG - month = None
-2024-08-05 00:03:28,014 - DEBUG - day = 0
-2024-08-05 00:03:28,014 - DEBUG - day_of_week = None
-2024-08-05 00:03:28,014 - DEBUG - hour = 1
-2024-08-05 00:03:28,015 - DEBUG - minute = 0
-2024-08-05 00:03:28,015 - DEBUG - second = 0
-2024-08-05 00:03:28,017 - CRITICAL - Scheduler started
-2024-08-05 00:03:35,281 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4AC20>, 'deviceId': 1, 'functionParameters': '', 'functionStatus': 'Ready', 'functionDescription': '/noGui', 'id': 1, 'actionLink': '/noGui'}
-2024-08-05 00:03:35,282 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4AC80>, 'deviceId': 2, 'functionParameters': '', 'functionStatus': 'Ready', 'functionDescription': 'qwe', 'id': 2, 'actionLink': '/nono'}
-2024-08-05 00:03:35,283 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4ACE0>, 'deviceId': 1, 'functionParameters': 'test', 'functionStatus': 'Ready', 'functionDescription': 'test', 'id': 3, 'actionLink': '/test'}
-2024-08-05 00:03:35,284 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4AAA0>, 'deviceId': 1, 'functionParameters': 'testform values ', 'functionStatus': 'Not Ready', 'functionDescription': 'testfunctionDescription', 'id': 4, 'actionLink': '/testactionLink'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B460>, 'archiveReportIds': '[1, 2]', 'title': 'raport dzienny', 'id': 1, 'description': 'raport dzienny', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B4C0>, 'archiveReportIds': '[]', 'title': '123', 'id': 2, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B520>, 'archiveReportIds': '[1, 2]', 'title': '123', 'id': 3, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B580>, 'archiveReportIds': '[1, 2]', 'title': '111', 'id': 4, 'description': '111', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B5E0>, 'archiveReportIds': '[]', 'title': '123', 'id': 5, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B640>, 'archiveReportIds': '[1]', 'title': '123', 'id': 6, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,285 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B6A0>, 'archiveReportIds': '[2]', 'title': '123', 'id': 7, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,286 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B700>, 'archiveReportIds': '[1, 2]', 'title': '123', 'id': 8, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,286 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B760>, 'archiveReportIds': '[1, 2]', 'title': '123', 'id': 9, 'description': '123', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,286 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B7C0>, 'archiveReportIds': '[1, 2, 3, 4, 5]', 'title': 'QQQ', 'id': 10, 'description': 'ddd', 'functionStatus': 'Ready'}
-2024-08-05 00:03:35,286 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x0000023090F4B820>, 'archiveReportIds': '[]', 'title': '12121', 'id': 11, 'description': '', 'functionStatus': 'Ready'}
-2024-08-05 00:07:51,786 - CRITICAL - 
-
-2024-08-05 00:07:51,786 - CRITICAL - App start
-2024-08-05 00:07:51,786 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:07:51,792 - INFO - Database exists
-2024-08-05 00:07:51,942 - INFO - Scheduler starts running
-2024-08-05 00:07:51,952 - DEBUG - 
-
-2024-08-05 00:07:51,952 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:07:51,955 - DEBUG - job_type = job_collector
-2024-08-05 00:07:51,955 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:07:51,956 - DEBUG - trigger = interval
-2024-08-05 00:07:51,956 - DEBUG - year = None
-2024-08-05 00:07:51,956 - DEBUG - month = None
-2024-08-05 00:07:51,956 - DEBUG - day = 0
-2024-08-05 00:07:51,956 - DEBUG - day_of_week = None
-2024-08-05 00:07:51,957 - DEBUG - hour = 2
-2024-08-05 00:07:51,957 - DEBUG - minute = 2
-2024-08-05 00:07:51,957 - DEBUG - second = 4
-2024-08-05 00:07:51,958 - DEBUG - 
-
-2024-08-05 00:07:51,958 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:07:51,959 - DEBUG - job_type = job_collector
-2024-08-05 00:07:51,959 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:07:51,959 - DEBUG - trigger = interval
-2024-08-05 00:07:51,959 - DEBUG - year = None
-2024-08-05 00:07:51,959 - DEBUG - month = None
-2024-08-05 00:07:51,959 - DEBUG - day = 0
-2024-08-05 00:07:51,960 - DEBUG - day_of_week = None
-2024-08-05 00:07:51,960 - DEBUG - hour = 0
-2024-08-05 00:07:51,960 - DEBUG - minute = 5
-2024-08-05 00:07:51,960 - DEBUG - second = 0
-2024-08-05 00:07:51,960 - DEBUG - 
-
-2024-08-05 00:07:51,960 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:07:51,960 - DEBUG - job_type = report_sender
-2024-08-05 00:07:51,960 - DEBUG - httpLink = R1
-2024-08-05 00:07:51,961 - DEBUG - trigger = interval
-2024-08-05 00:07:51,961 - DEBUG - year = None
-2024-08-05 00:07:51,961 - DEBUG - month = None
-2024-08-05 00:07:51,961 - DEBUG - day = 0
-2024-08-05 00:07:51,961 - DEBUG - day_of_week = None
-2024-08-05 00:07:51,961 - DEBUG - hour = 1
-2024-08-05 00:07:51,961 - DEBUG - minute = 0
-2024-08-05 00:07:51,961 - DEBUG - second = 0
-2024-08-05 00:07:51,963 - CRITICAL - Scheduler started
-2024-08-05 00:08:31,530 - CRITICAL - 
-
-2024-08-05 00:08:31,531 - CRITICAL - App start
-2024-08-05 00:08:31,531 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:08:31,536 - INFO - Database exists
-2024-08-05 00:08:31,658 - INFO - Scheduler starts running
-2024-08-05 00:08:31,666 - DEBUG - 
-
-2024-08-05 00:08:31,667 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:08:31,669 - DEBUG - job_type = job_collector
-2024-08-05 00:08:31,670 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:08:31,670 - DEBUG - trigger = interval
-2024-08-05 00:08:31,670 - DEBUG - year = None
-2024-08-05 00:08:31,670 - DEBUG - month = None
-2024-08-05 00:08:31,671 - DEBUG - day = 0
-2024-08-05 00:08:31,671 - DEBUG - day_of_week = None
-2024-08-05 00:08:31,671 - DEBUG - hour = 2
-2024-08-05 00:08:31,671 - DEBUG - minute = 2
-2024-08-05 00:08:31,672 - DEBUG - second = 4
-2024-08-05 00:08:31,672 - DEBUG - 
-
-2024-08-05 00:08:31,672 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:08:31,673 - DEBUG - job_type = job_collector
-2024-08-05 00:08:31,673 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:08:31,674 - DEBUG - trigger = interval
-2024-08-05 00:08:31,674 - DEBUG - year = None
-2024-08-05 00:08:31,674 - DEBUG - month = None
-2024-08-05 00:08:31,674 - DEBUG - day = 0
-2024-08-05 00:08:31,675 - DEBUG - day_of_week = None
-2024-08-05 00:08:31,675 - DEBUG - hour = 0
-2024-08-05 00:08:31,675 - DEBUG - minute = 5
-2024-08-05 00:08:31,675 - DEBUG - second = 0
-2024-08-05 00:08:31,675 - DEBUG - 
-
-2024-08-05 00:08:31,676 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:08:31,676 - DEBUG - job_type = report_sender
-2024-08-05 00:08:31,676 - DEBUG - httpLink = R1
-2024-08-05 00:08:31,676 - DEBUG - trigger = interval
-2024-08-05 00:08:31,676 - DEBUG - year = None
-2024-08-05 00:08:31,677 - DEBUG - month = None
-2024-08-05 00:08:31,677 - DEBUG - day = 0
-2024-08-05 00:08:31,677 - DEBUG - day_of_week = None
-2024-08-05 00:08:31,677 - DEBUG - hour = 1
-2024-08-05 00:08:31,678 - DEBUG - minute = 0
-2024-08-05 00:08:31,678 - DEBUG - second = 0
-2024-08-05 00:08:31,679 - CRITICAL - Scheduler started
-2024-08-05 00:08:42,342 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C940>, 'actionLink': '/noGui', 'functionDescription': '/noGui', 'id': 1, 'functionParameters': '', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:42,343 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C9A0>, 'actionLink': '/nono', 'functionDescription': 'qwe', 'id': 2, 'functionParameters': '', 'deviceId': 2, 'functionStatus': 'Ready'}
-2024-08-05 00:08:42,344 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CA00>, 'actionLink': '/test', 'functionDescription': 'test', 'id': 3, 'functionParameters': 'test', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:42,345 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CA60>, 'actionLink': '/testactionLink', 'functionDescription': 'testfunctionDescription', 'id': 4, 'functionParameters': 'testform values ', 'deviceId': 1, 'functionStatus': 'Not Ready'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D0C0>, 'functionStatus': 'Ready', 'description': 'raport dzienny', 'id': 1, 'title': 'raport dzienny', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D120>, 'functionStatus': 'Ready', 'description': '123', 'id': 2, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D1E0>, 'functionStatus': 'Ready', 'description': '123', 'id': 3, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D180>, 'functionStatus': 'Ready', 'description': '111', 'id': 4, 'title': '111', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D300>, 'functionStatus': 'Ready', 'description': '123', 'id': 5, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D240>, 'functionStatus': 'Ready', 'description': '123', 'id': 6, 'title': '123', 'archiveReportIds': '[1]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D3C0>, 'functionStatus': 'Ready', 'description': '123', 'id': 7, 'title': '123', 'archiveReportIds': '[2]'}
-2024-08-05 00:08:42,346 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D360>, 'functionStatus': 'Ready', 'description': '123', 'id': 8, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:42,347 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D4E0>, 'functionStatus': 'Ready', 'description': '123', 'id': 9, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:42,347 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D480>, 'functionStatus': 'Ready', 'description': 'ddd', 'id': 10, 'title': 'QQQ', 'archiveReportIds': '[1, 2, 3, 4, 5]'}
-2024-08-05 00:08:42,347 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D540>, 'functionStatus': 'Ready', 'description': '', 'id': 11, 'title': '12121', 'archiveReportIds': '[]'}
-2024-08-05 00:08:43,613 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D120>, 'actionLink': '/noGui', 'functionDescription': '/noGui', 'id': 1, 'functionParameters': '', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:43,614 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D1E0>, 'actionLink': '/nono', 'functionDescription': 'qwe', 'id': 2, 'functionParameters': '', 'deviceId': 2, 'functionStatus': 'Ready'}
-2024-08-05 00:08:43,614 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C640>, 'actionLink': '/test', 'functionDescription': 'test', 'id': 3, 'functionParameters': 'test', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:43,615 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C6A0>, 'actionLink': '/testactionLink', 'functionDescription': 'testfunctionDescription', 'id': 4, 'functionParameters': 'testform values ', 'deviceId': 1, 'functionStatus': 'Not Ready'}
-2024-08-05 00:08:43,615 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D3C0>, 'functionStatus': 'Ready', 'description': 'raport dzienny', 'id': 1, 'title': 'raport dzienny', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:43,615 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D360>, 'functionStatus': 'Ready', 'description': '123', 'id': 2, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D4E0>, 'functionStatus': 'Ready', 'description': '123', 'id': 3, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D480>, 'functionStatus': 'Ready', 'description': '111', 'id': 4, 'title': '111', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D180>, 'functionStatus': 'Ready', 'description': '123', 'id': 5, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CA60>, 'functionStatus': 'Ready', 'description': '123', 'id': 6, 'title': '123', 'archiveReportIds': '[1]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C7C0>, 'functionStatus': 'Ready', 'description': '123', 'id': 7, 'title': '123', 'archiveReportIds': '[2]'}
-2024-08-05 00:08:43,616 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C9A0>, 'functionStatus': 'Ready', 'description': '123', 'id': 8, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:43,617 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CA00>, 'functionStatus': 'Ready', 'description': '123', 'id': 9, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:43,617 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C940>, 'functionStatus': 'Ready', 'description': 'ddd', 'id': 10, 'title': 'QQQ', 'archiveReportIds': '[1, 2, 3, 4, 5]'}
-2024-08-05 00:08:43,617 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CEE0>, 'functionStatus': 'Ready', 'description': '', 'id': 11, 'title': '12121', 'archiveReportIds': '[]'}
-2024-08-05 00:08:45,656 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C7C0>, 'actionLink': '/noGui', 'functionDescription': '/noGui', 'id': 1, 'functionParameters': '', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:45,657 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C6A0>, 'actionLink': '/nono', 'functionDescription': 'qwe', 'id': 2, 'functionParameters': '', 'deviceId': 2, 'functionStatus': 'Ready'}
-2024-08-05 00:08:45,658 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CEE0>, 'actionLink': '/test', 'functionDescription': 'test', 'id': 3, 'functionParameters': 'test', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:45,658 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D1E0>, 'actionLink': '/testactionLink', 'functionDescription': 'testfunctionDescription', 'id': 4, 'functionParameters': 'testform values ', 'deviceId': 1, 'functionStatus': 'Not Ready'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C340>, 'functionStatus': 'Ready', 'description': 'raport dzienny', 'id': 1, 'title': 'raport dzienny', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D240>, 'functionStatus': 'Ready', 'description': '123', 'id': 2, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CE20>, 'functionStatus': 'Ready', 'description': '123', 'id': 3, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D120>, 'functionStatus': 'Ready', 'description': '111', 'id': 4, 'title': '111', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D5A0>, 'functionStatus': 'Ready', 'description': '123', 'id': 5, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D9C0>, 'functionStatus': 'Ready', 'description': '123', 'id': 6, 'title': '123', 'archiveReportIds': '[1]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D660>, 'functionStatus': 'Ready', 'description': '123', 'id': 7, 'title': '123', 'archiveReportIds': '[2]'}
-2024-08-05 00:08:45,659 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D6C0>, 'functionStatus': 'Ready', 'description': '123', 'id': 8, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:45,660 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D2A0>, 'functionStatus': 'Ready', 'description': '123', 'id': 9, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:45,660 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D600>, 'functionStatus': 'Ready', 'description': 'ddd', 'id': 10, 'title': 'QQQ', 'archiveReportIds': '[1, 2, 3, 4, 5]'}
-2024-08-05 00:08:45,660 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D420>, 'functionStatus': 'Ready', 'description': '', 'id': 11, 'title': '12121', 'archiveReportIds': '[]'}
-2024-08-05 00:08:45,661 - ERROR - An error occurred while adding : {'hour': ['Not a valid integer value.', 'hour: must be between 0 and 23.'], 'minute': ['Not a valid integer value.', 'minute: must be between 0 and 59.'], 'second': ['Not a valid integer value.', 'second: must be between 0 and 59.']}
-2024-08-05 00:08:50,029 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C6A0>, 'actionLink': '/noGui', 'functionDescription': '/noGui', 'id': 1, 'functionParameters': '', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:50,029 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264CEE0>, 'actionLink': '/nono', 'functionDescription': 'qwe', 'id': 2, 'functionParameters': '', 'deviceId': 2, 'functionStatus': 'Ready'}
-2024-08-05 00:08:50,030 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264C640>, 'actionLink': '/test', 'functionDescription': 'test', 'id': 3, 'functionParameters': 'test', 'deviceId': 1, 'functionStatus': 'Ready'}
-2024-08-05 00:08:50,030 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D480>, 'actionLink': '/testactionLink', 'functionDescription': 'testfunctionDescription', 'id': 4, 'functionParameters': 'testform values ', 'deviceId': 1, 'functionStatus': 'Not Ready'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D1E0>, 'functionStatus': 'Ready', 'description': 'raport dzienny', 'id': 1, 'title': 'raport dzienny', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264DC00>, 'functionStatus': 'Ready', 'description': '123', 'id': 2, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D780>, 'functionStatus': 'Ready', 'description': '123', 'id': 3, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264DC60>, 'functionStatus': 'Ready', 'description': '111', 'id': 4, 'title': '111', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D900>, 'functionStatus': 'Ready', 'description': '123', 'id': 5, 'title': '123', 'archiveReportIds': '[]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264E140>, 'functionStatus': 'Ready', 'description': '123', 'id': 6, 'title': '123', 'archiveReportIds': '[1]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D8A0>, 'functionStatus': 'Ready', 'description': '123', 'id': 7, 'title': '123', 'archiveReportIds': '[2]'}
-2024-08-05 00:08:50,031 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264D720>, 'functionStatus': 'Ready', 'description': '123', 'id': 8, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:50,032 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264DDE0>, 'functionStatus': 'Ready', 'description': '123', 'id': 9, 'title': '123', 'archiveReportIds': '[1, 2]'}
-2024-08-05 00:08:50,032 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264DA20>, 'functionStatus': 'Ready', 'description': 'ddd', 'id': 10, 'title': 'QQQ', 'archiveReportIds': '[1, 2, 3, 4, 5]'}
-2024-08-05 00:08:50,032 - DEBUG - {'_sa_instance_state': <sqlalchemy.orm.state.InstanceState object at 0x000002329264DA80>, 'functionStatus': 'Ready', 'description': '', 'id': 11, 'title': '12121', 'archiveReportIds': '[]'}
-2024-08-05 00:08:50,034 - INFO - Adding FunctionScheduler to DB
-2024-08-05 00:11:27,552 - CRITICAL - 
-
-2024-08-05 00:11:27,552 - CRITICAL - App start
-2024-08-05 00:11:27,552 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:11:27,559 - INFO - Database exists
-2024-08-05 00:11:27,692 - INFO - Scheduler starts running
-2024-08-05 00:11:27,701 - DEBUG - 
-
-2024-08-05 00:11:27,702 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:11:27,704 - DEBUG - job_type = job_collector
-2024-08-05 00:11:27,704 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:11:27,704 - DEBUG - trigger = interval
-2024-08-05 00:11:27,704 - DEBUG - year = None
-2024-08-05 00:11:27,704 - DEBUG - month = None
-2024-08-05 00:11:27,705 - DEBUG - day = 0
-2024-08-05 00:11:27,705 - DEBUG - day_of_week = None
-2024-08-05 00:11:27,705 - DEBUG - hour = 2
-2024-08-05 00:11:27,705 - DEBUG - minute = 2
-2024-08-05 00:11:27,705 - DEBUG - second = 4
-2024-08-05 00:11:27,706 - DEBUG - 
-
-2024-08-05 00:11:27,706 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:11:27,707 - DEBUG - job_type = job_collector
-2024-08-05 00:11:27,707 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:11:27,707 - DEBUG - trigger = interval
-2024-08-05 00:11:27,708 - DEBUG - year = None
-2024-08-05 00:11:27,708 - DEBUG - month = None
-2024-08-05 00:11:27,708 - DEBUG - day = 0
-2024-08-05 00:11:27,709 - DEBUG - day_of_week = None
-2024-08-05 00:11:27,709 - DEBUG - hour = 0
-2024-08-05 00:11:27,709 - DEBUG - minute = 5
-2024-08-05 00:11:27,710 - DEBUG - second = 0
-2024-08-05 00:11:27,710 - DEBUG - 
-
-2024-08-05 00:11:27,710 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:11:27,711 - DEBUG - job_type = report_sender
-2024-08-05 00:11:27,711 - DEBUG - httpLink = R1
-2024-08-05 00:11:27,711 - DEBUG - trigger = interval
-2024-08-05 00:11:27,712 - DEBUG - year = None
-2024-08-05 00:11:27,712 - DEBUG - month = None
-2024-08-05 00:11:27,712 - DEBUG - day = 0
-2024-08-05 00:11:27,712 - DEBUG - day_of_week = None
-2024-08-05 00:11:27,713 - DEBUG - hour = 1
-2024-08-05 00:11:27,713 - DEBUG - minute = 0
-2024-08-05 00:11:27,713 - DEBUG - second = 0
-2024-08-05 00:11:27,713 - DEBUG - 
-
-2024-08-05 00:11:27,714 - DEBUG - schedulerID = 1interval--0-345
-2024-08-05 00:11:27,715 - DEBUG - job_type = job_collector
-2024-08-05 00:11:27,715 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:11:27,716 - DEBUG - trigger = interval
-2024-08-05 00:11:27,716 - DEBUG - year = None
-2024-08-05 00:11:27,716 - DEBUG - month = None
-2024-08-05 00:11:27,716 - DEBUG - day = 0
-2024-08-05 00:11:27,716 - DEBUG - day_of_week = None
-2024-08-05 00:11:27,716 - DEBUG - hour = 3
-2024-08-05 00:11:27,716 - DEBUG - minute = 4
-2024-08-05 00:11:27,717 - DEBUG - second = 5
-2024-08-05 00:11:27,718 - CRITICAL - Scheduler started
-2024-08-05 00:18:48,275 - CRITICAL - 
-
-2024-08-05 00:18:48,276 - CRITICAL - App start
-2024-08-05 00:18:48,276 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:18:48,282 - INFO - Database exists
-2024-08-05 00:19:33,901 - CRITICAL - 
-
-2024-08-05 00:19:33,902 - CRITICAL - App start
-2024-08-05 00:19:33,902 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:19:33,908 - INFO - Database exists
-2024-08-05 00:19:57,811 - CRITICAL - 
-
-2024-08-05 00:19:57,811 - CRITICAL - App start
-2024-08-05 00:19:57,812 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:19:57,818 - INFO - Database exists
-2024-08-05 00:19:57,928 - INFO - Scheduler starts running
-2024-08-05 00:19:57,937 - DEBUG - 
-
-2024-08-05 00:19:57,938 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:19:57,940 - DEBUG - job_type = job_collector
-2024-08-05 00:19:57,940 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:19:57,940 - DEBUG - trigger = interval
-2024-08-05 00:19:57,940 - DEBUG - year = None
-2024-08-05 00:19:57,940 - DEBUG - month = None
-2024-08-05 00:19:57,941 - DEBUG - day = 0
-2024-08-05 00:19:57,941 - DEBUG - day_of_week = None
-2024-08-05 00:19:57,941 - DEBUG - hour = 2
-2024-08-05 00:19:57,941 - DEBUG - minute = 2
-2024-08-05 00:19:57,941 - DEBUG - second = 4
-2024-08-05 00:19:57,942 - DEBUG - 
-
-2024-08-05 00:19:57,942 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:19:57,943 - DEBUG - job_type = job_collector
-2024-08-05 00:19:57,943 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:19:57,943 - DEBUG - trigger = interval
-2024-08-05 00:19:57,944 - DEBUG - year = None
-2024-08-05 00:19:57,944 - DEBUG - month = None
-2024-08-05 00:19:57,944 - DEBUG - day = 0
-2024-08-05 00:19:57,944 - DEBUG - day_of_week = None
-2024-08-05 00:19:57,944 - DEBUG - hour = 0
-2024-08-05 00:19:57,945 - DEBUG - minute = 5
-2024-08-05 00:19:57,945 - DEBUG - second = 0
-2024-08-05 00:19:57,945 - DEBUG - 
-
-2024-08-05 00:19:57,945 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:19:57,946 - DEBUG - job_type = report_sender
-2024-08-05 00:19:57,946 - DEBUG - httpLink = R1
-2024-08-05 00:19:57,946 - DEBUG - trigger = interval
-2024-08-05 00:19:57,946 - DEBUG - year = None
-2024-08-05 00:19:57,947 - DEBUG - month = None
-2024-08-05 00:19:57,947 - DEBUG - day = 0
-2024-08-05 00:19:57,947 - DEBUG - day_of_week = None
-2024-08-05 00:19:57,947 - DEBUG - hour = 1
-2024-08-05 00:19:57,948 - DEBUG - minute = 0
-2024-08-05 00:19:57,948 - DEBUG - second = 0
-2024-08-05 00:19:57,948 - DEBUG - 
-
-2024-08-05 00:19:57,949 - DEBUG - schedulerID = 1interval--0-345
-2024-08-05 00:19:57,950 - DEBUG - job_type = job_collector
-2024-08-05 00:19:57,950 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:19:57,950 - DEBUG - trigger = interval
-2024-08-05 00:19:57,951 - DEBUG - year = None
-2024-08-05 00:19:57,951 - DEBUG - month = None
-2024-08-05 00:19:57,951 - DEBUG - day = 0
-2024-08-05 00:19:57,952 - DEBUG - day_of_week = None
-2024-08-05 00:19:57,952 - DEBUG - hour = 3
-2024-08-05 00:19:57,952 - DEBUG - minute = 4
-2024-08-05 00:19:57,952 - DEBUG - second = 5
-2024-08-05 00:19:57,954 - CRITICAL - Scheduler started
-2024-08-05 00:23:41,496 - CRITICAL - 
-
-2024-08-05 00:23:41,496 - CRITICAL - App start
-2024-08-05 00:23:41,496 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:23:41,502 - INFO - Database exists
-2024-08-05 00:23:41,636 - INFO - Scheduler starts running
-2024-08-05 00:23:41,645 - DEBUG - 
-
-2024-08-05 00:23:41,645 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:23:41,647 - DEBUG - job_type = job_collector
-2024-08-05 00:23:41,647 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:23:41,647 - DEBUG - trigger = interval
-2024-08-05 00:23:41,648 - DEBUG - year = None
-2024-08-05 00:23:41,648 - DEBUG - month = None
-2024-08-05 00:23:41,648 - DEBUG - day = 0
-2024-08-05 00:23:41,648 - DEBUG - day_of_week = None
-2024-08-05 00:23:41,648 - DEBUG - hour = 2
-2024-08-05 00:23:41,648 - DEBUG - minute = 2
-2024-08-05 00:23:41,648 - DEBUG - second = 4
-2024-08-05 00:23:41,648 - DEBUG - 
-
-2024-08-05 00:23:41,648 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:23:41,649 - DEBUG - job_type = job_collector
-2024-08-05 00:23:41,649 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:23:41,649 - DEBUG - trigger = interval
-2024-08-05 00:23:41,649 - DEBUG - year = None
-2024-08-05 00:23:41,650 - DEBUG - month = None
-2024-08-05 00:23:41,650 - DEBUG - day = 0
-2024-08-05 00:23:41,650 - DEBUG - day_of_week = None
-2024-08-05 00:23:41,650 - DEBUG - hour = 0
-2024-08-05 00:23:41,650 - DEBUG - minute = 5
-2024-08-05 00:23:41,650 - DEBUG - second = 0
-2024-08-05 00:23:41,652 - DEBUG - 
-
-2024-08-05 00:23:41,652 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:23:41,652 - DEBUG - job_type = report_sender
-2024-08-05 00:23:41,652 - DEBUG - httpLink = R1
-2024-08-05 00:23:41,652 - DEBUG - trigger = interval
-2024-08-05 00:23:41,653 - DEBUG - year = None
-2024-08-05 00:23:41,653 - DEBUG - month = None
-2024-08-05 00:23:41,653 - DEBUG - day = 0
-2024-08-05 00:23:41,653 - DEBUG - day_of_week = None
-2024-08-05 00:23:41,653 - DEBUG - hour = 1
-2024-08-05 00:23:41,653 - DEBUG - minute = 0
-2024-08-05 00:23:41,653 - DEBUG - second = 0
-2024-08-05 00:23:41,653 - DEBUG - 
-
-2024-08-05 00:23:41,654 - DEBUG - schedulerID = 1interval--0-345
-2024-08-05 00:23:41,654 - DEBUG - job_type = job_collector
-2024-08-05 00:23:41,654 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:23:41,654 - DEBUG - trigger = interval
-2024-08-05 00:23:41,655 - DEBUG - year = None
-2024-08-05 00:23:41,655 - DEBUG - month = None
-2024-08-05 00:23:41,655 - DEBUG - day = 0
-2024-08-05 00:23:41,655 - DEBUG - day_of_week = None
-2024-08-05 00:23:41,655 - DEBUG - hour = 3
-2024-08-05 00:23:41,655 - DEBUG - minute = 4
-2024-08-05 00:23:41,655 - DEBUG - second = 5
-2024-08-05 00:23:41,657 - CRITICAL - Scheduler started
-2024-08-05 00:23:52,965 - DEBUG - current size: 112.0KB
-2024-08-05 00:27:24,805 - CRITICAL - 
-
-2024-08-05 00:27:24,806 - CRITICAL - App start
-2024-08-05 00:27:24,806 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
-2024-08-05 00:27:24,812 - INFO - Database exists
-2024-08-05 00:27:24,955 - INFO - Scheduler starts running
-2024-08-05 00:27:24,963 - DEBUG - 
-
-2024-08-05 00:27:24,964 - DEBUG - schedulerID = 1interval--0-223
-2024-08-05 00:27:24,966 - DEBUG - job_type = job_collector
-2024-08-05 00:27:24,966 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:27:24,966 - DEBUG - trigger = interval
-2024-08-05 00:27:24,966 - DEBUG - year = None
-2024-08-05 00:27:24,966 - DEBUG - month = None
-2024-08-05 00:27:24,967 - DEBUG - day = 0
-2024-08-05 00:27:24,967 - DEBUG - day_of_week = None
-2024-08-05 00:27:24,967 - DEBUG - hour = 2
-2024-08-05 00:27:24,967 - DEBUG - minute = 2
-2024-08-05 00:27:24,968 - DEBUG - second = 4
-2024-08-05 00:27:24,968 - DEBUG - 
-
-2024-08-05 00:27:24,968 - DEBUG - schedulerID = S1interval--0-0020
-2024-08-05 00:27:24,969 - DEBUG - job_type = job_collector
-2024-08-05 00:27:24,969 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:27:24,970 - DEBUG - trigger = interval
-2024-08-05 00:27:24,970 - DEBUG - year = None
-2024-08-05 00:27:24,970 - DEBUG - month = None
-2024-08-05 00:27:24,970 - DEBUG - day = 0
-2024-08-05 00:27:24,971 - DEBUG - day_of_week = None
-2024-08-05 00:27:24,971 - DEBUG - hour = 0
-2024-08-05 00:27:24,971 - DEBUG - minute = 5
-2024-08-05 00:27:24,971 - DEBUG - second = 0
-2024-08-05 00:27:24,972 - DEBUG - 
-
-2024-08-05 00:27:24,972 - DEBUG - schedulerID = R1interval--0-0030
-2024-08-05 00:27:24,972 - DEBUG - job_type = report_sender
-2024-08-05 00:27:24,972 - DEBUG - httpLink = R1
-2024-08-05 00:27:24,972 - DEBUG - trigger = interval
-2024-08-05 00:27:24,972 - DEBUG - year = None
-2024-08-05 00:27:24,972 - DEBUG - month = None
-2024-08-05 00:27:24,973 - DEBUG - day = 0
-2024-08-05 00:27:24,973 - DEBUG - day_of_week = None
-2024-08-05 00:27:24,973 - DEBUG - hour = 1
-2024-08-05 00:27:24,973 - DEBUG - minute = 0
-2024-08-05 00:27:24,973 - DEBUG - second = 0
-2024-08-05 00:27:24,973 - DEBUG - 
-
-2024-08-05 00:27:24,974 - DEBUG - schedulerID = 1interval--0-345
-2024-08-05 00:27:24,974 - DEBUG - job_type = job_collector
-2024-08-05 00:27:24,975 - DEBUG - httpLink = http://192.168.0.184/noGui
-2024-08-05 00:27:24,975 - DEBUG - trigger = interval
-2024-08-05 00:27:24,975 - DEBUG - year = None
-2024-08-05 00:27:24,975 - DEBUG - month = None
-2024-08-05 00:27:24,975 - DEBUG - day = 0
-2024-08-05 00:27:24,975 - DEBUG - day_of_week = None
-2024-08-05 00:27:24,976 - DEBUG - hour = 3
-2024-08-05 00:27:24,976 - DEBUG - minute = 4
-2024-08-05 00:27:24,976 - DEBUG - second = 5
-2024-08-05 00:27:24,978 - CRITICAL - Scheduler started
+2024-08-07 15:04:41,673 - CRITICAL - 
+
+2024-08-07 15:04:41,673 - CRITICAL - App start
+2024-08-07 15:04:41,673 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:04:41,680 - INFO - Database exists
+2024-08-07 15:04:41,807 - INFO - Scheduler starts running
+2024-08-07 15:04:41,816 - DEBUG - 
+
+2024-08-07 15:04:41,816 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:04:41,818 - DEBUG - job_type = job_collector
+2024-08-07 15:04:41,818 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:04:41,818 - DEBUG - trigger = interval
+2024-08-07 15:04:41,819 - DEBUG - year = None
+2024-08-07 15:04:41,819 - DEBUG - month = None
+2024-08-07 15:04:41,819 - DEBUG - day = 0
+2024-08-07 15:04:41,819 - DEBUG - day_of_week = None
+2024-08-07 15:04:41,819 - DEBUG - hour = 2
+2024-08-07 15:04:41,819 - DEBUG - minute = 2
+2024-08-07 15:04:41,820 - DEBUG - second = 4
+2024-08-07 15:04:41,820 - DEBUG - 
+
+2024-08-07 15:04:41,820 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:04:41,820 - DEBUG - job_type = report_sender
+2024-08-07 15:04:41,820 - DEBUG - httpLink = R1
+2024-08-07 15:04:41,820 - DEBUG - trigger = interval
+2024-08-07 15:04:41,821 - DEBUG - year = None
+2024-08-07 15:04:41,821 - DEBUG - month = None
+2024-08-07 15:04:41,821 - DEBUG - day = 0
+2024-08-07 15:04:41,821 - DEBUG - day_of_week = None
+2024-08-07 15:04:41,821 - DEBUG - hour = 1
+2024-08-07 15:04:41,821 - DEBUG - minute = 0
+2024-08-07 15:04:41,821 - DEBUG - second = 0
+2024-08-07 15:04:41,822 - DEBUG - 
+
+2024-08-07 15:04:41,822 - DEBUG - schedulerID = R16interval--0-0010
+2024-08-07 15:04:41,822 - DEBUG - job_type = report_sender
+2024-08-07 15:04:41,822 - DEBUG - httpLink = R16
+2024-08-07 15:04:41,822 - DEBUG - trigger = interval
+2024-08-07 15:04:41,822 - DEBUG - year = None
+2024-08-07 15:04:41,823 - DEBUG - month = None
+2024-08-07 15:04:41,823 - DEBUG - day = 0
+2024-08-07 15:04:41,823 - DEBUG - day_of_week = None
+2024-08-07 15:04:41,823 - DEBUG - hour = 0
+2024-08-07 15:04:41,823 - DEBUG - minute = 0
+2024-08-07 15:04:41,823 - DEBUG - second = 10
+2024-08-07 15:04:41,825 - CRITICAL - Scheduler started
+2024-08-07 15:04:51,839 - INFO - Report sends: R16
+2024-08-07 15:04:51,842 - DEBUG - Report ids to schow: ['1', '2', '3']
+2024-08-07 15:04:51,844 - DEBUG - 2024-08-07 15:04:51
+2024-08-07 15:04:51,845 - DEBUG - 2024-08-06 15:04:51
+2024-08-07 15:04:51,848 - DEBUG - 2024-08-07 15:04:51
+2024-08-07 15:04:51,848 - DEBUG - 2024-08-06 15:04:51
+2024-08-07 15:04:51,850 - DEBUG - 2024-08-07 15:04:51
+2024-08-07 15:04:51,850 - DEBUG - 2024-08-06 15:04:51
+2024-08-07 15:04:51,853 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table, th, td {border: 1px solid black; border-collapse: collapse;}
+                        table {width: 50%;}
+                    </style>            
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:04:53,720 - INFO - Report sent
+2024-08-07 15:04:53,720 - INFO - Adding record to archive
+2024-08-07 15:04:53,720 - DEBUG - Values to add: {'addInfo': 'Report sent', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
+2024-08-07 15:04:53,743 - INFO - Report sent
+2024-08-07 15:16:03,675 - CRITICAL - 
+
+2024-08-07 15:16:03,676 - CRITICAL - App start
+2024-08-07 15:16:03,676 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:16:03,682 - INFO - Database exists
+2024-08-07 15:16:03,917 - INFO - Scheduler starts running
+2024-08-07 15:16:03,926 - DEBUG - 
+
+2024-08-07 15:16:03,927 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:16:03,928 - DEBUG - job_type = job_collector
+2024-08-07 15:16:03,929 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:16:03,929 - DEBUG - trigger = interval
+2024-08-07 15:16:03,929 - DEBUG - year = None
+2024-08-07 15:16:03,930 - DEBUG - month = None
+2024-08-07 15:16:03,930 - DEBUG - day = 0
+2024-08-07 15:16:03,930 - DEBUG - day_of_week = None
+2024-08-07 15:16:03,930 - DEBUG - hour = 2
+2024-08-07 15:16:03,930 - DEBUG - minute = 2
+2024-08-07 15:16:03,931 - DEBUG - second = 4
+2024-08-07 15:16:03,931 - DEBUG - 
+
+2024-08-07 15:16:03,931 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:16:03,931 - DEBUG - job_type = report_sender
+2024-08-07 15:16:03,932 - DEBUG - httpLink = R1
+2024-08-07 15:16:03,932 - DEBUG - trigger = interval
+2024-08-07 15:16:03,932 - DEBUG - year = None
+2024-08-07 15:16:03,932 - DEBUG - month = None
+2024-08-07 15:16:03,932 - DEBUG - day = 0
+2024-08-07 15:16:03,933 - DEBUG - day_of_week = None
+2024-08-07 15:16:03,933 - DEBUG - hour = 1
+2024-08-07 15:16:03,933 - DEBUG - minute = 0
+2024-08-07 15:16:03,933 - DEBUG - second = 0
+2024-08-07 15:16:03,935 - CRITICAL - Scheduler started
+2024-08-07 15:16:06,703 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,703 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,706 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,707 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,709 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,710 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,712 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,712 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,715 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,715 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,718 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,718 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,721 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,721 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,724 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,724 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,727 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,728 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,731 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,731 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,734 - DEBUG - 2024-08-07 15:16:06
+2024-08-07 15:16:06,735 - DEBUG - 2024-08-06 15:16:06
+2024-08-07 15:16:06,736 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                        }
+                        td {
+                            background-color: #ffffff;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:17:45,200 - CRITICAL - 
+
+2024-08-07 15:17:45,201 - CRITICAL - App start
+2024-08-07 15:17:45,201 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:17:45,206 - INFO - Database exists
+2024-08-07 15:17:45,332 - INFO - Scheduler starts running
+2024-08-07 15:17:45,342 - DEBUG - 
+
+2024-08-07 15:17:45,343 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:17:45,345 - DEBUG - job_type = job_collector
+2024-08-07 15:17:45,345 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:17:45,345 - DEBUG - trigger = interval
+2024-08-07 15:17:45,346 - DEBUG - year = None
+2024-08-07 15:17:45,346 - DEBUG - month = None
+2024-08-07 15:17:45,346 - DEBUG - day = 0
+2024-08-07 15:17:45,346 - DEBUG - day_of_week = None
+2024-08-07 15:17:45,346 - DEBUG - hour = 2
+2024-08-07 15:17:45,347 - DEBUG - minute = 2
+2024-08-07 15:17:45,347 - DEBUG - second = 4
+2024-08-07 15:17:45,347 - DEBUG - 
+
+2024-08-07 15:17:45,347 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:17:45,347 - DEBUG - job_type = report_sender
+2024-08-07 15:17:45,347 - DEBUG - httpLink = R1
+2024-08-07 15:17:45,347 - DEBUG - trigger = interval
+2024-08-07 15:17:45,347 - DEBUG - year = None
+2024-08-07 15:17:45,348 - DEBUG - month = None
+2024-08-07 15:17:45,348 - DEBUG - day = 0
+2024-08-07 15:17:45,348 - DEBUG - day_of_week = None
+2024-08-07 15:17:45,348 - DEBUG - hour = 1
+2024-08-07 15:17:45,348 - DEBUG - minute = 0
+2024-08-07 15:17:45,348 - DEBUG - second = 0
+2024-08-07 15:17:45,349 - CRITICAL - Scheduler started
+2024-08-07 15:17:46,461 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,461 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,463 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,463 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,465 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,466 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,468 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,469 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,472 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,472 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,474 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,474 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,476 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,476 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,479 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,479 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,481 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,481 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,484 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,484 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,487 - DEBUG - 2024-08-07 15:17:46
+2024-08-07 15:17:46,487 - DEBUG - 2024-08-06 15:17:46
+2024-08-07 15:17:46,489 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:17:52,242 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,243 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,245 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,245 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,248 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,248 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,250 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,251 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,254 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,254 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,258 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,258 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,261 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,261 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,264 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,264 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,266 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,266 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,268 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,269 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,271 - DEBUG - 2024-08-07 15:17:52
+2024-08-07 15:17:52,271 - DEBUG - 2024-08-06 15:17:52
+2024-08-07 15:17:52,274 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:19:03,433 - CRITICAL - 
+
+2024-08-07 15:19:03,433 - CRITICAL - App start
+2024-08-07 15:19:03,433 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:19:03,439 - INFO - Database exists
+2024-08-07 15:19:03,566 - INFO - Scheduler starts running
+2024-08-07 15:19:03,576 - DEBUG - 
+
+2024-08-07 15:19:03,576 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:19:03,578 - DEBUG - job_type = job_collector
+2024-08-07 15:19:03,578 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:19:03,578 - DEBUG - trigger = interval
+2024-08-07 15:19:03,578 - DEBUG - year = None
+2024-08-07 15:19:03,578 - DEBUG - month = None
+2024-08-07 15:19:03,578 - DEBUG - day = 0
+2024-08-07 15:19:03,579 - DEBUG - day_of_week = None
+2024-08-07 15:19:03,579 - DEBUG - hour = 2
+2024-08-07 15:19:03,579 - DEBUG - minute = 2
+2024-08-07 15:19:03,579 - DEBUG - second = 4
+2024-08-07 15:19:03,579 - DEBUG - 
+
+2024-08-07 15:19:03,579 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:19:03,579 - DEBUG - job_type = report_sender
+2024-08-07 15:19:03,580 - DEBUG - httpLink = R1
+2024-08-07 15:19:03,580 - DEBUG - trigger = interval
+2024-08-07 15:19:03,580 - DEBUG - year = None
+2024-08-07 15:19:03,580 - DEBUG - month = None
+2024-08-07 15:19:03,580 - DEBUG - day = 0
+2024-08-07 15:19:03,580 - DEBUG - day_of_week = None
+2024-08-07 15:19:03,580 - DEBUG - hour = 1
+2024-08-07 15:19:03,580 - DEBUG - minute = 0
+2024-08-07 15:19:03,580 - DEBUG - second = 0
+2024-08-07 15:19:03,581 - CRITICAL - Scheduler started
+2024-08-07 15:19:04,480 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,480 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,483 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,483 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,485 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,485 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,488 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,489 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,491 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,491 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,495 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,495 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,497 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,497 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,500 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,500 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,502 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,502 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,503 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,505 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,507 - DEBUG - 2024-08-07 15:19:04
+2024-08-07 15:19:04,507 - DEBUG - 2024-08-06 15:19:04
+2024-08-07 15:19:04,509 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            color: #000000;
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                            color: #000000;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:19:10,940 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,941 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,944 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,944 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,946 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,946 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,948 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,949 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,951 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,952 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,954 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,954 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,956 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,956 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,959 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,959 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,962 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,962 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,965 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,965 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,967 - DEBUG - 2024-08-07 15:19:10
+2024-08-07 15:19:10,967 - DEBUG - 2024-08-06 15:19:10
+2024-08-07 15:19:10,969 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            color: #000000;
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                            color: #000000;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:19:36,344 - CRITICAL - 
+
+2024-08-07 15:19:36,345 - CRITICAL - App start
+2024-08-07 15:19:36,345 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:19:36,352 - INFO - Database exists
+2024-08-07 15:19:36,491 - INFO - Scheduler starts running
+2024-08-07 15:19:36,500 - DEBUG - 
+
+2024-08-07 15:19:36,501 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:19:36,502 - DEBUG - job_type = job_collector
+2024-08-07 15:19:36,503 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:19:36,503 - DEBUG - trigger = interval
+2024-08-07 15:19:36,503 - DEBUG - year = None
+2024-08-07 15:19:36,503 - DEBUG - month = None
+2024-08-07 15:19:36,504 - DEBUG - day = 0
+2024-08-07 15:19:36,504 - DEBUG - day_of_week = None
+2024-08-07 15:19:36,504 - DEBUG - hour = 2
+2024-08-07 15:19:36,504 - DEBUG - minute = 2
+2024-08-07 15:19:36,505 - DEBUG - second = 4
+2024-08-07 15:19:36,505 - DEBUG - 
+
+2024-08-07 15:19:36,505 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:19:36,506 - DEBUG - job_type = report_sender
+2024-08-07 15:19:36,506 - DEBUG - httpLink = R1
+2024-08-07 15:19:36,506 - DEBUG - trigger = interval
+2024-08-07 15:19:36,506 - DEBUG - year = None
+2024-08-07 15:19:36,507 - DEBUG - month = None
+2024-08-07 15:19:36,507 - DEBUG - day = 0
+2024-08-07 15:19:36,507 - DEBUG - day_of_week = None
+2024-08-07 15:19:36,507 - DEBUG - hour = 1
+2024-08-07 15:19:36,507 - DEBUG - minute = 0
+2024-08-07 15:19:36,507 - DEBUG - second = 0
+2024-08-07 15:19:36,509 - CRITICAL - Scheduler started
+2024-08-07 15:19:40,380 - DEBUG - [<Job (id=R1interval--0-0030 name=R1interval--0-0030)>, <Job (id=1interval--0-223 name=1interval--0-223)>]
+2024-08-07 15:19:40,381 - INFO - JOB ID:R1interval--0-0030 JOB NAME:R1interval--0-0030 JOB TRIGGER:interval[1:00:00] NEXT JOB:2024-08-07 16:19:36.508811+02:00
+2024-08-07 15:19:40,381 - INFO - JOB ID:1interval--0-223 JOB NAME:1interval--0-223 JOB TRIGGER:interval[2:02:04] NEXT JOB:2024-08-07 17:21:40.505808+02:00
+2024-08-07 15:19:42,231 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,231 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,235 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,235 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,237 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,237 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,241 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,241 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,244 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,244 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,247 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,247 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,250 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,250 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,252 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,252 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,254 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,254 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,256 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,257 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,260 - DEBUG - 2024-08-07 15:19:42
+2024-08-07 15:19:42,260 - DEBUG - 2024-08-06 15:19:42
+2024-08-07 15:19:42,262 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            color: grey;
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                            color: #000000;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:20:32,856 - CRITICAL - 
+
+2024-08-07 15:20:32,857 - CRITICAL - App start
+2024-08-07 15:20:32,857 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-07 15:20:32,863 - INFO - Database exists
+2024-08-07 15:20:32,991 - INFO - Scheduler starts running
+2024-08-07 15:20:33,001 - DEBUG - 
+
+2024-08-07 15:20:33,001 - DEBUG - schedulerID = 1interval--0-223
+2024-08-07 15:20:33,003 - DEBUG - job_type = job_collector
+2024-08-07 15:20:33,003 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-07 15:20:33,003 - DEBUG - trigger = interval
+2024-08-07 15:20:33,003 - DEBUG - year = None
+2024-08-07 15:20:33,003 - DEBUG - month = None
+2024-08-07 15:20:33,004 - DEBUG - day = 0
+2024-08-07 15:20:33,004 - DEBUG - day_of_week = None
+2024-08-07 15:20:33,004 - DEBUG - hour = 2
+2024-08-07 15:20:33,004 - DEBUG - minute = 2
+2024-08-07 15:20:33,004 - DEBUG - second = 4
+2024-08-07 15:20:33,005 - DEBUG - 
+
+2024-08-07 15:20:33,005 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-07 15:20:33,005 - DEBUG - job_type = report_sender
+2024-08-07 15:20:33,005 - DEBUG - httpLink = R1
+2024-08-07 15:20:33,005 - DEBUG - trigger = interval
+2024-08-07 15:20:33,005 - DEBUG - year = None
+2024-08-07 15:20:33,005 - DEBUG - month = None
+2024-08-07 15:20:33,006 - DEBUG - day = 0
+2024-08-07 15:20:33,006 - DEBUG - day_of_week = None
+2024-08-07 15:20:33,006 - DEBUG - hour = 1
+2024-08-07 15:20:33,006 - DEBUG - minute = 0
+2024-08-07 15:20:33,006 - DEBUG - second = 0
+2024-08-07 15:20:33,008 - CRITICAL - Scheduler started
+2024-08-07 15:20:34,823 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,823 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,826 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,826 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,828 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,828 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,833 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,833 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,836 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,836 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,839 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,839 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,841 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,841 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,844 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,844 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,847 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,847 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,851 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,851 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,854 - DEBUG - 2024-08-07 15:20:34
+2024-08-07 15:20:34,854 - DEBUG - 2024-08-06 15:20:34
+2024-08-07 15:20:34,856 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            color: #000000;
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                            color: grey;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        
+2024-08-07 15:20:35,856 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,856 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,859 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,859 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,861 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,861 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,863 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,863 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,866 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,866 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,869 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,870 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,872 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,872 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,874 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,874 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,876 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,876 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,878 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,878 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,880 - DEBUG - 2024-08-07 15:20:35
+2024-08-07 15:20:35,880 - DEBUG - 2024-08-06 15:20:35
+2024-08-07 15:20:35,882 - DEBUG - 
+            <!DOCTYPE html>
+            <html>
+                <body>
+                    <style>
+                        table {
+                            color: #000000;
+                            width: 50%;
+                            border-collapse: collapse;
+                            border: 1px solid black;
+                            border-radius: 15px;
+                            overflow: hidden;
+                        }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                        }
+                        th {
+                            background-color: #e6e6e6;
+                        }
+                        td {
+                            background-color: #f9f9f9;
+                        }
+                        h2 {
+                            font-family: Arial, sans-serif;
+                            color: grey;
+                        }
+                    </style>           
+                    <h2>Home system report</h2>
+                    <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Indicator</th>
+                    </tr>
+            
+                    <tr>
+                        <td>temperatura</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>wolgotnosc</td>
+                        <td>day</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>123</td>
+                        <td>123</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>11111</td>
+                        <td>11111</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>title666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    <tr>
+                        <td>title666</td>
+                        <td>description666</td>
+                        <td>Average</td>
+                        <td>Empty value </td>
+                        <td></td>
+                    </tr>
+        
+                    </table>
+                </body>
+            </html>
+        

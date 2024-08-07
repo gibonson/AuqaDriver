@@ -33,19 +33,28 @@ functionsScheduler
                 <tr>
  
                     <td>{{functionScheduler.schedulerID}}</td>
-                    <td>{{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceIP}} - {{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceName}}</td>
-                    {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink == "" %}
-                    <td>-</td>
+                    {% set my_string = functionScheduler.functionId %}
+                    {% if my_string[0] == 'S' %}
+                        <td> Pierwszy znak to 'S'.</td>
+                    {% elif my_string[0] == 'R' %}
+                        <td>Raport</td>
+                        <td>-</td>
+                        <td>-</td>
                     {% else %}
-                    <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink}}</td>
-                    {% endif %}
+                        <td>{{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceIP}} - {{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].deviceId-1].deviceName}}</td>
+                        {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink == "" %}
+                        <td>-</td>
+                        {% else %}
+                        <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].actionLink}}</td>
+                        {% endif %}
 
-                    {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters == "" %}
-                    <td>-</td>
-                    {% else %}
-                    <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters}}</td>
+                        {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters == "" %}
+                        <td>-</td>
+                        {% else %}
+                        <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R', ''))-1].functionParameters}}</td>
+                        {% endif %}
                     {% endif %}
-
+                    
                     <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]</td>
 
                     {% set ns = namespace(found=false) %}
