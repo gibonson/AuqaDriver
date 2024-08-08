@@ -41,6 +41,7 @@ class HtmlBuilder:
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Time Range</th>
                         <th>Type</th>
                         <th>Value</th>
                         <th>Indicator</th>
@@ -67,11 +68,12 @@ class HtmlBuilder:
     HTML_COLUMN_END =  "</td>"
 
     @staticmethod
-    def row_creator(title, description, avgOrSum, value, unit_type, indicator):
+    def row_creator(title, description, time_range, avgOrSum, value, unit_type, indicator):
         tableText = f'''
                     {HtmlBuilder.HTML_ROW_START}
                         {HtmlBuilder.HTML_COLUMN_START}{title}{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{description}{HtmlBuilder.HTML_COLUMN_END}
+                        {HtmlBuilder.HTML_COLUMN_START}{time_range} h{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{avgOrSum}{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{value} {unit_type}{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{indicator}{HtmlBuilder.HTML_COLUMN_END}
@@ -110,6 +112,7 @@ class ReportCreator:
         formatedDateFrom =  datetime.fromtimestamp(int(float(dateFrom)))
         logger.debug(formatedDateTo)
         logger.debug(formatedDateFrom)
+        time_range = archiveReportConfig.timerRangeHours
         indicator = ""
         unit_type = ""
         condition_type = ""
@@ -150,7 +153,7 @@ class ReportCreator:
                     indicator = HtmlBuilder.HTML_HIGH
                 elif archiveReportConfig.maxValue < value:
                     indicator = HtmlBuilder.HTML_TOO_HIGH
-            table_row = HtmlBuilder.row_creator(title = archiveReportConfig.title, description = archiveReportConfig.description, avgOrSum = condition_type, value = value, unit_type = unit_type ,indicator = indicator)
+            table_row = HtmlBuilder.row_creator(title = archiveReportConfig.title, description = archiveReportConfig.description, time_range = time_range, avgOrSum = condition_type, value = value, unit_type = unit_type ,indicator = indicator)
         return table_row
         
 class ReportSender:

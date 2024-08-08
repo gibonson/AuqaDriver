@@ -66,3 +66,41 @@ class FunctionSchedulereAdder():
             self.message = "Error: FunctionScheduler could not be added"
     def __str__(self) -> str:
         return self.message
+    
+
+class FunctionSchedulereManager:
+    def __init__(self, id):
+        self.id = id
+        self.message = ""
+        self.functionScheduler = FunctionScheduler.query.filter_by(id=self.id).first()
+
+    def remove_function_scheduler(self):
+        if self.functionScheduler:
+            FunctionScheduler.query.filter(FunctionScheduler.id == self.id).delete()
+            db.session.commit()
+            logger.info(f'functionScheduler with ID {self.id} removed')
+            self.message = f'functionScheduler with ID {self.id} removed'
+        else:
+            logger.error(f'functionScheduler with ID {self.id} does not exist')
+            self.message = f'functionScheduler with ID {self.id} does not exist'
+    
+    def change_status(self):
+        if self.device:
+            if self.functionScheduler.schedulerStatus == "Ready":
+                self.functionScheduler.schedulerStatus = "Not ready"
+                self.message = "functionScheduler status changed to: Not ready"
+                logger.info(f'functionScheduler with ID {self.id} status changed')
+            elif self.functionScheduler.schedulerStatus == "Not ready":
+                self.functionScheduler.schedulerStatus = "Ready"
+                logger.info(f'functionScheduler with ID {self.id} status changed')
+                self.message = "functionScheduler status changed to: Ready"
+            else:
+                logger.info(f'functionScheduler with ID {self.id} status error')
+                self.message = "Status error!"
+            db.session.commit()
+        else:
+            logger.error(f'functionScheduler with ID {self.id} does not exist')
+            self.message = f'functionScheduler with ID {self.id} does not exist'
+    
+    def __str__(self) -> str:
+        return self.message

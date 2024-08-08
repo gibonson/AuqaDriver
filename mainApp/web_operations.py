@@ -1,8 +1,7 @@
 import requests
-import time
 from mainApp.models.function import DevicesFunctions
 from mainApp.models.device import Devices
-from mainApp.models.archive import Archive
+from mainApp.models.archive import Archive, ArchiveAdder
 from mainApp import app, db, logger
 
 class LinkCreator:
@@ -34,12 +33,9 @@ class WebContentCollector:
         self.deviceSendFunctionValues = [] 
     
     def collect(self):
-        timestamp = round(time.time())
         try:
-            print(timestamp)
-            
             response = requests.get(self.httpAddress,timeout=5)
-            print(response.content)
+            # print(response.content)
             response = str(response.content)
             response = response.replace("b\"","")
             response = response.replace("\\n","")
@@ -51,8 +47,7 @@ class WebContentCollector:
             response = response.replace("<sep>","")
 
             responseContent = response.split("</br>")
-            print(responseContent)
-            print()
+            # print(responseContent)
 
             for i in range(len(responseContent)):
                 responseContent[i] = responseContent[i].split("</sep>")
@@ -62,14 +57,14 @@ class WebContentCollector:
             deviceName = ""
             
             for i in range(len(responseContent)):
-                print(responseContent[i])
+                logger.debug(responseContent[i])
                 if responseContent[i][0] == "":
                     responseContent[i] = ['']
                 elif responseContent[i][0] == "hHtml":
                     deviceName = responseContent[i][1]
                     responseContent[i] = ['']
                 elif responseContent[i][0] == "pHtml":
-                    self.deviceRecieveFunctionValues.append([timestamp,self.deviceIP,deviceName,responseContent[i][1],responseContent[i][2],responseContent[i][3]])
+                    self.deviceRecieveFunctionValues.append([self.deviceIP,deviceName,responseContent[i][1],responseContent[i][2],responseContent[i][3]])
                     responseContent[i] = ['']
                 elif responseContent[i][0] == "button":
                     self.deviceSendFunctionValues.append([self.deviceIP,deviceName,responseContent[i][1],responseContent[i][2],"button",responseContent[i][3]])
@@ -89,54 +84,24 @@ class WebContentCollector:
                     responseContent[i] = ['']
 
 
-            print()
-
-            print("deviceIP = " + self.deviceIP)
-            print("deviceName = " + deviceName)
-
-            print()
-            print("deviceRecieveFunctionValues = " + str(self.deviceRecieveFunctionValues))
-            print()
-
+            logger.debug("deviceIP = " + self.deviceIP + "deviceName = " + deviceName + "deviceRecieveFunctionValues = " + str(self.deviceRecieveFunctionValues))
 
             for row in self.deviceRecieveFunctionValues:
                 with app.app_context():
-                    print(row)
-                    addInfo = row[3]
+                    addInfo = row[2]
                     deviceIP = self.deviceIP
-                    value = row[4]
-                    type = row[5]
-                    add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
-                    db.session.add(add_to_archiwe)
-                    db.session.commit()
+                    value = row[3]
+                    type = row[4]
+                    requestData = {'addInfo': row[2], 'deviceIP': self.deviceIP, 'deviceName': deviceName, 'type': row[4], 'value': row[3]}
+                    ArchiveAdder(requestData)
 
             if self.deviceRecieveFunctionValues == []:
-                print("Unrecognized device")
                 with app.app_context():
-                    addInfo = "Unrecognized device"
-                    deviceIP = self.deviceIP
-                    deviceName = "-"
-                    type = "Log"
-                    value = 0
-                    add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
-                    db.session.add(add_to_archiwe)
-                    db.session.commit()
+                    requestData = {'addInfo': 'Unrecognized device', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+                    ArchiveAdder(requestData)
 
-            # print()
-            # print("deviceSendFunctionValues = " + str(self.deviceSendFunctionValues))
-            # print()
-
-            # for row in self.deviceSendFunctionValues:
-            #     print(row)
         except requests.exceptions.Timeout:
-            print("connection issue")
             with app.app_context():
-                addInfo = "Connection error"
-                deviceIP = self.deviceIP
-                deviceName = "-"
-                type = "Log"
-                value = 0
-                add_to_archiwe = Archive(timestamp=timestamp,deviceIP = deviceIP, deviceName= deviceName, addInfo = addInfo, value= value, type = type)
-                db.session.add(add_to_archiwe)
-                db.session.commit()
-
+                with app.app_context():
+                    requestData = {'addInfo': 'Connection error', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+                    ArchiveAdder(requestData)

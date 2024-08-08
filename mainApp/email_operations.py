@@ -40,7 +40,7 @@ def emailSender(subject, message, flashMessage = False):
         error_message = str(e)
         logger.error("An SMTP error occurred: %s", error_message)
         with app.app_context():
-            requestData = {'addInfo': 'Mail classified as SPAM', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
+            requestData = {'addInfo': 'Mail classified as SPAM', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': 0}
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
             flash('Failed to send mail.', category='danger')
@@ -49,7 +49,7 @@ def emailSender(subject, message, flashMessage = False):
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
         with app.app_context():
-            requestData = {'addInfo': 'Report sent error', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
+            requestData = {'addInfo': 'Report sent error', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': 0}
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
             flash('Failed to send mail.', category='danger')

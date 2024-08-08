@@ -23,10 +23,10 @@ from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, Ar
 from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager 
 from mainApp.models.function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
 from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
-from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder
-from mainApp.report_creator import ReportCreator
+from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
+from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
-from mainApp.webContent import LinkCreator, WebContentCollector
+from mainApp.web_operations import LinkCreator, WebContentCollector
 
 
 # -----------------------------------------
@@ -164,7 +164,8 @@ def scheduler_list():
     devicesFunctions = deviceFunctionsLister.get_list()
     functionSchedulerLister = FunctionSchedulerLister()
     functionsScheduler = functionSchedulerLister.get_list()
-    archiveFunctions = ArchiveFunctions.query.all()
+    archiveFunctionsLister = ArchiveFunctionsLister()
+    archiveFunctions = archiveFunctionsLister.get_list()
     return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), startswith = str.startswith, int = int)
 
 
@@ -194,8 +195,9 @@ def functions_scheduler_list_get_jobs():
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
-    FunctionScheduler.query.filter(FunctionScheduler.id == id).delete()
-    db.session.commit()
+    manager = FunctionSchedulereManager(id)
+    manager.remove_function_scheduler()
+    flash(str(manager), category='danger')
     return redirect(url_for("get_jobs"))
 
 
@@ -245,7 +247,8 @@ def archive_remove(id):
 def archive_search():
     ArchiveSearch.archive_search_lists_update()
     form = ArchiveSearch()
-    archive = Archive.query.order_by(Archive.id.desc()).limit(100)
+    archiveLister=ArchiveLister()
+    archive = archiveLister.get_list()
     dataSubOne = datetime.now() - timedelta(days=1)
     dataSubOneDay = dataSubOne.strftime("%Y-%m-%d %H:%M")
 
@@ -292,11 +295,7 @@ def archive_report_list():
 
 @app.route("/archive_report_functions_add", methods=['POST', 'GET'])
 def archive_report_functions_add():
-    AddArchiveReportFunction.archiveReportIdList.clear()
-    archiveReports = ArchiveReport.query.all()
-    for archiveReport in archiveReports:
-        AddArchiveReportFunction.archiveReportIdList.append(
-            (archiveReport.id, archiveReport.title))
+    AddArchiveReportFunction.add_archive_report_function_lists_update()
     form = AddArchiveReportFunction()
     if form.validate_on_submit():
         archiveFunctionsAdder = ArchiveFunctionsAdder(request.form.to_dict(flat=False))
