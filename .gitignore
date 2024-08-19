@@ -1,8 +1,8 @@
 .venv
 .vscode
+wifiPass.h
+configuration.h
 ___old
 __pycache__
-satelite/esp01-dht11/wifiPass.h
-satelite/esp01-dht11-withJson/wifiPass.h
 userFiles/config_email.ini
 userFiles/db.sqlite

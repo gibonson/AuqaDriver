@@ -25,6 +25,7 @@ from mainApp.models.function import DevicesFunctions, DeviceFunctionAdder, Devic
 from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
 from mainApp.report_operations import ReportCreator
+from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
 
@@ -383,7 +384,8 @@ def shutdown():
 @app.post('/api/addEvent')
 def create_friend():
     requestData = request.get_json()
-    ArchiveAdder(requestData)
+    NotificationTrigger(requestData=requestData)
+    ArchiveAdder(requestData=requestData)
     return "OK"
 
 # -----------------------------------------
