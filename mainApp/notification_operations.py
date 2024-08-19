@@ -6,7 +6,6 @@ import time
 
 class NotificationTrigger:
     def __init__(self, requestData: dict) -> None:
-        logger.debug("Notification to check: %s", requestData)
         try:
             self.timestamp = round(time.time())
             self.addInfo = requestData["addInfo"]
@@ -14,32 +13,37 @@ class NotificationTrigger:
             self.deviceIP = requestData["deviceIP"]
             self.type = requestData["type"]
             self.value = requestData["value"]
+            print("value self" + str(self.value))
+
+            notificationLister = NotificationLister(notificationStatus="Ready")
+            notificationList = notificationLister.get_list()
+            for readyNotification in notificationList:
+                if self.deviceIP == readyNotification.deviceIP and self.deviceName == readyNotification.deviceName and self.type == readyNotification.type and self.addInfo == readyNotification.addInfo:
+                    logger.debug("Notification in ready status")
+                    if readyNotification.condition == "less" and int(readyNotification.value) > int(self.value):
+                        logger.debug("Less condition")
+                        self.handle_notification(readyNotification=readyNotification)
+                    elif readyNotification.condition == "more"and int(readyNotification.value) < int(self.value):
+                        logger.debug("More condition")
+                        self.handle_notification(readyNotification=readyNotification)
+                    elif readyNotification.condition == "equal" and int(readyNotification.value) == int(self.value):
+                        logger.debug("Equal condition")
+                        self.handle_notification(readyNotification=readyNotification)
+                    else:
+                        logger.debug("wrong condition")
+
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             self.message = "Error: Record could not be parsed"
         
-        notificationLister = NotificationLister(status="Ready")
-        notificationList = notificationLister.get_list()
-        for readyNotification in notificationList:
-            print(readyNotification)
-            # print(readyNotification.deviceIP)
-            # print(readyNotification.deviceName)
-            # print(readyNotification.addInfo)
-            # print(readyNotification.type)
-            # print(readyNotification.condition)
-            # print(readyNotification.value)
-            # print(readyNotification.notificationStatus)
-            # print(readyNotification.notificationType)
-            # print(readyNotification.functionId)
-            # print(readyNotification.message)
-            if self.deviceIP == readyNotification.deviceIP and self.deviceName == readyNotification.deviceName and self.type == readyNotification.type and self.addInfo == readyNotification.addInfo:
-                print("toto")
-                # condition less
-                # condition more
-                # condition equal 
 
-                # email
-                # function
 
-        
-
+    def handle_notification(self, readyNotification):
+        if readyNotification.notificationType == "email":
+            subject = "Notification to " + readyNotification.deviceName + " - " + readyNotification.type
+            message = readyNotification.message
+            message = message.replace("<addInfo>",readyNotification.addInfo)
+            message = message.replace("<type>",readyNotification.type)
+            logger.debug("Email to send. subject: " + subject + ", and message: " + message)
+        elif readyNotification.notificationType == "function":
+            logger.debug("ID function to run: " + readyNotification.functionId)

@@ -29,14 +29,14 @@ class Notification(db.Model):
         self.message = message
 
 class NotificationLister():
-    def __init__(self, status = "All"):
-        if status is "All":
+    def __init__(self, notificationStatus = "All"):
+        if notificationStatus is "All":
             try:
                 self.notification = Notification.query.all()
             except Exception as e:
                 logger.error(f"An error occurred while fetching notification: {e}")
                 self.notification = []
-        elif status is "Ready":
+        elif notificationStatus is "Ready":
             try:
                 self.notification = Notification.query.filter(Notification.notificationStatus=="Ready").all()
             except Exception as e:

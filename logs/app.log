@@ -6855,3 +6855,1081 @@
 2024-08-14 00:19:10,562 - INFO - Adding record to archive
 2024-08-14 00:19:10,562 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '45.70'}
 2024-08-14 00:19:10,567 - INFO - Job collected
+2024-08-19 22:40:04,980 - CRITICAL - 
+
+2024-08-19 22:40:04,981 - CRITICAL - App start
+2024-08-19 22:40:04,981 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:40:05,015 - INFO - Database exists
+2024-08-19 22:40:05,739 - INFO - Scheduler starts running
+2024-08-19 22:40:05,748 - DEBUG - 
+
+2024-08-19 22:40:05,749 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:40:05,750 - DEBUG - job_type = job_collector
+2024-08-19 22:40:05,751 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:40:05,751 - DEBUG - trigger = interval
+2024-08-19 22:40:05,751 - DEBUG - year = None
+2024-08-19 22:40:05,751 - DEBUG - month = None
+2024-08-19 22:40:05,751 - DEBUG - day = 0
+2024-08-19 22:40:05,752 - DEBUG - day_of_week = None
+2024-08-19 22:40:05,752 - DEBUG - hour = 0
+2024-08-19 22:40:05,752 - DEBUG - minute = 1
+2024-08-19 22:40:05,752 - DEBUG - second = 0
+2024-08-19 22:40:05,752 - DEBUG - 
+
+2024-08-19 22:40:05,753 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:40:05,753 - DEBUG - job_type = report_sender
+2024-08-19 22:40:05,753 - DEBUG - httpLink = R1
+2024-08-19 22:40:05,753 - DEBUG - trigger = interval
+2024-08-19 22:40:05,753 - DEBUG - year = None
+2024-08-19 22:40:05,754 - DEBUG - month = None
+2024-08-19 22:40:05,754 - DEBUG - day = 0
+2024-08-19 22:40:05,754 - DEBUG - day_of_week = None
+2024-08-19 22:40:05,755 - DEBUG - hour = 1
+2024-08-19 22:40:05,755 - DEBUG - minute = 0
+2024-08-19 22:40:05,755 - DEBUG - second = 0
+2024-08-19 22:40:05,757 - CRITICAL - Scheduler started
+2024-08-19 22:40:17,443 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:40:17,446 - INFO - Adding record to archive
+2024-08-19 22:40:17,446 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:41:32,495 - CRITICAL - 
+
+2024-08-19 22:41:32,495 - CRITICAL - App start
+2024-08-19 22:41:32,495 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:41:32,501 - INFO - Database exists
+2024-08-19 22:41:32,617 - INFO - Scheduler starts running
+2024-08-19 22:41:32,627 - DEBUG - 
+
+2024-08-19 22:41:32,627 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:41:32,629 - DEBUG - job_type = job_collector
+2024-08-19 22:41:32,629 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:41:32,629 - DEBUG - trigger = interval
+2024-08-19 22:41:32,630 - DEBUG - year = None
+2024-08-19 22:41:32,630 - DEBUG - month = None
+2024-08-19 22:41:32,630 - DEBUG - day = 0
+2024-08-19 22:41:32,630 - DEBUG - day_of_week = None
+2024-08-19 22:41:32,630 - DEBUG - hour = 0
+2024-08-19 22:41:32,631 - DEBUG - minute = 1
+2024-08-19 22:41:32,631 - DEBUG - second = 0
+2024-08-19 22:41:32,631 - DEBUG - 
+
+2024-08-19 22:41:32,632 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:41:32,632 - DEBUG - job_type = report_sender
+2024-08-19 22:41:32,632 - DEBUG - httpLink = R1
+2024-08-19 22:41:32,633 - DEBUG - trigger = interval
+2024-08-19 22:41:32,633 - DEBUG - year = None
+2024-08-19 22:41:32,633 - DEBUG - month = None
+2024-08-19 22:41:32,634 - DEBUG - day = 0
+2024-08-19 22:41:32,634 - DEBUG - day_of_week = None
+2024-08-19 22:41:32,634 - DEBUG - hour = 1
+2024-08-19 22:41:32,634 - DEBUG - minute = 0
+2024-08-19 22:41:32,634 - DEBUG - second = 0
+2024-08-19 22:41:32,636 - CRITICAL - Scheduler started
+2024-08-19 22:41:37,331 - DEBUG - [<Job (id=1interval--0-223 name=1interval--0-223)>, <Job (id=R1interval--0-0030 name=R1interval--0-0030)>]
+2024-08-19 22:41:37,332 - INFO - JOB ID:1interval--0-223 JOB NAME:1interval--0-223 JOB TRIGGER:interval[0:01:00] NEXT JOB:2024-08-19 22:42:32.631119+02:00
+2024-08-19 22:41:37,332 - INFO - JOB ID:R1interval--0-0030 JOB NAME:R1interval--0-0030 JOB TRIGGER:interval[1:00:00] NEXT JOB:2024-08-19 23:41:32.635121+02:00
+2024-08-19 22:42:32,633 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:42:37,853 - INFO - Adding record to archive
+2024-08-19 22:42:37,853 - DEBUG - Values to add: {'addInfo': 'Connection error', 'deviceIP': '192.168.0.184', 'deviceName': '-', 'type': 'Error', 'value': 0}
+2024-08-19 22:42:37,863 - INFO - Job collected
+2024-08-19 22:43:32,635 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:43:33,354 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:43:33,355 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:43:33,355 - DEBUG - ['pHtml', 'Temperatura', '26.50', ' stC', '']
+2024-08-19 22:43:33,355 - DEBUG - ['pHtml', 'Wilgotnosc', '75.70', ' %', '']
+2024-08-19 22:43:33,356 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,356 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,356 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:43:33,356 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:43:33,356 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:43:33,357 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:43:33,357 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:43:33,357 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:43:33,357 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,357 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,357 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:43:33,358 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:43:33,358 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,358 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,358 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,358 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:43:33,359 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:43:33,359 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,359 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,359 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,360 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:43:33,360 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:43:33,360 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,361 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,361 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:43:33,361 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:43:33,361 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,362 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:43:33,362 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:43:33,362 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.50', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '75.70', ' %']]
+2024-08-19 22:43:33,362 - INFO - Adding record to archive
+2024-08-19 22:43:33,362 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.50'}
+2024-08-19 22:43:33,371 - INFO - Adding record to archive
+2024-08-19 22:43:33,371 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '75.70'}
+2024-08-19 22:43:33,377 - INFO - Job collected
+2024-08-19 22:44:32,644 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:44:33,844 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:44:33,844 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:44:33,845 - DEBUG - ['pHtml', 'Temperatura', '26.50', ' stC', '']
+2024-08-19 22:44:33,845 - DEBUG - ['pHtml', 'Wilgotnosc', '75.90', ' %', '']
+2024-08-19 22:44:33,845 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,845 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,845 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:44:33,846 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:44:33,846 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:44:33,846 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:44:33,846 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:44:33,846 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:44:33,847 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,847 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,847 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:44:33,847 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:44:33,847 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,848 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,848 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,848 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:44:33,849 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:44:33,849 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,849 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,849 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,849 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:44:33,850 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:44:33,850 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,850 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,851 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:44:33,851 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:44:33,851 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,851 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:44:33,852 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:44:33,852 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.50', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '75.90', ' %']]
+2024-08-19 22:44:33,852 - INFO - Adding record to archive
+2024-08-19 22:44:33,852 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.50'}
+2024-08-19 22:44:33,858 - INFO - Adding record to archive
+2024-08-19 22:44:33,859 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '75.90'}
+2024-08-19 22:44:33,866 - INFO - Job collected
+2024-08-19 22:45:32,635 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:45:34,331 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:45:34,332 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:45:34,332 - DEBUG - ['pHtml', 'Temperatura', '26.50', ' stC', '']
+2024-08-19 22:45:34,332 - DEBUG - ['pHtml', 'Wilgotnosc', '75.00', ' %', '']
+2024-08-19 22:45:34,333 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,333 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,333 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:45:34,333 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:45:34,334 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:45:34,334 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:45:34,334 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:45:34,334 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:45:34,335 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,335 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,335 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:45:34,335 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:45:34,335 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,336 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,336 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,336 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:45:34,337 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:45:34,337 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,337 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,337 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,337 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:45:34,337 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:45:34,337 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,338 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,338 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:45:34,338 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:45:34,338 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,339 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:45:34,339 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:45:34,339 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.50', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '75.00', ' %']]
+2024-08-19 22:45:34,340 - INFO - Adding record to archive
+2024-08-19 22:45:34,340 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.50'}
+2024-08-19 22:45:34,348 - INFO - Adding record to archive
+2024-08-19 22:45:34,348 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '75.00'}
+2024-08-19 22:45:34,357 - INFO - Job collected
+2024-08-19 22:45:39,338 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:45:39,341 - INFO - Adding record to archive
+2024-08-19 22:45:39,341 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:52:28,118 - CRITICAL - 
+
+2024-08-19 22:52:28,119 - CRITICAL - App start
+2024-08-19 22:52:28,119 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:52:28,126 - INFO - Database exists
+2024-08-19 22:52:28,259 - INFO - Scheduler starts running
+2024-08-19 22:52:28,270 - DEBUG - 
+
+2024-08-19 22:52:28,271 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:52:28,273 - DEBUG - job_type = job_collector
+2024-08-19 22:52:28,273 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:52:28,273 - DEBUG - trigger = interval
+2024-08-19 22:52:28,274 - DEBUG - year = None
+2024-08-19 22:52:28,274 - DEBUG - month = None
+2024-08-19 22:52:28,274 - DEBUG - day = 0
+2024-08-19 22:52:28,274 - DEBUG - day_of_week = None
+2024-08-19 22:52:28,275 - DEBUG - hour = 0
+2024-08-19 22:52:28,275 - DEBUG - minute = 1
+2024-08-19 22:52:28,275 - DEBUG - second = 0
+2024-08-19 22:52:28,276 - DEBUG - 
+
+2024-08-19 22:52:28,276 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:52:28,276 - DEBUG - job_type = report_sender
+2024-08-19 22:52:28,277 - DEBUG - httpLink = R1
+2024-08-19 22:52:28,277 - DEBUG - trigger = interval
+2024-08-19 22:52:28,277 - DEBUG - year = None
+2024-08-19 22:52:28,278 - DEBUG - month = None
+2024-08-19 22:52:28,278 - DEBUG - day = 0
+2024-08-19 22:52:28,278 - DEBUG - day_of_week = None
+2024-08-19 22:52:28,278 - DEBUG - hour = 1
+2024-08-19 22:52:28,279 - DEBUG - minute = 0
+2024-08-19 22:52:28,279 - DEBUG - second = 0
+2024-08-19 22:52:28,280 - CRITICAL - Scheduler started
+2024-08-19 22:52:44,391 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:52:44,395 - INFO - Adding record to archive
+2024-08-19 22:52:44,395 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:53:28,278 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:53:29,893 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:53:29,894 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:53:29,895 - DEBUG - ['pHtml', 'Temperatura', '26.50', ' stC', '']
+2024-08-19 22:53:29,895 - DEBUG - ['pHtml', 'Wilgotnosc', '74.60', ' %', '']
+2024-08-19 22:53:29,895 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,896 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,896 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:53:29,896 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:53:29,896 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:53:29,897 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:53:29,897 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:53:29,897 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:53:29,898 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,898 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,898 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:53:29,898 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:53:29,898 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,898 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,898 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,899 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:53:29,899 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:53:29,899 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,899 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,899 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,899 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:53:29,900 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:53:29,900 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,900 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,900 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:53:29,900 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:53:29,900 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,901 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:53:29,901 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:53:29,901 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.50', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '74.60', ' %']]
+2024-08-19 22:53:29,901 - INFO - Adding record to archive
+2024-08-19 22:53:29,901 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.50'}
+2024-08-19 22:53:29,908 - INFO - Adding record to archive
+2024-08-19 22:53:29,909 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '74.60'}
+2024-08-19 22:53:29,916 - INFO - Job collected
+2024-08-19 22:54:04,902 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:54:04,904 - INFO - Adding record to archive
+2024-08-19 22:54:04,904 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:54:09,924 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:54:09,926 - INFO - Adding record to archive
+2024-08-19 22:54:09,926 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:54:28,290 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:54:30,438 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:54:30,438 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:54:30,439 - DEBUG - ['pHtml', 'Temperatura', '26.60', ' stC', '']
+2024-08-19 22:54:30,439 - DEBUG - ['pHtml', 'Wilgotnosc', '73.00', ' %', '']
+2024-08-19 22:54:30,439 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,439 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,439 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:54:30,439 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:54:30,439 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:54:30,440 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:54:30,440 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:54:30,440 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:54:30,440 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:54:30,440 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,440 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:54:30,441 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:54:30,441 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,441 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,441 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,441 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:54:30,441 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:54:30,441 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,441 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,441 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:54:30,441 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:54:30,442 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,442 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:54:30,442 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:54:30,442 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.60', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '73.00', ' %']]
+2024-08-19 22:54:30,442 - INFO - Adding record to archive
+2024-08-19 22:54:30,442 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.60'}
+2024-08-19 22:54:30,449 - INFO - Adding record to archive
+2024-08-19 22:54:30,449 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '73.00'}
+2024-08-19 22:54:30,455 - INFO - Job collected
+2024-08-19 22:54:40,448 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:54:40,450 - INFO - Adding record to archive
+2024-08-19 22:54:40,450 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:55:28,278 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:55:30,958 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:55:30,959 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:55:30,959 - DEBUG - ['pHtml', 'Temperatura', '26.70', ' stC', '']
+2024-08-19 22:55:30,959 - DEBUG - ['pHtml', 'Wilgotnosc', '73.90', ' %', '']
+2024-08-19 22:55:30,959 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,959 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:55:30,960 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:55:30,960 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,960 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,960 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:55:30,961 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:55:30,961 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,961 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,961 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,961 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:55:30,962 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:55:30,962 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,962 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,962 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,962 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:55:30,962 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:55:30,962 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,962 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,962 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:55:30,963 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:55:30,963 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,963 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:55:30,963 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:55:30,963 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.70', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '73.90', ' %']]
+2024-08-19 22:55:30,963 - INFO - Adding record to archive
+2024-08-19 22:55:30,963 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.70'}
+2024-08-19 22:55:30,969 - INFO - Adding record to archive
+2024-08-19 22:55:30,969 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '73.90'}
+2024-08-19 22:55:30,976 - INFO - Job collected
+2024-08-19 22:55:43,957 - CRITICAL - 
+
+2024-08-19 22:55:43,957 - CRITICAL - App start
+2024-08-19 22:55:43,957 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:55:43,971 - INFO - Database exists
+2024-08-19 22:55:44,511 - INFO - Scheduler starts running
+2024-08-19 22:55:44,520 - DEBUG - 
+
+2024-08-19 22:55:44,521 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:55:44,523 - DEBUG - job_type = job_collector
+2024-08-19 22:55:44,523 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:55:44,523 - DEBUG - trigger = interval
+2024-08-19 22:55:44,524 - DEBUG - year = None
+2024-08-19 22:55:44,524 - DEBUG - month = None
+2024-08-19 22:55:44,524 - DEBUG - day = 0
+2024-08-19 22:55:44,524 - DEBUG - day_of_week = None
+2024-08-19 22:55:44,524 - DEBUG - hour = 0
+2024-08-19 22:55:44,525 - DEBUG - minute = 1
+2024-08-19 22:55:44,525 - DEBUG - second = 0
+2024-08-19 22:55:44,525 - DEBUG - 
+
+2024-08-19 22:55:44,526 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:55:44,526 - DEBUG - job_type = report_sender
+2024-08-19 22:55:44,526 - DEBUG - httpLink = R1
+2024-08-19 22:55:44,526 - DEBUG - trigger = interval
+2024-08-19 22:55:44,526 - DEBUG - year = None
+2024-08-19 22:55:44,527 - DEBUG - month = None
+2024-08-19 22:55:44,527 - DEBUG - day = 0
+2024-08-19 22:55:44,527 - DEBUG - day_of_week = None
+2024-08-19 22:55:44,527 - DEBUG - hour = 1
+2024-08-19 22:55:44,527 - DEBUG - minute = 0
+2024-08-19 22:55:44,527 - DEBUG - second = 0
+2024-08-19 22:55:44,536 - CRITICAL - Scheduler started
+2024-08-19 22:55:55,984 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:55:55,987 - INFO - Adding record to archive
+2024-08-19 22:55:55,987 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:57:23,652 - CRITICAL - 
+
+2024-08-19 22:57:23,652 - CRITICAL - App start
+2024-08-19 22:57:23,652 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:57:23,658 - INFO - Database exists
+2024-08-19 22:57:23,785 - INFO - Scheduler starts running
+2024-08-19 22:57:23,798 - DEBUG - 
+
+2024-08-19 22:57:23,799 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:57:23,802 - DEBUG - job_type = job_collector
+2024-08-19 22:57:23,802 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:57:23,803 - DEBUG - trigger = interval
+2024-08-19 22:57:23,803 - DEBUG - year = None
+2024-08-19 22:57:23,803 - DEBUG - month = None
+2024-08-19 22:57:23,803 - DEBUG - day = 0
+2024-08-19 22:57:23,804 - DEBUG - day_of_week = None
+2024-08-19 22:57:23,804 - DEBUG - hour = 0
+2024-08-19 22:57:23,804 - DEBUG - minute = 1
+2024-08-19 22:57:23,805 - DEBUG - second = 0
+2024-08-19 22:57:23,805 - DEBUG - 
+
+2024-08-19 22:57:23,805 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:57:23,806 - DEBUG - job_type = report_sender
+2024-08-19 22:57:23,806 - DEBUG - httpLink = R1
+2024-08-19 22:57:23,806 - DEBUG - trigger = interval
+2024-08-19 22:57:23,806 - DEBUG - year = None
+2024-08-19 22:57:23,806 - DEBUG - month = None
+2024-08-19 22:57:23,807 - DEBUG - day = 0
+2024-08-19 22:57:23,807 - DEBUG - day_of_week = None
+2024-08-19 22:57:23,807 - DEBUG - hour = 1
+2024-08-19 22:57:23,807 - DEBUG - minute = 0
+2024-08-19 22:57:23,808 - DEBUG - second = 0
+2024-08-19 22:57:23,810 - CRITICAL - Scheduler started
+2024-08-19 22:57:26,011 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:57:26,014 - INFO - Adding record to archive
+2024-08-19 22:57:26,015 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:57:55,350 - CRITICAL - 
+
+2024-08-19 22:57:55,351 - CRITICAL - App start
+2024-08-19 22:57:55,351 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 22:57:55,357 - INFO - Database exists
+2024-08-19 22:57:55,486 - INFO - Scheduler starts running
+2024-08-19 22:57:55,495 - DEBUG - 
+
+2024-08-19 22:57:55,496 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 22:57:55,498 - DEBUG - job_type = job_collector
+2024-08-19 22:57:55,498 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 22:57:55,498 - DEBUG - trigger = interval
+2024-08-19 22:57:55,499 - DEBUG - year = None
+2024-08-19 22:57:55,499 - DEBUG - month = None
+2024-08-19 22:57:55,499 - DEBUG - day = 0
+2024-08-19 22:57:55,499 - DEBUG - day_of_week = None
+2024-08-19 22:57:55,499 - DEBUG - hour = 0
+2024-08-19 22:57:55,499 - DEBUG - minute = 1
+2024-08-19 22:57:55,500 - DEBUG - second = 0
+2024-08-19 22:57:55,500 - DEBUG - 
+
+2024-08-19 22:57:55,500 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 22:57:55,501 - DEBUG - job_type = report_sender
+2024-08-19 22:57:55,501 - DEBUG - httpLink = R1
+2024-08-19 22:57:55,501 - DEBUG - trigger = interval
+2024-08-19 22:57:55,502 - DEBUG - year = None
+2024-08-19 22:57:55,502 - DEBUG - month = None
+2024-08-19 22:57:55,502 - DEBUG - day = 0
+2024-08-19 22:57:55,502 - DEBUG - day_of_week = None
+2024-08-19 22:57:55,502 - DEBUG - hour = 1
+2024-08-19 22:57:55,502 - DEBUG - minute = 0
+2024-08-19 22:57:55,502 - DEBUG - second = 0
+2024-08-19 22:57:55,504 - CRITICAL - Scheduler started
+2024-08-19 22:58:01,033 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:58:01,037 - INFO - Adding record to archive
+2024-08-19 22:58:01,037 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:58:55,501 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 22:58:56,544 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 22:58:56,545 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 22:58:56,545 - DEBUG - ['pHtml', 'Temperatura', '26.60', ' stC', '']
+2024-08-19 22:58:56,546 - DEBUG - ['pHtml', 'Wilgotnosc', '72.20', ' %', '']
+2024-08-19 22:58:56,546 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,546 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,546 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 22:58:56,547 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 22:58:56,547 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 22:58:56,547 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 22:58:56,547 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 22:58:56,547 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 22:58:56,548 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,548 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,548 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 22:58:56,548 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 22:58:56,548 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,549 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,549 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,549 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 22:58:56,549 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 22:58:56,550 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,550 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,550 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,550 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 22:58:56,550 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 22:58:56,551 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,551 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,551 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 22:58:56,551 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 22:58:56,552 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,552 - DEBUG - ['', '', '', '', '']
+2024-08-19 22:58:56,552 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 22:58:56,552 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.60', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '72.20', ' %']]
+2024-08-19 22:58:56,553 - INFO - Adding record to archive
+2024-08-19 22:58:56,553 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.60'}
+2024-08-19 22:58:56,559 - INFO - Adding record to archive
+2024-08-19 22:58:56,559 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '72.20'}
+2024-08-19 22:58:56,566 - INFO - Job collected
+2024-08-19 22:59:21,557 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 22:59:21,559 - INFO - Adding record to archive
+2024-08-19 22:59:21,560 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:01:01,843 - CRITICAL - 
+
+2024-08-19 23:01:01,843 - CRITICAL - App start
+2024-08-19 23:01:01,844 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:01:01,850 - INFO - Database exists
+2024-08-19 23:01:01,979 - INFO - Scheduler starts running
+2024-08-19 23:01:01,989 - DEBUG - 
+
+2024-08-19 23:01:01,990 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:01:01,991 - DEBUG - job_type = job_collector
+2024-08-19 23:01:01,992 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:01:01,992 - DEBUG - trigger = interval
+2024-08-19 23:01:01,992 - DEBUG - year = None
+2024-08-19 23:01:01,992 - DEBUG - month = None
+2024-08-19 23:01:01,993 - DEBUG - day = 0
+2024-08-19 23:01:01,993 - DEBUG - day_of_week = None
+2024-08-19 23:01:01,993 - DEBUG - hour = 0
+2024-08-19 23:01:01,994 - DEBUG - minute = 1
+2024-08-19 23:01:01,994 - DEBUG - second = 0
+2024-08-19 23:01:01,994 - DEBUG - 
+
+2024-08-19 23:01:01,995 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:01:01,995 - DEBUG - job_type = report_sender
+2024-08-19 23:01:01,995 - DEBUG - httpLink = R1
+2024-08-19 23:01:01,995 - DEBUG - trigger = interval
+2024-08-19 23:01:01,995 - DEBUG - year = None
+2024-08-19 23:01:01,996 - DEBUG - month = None
+2024-08-19 23:01:01,996 - DEBUG - day = 0
+2024-08-19 23:01:01,996 - DEBUG - day_of_week = None
+2024-08-19 23:01:01,996 - DEBUG - hour = 1
+2024-08-19 23:01:01,996 - DEBUG - minute = 0
+2024-08-19 23:01:01,997 - DEBUG - second = 0
+2024-08-19 23:01:01,998 - CRITICAL - Scheduler started
+2024-08-19 23:01:11,585 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:01:11,588 - INFO - Adding record to archive
+2024-08-19 23:01:11,589 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:02:02,004 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:02:10,933 - CRITICAL - 
+
+2024-08-19 23:02:10,933 - CRITICAL - App start
+2024-08-19 23:02:10,934 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:02:10,940 - INFO - Database exists
+2024-08-19 23:02:11,062 - INFO - Scheduler starts running
+2024-08-19 23:02:11,072 - DEBUG - 
+
+2024-08-19 23:02:11,072 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:02:11,074 - DEBUG - job_type = job_collector
+2024-08-19 23:02:11,074 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:02:11,074 - DEBUG - trigger = interval
+2024-08-19 23:02:11,074 - DEBUG - year = None
+2024-08-19 23:02:11,075 - DEBUG - month = None
+2024-08-19 23:02:11,075 - DEBUG - day = 0
+2024-08-19 23:02:11,075 - DEBUG - day_of_week = None
+2024-08-19 23:02:11,075 - DEBUG - hour = 0
+2024-08-19 23:02:11,075 - DEBUG - minute = 1
+2024-08-19 23:02:11,076 - DEBUG - second = 0
+2024-08-19 23:02:11,076 - DEBUG - 
+
+2024-08-19 23:02:11,076 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:02:11,076 - DEBUG - job_type = report_sender
+2024-08-19 23:02:11,076 - DEBUG - httpLink = R1
+2024-08-19 23:02:11,077 - DEBUG - trigger = interval
+2024-08-19 23:02:11,077 - DEBUG - year = None
+2024-08-19 23:02:11,077 - DEBUG - month = None
+2024-08-19 23:02:11,077 - DEBUG - day = 0
+2024-08-19 23:02:11,077 - DEBUG - day_of_week = None
+2024-08-19 23:02:11,077 - DEBUG - hour = 1
+2024-08-19 23:02:11,077 - DEBUG - minute = 0
+2024-08-19 23:02:11,077 - DEBUG - second = 0
+2024-08-19 23:02:11,078 - CRITICAL - Scheduler started
+2024-08-19 23:02:16,617 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:02:16,620 - INFO - Adding record to archive
+2024-08-19 23:02:16,620 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:03:11,078 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:03:12,141 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 23:03:12,142 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 23:03:12,142 - DEBUG - ['pHtml', 'Temperatura', '26.70', ' stC', '']
+2024-08-19 23:03:12,142 - DEBUG - ['pHtml', 'Wilgotnosc', '72.80', ' %', '']
+2024-08-19 23:03:12,142 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,142 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,143 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 23:03:12,143 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 23:03:12,143 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 23:03:12,143 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 23:03:12,143 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 23:03:12,144 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 23:03:12,144 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,144 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,144 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 23:03:12,144 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 23:03:12,145 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,145 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,145 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,145 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 23:03:12,145 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 23:03:12,145 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,146 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,146 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,146 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 23:03:12,147 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 23:03:12,147 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,147 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,148 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 23:03:12,148 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 23:03:12,148 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,149 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:03:12,149 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 23:03:12,149 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.70', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '72.80', ' %']]
+2024-08-19 23:03:12,149 - INFO - Adding record to archive
+2024-08-19 23:03:12,149 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.70'}
+2024-08-19 23:03:12,157 - INFO - Adding record to archive
+2024-08-19 23:03:12,157 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '72.80'}
+2024-08-19 23:03:12,163 - INFO - Job collected
+2024-08-19 23:03:24,640 - CRITICAL - 
+
+2024-08-19 23:03:24,640 - CRITICAL - App start
+2024-08-19 23:03:24,641 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:03:24,647 - INFO - Database exists
+2024-08-19 23:03:24,775 - INFO - Scheduler starts running
+2024-08-19 23:03:24,784 - DEBUG - 
+
+2024-08-19 23:03:24,785 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:03:24,787 - DEBUG - job_type = job_collector
+2024-08-19 23:03:24,788 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:03:24,788 - DEBUG - trigger = interval
+2024-08-19 23:03:24,788 - DEBUG - year = None
+2024-08-19 23:03:24,788 - DEBUG - month = None
+2024-08-19 23:03:24,789 - DEBUG - day = 0
+2024-08-19 23:03:24,789 - DEBUG - day_of_week = None
+2024-08-19 23:03:24,789 - DEBUG - hour = 0
+2024-08-19 23:03:24,789 - DEBUG - minute = 1
+2024-08-19 23:03:24,789 - DEBUG - second = 0
+2024-08-19 23:03:24,790 - DEBUG - 
+
+2024-08-19 23:03:24,790 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:03:24,790 - DEBUG - job_type = report_sender
+2024-08-19 23:03:24,791 - DEBUG - httpLink = R1
+2024-08-19 23:03:24,791 - DEBUG - trigger = interval
+2024-08-19 23:03:24,791 - DEBUG - year = None
+2024-08-19 23:03:24,791 - DEBUG - month = None
+2024-08-19 23:03:24,791 - DEBUG - day = 0
+2024-08-19 23:03:24,792 - DEBUG - day_of_week = None
+2024-08-19 23:03:24,792 - DEBUG - hour = 1
+2024-08-19 23:03:24,792 - DEBUG - minute = 0
+2024-08-19 23:03:24,792 - DEBUG - second = 0
+2024-08-19 23:03:24,794 - CRITICAL - Scheduler started
+2024-08-19 23:03:27,156 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:03:27,159 - INFO - Adding record to archive
+2024-08-19 23:03:27,160 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:04:12,809 - CRITICAL - 
+
+2024-08-19 23:04:12,809 - CRITICAL - App start
+2024-08-19 23:04:12,809 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:04:12,815 - INFO - Database exists
+2024-08-19 23:04:12,934 - INFO - Scheduler starts running
+2024-08-19 23:04:12,943 - DEBUG - 
+
+2024-08-19 23:04:12,943 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:04:12,946 - DEBUG - job_type = job_collector
+2024-08-19 23:04:12,946 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:04:12,946 - DEBUG - trigger = interval
+2024-08-19 23:04:12,946 - DEBUG - year = None
+2024-08-19 23:04:12,947 - DEBUG - month = None
+2024-08-19 23:04:12,947 - DEBUG - day = 0
+2024-08-19 23:04:12,947 - DEBUG - day_of_week = None
+2024-08-19 23:04:12,948 - DEBUG - hour = 0
+2024-08-19 23:04:12,948 - DEBUG - minute = 1
+2024-08-19 23:04:12,948 - DEBUG - second = 0
+2024-08-19 23:04:12,949 - DEBUG - 
+
+2024-08-19 23:04:12,949 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:04:12,949 - DEBUG - job_type = report_sender
+2024-08-19 23:04:12,950 - DEBUG - httpLink = R1
+2024-08-19 23:04:12,950 - DEBUG - trigger = interval
+2024-08-19 23:04:12,950 - DEBUG - year = None
+2024-08-19 23:04:12,950 - DEBUG - month = None
+2024-08-19 23:04:12,950 - DEBUG - day = 0
+2024-08-19 23:04:12,951 - DEBUG - day_of_week = None
+2024-08-19 23:04:12,951 - DEBUG - hour = 1
+2024-08-19 23:04:12,951 - DEBUG - minute = 0
+2024-08-19 23:04:12,951 - DEBUG - second = 0
+2024-08-19 23:04:12,953 - CRITICAL - Scheduler started
+2024-08-19 23:04:17,188 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:04:17,191 - INFO - Adding record to archive
+2024-08-19 23:04:17,192 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:05:12,963 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:05:17,694 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 23:05:17,695 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 23:05:17,695 - DEBUG - ['pHtml', 'Temperatura', '26.80', ' stC', '']
+2024-08-19 23:05:17,696 - DEBUG - ['pHtml', 'Wilgotnosc', '71.40', ' %', '']
+2024-08-19 23:05:17,696 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,696 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,696 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 23:05:17,696 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 23:05:17,696 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 23:05:17,697 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 23:05:17,697 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 23:05:17,697 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 23:05:17,697 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,697 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,698 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 23:05:17,698 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 23:05:17,698 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,698 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,698 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,699 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 23:05:17,699 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 23:05:17,699 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,699 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,699 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,699 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 23:05:17,700 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 23:05:17,700 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,700 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,700 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 23:05:17,701 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 23:05:17,701 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,701 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:05:17,701 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 23:05:17,701 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.80', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '71.40', ' %']]
+2024-08-19 23:05:17,702 - INFO - Adding record to archive
+2024-08-19 23:05:17,702 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.80'}
+2024-08-19 23:05:17,709 - INFO - Adding record to archive
+2024-08-19 23:05:17,710 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '71.40'}
+2024-08-19 23:05:17,716 - INFO - Job collected
+2024-08-19 23:05:44,120 - CRITICAL - 
+
+2024-08-19 23:05:44,121 - CRITICAL - App start
+2024-08-19 23:05:44,121 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:05:44,126 - INFO - Database exists
+2024-08-19 23:05:44,248 - INFO - Scheduler starts running
+2024-08-19 23:05:44,258 - DEBUG - 
+
+2024-08-19 23:05:44,259 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:05:44,261 - DEBUG - job_type = job_collector
+2024-08-19 23:05:44,261 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:05:44,262 - DEBUG - trigger = interval
+2024-08-19 23:05:44,262 - DEBUG - year = None
+2024-08-19 23:05:44,262 - DEBUG - month = None
+2024-08-19 23:05:44,262 - DEBUG - day = 0
+2024-08-19 23:05:44,262 - DEBUG - day_of_week = None
+2024-08-19 23:05:44,263 - DEBUG - hour = 0
+2024-08-19 23:05:44,263 - DEBUG - minute = 1
+2024-08-19 23:05:44,263 - DEBUG - second = 0
+2024-08-19 23:05:44,263 - DEBUG - 
+
+2024-08-19 23:05:44,264 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:05:44,264 - DEBUG - job_type = report_sender
+2024-08-19 23:05:44,264 - DEBUG - httpLink = R1
+2024-08-19 23:05:44,264 - DEBUG - trigger = interval
+2024-08-19 23:05:44,265 - DEBUG - year = None
+2024-08-19 23:05:44,265 - DEBUG - month = None
+2024-08-19 23:05:44,265 - DEBUG - day = 0
+2024-08-19 23:05:44,265 - DEBUG - day_of_week = None
+2024-08-19 23:05:44,266 - DEBUG - hour = 1
+2024-08-19 23:05:44,266 - DEBUG - minute = 0
+2024-08-19 23:05:44,266 - DEBUG - second = 0
+2024-08-19 23:05:44,268 - CRITICAL - Scheduler started
+2024-08-19 23:05:47,707 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:05:47,708 - ERROR - An error occurred: can only concatenate str (not "int") to str
+2024-08-19 23:05:47,711 - INFO - Adding record to archive
+2024-08-19 23:05:47,711 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:06:42,625 - CRITICAL - 
+
+2024-08-19 23:06:42,626 - CRITICAL - App start
+2024-08-19 23:06:42,626 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:06:42,633 - INFO - Database exists
+2024-08-19 23:06:42,762 - INFO - Scheduler starts running
+2024-08-19 23:06:42,771 - DEBUG - 
+
+2024-08-19 23:06:42,772 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:06:42,773 - DEBUG - job_type = job_collector
+2024-08-19 23:06:42,774 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:06:42,774 - DEBUG - trigger = interval
+2024-08-19 23:06:42,774 - DEBUG - year = None
+2024-08-19 23:06:42,774 - DEBUG - month = None
+2024-08-19 23:06:42,774 - DEBUG - day = 0
+2024-08-19 23:06:42,774 - DEBUG - day_of_week = None
+2024-08-19 23:06:42,774 - DEBUG - hour = 0
+2024-08-19 23:06:42,775 - DEBUG - minute = 1
+2024-08-19 23:06:42,775 - DEBUG - second = 0
+2024-08-19 23:06:42,775 - DEBUG - 
+
+2024-08-19 23:06:42,775 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:06:42,776 - DEBUG - job_type = report_sender
+2024-08-19 23:06:42,776 - DEBUG - httpLink = R1
+2024-08-19 23:06:42,776 - DEBUG - trigger = interval
+2024-08-19 23:06:42,777 - DEBUG - year = None
+2024-08-19 23:06:42,777 - DEBUG - month = None
+2024-08-19 23:06:42,777 - DEBUG - day = 0
+2024-08-19 23:06:42,777 - DEBUG - day_of_week = None
+2024-08-19 23:06:42,777 - DEBUG - hour = 1
+2024-08-19 23:06:42,778 - DEBUG - minute = 0
+2024-08-19 23:06:42,778 - DEBUG - second = 0
+2024-08-19 23:06:42,780 - CRITICAL - Scheduler started
+2024-08-19 23:06:47,752 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:06:47,756 - INFO - Adding record to archive
+2024-08-19 23:06:47,756 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:07:42,784 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:07:47,962 - INFO - Adding record to archive
+2024-08-19 23:07:47,962 - DEBUG - Values to add: {'addInfo': 'Connection error', 'deviceIP': '192.168.0.184', 'deviceName': '-', 'type': 'Error', 'value': 0}
+2024-08-19 23:07:47,969 - INFO - Job collected
+2024-08-19 23:08:02,373 - CRITICAL - 
+
+2024-08-19 23:08:02,373 - CRITICAL - App start
+2024-08-19 23:08:02,373 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:08:02,379 - INFO - Database exists
+2024-08-19 23:08:02,501 - INFO - Scheduler starts running
+2024-08-19 23:08:02,511 - DEBUG - 
+
+2024-08-19 23:08:02,511 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:08:02,513 - DEBUG - job_type = job_collector
+2024-08-19 23:08:02,513 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:08:02,514 - DEBUG - trigger = interval
+2024-08-19 23:08:02,514 - DEBUG - year = None
+2024-08-19 23:08:02,514 - DEBUG - month = None
+2024-08-19 23:08:02,514 - DEBUG - day = 0
+2024-08-19 23:08:02,515 - DEBUG - day_of_week = None
+2024-08-19 23:08:02,515 - DEBUG - hour = 0
+2024-08-19 23:08:02,515 - DEBUG - minute = 1
+2024-08-19 23:08:02,515 - DEBUG - second = 0
+2024-08-19 23:08:02,515 - DEBUG - 
+
+2024-08-19 23:08:02,516 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:08:02,516 - DEBUG - job_type = report_sender
+2024-08-19 23:08:02,516 - DEBUG - httpLink = R1
+2024-08-19 23:08:02,516 - DEBUG - trigger = interval
+2024-08-19 23:08:02,517 - DEBUG - year = None
+2024-08-19 23:08:02,517 - DEBUG - month = None
+2024-08-19 23:08:02,517 - DEBUG - day = 0
+2024-08-19 23:08:02,517 - DEBUG - day_of_week = None
+2024-08-19 23:08:02,517 - DEBUG - hour = 1
+2024-08-19 23:08:02,518 - DEBUG - minute = 0
+2024-08-19 23:08:02,518 - DEBUG - second = 0
+2024-08-19 23:08:02,519 - CRITICAL - Scheduler started
+2024-08-19 23:08:08,171 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:08,174 - INFO - Adding record to archive
+2024-08-19 23:08:08,175 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:33,198 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:33,199 - INFO - Adding record to archive
+2024-08-19 23:08:33,199 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:48,220 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:48,222 - INFO - Adding record to archive
+2024-08-19 23:08:48,222 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:53,240 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:08:53,242 - INFO - Adding record to archive
+2024-08-19 23:08:53,242 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:02,518 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:02,520 - INFO - Adding record to archive
+2024-08-19 23:09:02,520 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:02,529 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:09:07,543 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:07,545 - INFO - Adding record to archive
+2024-08-19 23:09:07,545 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:22,572 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:09:22,573 - INFO - Adding record to archive
+2024-08-19 23:09:22,574 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:22:14,073 - CRITICAL - 
+
+2024-08-19 23:22:14,073 - CRITICAL - App start
+2024-08-19 23:22:14,074 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:22:14,080 - INFO - Database exists
+2024-08-19 23:22:14,205 - INFO - Scheduler starts running
+2024-08-19 23:22:14,214 - DEBUG - 
+
+2024-08-19 23:22:14,214 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:22:14,216 - DEBUG - job_type = job_collector
+2024-08-19 23:22:14,217 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:22:14,217 - DEBUG - trigger = interval
+2024-08-19 23:22:14,217 - DEBUG - year = None
+2024-08-19 23:22:14,217 - DEBUG - month = None
+2024-08-19 23:22:14,218 - DEBUG - day = 0
+2024-08-19 23:22:14,218 - DEBUG - day_of_week = None
+2024-08-19 23:22:14,218 - DEBUG - hour = 0
+2024-08-19 23:22:14,218 - DEBUG - minute = 1
+2024-08-19 23:22:14,218 - DEBUG - second = 0
+2024-08-19 23:22:14,219 - DEBUG - 
+
+2024-08-19 23:22:14,219 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:22:14,219 - DEBUG - job_type = report_sender
+2024-08-19 23:22:14,220 - DEBUG - httpLink = R1
+2024-08-19 23:22:14,220 - DEBUG - trigger = interval
+2024-08-19 23:22:14,220 - DEBUG - year = None
+2024-08-19 23:22:14,220 - DEBUG - month = None
+2024-08-19 23:22:14,221 - DEBUG - day = 0
+2024-08-19 23:22:14,221 - DEBUG - day_of_week = None
+2024-08-19 23:22:14,221 - DEBUG - hour = 1
+2024-08-19 23:22:14,221 - DEBUG - minute = 0
+2024-08-19 23:22:14,222 - DEBUG - second = 0
+2024-08-19 23:22:14,223 - CRITICAL - Scheduler started
+2024-08-19 23:22:19,813 - DEBUG - [<Job (id=1interval--0-223 name=1interval--0-223)>, <Job (id=R1interval--0-0030 name=R1interval--0-0030)>]
+2024-08-19 23:22:19,814 - INFO - JOB ID:1interval--0-223 JOB NAME:1interval--0-223 JOB TRIGGER:interval[0:01:00] NEXT JOB:2024-08-19 23:23:14.219669+02:00
+2024-08-19 23:22:19,815 - INFO - JOB ID:R1interval--0-0030 JOB NAME:R1interval--0-0030 JOB TRIGGER:interval[1:00:00] NEXT JOB:2024-08-20 00:22:14.222672+02:00
+2024-08-19 23:22:27,644 - DEBUG - Notification to check: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:22:27,648 - INFO - Adding record to archive
+2024-08-19 23:22:27,648 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:26:43,544 - CRITICAL - 
+
+2024-08-19 23:26:43,544 - CRITICAL - App start
+2024-08-19 23:26:43,545 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:26:43,551 - INFO - Database exists
+2024-08-19 23:26:43,671 - INFO - Scheduler starts running
+2024-08-19 23:26:43,680 - DEBUG - 
+
+2024-08-19 23:26:43,680 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:26:43,683 - DEBUG - job_type = job_collector
+2024-08-19 23:26:43,684 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:26:43,684 - DEBUG - trigger = interval
+2024-08-19 23:26:43,684 - DEBUG - year = None
+2024-08-19 23:26:43,685 - DEBUG - month = None
+2024-08-19 23:26:43,685 - DEBUG - day = 0
+2024-08-19 23:26:43,685 - DEBUG - day_of_week = None
+2024-08-19 23:26:43,685 - DEBUG - hour = 0
+2024-08-19 23:26:43,686 - DEBUG - minute = 1
+2024-08-19 23:26:43,686 - DEBUG - second = 0
+2024-08-19 23:26:43,686 - DEBUG - 
+
+2024-08-19 23:26:43,686 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:26:43,686 - DEBUG - job_type = report_sender
+2024-08-19 23:26:43,687 - DEBUG - httpLink = R1
+2024-08-19 23:26:43,687 - DEBUG - trigger = interval
+2024-08-19 23:26:43,687 - DEBUG - year = None
+2024-08-19 23:26:43,687 - DEBUG - month = None
+2024-08-19 23:26:43,687 - DEBUG - day = 0
+2024-08-19 23:26:43,687 - DEBUG - day_of_week = None
+2024-08-19 23:26:43,687 - DEBUG - hour = 1
+2024-08-19 23:26:43,687 - DEBUG - minute = 0
+2024-08-19 23:26:43,687 - DEBUG - second = 0
+2024-08-19 23:26:43,689 - CRITICAL - Scheduler started
+2024-08-19 23:26:47,696 - DEBUG - Notification in ready status
+2024-08-19 23:26:47,697 - DEBUG - Equal condition
+2024-08-19 23:26:47,697 - INFO - Adding record to archive
+2024-08-19 23:26:47,697 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:27:12,721 - DEBUG - Notification in ready status
+2024-08-19 23:27:12,721 - DEBUG - Equal condition
+2024-08-19 23:27:12,721 - INFO - Adding record to archive
+2024-08-19 23:27:12,722 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:33:52,862 - CRITICAL - 
+
+2024-08-19 23:33:52,862 - CRITICAL - App start
+2024-08-19 23:33:52,863 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:33:52,869 - INFO - Database exists
+2024-08-19 23:33:53,003 - INFO - Scheduler starts running
+2024-08-19 23:33:53,014 - DEBUG - 
+
+2024-08-19 23:33:53,015 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:33:53,017 - DEBUG - job_type = job_collector
+2024-08-19 23:33:53,017 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:33:53,017 - DEBUG - trigger = interval
+2024-08-19 23:33:53,017 - DEBUG - year = None
+2024-08-19 23:33:53,018 - DEBUG - month = None
+2024-08-19 23:33:53,018 - DEBUG - day = 0
+2024-08-19 23:33:53,018 - DEBUG - day_of_week = None
+2024-08-19 23:33:53,018 - DEBUG - hour = 0
+2024-08-19 23:33:53,018 - DEBUG - minute = 1
+2024-08-19 23:33:53,018 - DEBUG - second = 0
+2024-08-19 23:33:53,018 - DEBUG - 
+
+2024-08-19 23:33:53,019 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:33:53,019 - DEBUG - job_type = report_sender
+2024-08-19 23:33:53,019 - DEBUG - httpLink = R1
+2024-08-19 23:33:53,020 - DEBUG - trigger = interval
+2024-08-19 23:33:53,020 - DEBUG - year = None
+2024-08-19 23:33:53,020 - DEBUG - month = None
+2024-08-19 23:33:53,020 - DEBUG - day = 0
+2024-08-19 23:33:53,021 - DEBUG - day_of_week = None
+2024-08-19 23:33:53,021 - DEBUG - hour = 1
+2024-08-19 23:33:53,021 - DEBUG - minute = 0
+2024-08-19 23:33:53,021 - DEBUG - second = 0
+2024-08-19 23:33:53,023 - CRITICAL - Scheduler started
+2024-08-19 23:34:07,768 - DEBUG - Notification in ready status
+2024-08-19 23:34:07,768 - DEBUG - Equal condition
+2024-08-19 23:34:07,768 - DEBUG - Email to send. subject: Notification to Akwarium - Alert, and message: Alarm z Przycisk i  <type>
+2024-08-19 23:34:07,768 - INFO - Adding record to archive
+2024-08-19 23:34:07,769 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:36:36,558 - CRITICAL - 
+
+2024-08-19 23:36:36,558 - CRITICAL - App start
+2024-08-19 23:36:36,559 - DEBUG - Path to DB: c:\Users\gibon\OneDrive\Pulpit\AuqaDriver\mainApp/../userFiles
+2024-08-19 23:36:36,565 - INFO - Database exists
+2024-08-19 23:36:36,688 - INFO - Scheduler starts running
+2024-08-19 23:36:36,698 - DEBUG - 
+
+2024-08-19 23:36:36,698 - DEBUG - schedulerID = 1interval--0-223
+2024-08-19 23:36:36,700 - DEBUG - job_type = job_collector
+2024-08-19 23:36:36,700 - DEBUG - httpLink = http://192.168.0.184/noGui
+2024-08-19 23:36:36,700 - DEBUG - trigger = interval
+2024-08-19 23:36:36,701 - DEBUG - year = None
+2024-08-19 23:36:36,701 - DEBUG - month = None
+2024-08-19 23:36:36,701 - DEBUG - day = 0
+2024-08-19 23:36:36,701 - DEBUG - day_of_week = None
+2024-08-19 23:36:36,701 - DEBUG - hour = 0
+2024-08-19 23:36:36,701 - DEBUG - minute = 1
+2024-08-19 23:36:36,701 - DEBUG - second = 0
+2024-08-19 23:36:36,701 - DEBUG - 
+
+2024-08-19 23:36:36,702 - DEBUG - schedulerID = R1interval--0-0030
+2024-08-19 23:36:36,702 - DEBUG - job_type = report_sender
+2024-08-19 23:36:36,702 - DEBUG - httpLink = R1
+2024-08-19 23:36:36,702 - DEBUG - trigger = interval
+2024-08-19 23:36:36,702 - DEBUG - year = None
+2024-08-19 23:36:36,702 - DEBUG - month = None
+2024-08-19 23:36:36,702 - DEBUG - day = 0
+2024-08-19 23:36:36,702 - DEBUG - day_of_week = None
+2024-08-19 23:36:36,702 - DEBUG - hour = 1
+2024-08-19 23:36:36,702 - DEBUG - minute = 0
+2024-08-19 23:36:36,702 - DEBUG - second = 0
+2024-08-19 23:36:36,704 - CRITICAL - Scheduler started
+2024-08-19 23:36:42,800 - DEBUG - Notification in ready status
+2024-08-19 23:36:42,801 - DEBUG - Equal condition
+2024-08-19 23:36:42,801 - DEBUG - Email to send. subject: Notification to Akwarium - Alert, and message: Alarm z Przycisk i  Alert
+2024-08-19 23:36:42,801 - INFO - Adding record to archive
+2024-08-19 23:36:42,802 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:37:22,826 - DEBUG - Notification in ready status
+2024-08-19 23:37:22,826 - DEBUG - Equal condition
+2024-08-19 23:37:22,826 - DEBUG - Email to send. subject: Notification to Akwarium - Alert, and message: Alarm z Przycisk i  Alert
+2024-08-19 23:37:22,827 - INFO - Adding record to archive
+2024-08-19 23:37:22,827 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:37:27,858 - DEBUG - Notification in ready status
+2024-08-19 23:37:27,858 - DEBUG - Equal condition
+2024-08-19 23:37:27,858 - DEBUG - Email to send. subject: Notification to Akwarium - Alert, and message: Alarm z Przycisk i  Alert
+2024-08-19 23:37:27,859 - INFO - Adding record to archive
+2024-08-19 23:37:27,859 - DEBUG - Values to add: {'addInfo': 'Przycisk', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': 'Alert', 'value': 1}
+2024-08-19 23:37:36,702 - INFO - Job collects: http://192.168.0.184/noGui
+2024-08-19 23:37:38,365 - DEBUG - ['<!DOCTYPE html><html><head><link rel=icon href=data:,><style>html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}.submit, button { font-size: 20px; width: 100%; color: white; padding: 14px 20px; border: none; border-radius: 4px; cursor: pointer}.submit {background-color: #4CAF50;}.button {background-color: limegreen;}.button2 {background-color: tomato;}table {width: 80%;  margin: auto;}th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}</style></head>']
+2024-08-19 23:37:38,366 - DEBUG - ['hHtml', 'Akwarium', '', '', '']
+2024-08-19 23:37:38,366 - DEBUG - ['pHtml', 'Temperatura', '26.80', ' stC', '']
+2024-08-19 23:37:38,366 - DEBUG - ['pHtml', 'Wilgotnosc', '70.20', ' %', '']
+2024-08-19 23:37:38,366 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,367 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,367 - DEBUG - ['formBegin', '/nawozy', 'Nawozy', '', '']
+2024-08-19 23:37:38,367 - DEBUG - ['formNumber', 'Mikroelementy [s]:', 'value1', '1', '']
+2024-08-19 23:37:38,368 - DEBUG - ['formNumber', 'Makroelementy [s]:', 'value2', '1', '']
+2024-08-19 23:37:38,368 - DEBUG - ['formNumber', 'Carbo [s]:', 'value3', '1', '']
+2024-08-19 23:37:38,368 - DEBUG - ['formNumber', 'Jack Daniels [s]:', 'value4', '1', '']
+2024-08-19 23:37:38,368 - DEBUG - ['formEnd', 'Rozpocznij Dozowanie', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['button', 'Gniazdo 1', '/socket1ON', 'Send: ON', '']
+2024-08-19 23:37:38,369 - DEBUG - ['button2', 'Gniazdo 1', '/socket1OFF', 'Send: 1 OFF', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,369 - DEBUG - ['button', 'Gniazdo 2', '/socket2ON', 'Send: 2 ON', '']
+2024-08-19 23:37:38,369 - DEBUG - ['button2', 'Gniazdo 2', '/socket2OFF', 'Send: 2 OFF', '']
+2024-08-19 23:37:38,369 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,370 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,370 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,370 - DEBUG - ['button', 'Gniazdo 3', '/socket3ON', 'Send: 3 ON', '']
+2024-08-19 23:37:38,370 - DEBUG - ['button2', 'Gniazdo 3', '/socket3OFF', 'Send: 3 OFF', '']
+2024-08-19 23:37:38,370 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,370 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,370 - DEBUG - ['button', 'GPIO All', '/gpioON', 'All ON', '']
+2024-08-19 23:37:38,370 - DEBUG - ['button2', 'GPIO All', '/gpioOFF', 'All OFF', '']
+2024-08-19 23:37:38,370 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,371 - DEBUG - ['', '', '', '', '']
+2024-08-19 23:37:38,371 - DEBUG - ['<a href=javascript:history.back()><button class=button>Go Back</button></a>"']
+2024-08-19 23:37:38,371 - DEBUG - deviceIP = 192.168.0.184deviceName = AkwariumdeviceRecieveFunctionValues = [['192.168.0.184', 'Akwarium', 'Temperatura', '26.80', ' stC'], ['192.168.0.184', 'Akwarium', 'Wilgotnosc', '70.20', ' %']]
+2024-08-19 23:37:38,371 - INFO - Adding record to archive
+2024-08-19 23:37:38,371 - DEBUG - Values to add: {'addInfo': 'Temperatura', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' stC', 'value': '26.80'}
+2024-08-19 23:37:38,377 - INFO - Adding record to archive
+2024-08-19 23:37:38,377 - DEBUG - Values to add: {'addInfo': 'Wilgotnosc', 'deviceIP': '192.168.0.184', 'deviceName': 'Akwarium', 'type': ' %', 'value': '70.20'}
+2024-08-19 23:37:38,383 - INFO - Job collected
