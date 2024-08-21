@@ -40,10 +40,14 @@ class NotificationTrigger:
 
     def handle_notification(self, readyNotification):
         if readyNotification.notificationType == "email":
-            subject = "Notification to " + readyNotification.deviceName + " - " + readyNotification.type
+            subject = "Notification: " + readyNotification.type + " for " + readyNotification.deviceName
             message = readyNotification.message
             message = message.replace("<addInfo>",readyNotification.addInfo)
             message = message.replace("<type>",readyNotification.type)
+            message = message.replace("<condition>",readyNotification.condition)
+            message = message.replace("<value>",str(readyNotification.value))
+            message = message.replace("<self.value>",str(self.value))
             logger.debug("Email to send. subject: " + subject + ", and message: " + message)
+            emailSender(subject=subject, message=message)
         elif readyNotification.notificationType == "function":
             logger.debug("ID function to run: " + readyNotification.functionId)

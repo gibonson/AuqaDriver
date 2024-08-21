@@ -31,9 +31,9 @@ Job Page
                     {% endif %}
                     <td>                        
                         <div class="btn-group">
-                            <a href="{{url_for('pause_job',id=job.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">pause_job</a>
-                            <a href="{{url_for('resume_job',id=job.id)}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">resume_job</a>
-                            <a href="{{url_for('remove_job',id=job.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">remove_job</a>
+                            <a href="{{url_for('pause_job',id=job.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Pause</a>
+                            <a href="{{url_for('resume_job',id=job.id)}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Resume</a>
+                            <a href="{{url_for('remove_job',id=job.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
                         </div></td>
                 </tr>
                 {% endfor %}

@@ -60,8 +60,10 @@ def hello_world():
 # device section
 # -----------------------------------------
 
-@app.route("/device_add", methods=['POST', 'GET'])
-def device_add():
+@app.route("/device_list", methods=['POST', 'GET'])
+def device_list():
+    deviceLister = DeviceLister()
+    devices = deviceLister.get_list()
     form = AddDevice()
     if form.validate_on_submit():
         deviceAdder = DeviceAdder(request.form.to_dict(flat=False))
@@ -70,13 +72,7 @@ def device_add():
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-    return render_template("deviceAdd.html", form=form, state=str(sched.state))
-
-@app.route("/device_list")
-def device_list():
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
-    return render_template("devicesList.html", devices=devices, state=str(sched.state))
+    return render_template("devicesList.html", devices=devices, form=form, state=str(sched.state))
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
@@ -96,8 +92,12 @@ def change_device_status(id):
 # function section
 # -----------------------------------------
 
-@app.route("/function_add", methods=['POST', 'GET'])
-def function_add():
+@app.route("/functions_list", methods=['POST', 'GET'])
+def functions_list():
+    deviceFunctionsLister = DeviceFunctionsLister()
+    devicesFunctions = deviceFunctionsLister.get_list()
+    deviceLister = DeviceLister()
+    devices = deviceLister.get_list()
     AddDeviceFunctions.deviceIdListUpdate()
     form = AddDeviceFunctions()
     if form.validate_on_submit():
@@ -107,16 +107,7 @@ def function_add():
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-    return render_template("functionAdd.html", form=form, state=str(sched.state))
-
-
-@app.route("/functions_list")
-def functions_list():
-    deviceFunctionsLister = DeviceFunctionsLister()
-    devicesFunctions = deviceFunctionsLister.get_list()
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
-    return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, state=str(sched.state))
+    return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form, state=str(sched.state))
 
 
 @app.route("/functions_list_link_creator/<id>")
@@ -131,8 +122,16 @@ def functions_list_link_creator(id):
 # scheduler section
 # -----------------------------------------
 
-@app.route("/scheduler_add", methods=['POST', 'GET'])
-def scheduler_add():
+@app.route("/scheduler_list", methods=['POST', 'GET'])
+def scheduler_list():
+    deviceLister = DeviceLister()
+    devices = deviceLister.get_list()
+    deviceFunctionsLister = DeviceFunctionsLister()
+    devicesFunctions = deviceFunctionsLister.get_list()
+    functionSchedulerLister = FunctionSchedulerLister()
+    functionsScheduler = functionSchedulerLister.get_list()
+    archiveFunctionsLister = ArchiveFunctionsLister()
+    archiveFunctions = archiveFunctionsLister.get_list()
     AddFunctionScheduler.functionIdListUpdate()
     form = AddFunctionScheduler()
     if form.validate_on_submit():
@@ -145,29 +144,13 @@ def scheduler_add():
         if number:
             flash(form.schedulerID.data + " record exists in the DB", category='danger')
             return render_template("schedulerAdd.html", form=form, state=str(sched.state))
-
         functionSchedulereAdder = FunctionSchedulereAdder(request.form.to_dict(flat=False), schedulerID)
         flash(str(functionSchedulereAdder), category='success')
         return redirect(url_for("scheduler_list"))
-
     if form.errors != {}:  # validation errors
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-
-    return render_template("schedulerAdd.html", form=form, state=str(sched.state))
-
-
-@app.route("/scheduler_list")
-def scheduler_list():
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
-    deviceFunctionsLister = DeviceFunctionsLister()
-    devicesFunctions = deviceFunctionsLister.get_list()
-    functionSchedulerLister = FunctionSchedulerLister()
-    functionsScheduler = functionSchedulerLister.get_list()
-    archiveFunctionsLister = ArchiveFunctionsLister()
-    archiveFunctions = archiveFunctionsLister.get_list()
-    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), startswith = str.startswith, int = int)
+    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), form=form, startswith = str.startswith, int = int)
 
 
 # -----------------------------------------
@@ -231,19 +214,6 @@ def start_job(runSchedulerID):
 # archive section
 # -----------------------------------------
 
-@app.route("/archive_list")
-def archive_list():
-    archiveLister = ArchiveLister()
-    archive = archiveLister.get_list()
-    return render_template("archiveList.html", archive=archive, datetime=datetime, state=str(sched.state))
-
-@app.route("/archive_remove/<id>")
-def archive_remove(id):
-    manager = ArchiveManager(id)
-    manager.remove_archive()
-    flash(str(manager), category='danger')
-    return redirect(url_for("archive_list"))
-
 @app.route("/archive_search", methods=['POST', 'GET'])
 def archive_search():
     ArchiveSearch.archive_search_lists_update()
@@ -266,12 +236,22 @@ def archive_search():
         ).order_by(Archive.id.desc()).limit(form.limit.data)
     return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), dataSubOneDay=dataSubOneDay)
 
+@app.route("/archive_remove/<id>")
+def archive_remove(id):
+    manager = ArchiveManager(id)
+    manager.remove_archive()
+    flash(str(manager), category='danger')
+    return redirect(url_for("archive_list"))
+
 # -----------------------------------------
 # archive report section
 # -----------------------------------------
 
-@app.route("/archive_report_add", methods=['POST', 'GET'])
-def archive_report_add():
+@app.route("/archive_report_list", methods=['POST', 'GET'])
+def archive_report_list():
+    archiveReportLister = ArchiveReportLister()
+    archiveReportList = archiveReportLister.get_list()
+
     AddArchiveReport.add_archive_report_lists_update()
     form = AddArchiveReport()
     if form.validate_on_submit():
@@ -281,21 +261,18 @@ def archive_report_add():
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-    return render_template("archiveReportAdd.html", form=form, state=str(sched.state))
-
-@app.route("/archive_report_list")
-def archive_report_list():
-    archiveReportLister = ArchiveReportLister()
-    archiveReportList = archiveReportLister.get_list()
-    return render_template("archiveReportList.html", archiveReportList=archiveReportList, state=str(sched.state))
+    return render_template("archiveReportList.html", archiveReportList=archiveReportList, form=form, state=str(sched.state))
 
 
 # -----------------------------------------
 # archive report functions section
 # -----------------------------------------
 
-@app.route("/archive_report_functions_add", methods=['POST', 'GET'])
-def archive_report_functions_add():
+@app.route("/archive_functions_list", methods=['POST', 'GET'])
+def archive_functions_list():
+    archiveFunctionsLister = ArchiveFunctionsLister()
+    archiveFunctionsList = archiveFunctionsLister.get_list()
+
     AddArchiveReportFunction.add_archive_report_function_lists_update()
     form = AddArchiveReportFunction()
     if form.validate_on_submit():
@@ -306,13 +283,8 @@ def archive_report_functions_add():
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
         return redirect(url_for("archive_report_functions_add"))
-    return render_template("archiveReportFunctionsAdd.html", form=form, state=str(sched.state))
-
-@app.route("/archive_functions_list")
-def archive_functions_list():
-    archiveFunctionsLister = ArchiveFunctionsLister()
-    archiveFunctionsList = archiveFunctionsLister.get_list()
-    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, datetime=datetime, state=str(sched.state))
+    
+    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
 
 @app.route("/get_archive_report/<id>")
 def get_archive_report(id):
@@ -392,8 +364,10 @@ def create_friend():
 # notification
 # -----------------------------------------
 
-@app.route("/notification_add", methods=['POST', 'GET'])
-def notification_add():
+@app.route("/notification_list", methods=['POST', 'GET'])
+def notification_list():
+    notificationLister = NotificationLister()
+    notificationList = notificationLister.get_list()
     form = AddNotification()
     if form.validate_on_submit():
         notificationAdder = NotificationAdder(request.form.to_dict(flat=False))
@@ -402,13 +376,7 @@ def notification_add():
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-    return render_template("notificationAdd.html", form=form, state=str(sched.state))
-
-@app.route("/notification_list")
-def notification_list():
-    notificationLister = NotificationLister()
-    notificationList = notificationLister.get_list()
-    return render_template("notificationList.html", notificationList=notificationList, datetime=datetime, state=str(sched.state))
+    return render_template("notificationList.html", notificationList=notificationList, form=form, datetime=datetime, state=str(sched.state))
 
 @app.route("/change_notification_status/<id>")
 def change_notification_status(id):

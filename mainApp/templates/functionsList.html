@@ -6,19 +6,76 @@ functions_list
 
 
 {% block content %}
-<h1 class="h2 mb-3 font-weight-normal text-center">functions_list</h1>
+<h1 class="h2 mb-3 font-weight-normal">functionAdd</h1>
+<div class="container">
+    <form method="POST" class="form-register" style="color:white" novalidate>
+        {{ form.hidden_tag() }}
+        <table>
+            <tr>
+                <td>
+                    {{ form.deviceId.label() }}
+                </td>
+                <td>
+                    {{ form.deviceId(class="form-select" , placeholder = 'deviceId') }}
+                    <small class="form-text text-danger">{{ form.deviceId.errors[0] }}</small>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.functionDescription.label() }}
+                </td>
+                <td>
+                    {{ form.functionDescription(class="form-control" , placeholder = 'functionDescription') }}
+                    <small class="form-text text-danger">{{ form.functionDescription.errors[0] }}</small>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.actionLink.label() }}
+                </td>
+                <td>
+                    {{ form.actionLink(class="form-control" , placeholder = 'actionLink') }}
+                    <small class="form-text text-danger">{{ form.actionLink.errors[0] }}</small>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.functionParameters.label() }}
+                </td>
+                <td>
+                    {{ form.functionParameters(class="form-control" , placeholder = 'functionParameters') }}
+                    <small class="form-text text-danger">{{ form.functionParameters.errors[0] }}</small>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.functionStatus.label() }}
+                </td>
+                <td>
+                    {{ form.functionStatus(class="form-select" , placeholder = 'functionStatus') }}
+                    <small class="form-text text-danger">{{ form.functionStatus.errors[0] }}</small>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+        </table>
+        {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+    </form>
+</div>
+<h1>functions_list</h1>
 <div class="table-responsive">
     <table class="table table-dark table-striped align-middle">
         <thead>
             <tr>
                 <th scope="col">id</th>
-                <th scope="col">deviceId</th>
-                <th scope="col">deviceIP</th>
-                <th scope="col">deviceName</th>
-                <th scope="col">actionLink</th>
-                <th scope="col">functionDescription</th>
-                <th scope="col">functionParameters</th>
-                <th scope="col">functionStatus</th>
+                <th scope="col">device</br>Id</th>
+                <th scope="col">device</br>IP</th>
+                <th scope="col">device</br>Name</th>
+                <th scope="col">action</br>Link</th>
+                <th scope="col">function</br>Description</th>
+                <th scope="col">function</br>Parameters</th>
+                <th scope="col">function</br>Status</th>
                 <th scope="col">action</th>
             </tr>
         </thead>

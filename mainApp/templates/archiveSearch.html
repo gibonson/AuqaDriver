@@ -7,43 +7,59 @@ archiveSearch
 
 {% block content %}
 <div class="text-center">
-    <h1 class="h2 mb-3 font-weight-normal">archiveSearch</h1>
-    <div class="container">
-    
-        <form method="POST" class="form-register" style="color:white" novalidate>
+    <div class="container mt-5">
+        <div class="accordion" id="exampleAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        archiveSearch
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                    data-bs-parent="#exampleAccordion">
+                    <div class="accordion-body">
+                        <div class="container">
+                            <form method="POST" class="form-register" style="color:white" novalidate>
 
-            {{ form.hidden_tag() }}
+                                {{ form.hidden_tag() }}
 
-            {{ form.limit.label() }}
-            {{ form.limit(class="form-control" , placeholder = 'limit:') }}
-            <small class="form-text text-danger">{{ form.limit.errors[0] }}</small>
+                                {{ form.limit.label() }}
+                                {{ form.limit(class="form-control" , placeholder = 'limit:') }}
+                                <small class="form-text text-danger">{{ form.limit.errors[0] }}</small>
 
-            {{ form.timestampStart.label() }}
-            {{ form.timestampStart(class="form-control" ,  value = dataSubOneDay) }}
-            <small class="form-text text-danger">{{ form.timestampStart.errors[0] }}</small>
+                                {{ form.timestampStart.label() }}
+                                {{ form.timestampStart(class="form-control" , value = dataSubOneDay) }}
+                                <small class="form-text text-danger">{{ form.timestampStart.errors[0] }}</small>
 
-            {{ form.timestampEnd.label() }}
-            {{ form.timestampEnd(class="form-control" , value = datetime.now().strftime("%Y-%m-%d %H:%M")) }}
-            <small class="form-text text-danger">{{ form.timestampEnd.errors[0] }}</small>
+                                {{ form.timestampEnd.label() }}
+                                {{ form.timestampEnd(class="form-control" , value = datetime.now().strftime("%Y-%m-%d
+                                %H:%M")) }}
+                                <small class="form-text text-danger">{{ form.timestampEnd.errors[0] }}</small>
 
-            {{ form.deviceIP.label() }}
-            {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
-            <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
+                                {{ form.deviceIP.label() }}
+                                {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
+                                <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
 
-            {{ form.addInfo.label() }}
-            {{ form.addInfo(class="form-control" , placeholder = 'addInfo:') }}
-            <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
+                                {{ form.addInfo.label() }}
+                                {{ form.addInfo(class="form-control" , placeholder = 'addInfo:') }}
+                                <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
 
-            {{ form.type.label() }}
-            {{ form.type(class="form-control" , placeholder = 'type:') }}
-            <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
+                                {{ form.type.label() }}
+                                {{ form.type(class="form-control" , placeholder = 'type:') }}
+                                <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
 
-            <br>
+                                <br>
 
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+                                {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
 
-        </form>
+                            </form>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -64,7 +80,7 @@ archiveSearch
                     <th scope="col">actions</th>
                 </tr>
                 {% for archiveRow in archive %}
-                <tr>    
+                <tr>
                     <td>{{archiveRow.id}}</td>
                     <td>{{datetime.fromtimestamp(archiveRow.timestamp).strftime("%Y-%m-%d %H:%M:%S")}}</td>
                     <td>{{archiveRow.deviceIP}}</td>
@@ -72,10 +88,12 @@ archiveSearch
                     <td>{{archiveRow.addInfo}}</td>
                     <td>{{archiveRow.value}}</td>
                     <td>{{archiveRow.type}}</td>
-                    <td>                        
+                    <td>
                         <div class="btn-group">
-                            <a href="{{url_for('archive_remove',id=archiveRow.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">archiveRow</a>
-                        </div></td>
+                            <a href="{{url_for('archive_remove',id=archiveRow.id)}}"
+                                class="btn btn-danger btn-lg active" role="button" aria-pressed="true">archiveRow</a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>

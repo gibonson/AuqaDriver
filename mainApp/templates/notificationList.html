@@ -7,22 +7,144 @@ notificationList
 
 {% block content %}
 <div class="text-center">
+    <h1 class="h2 mb-3 font-weight-normal">notificationAdd</h1>
+    <div class="container">
+
+        <form method="POST" class="form-register" style="color:white" novalidate>
+
+            {{ form.hidden_tag() }}
+            <table>
+
+                <tr>
+                    <td>
+                        {{ form.description.label() }}
+                    </td>
+                    <td>
+                        {{ form.description(class="form-control" , placeholder = 'description') }}
+                        <small class="form-text text-danger">{{ form.description.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.deviceIP.label() }}
+                    </td>
+                    <td>
+                        {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP') }}
+                        <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.deviceName.label() }}
+                    </td>
+                    <td>
+                        {{ form.deviceName(class="form-control" , placeholder = 'deviceName') }}
+                        <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.addInfo.label() }}
+                    </td>
+                    <td>
+                        {{ form.addInfo(class="form-control" , placeholder = 'addInfo') }}
+                        <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.type.label() }}
+                    </td>
+                    <td>
+                        {{ form.type(class="form-control" , placeholder = 'type') }}
+                        <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.condition.label() }}
+                    </td>
+                    <td>
+                        {{ form.condition(class="form-select" , placeholder = 'condition') }}
+                        <small class="form-text text-danger">{{ form.condition.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.value.label() }}
+                    </td>
+                    <td>
+                        {{ form.value(class="form-control" , placeholder = 'value') }}
+                        <small class="form-text text-danger">{{ form.value.errors[0] }}</small>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        {{ form.notificationStatus.label() }}
+                    </td>
+                    <td>
+                        {{ form.notificationStatus(class="form-select" , placeholder = 'notificationStatus') }}
+                        <small class="form-text text-danger">{{ form.notificationStatus.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.notificationType.label() }}
+                    </td>
+                    <td>
+                        {{ form.notificationType(class="form-select" , placeholder = 'notificationType') }}
+                        <small class="form-text text-danger">{{ form.notificationType.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.functionId.label() }}
+                    </td>
+                    <td>
+                        {{ form.functionId(class="form-control" , placeholder = 'functionId') }}
+                        <small class="form-text text-danger">{{ form.functionId.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.message.label() }}
+                    </td>
+                    <td>
+                        {{ form.message(class="form-control" , placeholder = 'message') }}
+                        <small class="form-text text-danger">{{ form.message.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan="2"></td>
+                </tr>
+            </table>
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+        </form>
+
+
+    </div>
+</div>
+
+<div class="text-center">
     <h1 class="h2 mb-3 font-weight-normal">notificationList</h1>
     <div class="container">
+        <div class="table-responsive">
+
         <table class="table table-striped table-dark  table-fixed" style="width: 100%">
             <thead>
                 <tr>
                     <th>id</th>
                     <th>description</th>
-                    <th>deviceIP</th>
-                    <th>deviceName</th>
-                    <th>addInfo</th>
+                    <th>device</br>IP</th>
+                    <th>device</br>Name</th>
+                    <th>add</br>Info</th>
                     <th>type</th>
                     <th>condition</th>
                     <th>value</th>
-                    <th>notificationStatus</th>
-                    <th>notificationType</th>
-                    <th>functionId</th>
+                    <th>notification</br>Status</th>
+                    <th>notification</br>Type</th>
+                    <th>function</br>Id</th>
                     <th>message</th>
                     <th>action</th>
                 </tr>
@@ -44,8 +166,8 @@ notificationList
                     <td>{{notification.message}}</td>
                     <td>                        
                         <div class="btn-group">
-                            <a href="{{url_for('change_notification_status',id=notification.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">change_notification_status</a>
-                            <a href="{{url_for('remove_notification',id=notification.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">remove_notification</a>
+                            <a href="{{url_for('change_notification_status',id=notification.id)}}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Change Status</a>
+                            <a href="{{url_for('remove_notification',id=notification.id)}}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
                         </div>
                     </td>
                 </tr>
@@ -53,6 +175,6 @@ notificationList
             </tbody>
         </table>
     </div>
-
+    </div>
 </div>
 {% endblock %}
