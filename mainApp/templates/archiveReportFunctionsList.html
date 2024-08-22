@@ -7,10 +7,13 @@ archiveReportFunctionsList
 
 {% block content %}
 
-<div class="text-center">
-    <h1 class="h2 mb-3 font-weight-normal">archiveReportFunctionsAdd</h1>
-    <div class="container">
-
+<p>
+    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form" aria-expanded="false" aria-controls="collapseExample">
+        archiveReportFunctionsAdd
+      </button>
+</p>
+<div class="collapse" id="form">
+    <div class="card card-body">
         <form method="POST" class="form-register" style="color:white" novalidate>
 
             {{ form.hidden_tag() }}
@@ -55,12 +58,13 @@ archiveReportFunctionsList
                     <td colspan="2"></td>
                 </tr>
             </table>
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+            {{ form.submit(class="btn btn-lg btn-block btn-primary w-100") }}
         </form>
 
-
+</div>
     </div>
 </div>
+</br>
 
 <div class="text-center">
     <h1 class="h2 mb-3 font-weight-normal">archiveReportFunctionsList</h1>
