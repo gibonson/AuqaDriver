@@ -10,7 +10,7 @@ archiveReportList
 <p>
     <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
         aria-expanded="false" aria-controls="collapseExample">
-        archiveReportList
+        Add Archive Report
     </button>
 </p>
 <div class="collapse" id="form">
@@ -143,61 +143,56 @@ archiveReportList
         </form>
 
     </div>
-    </div>
+</div>
 </div>
 </br>
 
-<div class="text-center">
-    <h1>archiveReportList</h1>
-    <div class="table-responsive">
-        <table class="table table-dark table-striped align-middle">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>title</th>
-                    <th>description</th>
-                    <th>device</br>IP</th>
-                    <th>device</br>Name</th>
-                    <th>add</br>Info</th>
-                    <th>type</th>
-                    <th>avgOr</br>Sum</th>
-                    <th>timerRange</br>Hours</th>
-                    <th>quantity</br>Values</th>
-                    <th>min</br>Value</th>
-                    <th>okMin</br>Value</th>
-                    <th>okMax</br>Value</th>
-                    <th>max</br>Value</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for archiveReporRow in archiveReportList %}
-                <tr>
-                    <td>{{archiveReporRow.id}}</td>
-                    <td>{{archiveReporRow.title}}</td>
-                    <td>{{archiveReporRow.description}}</td>
-                    <td>{{archiveReporRow.deviceIP}}</td>
-                    <td>{{archiveReporRow.deviceName}}</td>
-                    <td>{{archiveReporRow.addInfo}}</td>
-                    <td>{{archiveReporRow.type}}</td>
-                    <td>{{archiveReporRow.avgOrSum}}</td>
-                    <td>{{archiveReporRow.timerRangeHours}}</td>
-                    <td>{{archiveReporRow.quantityValues}}</td>
-                    <td>{{archiveReporRow.minValue}}</td>
-                    <td>{{archiveReporRow.okMinValue}}</td>
-                    <td>{{archiveReporRow.okMaxValue}}</td>
-                    <td>{{archiveReporRow.maxValue}}</td>
-                    <td>
-                        <div class="btn-group">
-                            <a href="{{url_for('get_archive_report', id = archiveReporRow.id)}}"
-                                class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Check</a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-</div>
+<h1>Archive Report List</h1>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>description</th>
+            <th>device</br>IP</th>
+            <th>device</br>Name</th>
+            <th>add</br>Info</th>
+            <th>type</th>
+            <th>avgOr</br>Sum</th>
+            <th>timerRange</br>Hours</th>
+            <th>quantity</br>Values</th>
+            <th>min</br>Value</th>
+            <th>okMin</br>Value</th>
+            <th>okMax</br>Value</th>
+            <th>max</br>Value</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for archiveReporRow in archiveReportList %}
+        <tr>
+            <td>{{archiveReporRow.id}}</td>
+            <td>{{archiveReporRow.title}}</td>
+            <td>{{archiveReporRow.description}}</td>
+            <td>{{archiveReporRow.deviceIP}}</td>
+            <td>{{archiveReporRow.deviceName}}</td>
+            <td>{{archiveReporRow.addInfo}}</td>
+            <td>{{archiveReporRow.type}}</td>
+            <td>{{archiveReporRow.avgOrSum}}</td>
+            <td>{{archiveReporRow.timerRangeHours}}</td>
+            <td>{{archiveReporRow.quantityValues}}</td>
+            <td>{{archiveReporRow.minValue}}</td>
+            <td>{{archiveReporRow.okMinValue}}</td>
+            <td>{{archiveReporRow.okMaxValue}}</td>
+            <td>{{archiveReporRow.maxValue}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('get_archive_report', id = archiveReporRow.id)}}"
+                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Check</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

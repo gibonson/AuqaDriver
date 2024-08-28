@@ -28,6 +28,7 @@ from mainApp.report_operations import ReportCreator
 from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
+from mainApp.charts import Table
 
 
 # -----------------------------------------
@@ -391,3 +392,15 @@ def remove_notification(id):
     manager.remove_notification()
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
+
+# -----------------------------------------
+# charts
+# -----------------------------------------
+
+@app.route("/charts", methods=['POST', 'GET'])
+def charts():
+    chart = Table(delta=100)
+    chart.reportGenerator()
+
+    return "ok"
+

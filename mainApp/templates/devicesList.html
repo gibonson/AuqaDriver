@@ -7,9 +7,10 @@ devicesList
 {% block content %}
 
 <p>
-    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form" aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
+        aria-expanded="false" aria-controls="collapseExample">
         Add device
-      </button>
+    </button>
 </p>
 <div class="collapse" id="form">
     <div class="card card-body">
@@ -50,36 +51,34 @@ devicesList
 </div>
 </br>
 <h1>List of devices</h1>
-<div class="table-responsive">
-    <table class="table table-dark table-striped align-middle">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">device</br>IP</th>
-                <th scope="col">device</br>Name</th>
-                <th scope="col">device</br>Status</th>
-                <th scope="col">actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for device in devices %}
-            <tr>
-                <th>{{device.id}}</th>
-                <td>{{device.deviceIP}}</td>
-                <td>{{device.deviceName}}</td>
-                <td>{{device.deviceStatus}}</td>
-                <td>
-                    <div class="btn-group">
-                        <a href="{{url_for('device_remove',id=device.id)}}" class="btn btn-danger btn-lg active"
-                            role="button" aria-pressed="true">Remove</a>
-                        <a href="{{url_for('change_device_status',id=device.id)}}" class="btn btn-warning btn-lg active"
-                            role="button" aria-pressed="true">Change
-                            Status</a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">device</br>IP</th>
+            <th scope="col">device</br>Name</th>
+            <th scope="col">device</br>Status</th>
+            <th scope="col">actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for device in devices %}
+        <tr>
+            <th>{{device.id}}</th>
+            <td>{{device.deviceIP}}</td>
+            <td>{{device.deviceName}}</td>
+            <td>{{device.deviceStatus}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('device_remove',id=device.id)}}" class="btn btn-danger btn-lg active"
+                        role="button" aria-pressed="true">Remove</a>
+                    <a href="{{url_for('change_device_status',id=device.id)}}" class="btn btn-warning btn-lg active"
+                        role="button" aria-pressed="true">Change
+                        Status</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

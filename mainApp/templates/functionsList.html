@@ -72,43 +72,40 @@ functions_list
 </div>
 </br>
 <h1>List of functions</h1>
-<div class="table-responsive">
-    <table class="table table-dark table-striped align-middle">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">device</br>Id</th>
-                <th scope="col">device</br>IP</th>
-                <th scope="col">device</br>Name</th>
-                <th scope="col">action</br>Link</th>
-                <th scope="col">function</br>Description</th>
-                <th scope="col">function</br>Parameters</th>
-                <th scope="col">function</br>Status</th>
-                <th scope="col">action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for devicesFunction in devicesFunctions %}
-            <tr>
-                <th scope="row">{{devicesFunction.id}}</th>
-                <td>{{devicesFunction.deviceId}}</td>
-                <td>{{devices[devicesFunction.deviceId-1].deviceIP}}</td>
-                <td>{{devices[devicesFunction.deviceId-1].deviceName}}</td>
-                <td>{{devicesFunction.actionLink}}</td>
-                <td>{{devicesFunction.functionDescription}}</td>
-                <td>{{devicesFunction.functionParameters}}</td>
-                <td>{{devicesFunction.functionStatus}}</td>
-                <td>
-                    <div class="btn-group">
-                        <a href="{{url_for('functions_list_link_creator', id = devicesFunction.id)}}"
-                            class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
-                        <a href="{{url_for('functions_list_link_creator', id = devicesFunction.id)}}"
-                            class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-
-    </table>
-</div>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">device</br>Id</th>
+            <th scope="col">device</br>IP</th>
+            <th scope="col">device</br>Name</th>
+            <th scope="col">action</br>Link</th>
+            <th scope="col">function</br>Description</th>
+            <th scope="col">function</br>Parameters</th>
+            <th scope="col">function</br>Status</th>
+            <th scope="col">action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for devicesFunction in devicesFunctions %}
+        <tr>
+            <th scope="row">{{devicesFunction.id}}</th>
+            <td>{{devicesFunction.deviceId}}</td>
+            <td>{{devices[devicesFunction.deviceId-1].deviceIP}}</td>
+            <td>{{devices[devicesFunction.deviceId-1].deviceName}}</td>
+            <td>{{devicesFunction.actionLink}}</td>
+            <td>{{devicesFunction.functionDescription}}</td>
+            <td>{{devicesFunction.functionParameters}}</td>
+            <td>{{devicesFunction.functionStatus}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('functions_list_link_creator', id = devicesFunction.id)}}"
+                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
+                    <a href="{{url_for('functions_list_link_creator', id = devicesFunction.id)}}"
+                        class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+</table>
 {% endblock %}

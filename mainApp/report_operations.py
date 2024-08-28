@@ -17,9 +17,10 @@ class HtmlBuilder:
                             color: #000000;
                             width: 50%;
                             border-collapse: collapse;
-                            border: 1px solid black;
                             border-radius: 15px;
                             overflow: hidden;
+                            margin-left:  auto;
+                            margin-right:  auto;
                         }
                         th, td {
                             border: 1px solid black;
