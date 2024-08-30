@@ -412,4 +412,3 @@ def charts():
     chart.reportGenerator()
 
     return "ok"
-
