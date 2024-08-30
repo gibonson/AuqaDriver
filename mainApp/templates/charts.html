@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+charts
+{% endblock %}
+
+{% block content %}
+
+<h1>charts</h1>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th scope="col">date</th>
+            <th scope="col">value</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for date in final_chart %}
+        <tr>
+            <th>{{date}}</th>
+            <td>{{final_chart[date]}}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

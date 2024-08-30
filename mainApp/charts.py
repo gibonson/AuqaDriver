@@ -1,32 +1,51 @@
-from mainApp import app, logger
+from mainApp import app, logger, db
 from mainApp.models.archive import Archive
 from sqlalchemy import func, extract, desc
 from datetime import datetime, timedelta
 
+
+from sqlalchemy import func, extract
+
+
 class Table:
-    def __init__(self, delta) -> None:
+    def __init__(self, delta, type) -> None:
         self.delta = delta
+        self.type = type
+        self.final_results = {}
 
     def reportGenerator(self):
         today = datetime.now().date()
-        start_date = today - timedelta(days=self.delta)
-        with app.app_context():
-            results = Archive.query.with_entities(
-                func.date(Archive.timestamp).label('day'),  # Wyodrębnienie daty z timestampu
-                func.avg(Archive.value).label('average_temp')  # Obliczenie średniej temperatury
-            ).filter(
-                Archive.timestamp >= start_date,  # Filtr dla ostatnich 10 dni
-                Archive.timestamp < today + timedelta(days=1),  # Filtr do dzisiejszego dnia włącznie
-                Archive.type == 'stC'  # Warunek, że type musi być równe 'stC'
-            ).group_by(
-                func.date(Archive.timestamp)  # Grupowanie po dacie
-            ).order_by(
-                desc('day')  # Sortowanie wyników od najnowszych do najstarszych
-            ).all()
-            # results = Archive.query.filter(Archive.type == '%').all()
-            # print(f"Liczba rekordów z type='stC': {len(results)}")
-            print(results)
+        print(today.strftime('%Y-%m-%d'))
+        for day in range(self.delta):
+            print(day)
+            start_date = today - timedelta(days=day)
+            self.final_results[start_date.strftime('%Y-%m-%d')] = 0
 
-            # Wyświetlenie wyników
+        with app.app_context():
+            results = (
+                db.session.query(
+                    func.strftime(
+                        '%Y-%m-%d', func.datetime(Archive.timestamp, 'unixepoch')).label('day'),
+                    func.avg(Archive.value).label('average_value')
+                )
+                .filter(
+                    # Archive.type.like(self.type),
+                    Archive.type == self.type,
+                    func.strftime(
+                        '%Y-%m-%d', func.datetime(Archive.timestamp, 'unixepoch')) >= start_date
+                )
+                .group_by(func.strftime('%Y-%m-%d', func.datetime(Archive.timestamp, 'unixepoch')))
+                .order_by('day')
+                .all()
+            )
+
             for result in results:
-                print(f"Średnia temperatura dla {result.day}: {result.average_temp:.2f}°C")
+                print(str(result[0]) + " " + str(result[1]))
+                self.final_results[result[0]] = round(result[1], 2)
+
+            for final_result in self.final_results:
+                print(
+                    f"klucz: {final_result} wartosc:{self.final_results[final_result]}")
+
+    def get_final_results(self):
+        return self.final_results

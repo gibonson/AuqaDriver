@@ -408,7 +408,7 @@ def remove_notification(id):
 
 @app.route("/charts", methods=['POST', 'GET'])
 def charts():
-    chart = Table(delta=100)
+    chart = Table(delta=10, type="%")
     chart.reportGenerator()
-
-    return "ok"
+    final_chart  = chart.get_final_results()
+    return render_template("charts.html", final_chart=final_chart,  state=str(sched.state))
