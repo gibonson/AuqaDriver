@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 # Third-party imports
 from flask import Flask, Markup, flash, jsonify, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import OperationalError
 
 # Local application/library specific imports
 from mainApp import app, db, logger, sched
@@ -52,6 +53,14 @@ def create():
 def not_found(e):
     flash(f'404!', category='danger')
     return render_template('404.html', state=str(sched.state))
+
+@app.errorhandler(OperationalError)
+def handle_operational_error(error):
+    logger.error(f"OperationalError: {error}")
+    if "no such table" in str(error):
+        flash(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
+        return render_template('500.html', state=str(sched.state))
+    return render_template('500.html', state=str(sched.state))
 
 @app.route("/")
 def hello_world():
