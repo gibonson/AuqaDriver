@@ -24,25 +24,16 @@ archiveSearch
                 <small class="form-text text-danger">{{ form.limit.errors[0] }}</small>
 
                 {{ form.timestampStart.label() }}
-                {{ form.timestampStart(class="form-control" , value = dataSubOneDay) }}
+                {{ form.timestampStart(class="form-control" , value = formatedMinusOneDayDate) }}
                 <small class="form-text text-danger">{{ form.timestampStart.errors[0] }}</small>
 
                 {{ form.timestampEnd.label() }}
-                {{ form.timestampEnd(class="form-control" , value = datetime.now().strftime("%Y-%m-%d
-                %H:%M")) }}
+                {{ form.timestampEnd(class="form-control" , value = formatedCurrentDate) }}
                 <small class="form-text text-danger">{{ form.timestampEnd.errors[0] }}</small>
 
-                {{ form.deviceIP.label() }}
-                {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP:') }}
-                <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
-
-                {{ form.addInfo.label() }}
-                {{ form.addInfo(class="form-control" , placeholder = 'addInfo:') }}
-                <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
-
-                {{ form.type.label() }}
-                {{ form.type(class="form-control" , placeholder = 'type:') }}
-                <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
+                {{ form.recordType.label() }}
+                {{ form.recordType(class="form-control" , placeholder = 'recordType:', size=10) }}
+                <small class="form-text text-danger">{{ form.recordType.errors[0] }}</small>
 
                 <br>
 
@@ -53,9 +44,10 @@ archiveSearch
 </div>
 </br>
 
-<div class="text-center">
-    <h1 class="h2 mb-3 font-weight-normal">List of records</h1>
-    <table class="table table-striped table-dark" style="width: 100%">
+<h1>List of records</h1>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+
         <tr>
             <th>id</th>
             <th>timestamp</th>
@@ -66,6 +58,8 @@ archiveSearch
             <th>type</th>
             <th scope="col">actions</th>
         </tr>
+    </thead>
+    <tbody>
         {% for archiveRow in archive %}
         <tr>
             <td>{{archiveRow.id}}</td>
@@ -78,11 +72,11 @@ archiveSearch
             <td>
                 <div class="btn-group">
                     <a href="{{url_for('archive_remove',id=archiveRow.id)}}" class="btn btn-danger btn-lg active"
-                        role="button" aria-pressed="true">archiveRow</a>
+                        role="button" aria-pressed="true">Delete</a>
                 </div>
             </td>
         </tr>
         {% endfor %}
-    </table>
-</div>
+    </tbody>
+</table>
 {% endblock %}

@@ -230,28 +230,45 @@ def archive_search():
     form = ArchiveSearch()
     archiveLister=ArchiveLister()
     archive = archiveLister.get_list()
-    dataSubOne = datetime.now() - timedelta(days=1)
-    dataSubOneDay = dataSubOne.strftime("%Y-%m-%d %H:%M")
+    currentDate = datetime.now()
+    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
+    minusOneDayDate = datetime.now() - timedelta(days=1)
+    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
 
     if form.validate_on_submit():
         logger.debug(str(request.form.to_dict(flat=False)))
         logger.debug("date time to timestampStart: "  + str(datetime.timestamp(form.timestampStart.data)))
-        logger.debug("date time to timestampStart: "  + str(datetime.timestamp(form.timestampEnd.data)))
+        logger.debug("date time to timestampEnd: "  + str(datetime.timestamp(form.timestampEnd.data)))
+        logger.debug("recordType:" + str(form.recordType.data))
+
+        recordTypes = form.recordType.data
+        deviceIP = []
+        deviceName = []
+        addInfo = []
+        type = []
+        for recordType in recordTypes:
+            recordTypeList = recordType.split(" -> ")
+            deviceIP.append(recordTypeList[0])
+            deviceName.append(recordTypeList[1])
+            addInfo.append(recordTypeList[2])
+            type.append(recordTypeList[3])
+
         archive = Archive.query.filter(
-            Archive.deviceIP.in_(form.deviceIP.data),
-            Archive.addInfo.in_(form.addInfo.data),
+            Archive.deviceIP.in_(deviceIP),
+            Archive.addInfo.in_(addInfo),
+            Archive.deviceName.in_(deviceName),
             Archive.timestamp >= datetime.timestamp(form.timestampStart.data),
             Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
-            Archive.type.in_(form.type.data)
+            Archive.type.in_(type)
         ).order_by(Archive.id.desc()).limit(form.limit.data)
-    return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), dataSubOneDay=dataSubOneDay)
+    return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
     manager = ArchiveManager(id)
     manager.remove_archive()
     flash(str(manager), category='danger')
-    return redirect(url_for("archive_list"))
+    return redirect(url_for("archive_search"))
 
 # -----------------------------------------
 # archive report section
@@ -408,7 +425,14 @@ def remove_notification(id):
 
 @app.route("/charts", methods=['POST', 'GET'])
 def charts():
+    ArchiveSearch.archive_search_lists_update()
+    form = ArchiveSearch()
+    currentDate = datetime.now()
+    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
+    minusOneDayDate = datetime.now() - timedelta(days=1)
+    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
+
     chart = Table(delta=10, type="%")
     chart.reportGenerator()
     final_chart  = chart.get_final_results()
-    return render_template("charts.html", final_chart=final_chart,  state=str(sched.state))
+    return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate ,state=str(sched.state))
