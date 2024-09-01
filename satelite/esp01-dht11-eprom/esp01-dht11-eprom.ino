@@ -40,19 +40,15 @@ const int LED_PIN_ALERT = 5;           // Status LED to GPIO5
 const int MOTION_SENSOR = 14;          // Motion Sensor to GPIO14
 
 // Constant strings
-const String ALERT_NAME = "Przycisk";  // Alert name for button
+const String ALERT_NAME = "Ruch";  // Alert name for button
 
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("Alert!!!");
   sthToSend = "yes";
-  //  analogWrite(led, 5);
-  //  delay(700);
-  //  digitalWrite(led, LOW);
-  //  delay(500);
-  //  analogWrite(led, 5);
-  //  delay(700);
-  //  digitalWrite(led, LOW);
+  pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
+  digitalWrite(LED_PIN_ALERT, LOW);
+  analogWrite(LED_PIN_ALERT, 5);
 }
 
 void setup() {
@@ -229,6 +225,7 @@ void loop() {
               digitalWrite(LED_PIN_3, LOW);  // turn the LED off
               digitalWrite(LED_PIN_4, LOW);  // turn the LED off
               digitalWrite(LED_PIN_5, LOW);  // turn the LED off
+              digitalWrite(LED_PIN_ALERT, LOW); // turn off ALERT LED
               String resultHtml = "";
               resultHtml = webGui.resultLogBegin(deviceName);
               resultHtml = resultHtml + webGui.resultLogContent(0, "Mikroelementy - stan");

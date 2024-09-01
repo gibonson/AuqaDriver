@@ -127,6 +127,14 @@ def functions_list_link_creator(id):
           linkCreator.functions_list_link_creator() + '</a>'), category='success')
     return redirect(url_for("functions_list"))
 
+@app.route("/functions_list_web_content_collector/<id>")
+def functions_list_web_content_collector(id):
+    linkCreator = LinkCreator(id)
+    webContentCollector = WebContentCollector(linkCreator.functions_list_link_creator())
+    webContentCollector.collect()
+    flash("Check out some recent records", category='success')
+    return redirect(url_for("archive_search"))
+
 
 # -----------------------------------------
 # scheduler section

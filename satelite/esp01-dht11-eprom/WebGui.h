@@ -14,9 +14,6 @@ public:
     return html;
   }
 
-
-
-
   String resultLogBegin (String deviceName) {
     String html = htmlBegin();
     String endLine = "</br>\n";
@@ -41,9 +38,6 @@ public:
     html = html + "<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
     return html;
   }
-
-  
-
 
   String generator(String webContent[31][4]) {
     String html = "";
