@@ -4,6 +4,8 @@
 #include <HttpClient.h>         // HTTP client library
 #include <DHT.h>                // DHT sensor library
 #include <RCSwitch.h>           // RF remote control library
+#include <OneWire.h>            // OneWire library
+#include <DallasTemperature.h>  // DS18B20 Dallas Temperature library
 
 // Include custom headers
 #include "WebGui.h"             // Custom Web GUI library
@@ -22,22 +24,27 @@ const long timeoutTime = 500;          // Timeout time in milliseconds
 
 // DHT sensor setup
 #define DHTTYPE DHT22                  // DHT22 - DHT 22(AM2302)
-const int DHT_PIN = 4;                 // Digital pin connected to the DHT sensor
+const int DHT_PIN = 4;                 // GPIO4 = D2 Digital pin connected to the DHT sensor
 DHT dht(DHT_PIN, DHTTYPE);             // Initialize DHT sensor
+
+// DS18B20 sensor setup
+const int ONE_WIRE_BUS = 16;           // GPIO16 = D0 pin connected to the  sensor
+OneWire oneWire(ONE_WIRE_BUS);         // Setup a oneWire instance to communicate with any OneWire devices
+DallasTemperature sensors(&oneWire);   // Pass our oneWire reference to Dallas Temperature sensor 
 
 // RF remote control setup
 RCSwitch mySwitch = RCSwitch();        // Initialize RF switch
-const int RC_TRANSMITER_PIN = 0;       // Transmitter data pin to GPIO0
+const int RC_TRANSMITER_PIN = 0;       // GPIO0 = D3 Transmitter data pin
 
 // Pin configuration
-const int LED_PIN_1 = 2;               // LED_PIN_1 to GPIO2 - ESP LED
-const int LED_PIN_2 = 12;              // Relay 1 control pin
-const int LED_PIN_3 = 13;              // Relay 2 control pin
-const int LED_PIN_4 = 15;              // Relay 3 control pin
-const int LED_PIN_5 = 3;               // Relay 4 control pin
+const int LED_PIN_1 = 2;               // GPIO2 = D4 = ESP LED - LED_PIN_1 
+const int LED_PIN_2 = 12;              // GPIO12= D6 - Relay 1 control pin
+const int LED_PIN_3 = 13;              // GPIO13= D7 - Relay 2 control pin
+const int LED_PIN_4 = 15;              // GPIO15= D8 - Relay 3 control pin
+const int LED_PIN_5 = 3;               // GPIO5 = RX - Relay 4 control pin
 
-const int LED_PIN_ALERT = 5;           // Status LED to GPIO5
-const int MOTION_SENSOR = 14;          // Motion Sensor to GPIO14
+const int LED_PIN_ALERT = 5;           // GPIO5 = D1 - Status LED 
+const int MOTION_SENSOR = 14;          // GPIO14 = D5 - Motion Sensor 
 
 // Constant strings
 const String ALERT_NAME = "Ruch";  // Alert name for button
@@ -65,7 +72,6 @@ void setup() {
   mySwitch.setProtocol(1);  // Optional set protocol (default is 1, will work for most outlets)
   mySwitch.setPulseLength(350); // Optional set pulse length.
   // mySwitch.setRepeatTransmit(15);  // Optional set number of transmission repetitions.
-
 
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
     Serial.println("STA Failed to configure");
@@ -95,7 +101,6 @@ void setup() {
     Serial.println("Failed to read from DHT sensor!");
   }
 
-
   pinMode(MOTION_SENSOR, INPUT_PULLUP);  // PIR Motion Sensor mode INPUT_PULLUP
   // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
   attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING);
@@ -105,7 +110,7 @@ void setup() {
 
 void loop() {
   WebGui webGui;
-  delay(5000);
+  delay(1000);
   WiFiClient client = server.available();  // Listen for incoming clients
   if (sthToSend == "yes") {
     Serial.println("zamiana");
@@ -138,10 +143,13 @@ void loop() {
             // Serial.println(header);
 
             if (header.indexOf("GET / HTTP/1.1") >= 0) {
+              sensors.requestTemperatures(); 
+              float temperature_Celsius = sensors.getTempCByIndex(0);
               float newT = dht.readTemperature();
               float newH = dht.readHumidity();
               webContent[1][2] = String(newT);
               webContent[2][2] = String(newH);
+              webContent[3][2] = String(temperature_Celsius);
               client.print(webGui.generator(webContent));
             }
             else if (header.indexOf("noGui") >= 0) {
