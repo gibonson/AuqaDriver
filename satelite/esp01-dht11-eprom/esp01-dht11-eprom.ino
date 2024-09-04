@@ -110,7 +110,7 @@ void setup() {
 
 void loop() {
   WebGui webGui;
-  delay(1000);
+  delay(5000);
   WiFiClient client = server.available();  // Listen for incoming clients
   if (sthToSend == "yes") {
     Serial.println("zamiana");

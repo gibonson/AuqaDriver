@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+manually adding to archive 
+{% endblock %}
+
+
+{% block content %}
+
+<h1 class="h2 mb-3 font-weight-normal">Add to archive manually</h1>
+<form method="POST" class="form-register" style="color:white" novalidate>
+    {{ form.hidden_tag() }}
+    <table>
+        <tr>
+            <td>
+                {{ form.device.label() }}
+            </td>
+            <td>
+                {{ form.device(class="form-select" , placeholder = 'device') }}
+                <small class="form-text text-danger">{{ form.device.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.addInfo.label() }}
+            </td>
+            <td>
+                {{ form.addInfo(class="form-select" , placeholder = 'addInfo') }}
+                <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.value.label() }}
+            </td>
+            <td>
+                {{ form.value(class="form-control" , placeholder = 'value') }}
+                <small class="form-text text-danger">{{ form.value.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.type.label() }}
+            </td>
+            <td>
+                {{ form.type(class="form-select" , placeholder = 'type') }}
+                <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.comment.label() }}
+            </td>
+            <td>
+                {{ form.comment(class="form-control" , placeholder = 'comment', style="height: 150px;") }}
+                <small class="form-text text-danger">{{ form.comment.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+    {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+</form>
+{% endblock %}

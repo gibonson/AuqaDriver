@@ -18,6 +18,7 @@ from mainApp.forms.add_function_scheduler import AddFunctionScheduler
 from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
+from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
 from mainApp.models.archive_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
 from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
@@ -444,3 +445,29 @@ def charts():
     chart.reportGenerator()
     final_chart  = chart.get_final_results()
     return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate ,state=str(sched.state))
+
+# -----------------------------------------
+# manually adding to archive 
+# -----------------------------------------
+
+@app.route("/manually_add_to_archive", methods=['POST', 'GET'])
+def manually_add_to_archive():
+    AddArchiveManualRecord.deviceListUpdate()
+    form = AddArchiveManualRecord()
+    if form.validate_on_submit():
+        requestDataRaw = request.form.to_dict(flat=False)
+        print(requestDataRaw["device"])
+        requestDataRawList = requestDataRaw["device"][0].split(" -> ")
+        deviceIP = requestDataRawList[0]
+        deviceName = requestDataRawList[1]
+        print(deviceIP)
+        print(deviceName)
+        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': deviceIP, 'deviceName':  deviceName, 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
+        NotificationTrigger(requestData=requestData)
+        archiveAdder = ArchiveAdder(requestData=requestData)
+        flash(str(archiveAdder), category='success')
+        return redirect(url_for("manually_add_to_archive"))
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
+        flash(form.errors, category='danger')
+    return render_template("archiveAddManually.html", form=form, state=str(sched.state))

@@ -12,10 +12,10 @@ class AddDeviceFunctions(FlaskForm):
     def deviceIdListUpdate():
         AddDeviceFunctions.deviceIdList.clear()
         with app.app_context():
-            devices = Devices.query.all()
+            devices = Devices.query.filter(Devices.deviceStatus=="Ready").all()
             for device in devices:
                 AddDeviceFunctions.deviceIdList.append(
-                    (device.id, device.deviceIP + " " + device.deviceName + " " + device.deviceStatus))
+                    (device.id, device.deviceIP + " " + device.deviceName))
 
     def validate_actionLink(self, actionLink_to_check):
         if "/"  not in actionLink_to_check.data: 
