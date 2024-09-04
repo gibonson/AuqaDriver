@@ -30,21 +30,21 @@ DHT dht(DHT_PIN, DHTTYPE);             // Initialize DHT sensor
 // DS18B20 sensor setup
 const int ONE_WIRE_BUS = 16;           // GPIO16 = D0 pin connected to the  sensor
 OneWire oneWire(ONE_WIRE_BUS);         // Setup a oneWire instance to communicate with any OneWire devices
-DallasTemperature sensors(&oneWire);   // Pass our oneWire reference to Dallas Temperature sensor 
+DallasTemperature sensors(&oneWire);   // Pass our oneWire reference to Dallas Temperature sensor
 
 // RF remote control setup
 RCSwitch mySwitch = RCSwitch();        // Initialize RF switch
 const int RC_TRANSMITER_PIN = 0;       // GPIO0 = D3 Transmitter data pin
 
 // Pin configuration
-const int LED_PIN_1 = 2;               // GPIO2 = D4 = ESP LED - LED_PIN_1 
+const int LED_PIN_1 = 2;               // GPIO2 = D4 = ESP LED - LED_PIN_1
 const int LED_PIN_2 = 12;              // GPIO12= D6 - Relay 1 control pin
 const int LED_PIN_3 = 13;              // GPIO13= D7 - Relay 2 control pin
 const int LED_PIN_4 = 15;              // GPIO15= D8 - Relay 3 control pin
 const int LED_PIN_5 = 3;               // GPIO5 = RX - Relay 4 control pin
 
-const int LED_PIN_ALERT = 5;           // GPIO5 = D1 - Status LED 
-const int MOTION_SENSOR = 14;          // GPIO14 = D5 - Motion Sensor 
+const int LED_PIN_ALERT = 5;           // GPIO5 = D1 - Status LED
+const int MOTION_SENSOR = 14;          // GPIO14 = D5 - Motion Sensor
 
 // Constant strings
 const String ALERT_NAME = "Ruch";  // Alert name for button
@@ -106,6 +106,14 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING);
   pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
   digitalWrite(LED_PIN_ALERT, LOW);
+
+
+  String DEVICE_STATUS = "Device Start";
+  http.begin(client, serverName);
+  http.addHeader("Content-Type", "application/json");
+  String jsonString = "{\"addInfo\":\"" + DEVICE_STATUS + "\",\"deviceIP\":\"" + local_IP[0] + "." + local_IP[1] + "." + local_IP[2] + "." + local_IP[3] + "\",\"deviceName\":\"" + deviceName + "\",\"type\":\"Log\",\"value\":1}";
+  int httpResponseCode = http.POST(jsonString);
+  Serial.println(httpResponseCode);
 }
 
 void loop() {
@@ -143,7 +151,7 @@ void loop() {
             // Serial.println(header);
 
             if (header.indexOf("GET / HTTP/1.1") >= 0) {
-              sensors.requestTemperatures(); 
+              sensors.requestTemperatures();
               float temperature_Celsius = sensors.getTempCByIndex(0);
               float newT = dht.readTemperature();
               float newH = dht.readHumidity();
@@ -153,13 +161,13 @@ void loop() {
               client.print(webGui.generator(webContent));
             }
             else if (header.indexOf("noGui") >= 0) {
+              sensors.requestTemperatures();
+              float temperature_Celsius = sensors.getTempCByIndex(0);
               float newT = dht.readTemperature();
               float newH = dht.readHumidity();
-              //              if (isnan(newT)) {
-              //                Serial.println("Failed to read from DHT sensor!");
-              //              }
               webContent[1][2] = String(newT);
               webContent[2][2] = String(newH);
+              webContent[3][2] = String(temperature_Celsius);
               client.print(webGui.noGui(webContent));
             }
             else if (header.indexOf("GET /nawozy") >= 0) {
