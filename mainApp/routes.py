@@ -20,10 +20,10 @@ from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
-from mainApp.models.archive_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
-from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
+from mainApp.models.report_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
+from mainApp.models.report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager 
-from mainApp.models.function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
+from mainApp.models.device_function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
 from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
 from mainApp.report_operations import ReportCreator
@@ -60,7 +60,6 @@ def handle_operational_error(error):
     logger.error(f"OperationalError: {error}")
     if "no such table" in str(error):
         flash(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
-        return render_template('500.html', state=str(sched.state))
     return render_template('500.html', state=str(sched.state))
 
 @app.route("/")
@@ -79,10 +78,10 @@ def device_list():
     if form.validate_on_submit():
         deviceAdder = DeviceAdder(request.form.to_dict(flat=False))
         flash(str(deviceAdder), category='success')
-        return redirect(url_for("device_list"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
+        return redirect(url_for("device_list"))
     return render_template("devicesList.html", devices=devices, form=form, state=str(sched.state))
 
 @app.route("/device_remove/<id>")
@@ -103,8 +102,8 @@ def change_device_status(id):
 # function section
 # -----------------------------------------
 
-@app.route("/functions_list", methods=['POST', 'GET'])
-def functions_list():
+@app.route("/device_functions_list", methods=['POST', 'GET'])
+def device_functions_list():
     deviceFunctionsLister = DeviceFunctionsLister()
     devicesFunctions = deviceFunctionsLister.get_list()
     deviceLister = DeviceLister()
@@ -114,22 +113,21 @@ def functions_list():
     if form.validate_on_submit():
         deviceFunctionAdder = DeviceFunctionAdder(request.form.to_dict(flat=False))
         flash(str(deviceFunctionAdder), category='success')
-        return redirect(url_for("functions_list"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
     return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form, state=str(sched.state))
 
 
-@app.route("/functions_list_link_creator/<id>")
-def functions_list_link_creator(id):
+@app.route("/device_functions_list_link_creator/<id>")
+def device_functions_list_link_creator(id):
     linkCreator = LinkCreator(id)
     flash(Markup('<a href="' + linkCreator.functions_list_link_creator() + '">' +
           linkCreator.functions_list_link_creator() + '</a>'), category='success')
-    return redirect(url_for("functions_list"))
+    return redirect(url_for("device_functions_list"))
 
-@app.route("/functions_list_web_content_collector/<id>")
-def functions_list_web_content_collector(id):
+@app.route("/device_functions_list_web_content_collector/<id>")
+def device_functions_list_web_content_collector(id):
     linkCreator = LinkCreator(id)
     webContentCollector = WebContentCollector(linkCreator.functions_list_link_creator())
     webContentCollector.collect()
@@ -162,10 +160,9 @@ def scheduler_list():
             schedulerID=schedulerID).first()
         if number:
             flash(form.schedulerID.data + " record exists in the DB", category='danger')
-            return render_template("schedulerAdd.html", form=form, state=str(sched.state))
+            return render_template("schedulerList.html", form=form, state=str(sched.state))
         functionSchedulereAdder = FunctionSchedulereAdder(request.form.to_dict(flat=False), schedulerID)
         flash(str(functionSchedulereAdder), category='success')
-        return redirect(url_for("scheduler_list"))
     if form.errors != {}:  # validation errors
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
@@ -280,11 +277,11 @@ def archive_remove(id):
     return redirect(url_for("archive_search"))
 
 # -----------------------------------------
-# archive report section
+# report section
 # -----------------------------------------
 
-@app.route("/archive_report_list", methods=['POST', 'GET'])
-def archive_report_list():
+@app.route("/report_list", methods=['POST', 'GET'])
+def report_list():
     archiveReportLister = ArchiveReportLister()
     archiveReportList = archiveReportLister.get_list()
 
@@ -300,12 +297,24 @@ def archive_report_list():
     return render_template("archiveReportList.html", archiveReportList=archiveReportList, form=form, state=str(sched.state))
 
 
+@app.route("/get_report/<id>")
+def get_report(id):
+    reportCreator = ReportCreator()
+    one_line = reportCreator.create_one_line(id)
+    return one_line
+
+@app.route("/get_report_all")
+def get_report_all():
+    reportCreator = ReportCreator()
+    report = reportCreator.create_all()
+    return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
+
 # -----------------------------------------
-# archive report functions section
+# report functions section
 # -----------------------------------------
 
-@app.route("/archive_functions_list", methods=['POST', 'GET'])
-def archive_functions_list():
+@app.route("/report_functions_list", methods=['POST', 'GET'])
+def report_functions_list():
     archiveFunctionsLister = ArchiveFunctionsLister()
     archiveFunctionsList = archiveFunctionsLister.get_list()
 
@@ -314,25 +323,11 @@ def archive_functions_list():
     if form.validate_on_submit():
         archiveFunctionsAdder = ArchiveFunctionsAdder(request.form.to_dict(flat=False))
         flash(str(archiveFunctionsAdder), category='success')
-        return redirect(url_for("archive_functions_list"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-        return redirect(url_for("archive_report_functions_add"))
-    
-    return render_template("archiveReportFunctionsList.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
+    return render_template("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
 
-@app.route("/get_archive_report/<id>")
-def get_archive_report(id):
-    reportCreator = ReportCreator()
-    one_line = reportCreator.create_one_line(id)
-    return one_line
-
-@app.route("/get_archive_report_all")
-def get_archive_report_all():
-    reportCreator = ReportCreator()
-    report = reportCreator.create_all()
-    return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
 
 # -----------------------------------------
 # email sender

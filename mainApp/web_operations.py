@@ -1,5 +1,5 @@
 import requests
-from mainApp.models.function import DevicesFunctions
+from mainApp.models.device_function import DevicesFunctions
 from mainApp.models.device import Devices
 from mainApp.models.archive import Archive, ArchiveAdder
 from mainApp import app, db, logger

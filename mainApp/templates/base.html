@@ -92,14 +92,14 @@
                   <ul class="dropdown-menu">
                      <li><a class="dropdown-item" href="{{url_for('device_list')}}"><i class='fa fa-cog'></i> Device</a>
                      </li>
-                     <li><a class="dropdown-item" href="{{url_for('functions_list')}}"><i class='fa fa-gears'></i>
-                           Functions</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('device_functions_list')}}"><i class='fa fa-gears'></i>
+                           Device Functions</a></li>
                      <li><a class="dropdown-item" href="{{url_for('scheduler_list')}}"><i class='fa fa-clock-o'></i>
                            Scheduler</a></li>
-                     <li><a class="dropdown-item" href="{{url_for('archive_report_list')}}"><i
-                              class='fa fa-calendar'></i> Archive Report</a></li>
-                     <li><a class="dropdown-item" href="{{url_for('archive_functions_list')}}"><i
-                              class='fa fa-tachometer'></i> Archive Functions</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('report_list')}}"><i
+                              class='fa fa-calendar'></i> Report</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('report_functions_list')}}"><i
+                              class='fa fa-tachometer'></i> Report Functions</a></li>
                      <li><a class="dropdown-item" href="{{url_for('notification_list')}}"><i class='fa fa-bell-o'></i>
                            Notification</a></li>
                   </ul>
@@ -115,8 +115,8 @@
                <li class="nav-item"><a class="nav-link" href="{{url_for('dashboard')}}"><i
                         class='fa fa-info-circle'></i>
                      Dashboard</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('get_archive_report_all')}}"><i
-                        class='fa fa-table'></i> Get Archive Report All</a></li>
+               <li class="nav-item"><a class="nav-link" href="{{url_for('get_report_all')}}"><i
+                        class='fa fa-table'></i> Get Report All</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('charts')}}"><i class='fa fa-line-chart'></i>
                      Charts</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('manually_add_to_archive')}}"><i

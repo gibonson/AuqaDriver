@@ -2,9 +2,9 @@ from mainApp.web_operations import WebContentCollector, LinkCreator
 from mainApp.report_operations import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
-from mainApp.models.archive_functions import ArchiveFunctions
+from mainApp.models.report_functions import ArchiveFunctions
 from mainApp.models.device import Devices
-from mainApp.models.function import DevicesFunctions
+from mainApp.models.device_function import DevicesFunctions
 from mainApp.models.scheduler import FunctionScheduler
 
 def job_collector(http_address):

@@ -2,8 +2,8 @@ from flask_wtf import FlaskForm
 from mainApp import app
 from mainApp import logger
 from mainApp.models.device import Devices
-from mainApp.models.function import DevicesFunctions
-from mainApp.models.archive_functions import ArchiveFunctions
+from mainApp.models.device_function import DevicesFunctions
+from mainApp.models.report_functions import ArchiveFunctions
 from wtforms.validators import DataRequired, NumberRange
 from wtforms import SelectField, SubmitField, HiddenField, IntegerField
 

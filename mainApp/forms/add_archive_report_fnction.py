@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from mainApp import app
-from mainApp.models.archive_report import ArchiveReport
+from mainApp.models.report import ArchiveReport
 from wtforms.validators import DataRequired, Length, Optional
 from wtforms import StringField, SelectMultipleField, SelectField, SubmitField
 
