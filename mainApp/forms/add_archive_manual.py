@@ -7,8 +7,8 @@ from wtforms import SelectField, SubmitField, IntegerField, TextAreaField
 
 class AddArchiveManualRecord(FlaskForm):
 
-    addInfoList= [("Add water[l]","Add water[l]"),("Take Water[l]","Take Water[l]"),("New plant[pcs]","New plant[pcs]"),("New Animal","New Animal"),("Status","Status"),("Plant fertilizers","Plant fertilizers")]
-    typeList = [("manual","manual")]
+    addInfoList= [("Add water[l]","Add water[l]"),("Take Water[l]","Take Water[l]"),("New plant[pcs]","New plant[pcs]"),("New Animal[pcs]","New Animal[pcs]"),("Status","Status")]
+    typeList = [("Manual","Manual")]
     deviceList = []
 
 

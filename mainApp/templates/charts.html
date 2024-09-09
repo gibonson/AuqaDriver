@@ -23,6 +23,10 @@ chart maker
                 {{ form.limit(class="form-control" , placeholder = 'limit:') }}
                 <small class="form-text text-danger">{{ form.limit.errors[0] }}</small>
 
+                {{ form.intervalType.label() }}
+                {{ form.intervalType(class="form-select" , placeholder = 'intervalType:') }}
+                <small class="form-text text-danger">{{ form.intervalType.errors[0] }}</small>
+
                 {{ form.timestampStart.label() }}
                 {{ form.timestampStart(class="form-control" , value = formatedMinusOneDayDate) }}
                 <small class="form-text text-danger">{{ form.timestampStart.errors[0] }}</small>

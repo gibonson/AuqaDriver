@@ -19,10 +19,11 @@ from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
+from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
 from mainApp.models.report_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
 from mainApp.models.report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
-from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager 
+from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
 from mainApp.models.device_function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
 from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
@@ -41,8 +42,9 @@ from mainApp.charts import Table
 def create():
     with app.app_context():
         db.create_all()
-        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': 0}
-        archiveAdder = ArchiveAdder(requestData)
+        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1',
+                       'deviceName': 'Server', 'type': 'Log', 'value': 0}
+        ArchiveAdder(requestData)
         logger.critical("New database has been created")
     return redirect(url_for("get_jobs"))
 
@@ -50,10 +52,12 @@ def create():
 # start page and 404
 # -----------------------------------------
 
+
 @ app.errorhandler(404)
 def not_found(e):
     flash(f'404!', category='danger')
     return render_template('404.html', state=str(sched.state))
+
 
 @app.errorhandler(OperationalError)
 def handle_operational_error(error):
@@ -61,6 +65,7 @@ def handle_operational_error(error):
     if "no such table" in str(error):
         flash(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
     return render_template('500.html', state=str(sched.state))
+
 
 @app.route("/")
 def hello_world():
@@ -70,10 +75,9 @@ def hello_world():
 # device section
 # -----------------------------------------
 
+
 @app.route("/device_list", methods=['POST', 'GET'])
 def device_list():
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
     form = AddDevice()
     if form.validate_on_submit():
         deviceAdder = DeviceAdder(request.form.to_dict(flat=False))
@@ -81,20 +85,20 @@ def device_list():
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-        return redirect(url_for("device_list"))
+    devices = DeviceLister().get_list()
     return render_template("devicesList.html", devices=devices, form=form, state=str(sched.state))
+
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
-    manager = DeviceManager(id)
-    manager.remove_device()
+    manager = DeviceManager(id).remove_device()
     flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
+
 @app.route("/change_device_status/<id>")
 def change_device_status(id):
-    manager = DeviceManager(id)
-    manager.change_status()
+    manager = DeviceManager(id).change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
@@ -102,35 +106,35 @@ def change_device_status(id):
 # function section
 # -----------------------------------------
 
+
 @app.route("/device_functions_list", methods=['POST', 'GET'])
 def device_functions_list():
-    deviceFunctionsLister = DeviceFunctionsLister()
-    devicesFunctions = deviceFunctionsLister.get_list()
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
     AddDeviceFunctions.deviceIdListUpdate()
     form = AddDeviceFunctions()
     if form.validate_on_submit():
-        deviceFunctionAdder = DeviceFunctionAdder(request.form.to_dict(flat=False))
+        deviceFunctionAdder = DeviceFunctionAdder(
+            request.form.to_dict(flat=False))
         flash(str(deviceFunctionAdder), category='success')
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
+    devices = DeviceLister().get_list()
+    devicesFunctions = DeviceFunctionsLister().get_list()
     return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form, state=str(sched.state))
 
 
 @app.route("/device_functions_list_link_creator/<id>")
 def device_functions_list_link_creator(id):
-    linkCreator = LinkCreator(id)
-    flash(Markup('<a href="' + linkCreator.functions_list_link_creator() + '">' +
-          linkCreator.functions_list_link_creator() + '</a>'), category='success')
+    linkCreator = LinkCreator(id).functions_list_link_creator()
+    flash(Markup('<a href="' + linkCreator + '">' +
+          linkCreator + '</a>'), category='success')
     return redirect(url_for("device_functions_list"))
+
 
 @app.route("/device_functions_list_web_content_collector/<id>")
 def device_functions_list_web_content_collector(id):
-    linkCreator = LinkCreator(id)
-    webContentCollector = WebContentCollector(linkCreator.functions_list_link_creator())
-    webContentCollector.collect()
+    WebContentCollector(LinkCreator(
+        id).functions_list_link_creator()).collect()
     flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
 
@@ -141,32 +145,30 @@ def device_functions_list_web_content_collector(id):
 
 @app.route("/scheduler_list", methods=['POST', 'GET'])
 def scheduler_list():
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
-    deviceFunctionsLister = DeviceFunctionsLister()
-    devicesFunctions = deviceFunctionsLister.get_list()
-    functionSchedulerLister = FunctionSchedulerLister()
-    functionsScheduler = functionSchedulerLister.get_list()
-    archiveFunctionsLister = ArchiveFunctionsLister()
-    archiveFunctions = archiveFunctionsLister.get_list()
     AddFunctionScheduler.functionIdListUpdate()
     form = AddFunctionScheduler()
     if form.validate_on_submit():
         schedulerID = str(form.functionId.data) + str(form.trigger.data) + str(form.year.data) + str(
             form.month.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)
-        schedulerID = schedulerID.replace("None","-")
+        schedulerID = schedulerID.replace("None", "-")
         print(schedulerID)
         number = FunctionScheduler.query.filter_by(
             schedulerID=schedulerID).first()
         if number:
-            flash(form.schedulerID.data + " record exists in the DB", category='danger')
+            flash(form.schedulerID.data +
+                  " record exists in the DB", category='danger')
             return render_template("schedulerList.html", form=form, state=str(sched.state))
-        functionSchedulereAdder = FunctionSchedulereAdder(request.form.to_dict(flat=False), schedulerID)
+        functionSchedulereAdder = FunctionSchedulereAdder(
+            request.form.to_dict(flat=False), schedulerID)
         flash(str(functionSchedulereAdder), category='success')
     if form.errors != {}:  # validation errors
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
-    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), form=form, startswith = str.startswith, int = int)
+    devices = DeviceLister().get_list()
+    devicesFunctions = DeviceFunctionsLister().get_list()
+    functionsScheduler = FunctionSchedulerLister().get_list()
+    archiveFunctions = ArchiveFunctionsLister().get_list()
+    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), form=form, startswith=str.startswith, int=int)
 
 
 # -----------------------------------------
@@ -178,26 +180,22 @@ def get_jobs():
     logger.debug(sched.get_jobs())
     for job in sched.get_jobs():
         logger.info("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
-              str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
+                    str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
     return render_template('getJobs.html', get_jobs=sched.get_jobs(), state=str(sched.state))
 
 
 @app.route("/functions_scheduler_list_get_jobs")
 def functions_scheduler_list_get_jobs():
-    deviceLister = DeviceLister()
-    devices = deviceLister.get_list()
-    deviceFunctionsLister = DeviceFunctionsLister()
-    devicesFunctions = deviceFunctionsLister.get_list()
-    functionSchedulerLister = FunctionSchedulerLister()
-    functionsScheduler = functionSchedulerLister.get_list()
-    return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state), str = str, int = int)
+    devices = DeviceLister().get_list()
+    devicesFunctions = DeviceFunctionsLister().get_list()
+    functionsScheduler = FunctionSchedulerLister().get_list()
+    return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state), str=str, int=int)
 
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
-    manager = FunctionSchedulereManager(id)
-    manager.remove_function_scheduler()
-    flash(str(manager), category='danger')
+    message = FunctionSchedulereManager(id).remove_function_scheduler()
+    flash(str(message), category='danger')
     return redirect(url_for("get_jobs"))
 
 
@@ -230,12 +228,12 @@ def start_job(runSchedulerID):
 # archive section
 # -----------------------------------------
 
+
 @app.route("/archive_search", methods=['POST', 'GET'])
 def archive_search():
     ArchiveSearch.archive_search_lists_update()
     form = ArchiveSearch()
-    archiveLister=ArchiveLister()
-    archive = archiveLister.get_list()
+    archive = ArchiveLister().get_list()
     currentDate = datetime.now()
     formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
     minusOneDayDate = datetime.now() - timedelta(days=1)
@@ -243,8 +241,10 @@ def archive_search():
 
     if form.validate_on_submit():
         logger.debug(str(request.form.to_dict(flat=False)))
-        logger.debug("date time to timestampStart: "  + str(datetime.timestamp(form.timestampStart.data)))
-        logger.debug("date time to timestampEnd: "  + str(datetime.timestamp(form.timestampEnd.data)))
+        logger.debug("date time to timestampStart: " +
+                     str(datetime.timestamp(form.timestampStart.data)))
+        logger.debug("date time to timestampEnd: " +
+                     str(datetime.timestamp(form.timestampEnd.data)))
         logger.debug("recordType:" + str(form.recordType.data))
 
         recordTypes = form.recordType.data
@@ -269,10 +269,10 @@ def archive_search():
         ).order_by(Archive.id.desc()).limit(form.limit.data)
     return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
+
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
-    manager = ArchiveManager(id)
-    manager.remove_archive()
+    manager = ArchiveManager(id).remove_archive()
     flash(str(manager), category='danger')
     return redirect(url_for("archive_search"))
 
@@ -280,58 +280,55 @@ def archive_remove(id):
 # report section
 # -----------------------------------------
 
+
 @app.route("/report_list", methods=['POST', 'GET'])
 def report_list():
-    archiveReportLister = ArchiveReportLister()
-    archiveReportList = archiveReportLister.get_list()
-
     AddArchiveReport.add_archive_report_lists_update()
     form = AddArchiveReport()
     if form.validate_on_submit():
         archiveReporAdder = ArchiveReporAdder(request.form.to_dict(flat=False))
         flash(str(archiveReporAdder), category='success')
-        return redirect(url_for("archive_report_list"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
+    archiveReportList = ArchiveReportLister().get_list()
     return render_template("archiveReportList.html", archiveReportList=archiveReportList, form=form, state=str(sched.state))
 
 
 @app.route("/get_report/<id>")
 def get_report(id):
-    reportCreator = ReportCreator()
-    one_line = reportCreator.create_one_line(id)
+    one_line = ReportCreator().create_one_line(id)
     return one_line
+
 
 @app.route("/get_report_all")
 def get_report_all():
-    reportCreator = ReportCreator()
-    report = reportCreator.create_all()
+    report = ReportCreator().create_all()
     return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
 
 # -----------------------------------------
 # report functions section
 # -----------------------------------------
 
+
 @app.route("/report_functions_list", methods=['POST', 'GET'])
 def report_functions_list():
-    archiveFunctionsLister = ArchiveFunctionsLister()
-    archiveFunctionsList = archiveFunctionsLister.get_list()
-
     AddArchiveReportFunction.add_archive_report_function_lists_update()
     form = AddArchiveReportFunction()
     if form.validate_on_submit():
-        archiveFunctionsAdder = ArchiveFunctionsAdder(request.form.to_dict(flat=False))
+        archiveFunctionsAdder = ArchiveFunctionsAdder(
+            request.form.to_dict(flat=False))
         flash(str(archiveFunctionsAdder), category='success')
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
+    archiveFunctionsList = ArchiveFunctionsLister().get_list()
     return render_template("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
-
 
 # -----------------------------------------
 # email sender
 # -----------------------------------------
+
 
 @app.route('/emailSend', methods=['POST', 'GET'])
 def email_send():
@@ -344,32 +341,36 @@ def email_send():
 # DB Dashboard
 # -----------------------------------------
 
+
 @app.route('/dashboard')
 def dashboard():
-    dashboard_data = DashboardData()
-    dbSizeKB = dashboard_data.getDbSizeKB()
-    sqlTable = dashboard_data.getSqlTable()
+    dbSizeKB = DashboardData().getDbSizeKB()
+    sqlTable = DashboardData().getSqlTable()
     return render_template("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
 # -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
 
+
 @app.route("/pause")
 def pause():
     sched.pause()
     return redirect(url_for("get_jobs"))
+
 
 @app.route("/resume")
 def resume():
     sched.resume()
     return redirect(url_for("get_jobs"))
 
+
 @app.route("/start")
 def start():
     sched.start()
     sched_start(sched)
     return redirect(url_for("get_jobs"))
+
 
 @app.route("/shutdown")
 def shutdown():
@@ -384,6 +385,7 @@ def shutdown():
 # json
 # -----------------------------------------
 
+
 @app.post('/api/addEvent')
 def create_friend():
     requestData = request.get_json()
@@ -395,31 +397,30 @@ def create_friend():
 # notification
 # -----------------------------------------
 
+
 @app.route("/notification_list", methods=['POST', 'GET'])
 def notification_list():
-    notificationLister = NotificationLister()
-    notificationList = notificationLister.get_list()
     form = AddNotification()
     if form.validate_on_submit():
         notificationAdder = NotificationAdder(request.form.to_dict(flat=False))
         flash(str(notificationAdder), category='success')
-        return redirect(url_for("notification_list"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
+    notificationList = NotificationLister().get_list()
     return render_template("notificationList.html", notificationList=notificationList, form=form, datetime=datetime, state=str(sched.state))
+
 
 @app.route("/change_notification_status/<id>")
 def change_notification_status(id):
-    manager = NotificationManager(id)
-    manager.change_status()
+    manager = NotificationManager(id).change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
 
+
 @app.route("/remove_notification/<id>")
 def remove_notification(id):
-    manager = NotificationManager(id)
-    manager.remove_notification()
+    manager = NotificationManager(id).remove_notification()
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
 
@@ -427,10 +428,11 @@ def remove_notification(id):
 # charts
 # -----------------------------------------
 
+
 @app.route("/charts", methods=['POST', 'GET'])
 def charts():
-    ArchiveSearch.archive_search_lists_update()
-    form = ArchiveSearch()
+    ChartsSearch.archive_search_lists_update()
+    form = ChartsSearch()
     currentDate = datetime.now()
     formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
     minusOneDayDate = datetime.now() - timedelta(days=1)
@@ -438,12 +440,13 @@ def charts():
 
     chart = Table(delta=10, type="%")
     chart.reportGenerator()
-    final_chart  = chart.get_final_results()
-    return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate ,state=str(sched.state))
+    final_chart = chart.get_final_results()
+    return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate, state=str(sched.state))
 
 # -----------------------------------------
-# manually adding to archive 
+# manually adding to archive
 # -----------------------------------------
+
 
 @app.route("/manually_add_to_archive", methods=['POST', 'GET'])
 def manually_add_to_archive():
@@ -451,17 +454,12 @@ def manually_add_to_archive():
     form = AddArchiveManualRecord()
     if form.validate_on_submit():
         requestDataRaw = request.form.to_dict(flat=False)
-        print(requestDataRaw["device"])
         requestDataRawList = requestDataRaw["device"][0].split(" -> ")
-        deviceIP = requestDataRawList[0]
-        deviceName = requestDataRawList[1]
-        print(deviceIP)
-        print(deviceName)
-        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': deviceIP, 'deviceName':  deviceName, 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
+        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRawList[0],
+                       'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
         NotificationTrigger(requestData=requestData)
         archiveAdder = ArchiveAdder(requestData=requestData)
         flash(str(archiveAdder), category='success')
-        return redirect(url_for("manually_add_to_archive"))
     if form.errors != {}:
         logger.error("An error occurred while adding : %s", form.errors)
         flash(form.errors, category='danger')
