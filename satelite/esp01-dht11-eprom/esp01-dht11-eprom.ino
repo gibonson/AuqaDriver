@@ -46,14 +46,9 @@ const int LED_PIN_5 = 3;               // GPIO5 = RX - Relay 4 control pin
 const int LED_PIN_ALERT = 5;           // GPIO5 = D1 - Status LED
 const int MOTION_SENSOR = 14;          // GPIO14 = D5 - Motion Sensor
 
-// Constant strings
-const String ALERT_NAME = "Ruch";  // Alert name for button
-
-extern String resultTable[31][4];
-
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement() {
-  Serial.println("Alert!!!");
+  Serial.println("Interrupt!!!");
   sthToSend = "yes";
   pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
   digitalWrite(LED_PIN_ALERT, LOW);
@@ -97,25 +92,32 @@ void setup() {
 
   delay(500);
   dht.begin();
-  float newT = dht.readTemperature();
-  float newH = dht.readHumidity();
-  if (isnan(newT)) {
-    Serial.println("Failed to read from DHT sensor!");
-  }
 
   pinMode(MOTION_SENSOR, INPUT_PULLUP);  // PIR Motion Sensor mode INPUT_PULLUP
-  // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
-  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING);
+  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
+
   pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
   digitalWrite(LED_PIN_ALERT, LOW);
 
+  sendJson("Device Start", 1, "Log");
+}
 
-  String DEVICE_STATUS = "Device Start";
+void sendJson(String addInfo, int value, String type) {
   http.begin(client, serverName);
   http.addHeader("Content-Type", "application/json");
-  String jsonString = "{\"addInfo\":\"" + DEVICE_STATUS + "\",\"deviceIP\":\"" + local_IP[0] + "." + local_IP[1] + "." + local_IP[2] + "." + local_IP[3] + "\",\"deviceName\":\"" + deviceName + "\",\"type\":\"Log\",\"value\":1}";
-  int httpResponseCode = http.POST(jsonString);
-  Serial.println(httpResponseCode);
+  String jsonString = "{\"deviceIP\":\"" +
+                      String(local_IP[0]) + "." +
+                      String(local_IP[1]) + "." +
+                      String(local_IP[2]) + "." +
+                      String(local_IP[3]) +
+                      "\",\"deviceName\":\"" + deviceName +
+                      "\",\"addInfo\":\"" + addInfo +
+                      "\",\"type\":\"" + type +
+                      "\",\"value\":" + String(value) + "}";
+  Serial.println("Json to sent: " + jsonString);
+  //  int httpResponseCode = http.POST(jsonString);
+  //  Serial.println("Json response: " + httpResponseCode);
+  Serial.println(http.POST(jsonString));
 }
 
 void readSensors() {
@@ -123,22 +125,23 @@ void readSensors() {
   float temperature_Celsius = sensors.getTempCByIndex(0);
   float newT = dht.readTemperature();
   float newH = dht.readHumidity();
-  webContent[1][2] = String(newT);
-  webContent[2][2] = String(newH);
-  webContent[3][2] = String(temperature_Celsius);
+//  if (isnan(newT)) {
+//    Serial.println("Failed to read from  sensor!");
+//    sendJson("DHT issue" , 1 , "Error");
+//  }
+  webTable[1][2] = String(newT);
+  webTable[2][2] = String(newH);
+  webTable[3][2] = String(temperature_Celsius);
 }
 
 void loop() {
   WebGui webGui;
-//  delay(5000);
+
+  //  delay(5000);
   WiFiClient client = server.available();  // Listen for incoming clients
   if (sthToSend == "yes") {
     Serial.println("zamiana");
-    http.begin(client, serverName);
-    http.addHeader("Content-Type", "application/json");
-    String jsonString = "{\"addInfo\":\"" + ALERT_NAME + "\",\"deviceIP\":\"" + local_IP[0] + "." + local_IP[1] + "." + local_IP[2] + "." + local_IP[3] + "\",\"deviceName\":\"" + deviceName + "\",\"type\":\"Alert\",\"value\":1}";
-    int httpResponseCode = http.POST(jsonString);
-    Serial.println(httpResponseCode);
+    sendJson("Motion" , 1 , "Alert");
     sthToSend = "";
   }
 
@@ -160,18 +163,17 @@ void loop() {
             Serial.println("Content - type: text / html"); // and a content-type so the client knows what's coming, then a blank line:
             Serial.println("Connection: close");
             // Serial.println(header);
-            
+
             String resultHtml = "";
             if (header.indexOf("GET / HTTP/1.1") >= 0) {
               readSensors();
-              client.print(webGui.generator(webContent));
+              client.print(webGui.generator(webTable));
             }
             else if (header.indexOf("noGui") >= 0) {
               readSensors();
-              client.print(webGui.noGui(webContent));
+              client.print(webGui.noGui(webTable));
             }
             else if (header.indexOf("GET /nawozy") >= 0) {
-              ///http://192.168.0.184/test1?name1=value1&name2=value2&name2=value2
               int start = header.indexOf(" ? ");
               int var1Start = header.indexOf("value1=");
               int var1Stop = header.indexOf("&", 0);
@@ -187,36 +189,35 @@ void loop() {
               int value3 = header.substring(var3Start + 7, var3Stop).toInt();
               int value4 = header.substring(var4Start + 7, var4Stop).toInt();
 
-              // Serial.println("Value1 position: " +  String(var1Start) + " - " +  String(var1Stop) + ", value1 = " +  String(value1));
-              // Serial.println("Value2 position: " +  String(var2Start) + " - " +  String(var2Stop) + ", value2 = " +  String(value2));
-              // Serial.println("Value3 position: " +  String(var3Start) + " - " +  String(var3Stop) + ", value3 = " +  String(value3));
-              // Serial.println("Value4 position: " +  String(var4Start) + " - " +  String(var4Stop) + ", value4 = " +  String(value4));
+              resultHtml = webGui.resultLogBegin();
+              resultHtml = resultHtml + webGui.resultLogContent(0, "Fertilizers req");
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              client.print(resultHtml);
+              client.stop();    // Close the connection
 
               digitalWrite(LED_PIN_2, HIGH);  // turn the LED on
               delay(value1 * 1000);
               digitalWrite(LED_PIN_2, LOW);  // turn the LED off
               delay(100);
+              sendJson("Mikro [s]" , value1 , "Log");
 
               digitalWrite(LED_PIN_3, HIGH);  // turn the LED on
               delay(value2 * 1000);
               digitalWrite(LED_PIN_3, LOW);  // turn the LED off
               delay(100);
+              sendJson("Makro [s]" , value2 , "Log");
 
               digitalWrite(LED_PIN_4, HIGH);  // turn the LED on
               delay(value3 * 1000);
               digitalWrite(LED_PIN_4, LOW);  // turn the LED off
               delay(100);
+              sendJson("Carbo [s]" , value3 , "Log");
 
               digitalWrite(LED_PIN_5, HIGH);  // turn the LED on
               delay(value4 * 1000);
               digitalWrite(LED_PIN_5, LOW);  // turn the LED off
               delay(100);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(value1, "Mikroelementy [s]");
-              resultHtml = resultHtml + webGui.resultLogContent(value2, "Makroelementy [s]");
-              resultHtml = resultHtml + webGui.resultLogContent(value3, "Carbo [s]");
-              resultHtml = resultHtml + webGui.resultLogContent(value4, "Jack Daniels [s]");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              sendJson("Jack [s]" , value4 , "Log");
             }
             else if (header.indexOf("GET /gpioON") >= 0) {
               digitalWrite(LED_PIN_1, HIGH);  // turn the LED on
@@ -275,9 +276,7 @@ void loop() {
               resultHtml = resultHtml + webGui.resultLogContent(0, "S3 - stan");
               resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else {
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Not Found");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              resultHtml = webGui.resultLogBegin() + webGui.resultLogContent(0, "Not Found") + webGui.RESULT_LOG_END;
             }
             client.print(resultHtml);
             break;

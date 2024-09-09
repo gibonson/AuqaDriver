@@ -1,4 +1,6 @@
 extern String deviceName;
+extern String logTable[31][4];
+
 
 class WebGui {
   public:
@@ -22,11 +24,16 @@ class WebGui {
 
 
     String noGui(String webContent[31][4]) {
-      String html = HTML_BEGIN;
-      for (int htmlLine = 0; htmlLine < 31; htmlLine++) {
+      String html = HTML_BEGIN + SEP_START + "hHtml" + SEP_END + SEP_START + deviceName + SEP_END + END_LINE;
+      for (int htmlLine = 1; htmlLine < 31; htmlLine++) {
         html = html + SEP_START + webContent[htmlLine][0] + SEP_END + SEP_START + webContent[htmlLine][1] + SEP_END + SEP_START + webContent[htmlLine][2] + SEP_END + SEP_START + webContent[htmlLine][3] + SEP_END + END_LINE;
       }
       html = html + RESULT_LOG_END;
+      for (int i = 0; i < 31; i++) {
+        for (int j = 0; j < 4; j++) {
+          logTable[i][j] = "";
+        }
+      }
       return html;
     }
 
