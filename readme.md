@@ -30,3 +30,4 @@ sudo docker run -v $(pwd):/usr/src/app -d --restart=always --name aquadriver -p 
 
 # TO DO:
  - dodać API https://danepubliczne.imgw.pl/apiinfo
+ - usatwić odbicie po dozowaniuna satelitach w formie json

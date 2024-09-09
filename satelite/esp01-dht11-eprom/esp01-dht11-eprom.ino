@@ -49,6 +49,8 @@ const int MOTION_SENSOR = 14;          // GPIO14 = D5 - Motion Sensor
 // Constant strings
 const String ALERT_NAME = "Ruch";  // Alert name for button
 
+extern String resultTable[31][4];
+
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement() {
   Serial.println("Alert!!!");
@@ -116,9 +118,19 @@ void setup() {
   Serial.println(httpResponseCode);
 }
 
+void readSensors() {
+  sensors.requestTemperatures();
+  float temperature_Celsius = sensors.getTempCByIndex(0);
+  float newT = dht.readTemperature();
+  float newH = dht.readHumidity();
+  webContent[1][2] = String(newT);
+  webContent[2][2] = String(newH);
+  webContent[3][2] = String(temperature_Celsius);
+}
+
 void loop() {
   WebGui webGui;
-  delay(5000);
+//  delay(5000);
   WiFiClient client = server.available();  // Listen for incoming clients
   if (sthToSend == "yes") {
     Serial.println("zamiana");
@@ -129,7 +141,6 @@ void loop() {
     Serial.println(httpResponseCode);
     sthToSend = "";
   }
-
 
   if (client) {
     Serial.println();
@@ -149,25 +160,14 @@ void loop() {
             Serial.println("Content - type: text / html"); // and a content-type so the client knows what's coming, then a blank line:
             Serial.println("Connection: close");
             // Serial.println(header);
-
+            
+            String resultHtml = "";
             if (header.indexOf("GET / HTTP/1.1") >= 0) {
-              sensors.requestTemperatures();
-              float temperature_Celsius = sensors.getTempCByIndex(0);
-              float newT = dht.readTemperature();
-              float newH = dht.readHumidity();
-              webContent[1][2] = String(newT);
-              webContent[2][2] = String(newH);
-              webContent[3][2] = String(temperature_Celsius);
+              readSensors();
               client.print(webGui.generator(webContent));
             }
             else if (header.indexOf("noGui") >= 0) {
-              sensors.requestTemperatures();
-              float temperature_Celsius = sensors.getTempCByIndex(0);
-              float newT = dht.readTemperature();
-              float newH = dht.readHumidity();
-              webContent[1][2] = String(newT);
-              webContent[2][2] = String(newH);
-              webContent[3][2] = String(temperature_Celsius);
+              readSensors();
               client.print(webGui.noGui(webContent));
             }
             else if (header.indexOf("GET /nawozy") >= 0) {
@@ -211,14 +211,12 @@ void loop() {
               delay(value4 * 1000);
               digitalWrite(LED_PIN_5, LOW);  // turn the LED off
               delay(100);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(value1, "Mikroelementy [s]");
               resultHtml = resultHtml + webGui.resultLogContent(value2, "Makroelementy [s]");
               resultHtml = resultHtml + webGui.resultLogContent(value3, "Carbo [s]");
               resultHtml = resultHtml + webGui.resultLogContent(value4, "Jack Daniels [s]");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             }
             else if (header.indexOf("GET /gpioON") >= 0) {
               digitalWrite(LED_PIN_1, HIGH);  // turn the LED on
@@ -226,14 +224,12 @@ void loop() {
               digitalWrite(LED_PIN_3, HIGH);  // turn the LED on
               digitalWrite(LED_PIN_4, HIGH);  // turn the LED on
               digitalWrite(LED_PIN_5, HIGH);  // turn the LED on
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(1, "Mikroelementy - stan");
               resultHtml = resultHtml + webGui.resultLogContent(1, "Makroelementy - stan");
               resultHtml = resultHtml + webGui.resultLogContent(1, "Carbo - stan");
               resultHtml = resultHtml + webGui.resultLogContent(1, "Jack Daniels - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             }
             else if (header.indexOf("GET /gpioOFF") >= 0) {
               digitalWrite(LED_PIN_1, LOW);  // turn the LED off
@@ -242,63 +238,48 @@ void loop() {
               digitalWrite(LED_PIN_4, LOW);  // turn the LED off
               digitalWrite(LED_PIN_5, LOW);  // turn the LED off
               digitalWrite(LED_PIN_ALERT, LOW); // turn off ALERT LED
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(0, "Mikroelementy - stan");
               resultHtml = resultHtml + webGui.resultLogContent(0, "Makroelementy - stan");
               resultHtml = resultHtml + webGui.resultLogContent(0, "Carbo - stan");
               resultHtml = resultHtml + webGui.resultLogContent(0, "Jack Daniels - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket1ON") >= 0) {
               mySwitch.send(4433, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(1, "S1 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket1OFF") >= 0) {
               mySwitch.send(4436, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(0, "S1 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket2ON") >= 0) {
               mySwitch.send(5201, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(1, "S2 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket2OFF") >= 0) {
               mySwitch.send(5204, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(0, "S2 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket3ON") >= 0) {
               mySwitch.send(5393, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(1, "S3 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else if (header.indexOf("GET /socket3OFF") >= 0) {
               mySwitch.send(5396, 24);
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(0, "S3 - stan");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             } else {
-              String resultHtml = "";
-              resultHtml = webGui.resultLogBegin(deviceName);
+              resultHtml = webGui.resultLogBegin();
               resultHtml = resultHtml + webGui.resultLogContent(0, "Not Found");
-              resultHtml = resultHtml + webGui.resultLogEnd();
-              client.print(resultHtml);
+              resultHtml = resultHtml + webGui.RESULT_LOG_END;
             }
+            client.print(resultHtml);
             break;
           } else {  // if you got a newline, then clear currentLine
             currentLine = "";
@@ -308,10 +289,8 @@ void loop() {
         }
       }
     }
-    // Clear the header variable
-    header = "";
-    // Close the connection
-    client.stop();
+    header = "";      // Clear the header variable
+    client.stop();    // Close the connection
     Serial.println("Client disconnected.");
     Serial.println("");
   }
