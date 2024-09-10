@@ -99,6 +99,10 @@ functions_list
             <td>{{devicesFunction.functionStatus}}</td>
             <td>
                 <div class="btn-group">
+                    <a href="{{url_for('device_functions_remove', id = devicesFunction.id)}}"
+                        class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
+                    <a href="{{url_for('change_device_functions_status', id = devicesFunction.id)}}"
+                        class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
                     <a href="{{url_for('device_functions_list_link_creator', id = devicesFunction.id)}}"
                         class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
                     <a href="{{url_for('device_functions_list_web_content_collector', id = devicesFunction.id)}}"

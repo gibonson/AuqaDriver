@@ -22,6 +22,6 @@ class AddArchiveReportFunction(FlaskForm):
 
     title = StringField(label='title', validators = [DataRequired(),Length(min=3, max=20, message='title: must be between 3 and 20 characters.')])
     description = StringField(label='description', validators=[Optional()])
-    archiveReportIds = SelectMultipleField(coerce=int, label='archiveReportIds', choices=archiveReportIdList)
+    archiveReportIds = SelectMultipleField(coerce=int, label='archiveReportIds', choices=archiveReportIdList, validators=[DataRequired()])
     functionStatus = SelectField(label='functionStatus',choices = archiveFunctionStatus, validators=[DataRequired()])
     submit = SubmitField(label='Add Report')

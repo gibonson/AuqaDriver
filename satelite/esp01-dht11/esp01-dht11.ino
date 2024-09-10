@@ -1,4 +1,3 @@
-// Include necessary libraries
 #include <ESP8266WiFi.h>        // Load Wi-Fi library
 #include <ESP8266HTTPClient.h>  // HTTP client for ESP8266
 #include <HttpClient.h>         // HTTP client library
@@ -7,7 +6,6 @@
 #include <OneWire.h>            // OneWire library
 #include <DallasTemperature.h>  // DS18B20 Dallas Temperature library
 
-// Include custom headers
 #include "WebGui.h"             // Custom Web GUI library
 #include "configuration.h"      // Configuration header
 
@@ -32,7 +30,7 @@ const int ONE_WIRE_BUS = 16;           // GPIO16 = D0 pin connected to the  sens
 OneWire oneWire(ONE_WIRE_BUS);         // Setup a oneWire instance to communicate with any OneWire devices
 DallasTemperature sensors(&oneWire);   // Pass our oneWire reference to Dallas Temperature sensor
 
-// RF remote control setup
+// RF 433 remote control setup
 RCSwitch mySwitch = RCSwitch();        // Initialize RF switch
 const int RC_TRANSMITER_PIN = 0;       // GPIO0 = D3 Transmitter data pin
 
@@ -58,12 +56,17 @@ ICACHE_RAM_ATTR void detectsMovement() {
 void setup() {
   Serial.begin(9600);
 
-  //ser led pin to output
   pinMode(LED_PIN_1, OUTPUT);
   pinMode(LED_PIN_2, OUTPUT);
   pinMode(LED_PIN_3, OUTPUT);
   pinMode(LED_PIN_4, OUTPUT);
   pinMode(LED_PIN_5, OUTPUT);
+
+  pinMode(MOTION_SENSOR, INPUT_PULLUP);  // PIR Motion Sensor mode INPUT_PULLUP
+  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
+
+  pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
+  digitalWrite(LED_PIN_ALERT, LOW);
 
   mySwitch.enableTransmit(RC_TRANSMITER_PIN); // Transmitter is connected to Arduino Pin #0
   mySwitch.setProtocol(1);  // Optional set protocol (default is 1, will work for most outlets)
@@ -75,29 +78,19 @@ void setup() {
   } else {
     Serial.println("CONF OK");
   }
-  // Connect to Wi-Fi network with SSID and password
-  Serial.print("Connecting to ");
-  Serial.println(String(ssid));
+  Serial.println("Connecting to " + String(ssid));
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
-  // Print local IP address and start web server
-  Serial.println("");
-  Serial.println("WiFi connected. IP address: ");
-  Serial.println(WiFi.localIP());
+  Serial.print("\nWiFi connected. IP address: "); // Print local IP address and start web server
+  Serial.println(WiFi.localIP()); // Print local IP address and start web server
   Serial.println("");
   server.begin();
 
   delay(500);
   dht.begin();
-
-  pinMode(MOTION_SENSOR, INPUT_PULLUP);  // PIR Motion Sensor mode INPUT_PULLUP
-  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
-
-  pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
-  digitalWrite(LED_PIN_ALERT, LOW);
 
   sendJson("Device Start", 1, "Log");
 }
@@ -115,8 +108,6 @@ void sendJson(String addInfo, int value, String type) {
                       "\",\"type\":\"" + type +
                       "\",\"value\":" + String(value) + "}";
   Serial.println("Json to sent: " + jsonString);
-  //  int httpResponseCode = http.POST(jsonString);
-  //  Serial.println("Json response: " + httpResponseCode);
   Serial.println(http.POST(jsonString));
 }
 
@@ -125,10 +116,10 @@ void readSensors() {
   float temperature_Celsius = sensors.getTempCByIndex(0);
   float newT = dht.readTemperature();
   float newH = dht.readHumidity();
-//  if (isnan(newT)) {
-//    Serial.println("Failed to read from  sensor!");
-//    sendJson("DHT issue" , 1 , "Error");
-//  }
+  //  if (isnan(newT)) {
+  //    Serial.println("Failed to read from  sensor!");
+  //    sendJson("DHT issue" , 1 , "Error");
+  //  }
   webTable[1][2] = String(newT);
   webTable[2][2] = String(newH);
   webTable[3][2] = String(temperature_Celsius);
@@ -146,8 +137,7 @@ void loop() {
   }
 
   if (client) {
-    Serial.println();
-    Serial.println("New Client.");  // print a message out in the serial port
+    Serial.println("\nNew Client.");  // print a message out in the serial port
     String currentLine = "";        // make a String to hold incoming data from the client
 
     while (client.connected()) {  // loop while the client's connected
@@ -159,19 +149,16 @@ void loop() {
           // if the current line is blank, you got two newline characters in a row.
           // that's the end of the client HTTP request, so send a response:
           if (currentLine.length() == 0) {
-            Serial.println("HTTP / 1.1 200 OK"); // HTTP headers always start with a response code (e.g. HTTP/ 1.1 200 OK)
-            Serial.println("Content - type: text / html"); // and a content-type so the client knows what's coming, then a blank line:
-            Serial.println("Connection: close");
-            // Serial.println(header);
-
-            String resultHtml = "";
+            String resultHtml = webGui.resultLogBegin();
             if (header.indexOf("GET / HTTP/1.1") >= 0) {
               readSensors();
               client.print(webGui.generator(webTable));
+              client.stop();    // Close the connection
             }
             else if (header.indexOf("noGui") >= 0) {
               readSensors();
               client.print(webGui.noGui(webTable));
+              client.stop();    // Close the connection
             }
             else if (header.indexOf("GET /nawozy") >= 0) {
               int start = header.indexOf(" ? ");
@@ -189,9 +176,8 @@ void loop() {
               int value3 = header.substring(var3Start + 7, var3Stop).toInt();
               int value4 = header.substring(var4Start + 7, var4Stop).toInt();
 
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Fertilizers req");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              resultHtml += webGui.resultLogContent(0, "Fertilizers req");
+              resultHtml += webGui.RESULT_LOG_END;
               client.print(resultHtml);
               client.stop();    // Close the connection
 
@@ -225,12 +211,10 @@ void loop() {
               digitalWrite(LED_PIN_3, HIGH);  // turn the LED on
               digitalWrite(LED_PIN_4, HIGH);  // turn the LED on
               digitalWrite(LED_PIN_5, HIGH);  // turn the LED on
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(1, "Mikroelementy - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(1, "Makroelementy - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(1, "Carbo - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(1, "Jack Daniels - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              resultHtml += webGui.resultLogContent(1, "Mikroelementy - stan");
+              resultHtml += webGui.resultLogContent(1, "Makroelementy - stan");
+              resultHtml += webGui.resultLogContent(1, "Carbo - stan");
+              resultHtml += webGui.resultLogContent(1, "Jack Daniels - stan");
             }
             else if (header.indexOf("GET /gpioOFF") >= 0) {
               digitalWrite(LED_PIN_1, LOW);  // turn the LED off
@@ -239,45 +223,38 @@ void loop() {
               digitalWrite(LED_PIN_4, LOW);  // turn the LED off
               digitalWrite(LED_PIN_5, LOW);  // turn the LED off
               digitalWrite(LED_PIN_ALERT, LOW); // turn off ALERT LED
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Mikroelementy - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Makroelementy - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Carbo - stan");
-              resultHtml = resultHtml + webGui.resultLogContent(0, "Jack Daniels - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else if (header.indexOf("GET /socket1ON") >= 0) {
+              resultHtml += webGui.resultLogContent(0, "Mikroelementy - stan");
+              resultHtml += webGui.resultLogContent(0, "Makroelementy - stan");
+              resultHtml += webGui.resultLogContent(0, "Carbo - stan");
+              resultHtml += webGui.resultLogContent(0, "Jack Daniels - stan");
+            }
+            else if (header.indexOf("GET /socket1ON") >= 0) {
               mySwitch.send(4433, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(1, "S1 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else if (header.indexOf("GET /socket1OFF") >= 0) {
+              resultHtml += webGui.resultLogContent(1, "S1 - stan");
+            }
+            else if (header.indexOf("GET /socket1OFF") >= 0) {
               mySwitch.send(4436, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "S1 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
+              resultHtml += webGui.resultLogContent(0, "S1 - stan");
             } else if (header.indexOf("GET /socket2ON") >= 0) {
               mySwitch.send(5201, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(1, "S2 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else if (header.indexOf("GET /socket2OFF") >= 0) {
-              mySwitch.send(5204, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "S2 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else if (header.indexOf("GET /socket3ON") >= 0) {
-              mySwitch.send(5393, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(1, "S3 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else if (header.indexOf("GET /socket3OFF") >= 0) {
-              mySwitch.send(5396, 24);
-              resultHtml = webGui.resultLogBegin();
-              resultHtml = resultHtml + webGui.resultLogContent(0, "S3 - stan");
-              resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            } else {
-              resultHtml = webGui.resultLogBegin() + webGui.resultLogContent(0, "Not Found") + webGui.RESULT_LOG_END;
+              resultHtml += webGui.resultLogContent(1, "S2 - stan");
             }
+            else if (header.indexOf("GET /socket2OFF") >= 0) {
+              mySwitch.send(5204, 24);
+              resultHtml += webGui.resultLogContent(0, "S2 - stan");
+            }
+            else if (header.indexOf("GET /socket3ON") >= 0) {
+              mySwitch.send(5393, 24);
+              resultHtml += webGui.resultLogContent(1, "S3 - stan");
+            }
+            else if (header.indexOf("GET /socket3OFF") >= 0) {
+              mySwitch.send(5396, 24);
+              resultHtml += webGui.resultLogContent(0, "S3 - stan");
+            }
+            else {
+              resultHtml += webGui.resultLogContent(0, "Not Found");
+            }
+            resultHtml = resultHtml + webGui.RESULT_LOG_END;
             client.print(resultHtml);
             break;
           } else {  // if you got a newline, then clear currentLine
@@ -290,7 +267,6 @@ void loop() {
     }
     header = "";      // Clear the header variable
     client.stop();    // Close the connection
-    Serial.println("Client disconnected.");
-    Serial.println("");
+    Serial.println("Client disconnected.\n");
   }
 }

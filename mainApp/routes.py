@@ -91,14 +91,16 @@ def device_list():
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
-    manager = DeviceManager(id).remove_device()
+    manager = DeviceManager(id)
+    manager.remove_device()
     flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
 
 @app.route("/change_device_status/<id>")
 def change_device_status(id):
-    manager = DeviceManager(id).change_status()
+    manager = DeviceManager(id)
+    manager.change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("device_list"))
 
@@ -138,6 +140,20 @@ def device_functions_list_web_content_collector(id):
     flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
 
+@app.route("/device_functions_remove/<id>")
+def device_functions_remove(id):
+    manager = DeviceFunctionsManager(id)
+    manager.remove_device_function()
+    flash(str(manager), category='danger')
+    return redirect(url_for("device_functions_list"))
+
+
+@app.route("/change_device_functions_status/<id>")
+def change_device_functions_status(id):
+    manager = DeviceFunctionsManager(id)
+    manager.change_status()
+    flash(str(manager), category='danger')
+    return redirect(url_for("device_functions_list"))
 
 # -----------------------------------------
 # scheduler section
@@ -194,7 +210,8 @@ def functions_scheduler_list_get_jobs():
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
-    message = FunctionSchedulereManager(id).remove_function_scheduler()
+    message = FunctionSchedulereManager(id)
+    message.remove_function_scheduler()
     flash(str(message), category='danger')
     return redirect(url_for("get_jobs"))
 
@@ -272,7 +289,8 @@ def archive_search():
 
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
-    manager = ArchiveManager(id).remove_archive()
+    manager = ArchiveManager(id)
+    manager.remove_archive()
     flash(str(manager), category='danger')
     return redirect(url_for("archive_search"))
 
@@ -420,7 +438,8 @@ def change_notification_status(id):
 
 @app.route("/remove_notification/<id>")
 def remove_notification(id):
-    manager = NotificationManager(id).remove_notification()
+    manager = NotificationManager(id)
+    manager.remove_notification()
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
 
