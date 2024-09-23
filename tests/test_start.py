@@ -4,7 +4,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 import time
 
-
 # Inicjalizacja przeglądarki Firefox
 driver = webdriver.Firefox()
 
@@ -20,8 +19,6 @@ add_device_button = driver.find_element(By.XPATH, "//button[normalize-space(text
 # Kliknij przycisk
 add_device_button.click()
 
-
-
 # Opcjonalnie: dalsze akcje po kliknięciu przycisku, np. weryfikacja, że formularz się rozwinął
 # Sprawdź, czy formularz o ID "form" jest widoczny
 form = driver.find_element(By.ID, "form")
@@ -31,14 +28,18 @@ elem = driver.find_element(By.NAME, 'deviceName')  # Find the search box
 elem.send_keys('seleniumhq' + Keys.RETURN)
 
 
-# elem = driver.find_element(By.NAME, 'deviceIP')  # Find the search box
-# elem.send_keys('seleniumhq' + Keys.RETURN)
+elem = driver.find_element(By.NAME, 'deviceIP')  # Find the search box
+elem.send_keys('192.168.192.192')
 
-# elem = driver.find_element(By.NAME, 'deviceStatus')  # Find the search box
-# elem.send_keys('seleniumhq' + Keys.RETURN)
+elem = driver.find_element(By.NAME, 'deviceStatus')  # Find the search box
+elem.send_keys('seleniumhq')
 
+select = Select(elem)
+select.select_by_visible_text("Old")
 
-Select.select_by_value('Old')
+submit_button = driver.find_element(by=By.ID, value="submit")
+submit_button.click()
+
 
 # Zamknij przeglądarkę
 # driver.quit()
