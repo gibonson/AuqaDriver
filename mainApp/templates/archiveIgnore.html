@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+archiveSearch
+{% endblock %}
+
+
+{% block content %}
+
+<p>
+    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
+        aria-expanded="false" aria-controls="collapseExample">
+        AddArchiveIgnore
+    </button>
+</p>
+<div class="collapse" id="form">
+    <div class="card card-body">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <table>
+                <tr>
+                    <th>
+                        {{ form.deviceIP.label() }}
+                    </th>
+                    <td>
+                        {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP') }}
+                        <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.deviceName.label() }}
+                    </th>
+                    <td>
+                        {{ form.deviceName(class="form-control" , placeholder = 'deviceName') }}
+                        <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.addInfo.label() }}
+                    </th>
+                    <td>
+                        {{ form.addInfo(class="form-control" , placeholder = 'addInfo') }}
+                        <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.value.label() }}
+                    </th>
+                    <td>
+                        {{ form.value(class="form-control" , placeholder = 'value') }}
+                        <small class="form-text text-danger">{{ form.value.errors[0] }}</small>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        {{ form.type.label() }}
+                    </td>
+                    <td>
+                        {{ form.type(class="form-control" , placeholder = 'type') }}
+                        <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        {{ form.status.label() }}
+                    </td>
+                    <td>
+                        {{ form.status(class="form-select" , placeholder = 'status') }}
+                        <small class="form-text text-danger">{{ form.status.errors[0] }}</small>
+                    </td>
+                </tr>
+
+
+            </table>
+            {{ form.submit(class="btn btn-lg btn-block btn-success w-100") }}
+        </form>
+    </div>
+</div>
+</br>
+<h1>List of ignore values</h1>
+<table class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th scope="col">deviceIP</th>
+            <th scope="col">deviceName</th>
+            <th scope="col">addInfo</th>
+            <th scope="col">value</th>
+            <th scope="col">type</th>
+            <th scope="col">status</th>
+            <th scope="col">actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for archiveIgoneValue in archiveIgoneLister %}
+        <tr>
+            <th>{{archiveIgoneValue.deviceIP}}</th>
+            <td>{{archiveIgoneValue.deviceName}}</td>
+            <td>{{archiveIgoneValue.addInfo}}</td>
+            <td>{{archiveIgoneValue.value}}</td>
+            <td>{{archiveIgoneValue.type}}</td>
+            <td>{{archiveIgoneValue.status}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('archive_ignore_remove',id=archiveIgoneValue.id)}}" class="btn btn-danger btn-lg active"
+                        role="button" aria-pressed="true">Remove</a>
+                    <a href="{{url_for('change_archive_ignore_status',id=archiveIgoneValue.id)}}" class="btn btn-warning btn-lg active"
+                        role="button" aria-pressed="true">Change
+                        Status</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

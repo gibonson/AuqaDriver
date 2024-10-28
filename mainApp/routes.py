@@ -12,6 +12,7 @@ from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_archive_report_fnction import AddArchiveReportFunction
+from mainApp.forms.add_archive_ignore import AddArchiveIgnore
 from mainApp.forms.add_device import AddDevice
 from mainApp.forms.add_device_functions import AddDeviceFunctions
 from mainApp.forms.add_function_scheduler import AddFunctionScheduler
@@ -21,6 +22,7 @@ from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
+from mainApp.models.archive_ignore import ArchiveIgone, ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
 from mainApp.models.report_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
 from mainApp.models.report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
@@ -293,6 +295,35 @@ def archive_remove(id):
     manager.remove_archive()
     flash(str(manager), category='danger')
     return redirect(url_for("archive_search"))
+
+@app.route("/archive_ignore", methods=['POST','GET'])
+def archive_ignore():
+    form = AddArchiveIgnore()
+    if form.validate_on_submit():
+        archiveIgoneAdder = ArchiveIgoneAdder(request.form.to_dict(flat=False))
+        flash(str(archiveIgoneAdder), category='success')
+    if form.errors != {}:
+        logger.error("An error occurred while adding : %s", form.errors)
+        flash(form.errors, category='danger')
+    archiveIgoneLister = ArchiveIgoneLister().get_list()
+    return render_template("archiveIgnore.html", archiveIgoneLister=archiveIgoneLister, form=form, state=str(sched.state))
+
+
+@app.route("/archive_ignore_remove/<id>")
+def archive_ignore_remove(id):
+    manager = ArchiveIgnoreManager(id)
+    manager.remove()
+    flash(str(manager), category='danger')
+    return redirect(url_for("archive_ignore"))
+
+
+@app.route("/change_archive_ignore_status/<id>")
+def change_archive_ignore_status(id):
+    manager = ArchiveIgnoreManager(id)
+    manager.change_status()
+    flash(str(manager), category='danger')
+    return redirect(url_for("archive_ignore"))
+
 
 # -----------------------------------------
 # report section

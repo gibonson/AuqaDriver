@@ -1,6 +1,5 @@
 from mainApp.routes import db
 from mainApp import logger
-import time
 
 
 class ArchiveIgone(db.Model):
@@ -12,8 +11,7 @@ class ArchiveIgone(db.Model):
     type = db.Column(db.String())
     status = db.Column(db.String())
 
-    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, status):
-        self.timestamp = timestamp
+    def __init__(self, deviceIP, deviceName, addInfo, value, type, status):
         self.deviceIP = deviceIP
         self.deviceName = deviceName
         self.addInfo = addInfo
@@ -39,14 +37,14 @@ class ArchiveIgoneAdder():
 
         try:
             logger.debug("Values to add: %s", requestData)
-            addInfo = requestData["addInfo"]
-            deviceName = requestData["deviceName"]
-            deviceIP = requestData["deviceIP"]
-            type = requestData["type"]
-            value = requestData["value"]
-            status = requestData["status"]
-            add_to_archiwe = ArchiveIgone(deviceIP=deviceIP, deviceName=deviceName, addInfo=addInfo, value=value, type=type, status=status)
-            db.session.add(add_to_archiwe)
+            addInfo = requestData["addInfo"][0]
+            deviceName = requestData["deviceName"][0]
+            deviceIP = requestData["deviceIP"][0]
+            type = requestData["type"][0]
+            value = requestData["value"][0]
+            status = requestData["status"][0]
+            add_to_archiwe_ignore = ArchiveIgone(deviceIP=deviceIP, deviceName=deviceName, addInfo=addInfo, value=value, type=type, status=status)
+            db.session.add(add_to_archiwe_ignore)
             db.session.commit()
 
         except Exception as e:
@@ -56,14 +54,14 @@ class ArchiveIgoneAdder():
     def __str__(self) -> str:
         return self.message
     
-class AArchiveIgoneManager:
+class ArchiveIgnoreManager:
     def __init__(self, id):
         self.id = id
         self.message = ""
-        self.device = ArchiveIgone.query.filter_by(id=self.id).first()
+        self.archiveIgone = ArchiveIgone.query.filter_by(id=self.id).first()
 
     def remove(self):
-        if self.device:
+        if self.archiveIgone:
             ArchiveIgone.query.filter(ArchiveIgone.id == self.id).delete()
             db.session.commit()
             logger.info(f'Record with ID {self.id} removed')
@@ -73,22 +71,22 @@ class AArchiveIgoneManager:
             self.message = f'Record with ID {self.id} does not exist'
 
     def change_status(self):
-        if self.deviceFunction:
-            if self.deviceFunction.functionStatus == "Ready":
-                self.deviceFunction.functionStatus = "Not ready"
-                self.message = "Device Function status changeD to: Not ready"
-                logger.info(f'Device Function with ID {self.id} status changed')
-            elif self.deviceFunction.functionStatus == "Not ready":
-                self.deviceFunction.functionStatus = "Ready"
-                logger.info(f'Device Function with ID {self.id} status changed')
-                self.message = "Device Function status changed to: Ready"
+        if self.archiveIgone:
+            if self.archiveIgone.status == "Ready":
+                self.archiveIgone.status = "Not ready"
+                self.message = "archiveIgone status changed to: Not ready"
+                logger.info(f'archiveIgone with ID {self.id} status changed')
+            elif self.archiveIgone.status == "Not ready":
+                self.archiveIgone.status = "Ready"
+                logger.info(f'archiveIgone with ID {self.id} status changed')
+                self.message = "archiveIgone status changed to: Ready"
             else:
-                logger.info(f'Device Function with ID {self.id} status error')
+                logger.info(f'archiveIgone with ID {self.id} status error')
                 self.message = "Status error!"
             db.session.commit()
         else:
-            logger.error(f'Device Function with ID {self.id} does not exist')
-            self.message = f'Device Function with ID {self.id} does not exist'
+            logger.error(f'archiveIgone with ID {self.id} does not exist')
+            self.message = f'archiveIgone with ID {self.id} does not exist'
 
     def __str__(self) -> str:
         return self.message

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from mainApp import app
-from wtforms.validators import Length, Optional
-from wtforms import SelectField, SubmitField, IntegerField, TextAreaField, StringField, IPAddress
+from wtforms.validators import Length, Optional, IPAddress
+from wtforms import SelectField, SubmitField, IntegerField, TextAreaField, StringField
 
 class AddArchiveIgnore(FlaskForm):
 
