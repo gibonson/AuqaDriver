@@ -20,14 +20,21 @@ class ArchiveIgone(db.Model):
         self.status = status
 
 class ArchiveIgoneLister():
-    def __init__(self):
-        try:
-            self.archive = ArchiveIgone.query.order_by(ArchiveIgone.id.desc()).limit(100)
-        except Exception as e:
-            logger.error(f"An error occurred while fetching ArchiveIgone: {e}")
-            self.archive = []
+    def __init__(self, status = "All"):
+        if status is "All":
+            try:
+                self.archiveIgone = ArchiveIgone.query.all()
+            except Exception as e:
+                logger.error(f"An error occurred while fetching ArchiveIgone: {e}")
+                self.archiveIgone = []
+        elif status is "Ready":
+            try:
+                self.archiveIgone = ArchiveIgone.query.filter(ArchiveIgone.status=="Ready").all()
+            except Exception as e:
+                logger.error(f"An error occurred while fetching ArchiveIgone: {e}")
+                self.archiveIgone = []
     def get_list(self):
-        return self.archive
+        return self.archiveIgone
 
 
 class ArchiveIgoneAdder():

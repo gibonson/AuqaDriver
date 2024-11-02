@@ -13,7 +13,6 @@ class NotificationTrigger:
             self.deviceIP = requestData["deviceIP"]
             self.type = requestData["type"]
             self.value = requestData["value"]
-            print("value self" + str(self.value))
 
             notificationLister = NotificationLister(notificationStatus="Ready")
             notificationList = notificationLister.get_list()

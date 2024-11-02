@@ -34,6 +34,7 @@ from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp.charts import Table
+from mainApp.ignore_operations import IgnoreTrigger
 
 
 # -----------------------------------------
@@ -438,6 +439,7 @@ def shutdown():
 @app.post('/api/addEvent')
 def create_friend():
     requestData = request.get_json()
+    IgnoreTrigger(requestData=requestData)
     NotificationTrigger(requestData=requestData)
     ArchiveAdder(requestData=requestData)
     return "OK"
