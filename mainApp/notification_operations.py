@@ -18,7 +18,7 @@ class NotificationTrigger:
             notificationList = notificationLister.get_list()
             for readyNotification in notificationList:
                 if self.deviceIP == readyNotification.deviceIP and self.deviceName == readyNotification.deviceName and self.type == readyNotification.type and self.addInfo == readyNotification.addInfo:
-                    logger.debug("Notification in ready status")
+                    logger.debug("Notification condition checking")
                     if readyNotification.condition == "less" and int(readyNotification.value) > int(self.value):
                         logger.debug("Less condition")
                         self.handle_notification(readyNotification=readyNotification)
@@ -29,7 +29,10 @@ class NotificationTrigger:
                         logger.debug("Equal condition")
                         self.handle_notification(readyNotification=readyNotification)
                     else:
-                        logger.debug("wrong condition")
+                        logger.debug("Wrong condition")
+                else:
+                    logger.debug("Without notification")
+
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")
@@ -47,6 +50,6 @@ class NotificationTrigger:
             message = message.replace("<value>",str(readyNotification.value))
             message = message.replace("<self.value>",str(self.value))
             logger.debug("Email to send. subject: " + subject + ", and message: " + message)
-            emailSender(subject=subject, message=message)
+            # emailSender(subject=subject, message=message)
         elif readyNotification.notificationType == "function":
             logger.debug("ID function to run: " + readyNotification.functionId)

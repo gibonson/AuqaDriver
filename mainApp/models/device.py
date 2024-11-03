@@ -27,9 +27,8 @@ class DeviceLister():
 
 class DeviceAdder():
     def __init__(self, formData: dict):
-        self.message = 'Device added'
-        logger.info("Adding device to DB")
-        
+        self.message = 'Success: Device added'
+        logger.info(msg="Adding device to DB")
         try:
             device_ip = formData["deviceIP"][0]
             device_name = formData["deviceName"][0]
@@ -54,29 +53,29 @@ class DeviceManager:
         if self.device:
             Devices.query.filter(Devices.id == self.id).delete()
             db.session.commit()
-            logger.info(f'Device with ID {self.id} removed')
             self.message = f'Device with ID {self.id} removed'
+            logger.info(self.message)
         else:
-            logger.error(f'Device with ID {self.id} does not exist')
             self.message = f'Device with ID {self.id} does not exist'
+            logger.error(self.message)
     
     def change_status(self):
         if self.device:
             if self.device.deviceStatus == "Ready":
                 self.device.deviceStatus = "Not ready"
-                self.message = "Device status changed to: Not ready"
-                logger.info(f'Device with ID {self.id} status changed')
+                self.message = f'Device with ID {self.id} status changed to Not Ready'
+                logger.info(self.message)
             elif self.device.deviceStatus == "Not ready":
                 self.device.deviceStatus = "Ready"
-                logger.info(f'Device with ID {self.id} status changed')
-                self.message = "Device status changed to: Ready"
+                self.message = f'Device with ID {self.id} status changed to Ready'
+                logger.info(self.message)
             else:
-                logger.info(f'Device with ID {self.id} status error')
-                self.message = "Status error!"
+                self.message = f'Device with ID {self.id} status error'
+                logger.error(self.message)
             db.session.commit()
         else:
-            logger.error(f'Device with ID {self.id} does not exist')
             self.message = f'Device with ID {self.id} does not exist'
+            logger.error(self.message)
     
     def __str__(self) -> str:
         return self.message

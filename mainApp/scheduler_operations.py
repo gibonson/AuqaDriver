@@ -43,8 +43,7 @@ def sched_start(sched, scheduler_id_to_run = None):
             linkCreator = LinkCreator(devices_functions[int(function_scheduler.functionId.replace("S",""))-1].id)
             http_link =  linkCreator.functions_list_link_creator()
 
-         logger.debug(f"job_type = {job_type}")
-         logger.debug(f"httpLink = {http_link}")
+         logger.debug(f"job_type = {job_type}, httpLink = {http_link}")
 
          trigger = function_scheduler.trigger
          year = function_scheduler.year
@@ -55,14 +54,8 @@ def sched_start(sched, scheduler_id_to_run = None):
          minute = function_scheduler.minute
          second = function_scheduler.second
 
-         logger.debug(f"trigger = {trigger}")
-         logger.debug(f"year = {year}")
-         logger.debug(f"month = {month}")
-         logger.debug(f"day = {day}")
-         logger.debug(f"day_of_week = {day_of_week}")
-         logger.debug(f"hour = {hour}")
-         logger.debug(f"minute = {minute}")
-         logger.debug(f"second = {second}")
+         logger.debug(f"trigger = {trigger}, year = {year}, month = {month}, day = {day}, day_of_week = {day_of_week}")
+         logger.debug(f"hour = {hour}, minute = {minute}, second = {second}")
 
          add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, year, month, day, day_of_week, hour, minute, second)
 

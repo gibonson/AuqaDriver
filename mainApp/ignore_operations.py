@@ -9,13 +9,21 @@ class IgnoreTrigger:
             self.deviceIP = requestData["deviceIP"]
             self.type = requestData["type"]
             self.value = requestData["value"]
+            self.request_to_ignore = False
 
             archiveIgoneLister = ArchiveIgoneLister(status="Ready")
             archiveIgoneList = archiveIgoneLister.get_list()
             for archiveIgoneRecord in archiveIgoneList:
-                if self.deviceIP == archiveIgoneRecord.deviceIP and self.deviceName == archiveIgoneRecord.deviceName and self.type == archiveIgoneRecord.type and self.addInfo == archiveIgoneRecord.addInfo:
-                    logger.debug("ArchiveIgone in ready status")
+                if (self.deviceIP, self.deviceName, self.type, self.addInfo, self.value) == (archiveIgoneRecord.deviceIP, archiveIgoneRecord.deviceName, archiveIgoneRecord.type, archiveIgoneRecord.addInfo, archiveIgoneRecord.value):
+                    logger.debug("Validation Ignore: Request to ignore")
+                    self.request_to_ignore = True
+                else:
+                    logger.debug("Validation Ignore: Request Proceeding with the next steps")
+
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")
-            self.message = "Error: Record could not be parsed"
+            self.message = "Error: Request could not be parsed"
+
+    def get_request_to_ignore(self)->bool:
+        return self.request_to_ignore

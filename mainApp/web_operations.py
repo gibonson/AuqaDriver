@@ -1,8 +1,8 @@
 import requests
 from mainApp.models.device_function import DevicesFunctions
 from mainApp.models.device import Devices
-from mainApp.models.archive import Archive, ArchiveAdder
-from mainApp import app, db, logger
+from mainApp.response_operation import ResponseTrigger
+from mainApp import app, logger
 
 class LinkCreator:
     def __init__(self, id):
@@ -93,15 +93,15 @@ class WebContentCollector:
                     value = row[3]
                     type = row[4]
                     requestData = {'addInfo': row[2], 'deviceIP': self.deviceIP, 'deviceName': deviceName, 'type': row[4], 'value': row[3]}
-                    ArchiveAdder(requestData)
+                    ResponseTrigger(requestData)
 
             if self.deviceRecieveFunctionValues == []:
                 with app.app_context():
                     requestData = {'addInfo': 'Unrecognized device', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
-                    ArchiveAdder(requestData)
+                    ResponseTrigger(requestData)
 
         except requests.exceptions.Timeout:
             with app.app_context():
                 with app.app_context():
                     requestData = {'addInfo': 'Connection error', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
-                    ArchiveAdder(requestData)
+                    ResponseTrigger(requestData)

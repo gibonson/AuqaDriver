@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 
 # Third-party imports
-from flask import Flask, Markup, flash, jsonify, redirect, render_template, request, url_for
+from flask import Markup, flash, jsonify, redirect, render_template, request, url_for
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 
@@ -22,19 +22,20 @@ from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
-from mainApp.models.archive_ignore import ArchiveIgone, ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
-from mainApp.models.report_functions import ArchiveFunctions, ArchiveFunctionsLister, ArchiveFunctionsAdder
-from mainApp.models.report import ArchiveReport, ArchiveReportLister, ArchiveReporAdder
-from mainApp.models.device import Devices, DeviceAdder, DeviceLister, DeviceManager
-from mainApp.models.device_function import DevicesFunctions, DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
-from mainApp.models.notification import Notification, NotificationLister, NotificationAdder, NotificationManager
+from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
+from mainApp.models.report_functions import  ArchiveFunctionsLister, ArchiveFunctionsAdder
+from mainApp.models.report import ArchiveReportLister, ArchiveReporAdder
+from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager
+from mainApp.models.device_function import  DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
+from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
 from mainApp.report_operations import ReportCreator
 from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp.charts import Table
-from mainApp.ignore_operations import IgnoreTrigger
+from mainApp.response_operation import ResponseTrigger
+from mainApp.utils import flash_message, validate_and_log_form
 
 
 # -----------------------------------------
@@ -45,28 +46,27 @@ from mainApp.ignore_operations import IgnoreTrigger
 def create():
     with app.app_context():
         db.create_all()
-        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1',
-                       'deviceName': 'Server', 'type': 'Log', 'value': 0}
+        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1','deviceName': 'Server', 'type': 'Log', 'value': 0}
         ArchiveAdder(requestData)
-        logger.critical("New database has been created")
+        flash_message("New database has been created","info")
     return redirect(url_for("get_jobs"))
+
 
 # -----------------------------------------
 # start page and 404
 # -----------------------------------------
 
-
 @ app.errorhandler(404)
 def not_found(e):
-    flash(f'404!', category='danger')
+    flash_message("404!", category="warning")
     return render_template('404.html', state=str(sched.state))
 
 
 @app.errorhandler(OperationalError)
 def handle_operational_error(error):
-    logger.error(f"OperationalError: {error}")
+    flash_message(f"OperationalError: {error}", 'danger')
     if "no such table" in str(error):
-        flash(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
+        flash_message(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
     return render_template('500.html', state=str(sched.state))
 
 
@@ -74,43 +74,37 @@ def handle_operational_error(error):
 def hello_world():
     return redirect(url_for("get_jobs"))
 
+
 # -----------------------------------------
 # device section
 # -----------------------------------------
 
-
 @app.route("/device_list", methods=['POST', 'GET'])
 def device_list():
     form = AddDevice()
-    if form.validate_on_submit():
-        deviceAdder = DeviceAdder(request.form.to_dict(flat=False))
-        flash(str(deviceAdder), category='success')
-    if form.errors != {}:
-        logger.error("An error occurred while adding : %s", form.errors)
-        flash(form.errors, category='danger')
+    if validate_and_log_form(form):
+        DeviceAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
     return render_template("devicesList.html", devices=devices, form=form, state=str(sched.state))
-
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
     manager = DeviceManager(id)
     manager.remove_device()
-    flash(str(manager), category='danger')
+    flash_message(str(manager), category='success')
     return redirect(url_for("device_list"))
-
 
 @app.route("/change_device_status/<id>")
 def change_device_status(id):
     manager = DeviceManager(id)
     manager.change_status()
-    flash(str(manager), category='danger')
+    flash_message(str(manager), category='success')
     return redirect(url_for("device_list"))
+
 
 # -----------------------------------------
 # function section
 # -----------------------------------------
-
 
 @app.route("/device_functions_list", methods=['POST', 'GET'])
 def device_functions_list():
@@ -157,6 +151,7 @@ def change_device_functions_status(id):
     manager.change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("device_functions_list"))
+
 
 # -----------------------------------------
 # scheduler section
@@ -244,10 +239,10 @@ def start_job(runSchedulerID):
     sched_start(sched, runSchedulerID)
     return redirect(url_for("get_jobs"))
 
+
 # -----------------------------------------
 # archive section
 # -----------------------------------------
-
 
 @app.route("/archive_search", methods=['POST', 'GET'])
 def archive_search():
@@ -261,10 +256,8 @@ def archive_search():
 
     if form.validate_on_submit():
         logger.debug(str(request.form.to_dict(flat=False)))
-        logger.debug("date time to timestampStart: " +
-                     str(datetime.timestamp(form.timestampStart.data)))
-        logger.debug("date time to timestampEnd: " +
-                     str(datetime.timestamp(form.timestampEnd.data)))
+        logger.debug("date time to timestampStart: " + str(datetime.timestamp(form.timestampStart.data)))
+        logger.debug("date time to timestampEnd: " + str(datetime.timestamp(form.timestampEnd.data)))
         logger.debug("recordType:" + str(form.recordType.data))
 
         recordTypes = form.recordType.data
@@ -330,7 +323,6 @@ def change_archive_ignore_status(id):
 # report section
 # -----------------------------------------
 
-
 @app.route("/report_list", methods=['POST', 'GET'])
 def report_list():
     AddArchiveReport.add_archive_report_lists_update()
@@ -356,10 +348,10 @@ def get_report_all():
     report = ReportCreator().create_all()
     return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
 
+
 # -----------------------------------------
 # report functions section
 # -----------------------------------------
-
 
 @app.route("/report_functions_list", methods=['POST', 'GET'])
 def report_functions_list():
@@ -375,10 +367,10 @@ def report_functions_list():
     archiveFunctionsList = ArchiveFunctionsLister().get_list()
     return render_template("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
 
+
 # -----------------------------------------
 # email sender
 # -----------------------------------------
-
 
 @app.route('/emailSend', methods=['POST', 'GET'])
 def email_send():
@@ -387,10 +379,10 @@ def email_send():
         emailSender(form.subject.data, form.message.data, flashMessage=True)
     return render_template("emailSend.html", form=form, state=str(sched.state))
 
+
 # -----------------------------------------
 # DB Dashboard
 # -----------------------------------------
-
 
 @app.route('/dashboard')
 def dashboard():
@@ -398,10 +390,10 @@ def dashboard():
     sqlTable = DashboardData().getSqlTable()
     return render_template("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
+
 # -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
-
 
 @app.route("/pause")
 def pause():
@@ -431,23 +423,20 @@ def shutdown():
     # sched.shutdown(wait=False)
     return redirect(url_for("get_jobs"))
 
+
 # -----------------------------------------
 # json
 # -----------------------------------------
 
-
 @app.post('/api/addEvent')
-def create_friend():
-    requestData = request.get_json()
-    IgnoreTrigger(requestData=requestData)
-    NotificationTrigger(requestData=requestData)
-    ArchiveAdder(requestData=requestData)
+def add_event():
+    ResponseTrigger(requestData=request.get_json())
     return "OK"
+
 
 # -----------------------------------------
 # notification
 # -----------------------------------------
-
 
 @app.route("/notification_list", methods=['POST', 'GET'])
 def notification_list():
@@ -476,10 +465,10 @@ def remove_notification(id):
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
 
+
 # -----------------------------------------
 # charts
 # -----------------------------------------
-
 
 @app.route("/charts", methods=['POST', 'GET'])
 def charts():
@@ -495,10 +484,10 @@ def charts():
     final_chart = chart.get_final_results()
     return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate, state=str(sched.state))
 
+
 # -----------------------------------------
 # manually adding to archive
 # -----------------------------------------
-
 
 @app.route("/manually_add_to_archive", methods=['POST', 'GET'])
 def manually_add_to_archive():
