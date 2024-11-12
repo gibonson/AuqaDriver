@@ -11,14 +11,13 @@ class IgnoreTrigger:
             self.value = requestData["value"]
             self.request_to_ignore = False
 
+            logger.debug("Checking Ignore list")
             archiveIgoneLister = ArchiveIgoneLister(status="Ready")
             archiveIgoneList = archiveIgoneLister.get_list()
             for archiveIgoneRecord in archiveIgoneList:
                 if (self.deviceIP, self.deviceName, self.type, self.addInfo, self.value) == (archiveIgoneRecord.deviceIP, archiveIgoneRecord.deviceName, archiveIgoneRecord.type, archiveIgoneRecord.addInfo, archiveIgoneRecord.value):
-                    logger.debug("Validation Ignore: Request to ignore")
+                    logger.debug("Validation Ignore list: Request to ignore")
                     self.request_to_ignore = True
-                else:
-                    logger.debug("Validation Ignore: Request Proceeding with the next steps")
 
 
         except Exception as e:

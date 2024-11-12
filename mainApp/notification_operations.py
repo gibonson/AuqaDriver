@@ -14,6 +14,7 @@ class NotificationTrigger:
             self.type = requestData["type"]
             self.value = requestData["value"]
 
+            logger.debug("Checking notification condition list")
             notificationLister = NotificationLister(notificationStatus="Ready")
             notificationList = notificationLister.get_list()
             for readyNotification in notificationList:
@@ -30,8 +31,6 @@ class NotificationTrigger:
                         self.handle_notification(readyNotification=readyNotification)
                     else:
                         logger.debug("Wrong condition")
-                else:
-                    logger.debug("Without notification")
 
 
         except Exception as e:

@@ -426,7 +426,6 @@ def charts():
     formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
     minusOneDayDate = datetime.now() - timedelta(days=1)
     formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
-
     chart = Table(delta=10, type="%")
     chart.reportGenerator()
     final_chart = chart.get_final_results()

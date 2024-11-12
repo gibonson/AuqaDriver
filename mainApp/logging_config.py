@@ -8,7 +8,7 @@ def setup_logging():
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
     # add heandler for file
-    file_handler = logging.FileHandler('logs/app.log', encoding='utf-8')
+    file_handler = logging.FileHandler('userFiles/app.log', encoding='utf-8')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
 

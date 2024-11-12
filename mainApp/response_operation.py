@@ -14,8 +14,8 @@ class ResponseTrigger:
             self.type = requestData["type"]
             self.value = requestData["value"]
 
-            ignoreTrigger = IgnoreTrigger(requestData=requestData)
-            if ignoreTrigger.get_request_to_ignore() == False:
+            
+            if IgnoreTrigger(requestData=requestData).get_request_to_ignore() == False:
                 NotificationTrigger(requestData=requestData)
                 ArchiveAdder(requestData=requestData)
 
