@@ -29,3 +29,41 @@ sudo docker run -v $(pwd):/usr/src/app -d --restart=always --name aquadriver -p 
 
 # TO DO:
  - dodać API https://danepubliczne.imgw.pl/apiinfo
+
+'''mermaid
+graph TD
+    subgraph WiFi_Network["Wi-Fi"]
+        Hub[Hub]
+        Sat1[Device 1 + 433MHz]
+        Sat2[Device 2]
+        Sat3[Device 3 + LoRa]
+    
+        Hub <-- HTTP --> Sat1
+        Sat1 -- JSON --> Hub
+
+        Hub <-- HTTP --> Sat2
+        Sat2 -- JSON --> Hub
+
+        Hub <-- HTTP --> Sat3
+        Sat3 -- JSON --> Hub
+    end
+
+    subgraph LoRa_Devices["LoRa Devices"]
+        direction LR
+        LoRaSat1[Device 4 + LoRa]
+        LoRaSat2[Device 5 + LoRa]
+    end
+
+    subgraph 433_Devices["433MHz Devices"]
+        direction LR
+        433Socket1[Device 4 + LoRa]
+        433Socket2[Device 5 + LoRa]
+    end
+
+    Sat1 -- 433MHz --> 433Socket1
+    Sat1 -- 433MHz --> 433Socket2
+
+    Sat3 <-- LoRa --> LoRaSat1
+    Sat3 <-- LoRa --> LoRaSat2
+
+'''
