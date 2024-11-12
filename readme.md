@@ -30,7 +30,7 @@ sudo docker run -v $(pwd):/usr/src/app -d --restart=always --name aquadriver -p 
 # TO DO:
  - dodać API https://danepubliczne.imgw.pl/apiinfo
 
-'''mermaid
+'''
 graph TD
     subgraph WiFi_Network["Wi-Fi"]
         Hub[Hub]
