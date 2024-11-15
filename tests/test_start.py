@@ -40,6 +40,38 @@ select.select_by_visible_text("Old")
 submit_button = driver.find_element(by=By.ID, value="submit")
 submit_button.click()
 
+driver.get("http://127.0.0.1:5000/device_functions_list")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/scheduler_list")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/report_list")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/report_functions_list")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/notification_list")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/get_jobs")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/functions_scheduler_list_get_jobs")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/archive_search")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/emailSend")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/dashboard")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/get_report_all")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/charts")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/manually_add_to_archive")
+time.sleep(1)
+driver.get("http://127.0.0.1:5000/archive_ignore")
+time.sleep(1)
+
+
+
+
 
 # Zamknij przeglądarkę
 # driver.quit()
