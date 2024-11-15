@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 
 # Third-party imports
-from flask import Markup, flash, jsonify, redirect, render_template, request, url_for
+from flask import Markup, flash, jsonify, redirect, request, url_for
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 
@@ -35,8 +35,7 @@ from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp.charts import Table
 from mainApp.response_operation import ResponseTrigger
-from mainApp.utils import flash_message, validate_and_log_form
-
+from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
 
 # -----------------------------------------
 # create new DB
@@ -63,14 +62,14 @@ def hello_world():
 @ app.errorhandler(404)
 def not_found(e):
     flash_message("404!", category="warning")
-    return render_template('404.html', state=str(sched.state))
+    return render_template_with_addons('404.html')
 
 @app.errorhandler(OperationalError)
 def handle_operational_error(error):
     flash_message(f"OperationalError: {error}", 'danger')
     if "no such table" in str(error):
         flash_message(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
-    return render_template('500.html', state=str(sched.state))
+    return render_template_with_addons('500.html')
 
 
 # -----------------------------------------
@@ -83,7 +82,7 @@ def device_list():
     if validate_and_log_form(form):
         DeviceAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
-    return render_template("devicesList.html", devices=devices, form=form, state=str(sched.state))
+    return render_template_with_addons("devicesList.html", devices=devices, form=form)
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
@@ -112,7 +111,7 @@ def device_functions_list():
         DeviceFunctionAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
     devicesFunctions = DeviceFunctionsLister().get_list()
-    return render_template("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form, state=str(sched.state))
+    return render_template_with_addons("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form)
 
 @app.route("/device_functions_list_link_creator/<id>")
 def device_functions_list_link_creator(id):
@@ -165,7 +164,7 @@ def scheduler_list():
     devicesFunctions = DeviceFunctionsLister().get_list()
     functionsScheduler = FunctionSchedulerLister().get_list()
     archiveFunctions = ArchiveFunctionsLister().get_list()
-    return render_template("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, state=str(sched.state), form=form, startswith=str.startswith, int=int)
+    return render_template_with_addons("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, form=form, startswith=str.startswith, int=int)
 
 
 # -----------------------------------------
@@ -178,14 +177,14 @@ def get_jobs():
     for job in sched.get_jobs():
         logger.info("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
                     str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
-    return render_template('getJobs.html', get_jobs=sched.get_jobs(), state=str(sched.state))
+    return render_template_with_addons('getJobs.html', get_jobs=sched.get_jobs())
 
 @app.route("/functions_scheduler_list_get_jobs")
 def functions_scheduler_list_get_jobs():
     devices = DeviceLister().get_list()
     devicesFunctions = DeviceFunctionsLister().get_list()
     functionsScheduler = FunctionSchedulerLister().get_list()
-    return render_template("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), state=str(sched.state), str=str, int=int)
+    return render_template_with_addons("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
@@ -257,7 +256,7 @@ def archive_search():
             Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
             Archive.type.in_(type)
         ).order_by(Archive.id.desc()).limit(form.limit.data)
-    return render_template("archiveSearch.html", archive=archive, datetime=datetime, form=form, state=str(sched.state), formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
+    return render_template_with_addons("archiveSearch.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 @app.route("/archive_remove/<id>")
@@ -273,7 +272,7 @@ def archive_ignore():
     if validate_and_log_form(form):
         ArchiveIgoneAdder(request.form.to_dict(flat=False))
     archiveIgoneLister = ArchiveIgoneLister().get_list()
-    return render_template("archiveIgnore.html", archiveIgoneLister=archiveIgoneLister, form=form, state=str(sched.state))
+    return render_template_with_addons("archiveIgnore.html", archiveIgoneLister=archiveIgoneLister, form=form)
 
 @app.route("/archive_ignore_remove/<id>")
 def archive_ignore_remove(id):
@@ -301,7 +300,7 @@ def report_list():
     if validate_and_log_form(form):
         ArchiveReporAdder(request.form.to_dict(flat=False))
     archiveReportList = ArchiveReportLister().get_list()
-    return render_template("archiveReportList.html", archiveReportList=archiveReportList, form=form, state=str(sched.state))
+    return render_template_with_addons("archiveReportList.html", archiveReportList=archiveReportList, form=form)
 
 @app.route("/get_report/<id>")
 def get_report(id):
@@ -311,7 +310,7 @@ def get_report(id):
 @app.route("/get_report_all")
 def get_report_all():
     report = ReportCreator().create_all()
-    return render_template("archiveReportListAll.html", report=report, state=str(sched.state))
+    return render_template_with_addons("archiveReportListAll.html", report=report)
 
 
 # -----------------------------------------
@@ -325,7 +324,7 @@ def report_functions_list():
     if validate_and_log_form(form):
         ArchiveFunctionsAdder(request.form.to_dict(flat=False))
     archiveFunctionsList = ArchiveFunctionsLister().get_list()
-    return render_template("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime, state=str(sched.state))
+    return render_template_with_addons("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime)
 
 
 # -----------------------------------------
@@ -337,7 +336,7 @@ def email_send():
     form = EmailSend()
     if validate_and_log_form(form):
         emailSender(form.subject.data, form.message.data, flashMessage=True)
-    return render_template("emailSend.html", form=form, state=str(sched.state))
+    return render_template_with_addons("emailSend.html", form=form)
 
 
 # -----------------------------------------
@@ -348,7 +347,7 @@ def email_send():
 def dashboard():
     dbSizeKB = DashboardData().getDbSizeKB()
     sqlTable = DashboardData().getSqlTable()
-    return render_template("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
+    return render_template_with_addons("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
 
 # -----------------------------------------
@@ -397,7 +396,7 @@ def notification_list():
     if validate_and_log_form(form):
         NotificationAdder(request.form.to_dict(flat=False))
     notificationList = NotificationLister().get_list()
-    return render_template("notificationList.html", notificationList=notificationList, form=form, datetime=datetime, state=str(sched.state))
+    return render_template_with_addons("notificationList.html", notificationList=notificationList, form=form, datetime=datetime)
 
 @app.route("/change_notification_status/<id>")
 def change_notification_status(id):
@@ -429,7 +428,7 @@ def charts():
     chart = Table(delta=10, type="%")
     chart.reportGenerator()
     final_chart = chart.get_final_results()
-    return render_template("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate, state=str(sched.state))
+    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 # -----------------------------------------
@@ -446,4 +445,4 @@ def manually_add_to_archive():
         requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRawList[0],
                        'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
         ResponseTrigger(requestData=requestData)
-    return render_template("archiveAddManually.html", form=form, state=str(sched.state))
+    return render_template_with_addons("archiveAddManually.html", form=form)

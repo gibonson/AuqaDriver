@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 from mainApp.models.device import DeviceLister
+from mainApp.models.archive import Archive
 from mainApp.scheduler_operations import add_job_to_scheduler
 from mainApp import app, logger
 
@@ -16,3 +19,29 @@ class DeviceStatusChecker:
                     sched.pause_job(scheduler_id)
                     logger.debug(scheduler_id + " Waiting")
 
+class ConnectionStatus:
+    def __init__(self):
+        self.deviceStatusList = []
+        with app.app_context():
+            devices = DeviceLister().get_list()
+            currentDate = str(datetime.timestamp(datetime.now()))
+            minusOneDayDate = str(datetime.timestamp(datetime.now() - timedelta(days=1)))
+            
+            for device in devices:
+                counterNOK = Archive.query.filter(
+                    Archive.deviceIP == device.deviceIP,
+                    Archive.addInfo == "Connection error",
+                    Archive.timestamp >= minusOneDayDate,
+                    Archive.timestamp <= currentDate).count()
+                counterAll = Archive.query.filter(
+                    Archive.deviceIP == device.deviceIP,
+                    Archive.timestamp >= minusOneDayDate,
+                    Archive.timestamp <= currentDate).count()
+                if counterAll != 0:
+                    successRate = round(((counterAll - counterNOK)/counterAll)*100)
+                else:
+                    successRate = None
+                self.deviceStatusList.append({"ip": device.deviceIP,"successRate": successRate})
+
+    def getDeviceStatusList(self):
+        return self.deviceStatusList
