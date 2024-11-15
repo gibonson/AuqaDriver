@@ -76,7 +76,7 @@ graph TD
     Sat3 <-- LoRa --> LoRaSat2
 ```
 
-## Configuration
+## CONFIGURATION
 
 ### GIT
 
