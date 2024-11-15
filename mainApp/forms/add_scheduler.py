@@ -2,8 +2,8 @@ from flask_wtf import FlaskForm
 from mainApp import app
 from mainApp import logger
 from mainApp.models.device import Devices
-from mainApp.models.device_function import DevicesFunctions
-from mainApp.models.report_functions import ArchiveFunctions
+from mainApp.models.event import Event
+from mainApp.models.archive_report_package import ArchiveFunctions
 from wtforms.validators import DataRequired, NumberRange
 from wtforms import SelectField, SubmitField, HiddenField, IntegerField
 
@@ -21,12 +21,12 @@ class AddFunctionScheduler(FlaskForm):
     def functionIdListUpdate():
         AddFunctionScheduler.functionIdList.clear()
         with app.app_context():
-            devicesFunctions = DevicesFunctions.query.all()
-            for devicesFunction in devicesFunctions:
-                logger.debug(devicesFunction.__dict__)
-                device = Devices.query.get(devicesFunction.deviceId)
-                AddFunctionScheduler.functionIdList.append((str(devicesFunction.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
-                    devicesFunction.actionLink) + " " + str(devicesFunction.functionDescription) + " " + str(devicesFunction.functionParameters)))
+            events = Event.query.all()
+            for event in events:
+                logger.debug(event.__dict__)
+                device = Devices.query.get(event.deviceId)
+                AddFunctionScheduler.functionIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+                    event.eventLink) + " " + str(event.eventDescription)))
             
             archiveFunctions = ArchiveFunctions.query.all()
             for archiveFunction in archiveFunctions:

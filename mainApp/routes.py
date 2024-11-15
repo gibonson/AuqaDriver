@@ -11,11 +11,11 @@ from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
-from mainApp.forms.add_archive_report_fnction import AddArchiveReportFunction
+from mainApp.forms.add_archive_report_package import AddArchiveReportFunction
 from mainApp.forms.add_archive_ignore import AddArchiveIgnore
 from mainApp.forms.add_device import AddDevice
-from mainApp.forms.add_device_functions import AddDeviceFunctions
-from mainApp.forms.add_function_scheduler import AddFunctionScheduler
+from mainApp.forms.add_event import AddEvent
+from mainApp.forms.add_scheduler import AddFunctionScheduler
 from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
@@ -23,10 +23,10 @@ from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
 from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
-from mainApp.models.report_functions import  ArchiveFunctionsLister, ArchiveFunctionsAdder
-from mainApp.models.report import ArchiveReportLister, ArchiveReporAdder
+from mainApp.models.archive_report_package import  ArchiveFunctionsLister, ArchiveFunctionsAdder
+from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager
-from mainApp.models.device_function import  DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
+from mainApp.models.event import  DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
 from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
 from mainApp.report_operations import ReportCreator
@@ -82,7 +82,7 @@ def device_list():
     if validate_and_log_form(form):
         DeviceAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
-    return render_template_with_addons("devicesList.html", devices=devices, form=form)
+    return render_template_with_addons("deviceList.html", devices=devices, form=form)
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
@@ -103,25 +103,25 @@ def change_device_status(id):
 # function section
 # -----------------------------------------
 
-@app.route("/device_functions_list", methods=['POST', 'GET'])
-def device_functions_list():
-    AddDeviceFunctions.deviceIdListUpdate()
-    form = AddDeviceFunctions()
+@app.route("/event_list", methods=['POST', 'GET'])
+def event_list():
+    AddEvent.deviceIdListUpdate()
+    form = AddEvent()
     if validate_and_log_form(form):
         DeviceFunctionAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
-    devicesFunctions = DeviceFunctionsLister().get_list()
-    return render_template_with_addons("functionsList.html", devicesFunctions=devicesFunctions, devices=devices, form=form)
+    events = DeviceFunctionsLister().get_list()
+    return render_template_with_addons("eventList.html", Events=events, devices=devices, form=form)
 
-@app.route("/device_functions_list_link_creator/<id>")
-def device_functions_list_link_creator(id):
+@app.route("/event_list_link_creator/<id>")
+def event_list_link_creator(id):
     linkCreator = LinkCreator(id).functions_list_link_creator()
     flash(Markup('<a href="' + linkCreator + '">' +
           linkCreator + '</a>'), category='success')
-    return redirect(url_for("device_functions_list"))
+    return redirect(url_for("event_list"))
 
-@app.route("/device_functions_list_web_content_collector/<id>")
-def device_functions_list_web_content_collector(id):
+@app.route("/event_list_web_content_collector/<id>")
+def event_list_web_content_collector(id):
     WebContentCollector(LinkCreator(
         id).functions_list_link_creator()).collect()
     flash("Check out some recent records", category='success')
@@ -132,14 +132,14 @@ def device_functions_remove(id):
     manager = DeviceFunctionsManager(id)
     manager.remove_device_function()
     flash(str(manager), category='danger')
-    return redirect(url_for("device_functions_list"))
+    return redirect(url_for("event_list"))
 
 @app.route("/change_device_functions_status/<id>")
 def change_device_functions_status(id):
     manager = DeviceFunctionsManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
-    return redirect(url_for("device_functions_list"))
+    return redirect(url_for("event_list"))
 
 
 # -----------------------------------------
@@ -161,10 +161,10 @@ def scheduler_list():
             return redirect(url_for("scheduler_list"))
         FunctionSchedulereAdder(request.form.to_dict(flat=False), schedulerID)
     devices = DeviceLister().get_list()
-    devicesFunctions = DeviceFunctionsLister().get_list()
+    Event = DeviceFunctionsLister().get_list()
     functionsScheduler = FunctionSchedulerLister().get_list()
     archiveFunctions = ArchiveFunctionsLister().get_list()
-    return render_template_with_addons("schedulerList.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, archiveFunctions=archiveFunctions, form=form, startswith=str.startswith, int=int)
+    return render_template_with_addons("schedulerList.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, archiveFunctions=archiveFunctions, form=form, startswith=str.startswith, int=int)
 
 
 # -----------------------------------------
@@ -182,9 +182,9 @@ def get_jobs():
 @app.route("/functions_scheduler_list_get_jobs")
 def functions_scheduler_list_get_jobs():
     devices = DeviceLister().get_list()
-    devicesFunctions = DeviceFunctionsLister().get_list()
+    Event = DeviceFunctionsLister().get_list()
     functionsScheduler = FunctionSchedulerLister().get_list()
-    return render_template_with_addons("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, devicesFunctions=devicesFunctions, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
+    return render_template_with_addons("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
@@ -324,7 +324,7 @@ def report_functions_list():
     if validate_and_log_form(form):
         ArchiveFunctionsAdder(request.form.to_dict(flat=False))
     archiveFunctionsList = ArchiveFunctionsLister().get_list()
-    return render_template_with_addons("reportFunctions.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime)
+    return render_template_with_addons("archiveReportPackageList.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime)
 
 
 # -----------------------------------------

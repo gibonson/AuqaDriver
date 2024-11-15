@@ -2,9 +2,9 @@ from mainApp.web_operations import WebContentCollector, LinkCreator
 from mainApp.report_operations import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
-from mainApp.models.report_functions import ArchiveFunctions
+from mainApp.models.archive_report_package import ArchiveFunctions
 from mainApp.models.device import Devices
-from mainApp.models.device_function import DevicesFunctions
+from mainApp.models.event import Event
 from mainApp.models.scheduler import FunctionScheduler
 
 def job_collector(http_address):
@@ -28,7 +28,7 @@ def sched_start(sched, scheduler_id_to_run = None):
          functions_scheduler = FunctionScheduler.query.all()
       else:
          functions_scheduler = FunctionScheduler.query.filter_by(schedulerID=scheduler_id_to_run)
-      devices_functions = DevicesFunctions.query.all()
+      devices_functions = Event.query.all()
 
       for function_scheduler in functions_scheduler:
          logger.debug("\n")

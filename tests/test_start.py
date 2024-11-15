@@ -40,7 +40,7 @@ select.select_by_visible_text("Old")
 submit_button = driver.find_element(by=By.ID, value="submit")
 submit_button.click()
 
-driver.get("http://127.0.0.1:5000/device_functions_list")
+driver.get("http://127.0.0.1:5000/event_list")
 time.sleep(1)
 driver.get("http://127.0.0.1:5000/scheduler_list")
 time.sleep(1)

@@ -1,23 +1,20 @@
 import requests
-from mainApp.models.device_function import DevicesFunctions
+from mainApp.models.event import Event
 from mainApp.models.device import Devices
 from mainApp.response_operation import ResponseTrigger
 from mainApp import app, logger
 
 class LinkCreator:
-    def __init__(self, id):
+    def __init__(self, id, eventLinkAndParameters = None):
         self.id = id
+        self.eventLinkAndParameters = eventLinkAndParameters
 
     def functions_list_link_creator(self):
-        deviceFunctions = DevicesFunctions.query.get(self.id)
+        deviceFunctions = Event.query.get(self.id)
         devices = Devices.query.get(deviceFunctions.deviceId)
         IP = devices.deviceIP
-        actionLink = deviceFunctions.actionLink
-        if deviceFunctions.functionParameters != "":
-            parameters = deviceFunctions.functionParameters
-            httpLink = "http://" + IP + actionLink + "?" + parameters
-        else:
-            httpLink = "http://" + IP + actionLink
+        eventLink = deviceFunctions.eventLink
+        httpLink = "http://" + IP + eventLink
         return httpLink
 
 
@@ -101,7 +98,19 @@ class WebContentCollector:
                     ResponseTrigger(requestData)
 
         except requests.exceptions.Timeout:
+            logger.error(f"Timeout error while trying to reach {self.httpAddress}")
             with app.app_context():
-                with app.app_context():
-                    requestData = {'addInfo': 'Connection error', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
-                    ResponseTrigger(requestData)
+                requestData = {'addInfo': 'Connection timeout', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+                ResponseTrigger(requestData)
+
+        except requests.exceptions.ConnectionError as e:
+            logger.error(f"Connection error: {e} while trying to reach {self.httpAddress}")
+            with app.app_context():
+                requestData = {'addInfo': 'Connection error', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+                ResponseTrigger(requestData)
+
+        except Exception as e:
+            logger.error(f"An unexpected error occurred: {e}")
+            with app.app_context():
+                requestData = {'addInfo': 'Unexpected error', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+                ResponseTrigger(requestData)

@@ -3,8 +3,8 @@ import time
 from mainApp import app, logger
 from mainApp.routes import create_engine, text
 from mainApp.models.archive import Archive
-from mainApp.models.report_functions import ArchiveFunctions
-from mainApp.models.report import ArchiveReport
+from mainApp.models.archive_report_package import ArchiveFunctions
+from mainApp.models.archive_report import ArchiveReport
 from mainApp.email_operations import emailSender
 
 class HtmlBuilder:

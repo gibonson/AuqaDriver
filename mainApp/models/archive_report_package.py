@@ -7,13 +7,13 @@ class ArchiveFunctions(db.Model):
     title = db.Column(db.String())
     description = db.Column(db.String())
     archiveReportIds = db.Column(db.String())
-    functionStatus = db.Column(db.String())
+    eventStatus = db.Column(db.String())
 
-    def __init__(self, title, description, archiveReportIds, functionStatus):
+    def __init__(self, title, description, archiveReportIds, eventStatus):
         self.title = title
         self.description = description
         self.archiveReportIds = archiveReportIds
-        self.functionStatus = functionStatus
+        self.eventStatus = eventStatus
         
 
 class ArchiveFunctionsLister():
@@ -36,8 +36,8 @@ class ArchiveFunctionsAdder():
             title = formData["title"][0]
             description = formData["description"][0]
             archiveReportIds = formData["archiveReportIds"]
-            functionStatus = formData["functionStatus"][0]
-            archive_function_to_add = ArchiveFunctions(title=title, description=description, archiveReportIds=str(archiveReportIds), functionStatus=functionStatus)
+            eventStatus = formData["eventStatus"][0]
+            archive_function_to_add = ArchiveFunctions(title=title, description=description, archiveReportIds=str(archiveReportIds), eventStatus=eventStatus)
             db.session.add(archive_function_to_add)
             db.session.commit()
         except Exception as e:

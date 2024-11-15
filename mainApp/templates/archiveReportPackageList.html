@@ -48,11 +48,11 @@ archiveReportFunctionsList
                 </tr>
                 <tr>
                     <td>
-                        {{ form.functionStatus.label() }}
+                        {{ form.eventStatus.label() }}
                     </td>
                     <td>
-                        {{ form.functionStatus(class="form-select" , placeholder = 'functionStatus') }}
-                        <small class="form-text text-danger">{{ form.functionStatus.errors[0] }}</small>
+                        {{ form.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
+                        <small class="form-text text-danger">{{ form.eventStatus.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +85,7 @@ archiveReportFunctionsList
             <td>{{archiveFunctions.title}}</td>
             <td>{{archiveFunctions.description}}</td>
             <td>{{archiveFunctions.archiveReportIds}}</td>
-            <td>{{archiveFunctions.functionStatus}}</td>
+            <td>{{archiveFunctions.eventStatus}}</td>
         </tr>
         {% endfor %}
     </tbody>

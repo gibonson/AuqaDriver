@@ -49,7 +49,7 @@ class NotificationLister():
 class NotificationAdder():
     def __init__(self, formData: dict):
         self.message = 'Notification added'
-        logger.info("Adding notification to DB")
+        logger.info("Notification noaddes to DB")
         
         try:
             description = formData["description"][0]
@@ -93,8 +93,8 @@ class NotificationManager:
         if self.notification:
             if self.notification.notificationStatus == "Ready":
                 self.notification.notificationStatus = "Not ready"
-                self.message = "Device status changed to: Not ready"
-                logger.info(f'Device with ID {self.id} status changed')
+                self.message = "Notification status changed to: Not ready"
+                logger.info(f'Notification with ID {self.id} status changed')
             elif self.notification.notificationStatus == "Not ready":
                 self.notification.notificationStatus = "Ready"
                 logger.info(f'Notification with ID {self.id} status changed')

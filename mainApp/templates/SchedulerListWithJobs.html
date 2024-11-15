@@ -12,7 +12,6 @@ functionsScheduler
             <th>Scheduler Name</th>
             <th>IP - name</th>
             <th>Action Link</th>
-            <th>Parameters</th>
             <th>DB Trigger [Y:M:D-day-H:M:S]</th>
             <th>Real Trigger</th>
             <th>Next Run</th>
@@ -29,26 +28,17 @@ functionsScheduler
             {% elif my_string[0] == 'R' %}
             <td>Raport</td>
             <td>-</td>
-            <td>-</td>
             {% else %}
-            <td>{{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+            <td>{{devices[Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
                 ''))-1].deviceId-1].deviceIP}} -
-                {{devices[devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+                {{devices[Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
                 ''))-1].deviceId-1].deviceName}}</td>
-            {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
-            ''))-1].actionLink == "" %}
+            {% if Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+            ''))-1].eventLink == "" %}
             <td>-</td>
             {% else %}
-            <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
-                ''))-1].actionLink}}</td>
-            {% endif %}
-
-            {% if devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
-            ''))-1].functionParameters == "" %}
-            <td>-</td>
-            {% else %}
-            <td>{{devicesFunctions[int(str(functionScheduler.functionId).replace('S', '').replace('R',
-                ''))-1].functionParameters}}</td>
+            <td>{{Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+                ''))-1].eventLink}}</td>
             {% endif %}
             {% endif %}
 

@@ -37,8 +37,10 @@ class ConnectionStatus:
                     Archive.deviceIP == device.deviceIP,
                     Archive.timestamp >= minusOneDayDate,
                     Archive.timestamp <= currentDate).count()
-                if counterAll != 0:
+                if counterAll != 0 and counterAll != counterNOK:
                     successRate = round(((counterAll - counterNOK)/counterAll)*100)
+                elif counterAll != 0 and counterAll == counterNOK:
+                    successRate = -1
                 else:
                     successRate = None
                 self.deviceStatusList.append({"ip": device.deviceIP,"successRate": successRate})

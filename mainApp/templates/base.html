@@ -93,17 +93,21 @@
                   <ul class="dropdown-menu">
                      {% for deviceStatus in deviceStatusList %}
                      {% if deviceStatus.successRate %}
-                         {% if deviceStatus.successRate >= 90 %}
-                             <li><a class="btn btn-success m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} - {{deviceStatus.successRate}}% </a></li>
-                         {% elif deviceStatus.successRate >= 70 %}
-                             <li><a class="btn btn-warning m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} - {{deviceStatus.successRate}}% </a></li>
-                         {% else %}
-                             <li><a class="btn btn-danger m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} - {{deviceStatus.successRate}}% </a></li>
-                         {% endif %}
+                     {% if deviceStatus.successRate >= 90 %}
+                     <li><a class="btn btn-success m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
+                           {{deviceStatus.successRate}}% </a></li>
+                     {% elif deviceStatus.successRate >= 70 %}
+                     <li><a class="btn btn-warning m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
+                           {{deviceStatus.successRate}}% </a></li>
                      {% else %}
-                         <li><a class="btn btn-secondary m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} - No data </a></li>
+                     <li><a class="btn btn-danger m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
+                           {{deviceStatus.successRate}}% </a></li>
                      {% endif %}
-                 {% endfor %}
+                     {% else %}
+                     <li><a class="btn btn-secondary m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
+                           No data </a></li>
+                     {% endif %}
+                     {% endfor %}
                </li>
             </ul>
             </li>
@@ -116,9 +120,8 @@
                   <ul class="dropdown-menu">
                      <li><a class="dropdown-item" href="{{url_for('device_list')}}"><i class='fa fa-cog'></i> Device</a>
                      </li>
-                     <li><a class="dropdown-item" href="{{url_for('device_functions_list')}}"><i
-                              class='fa fa-gears'></i>
-                           Device Functions</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('event_list')}}"><i class='fa fa-gears'></i>
+                           Event</a></li>
                      <li><a class="dropdown-item" href="{{url_for('scheduler_list')}}"><i class='fa fa-clock-o'></i>
                            Scheduler</a></li>
                      <li><a class="dropdown-item" href="{{url_for('report_list')}}"><i class='fa fa-calendar'></i>
@@ -127,6 +130,8 @@
                               class='fa fa-tachometer'></i> Report Functions</a></li>
                      <li><a class="dropdown-item" href="{{url_for('notification_list')}}"><i class='fa fa-bell-o'></i>
                            Notification</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('archive_ignore')}}"><i class="fa fa-low-vision"></i>
+                           archive_ignore</a></li>
                   </ul>
                </li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_jobs')}}"><i class='fa fa-gears'></i>
@@ -146,8 +151,7 @@
                      Charts</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('manually_add_to_archive')}}"><i
                         class='fa fa-hand-spock-o'></i> Add Manually</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('archive_ignore')}}"><i
-                        class="fa fa-low-vision"></i> archive_ignore</a></li>
+
 
             </ul>
          </div>
