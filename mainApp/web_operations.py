@@ -1,6 +1,6 @@
 import requests
 from mainApp.models.event import Event
-from mainApp.models.device import Devices
+from mainApp.models.device import Device
 from mainApp.response_operation import ResponseTrigger
 from mainApp import app, logger
 
@@ -10,10 +10,10 @@ class LinkCreator:
         self.eventLinkAndParameters = eventLinkAndParameters
 
     def functions_list_link_creator(self):
-        deviceFunctions = Event.query.get(self.id)
-        devices = Devices.query.get(deviceFunctions.deviceId)
-        IP = devices.deviceIP
-        eventLink = deviceFunctions.eventLink
+        event = Event.query.get(self.id)
+        device = Device.query.get(event.deviceId)
+        IP = device.deviceIP
+        eventLink = event.eventLink
         httpLink = "http://" + IP + eventLink
         return httpLink
 

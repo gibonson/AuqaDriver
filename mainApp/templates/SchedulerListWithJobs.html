@@ -18,36 +18,36 @@ functionsScheduler
             <th>Job Actions</th>
             <th>Sch Actions</th>
         </tr>
-        {% for functionScheduler in functionsScheduler %}
+        {% for EventScheduler in functionsScheduler %}
         <tr>
 
-            <td>{{functionScheduler.schedulerID}}</td>
-            {% set my_string = functionScheduler.functionId %}
+            <td>{{EventScheduler.schedulerId}}</td>
+            {% set my_string = EventScheduler.functionId %}
             {% if my_string[0] == 'S' %}
             <td> Pierwszy znak to 'S'.</td>
             {% elif my_string[0] == 'R' %}
             <td>Raport</td>
             <td>-</td>
             {% else %}
-            <td>{{devices[Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+            <td>{{devices[Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
                 ''))-1].deviceId-1].deviceIP}} -
-                {{devices[Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+                {{devices[Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
                 ''))-1].deviceId-1].deviceName}}</td>
-            {% if Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+            {% if Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
             ''))-1].eventLink == "" %}
             <td>-</td>
             {% else %}
-            <td>{{Event[int(str(functionScheduler.functionId).replace('S', '').replace('R',
+            <td>{{Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
                 ''))-1].eventLink}}</td>
             {% endif %}
             {% endif %}
 
-            <td>{{functionScheduler.trigger}}[{{functionScheduler.year}}:{{functionScheduler.month}}:{{functionScheduler.day}}-{{functionScheduler.day_of_week}}-{{functionScheduler.hour}}:{{functionScheduler.minute}}:{{functionScheduler.second}}]
+            <td>{{EventScheduler.trigger}}[{{EventScheduler.year}}:{{EventScheduler.month}}:{{EventScheduler.day}}-{{EventScheduler.day_of_week}}-{{EventScheduler.hour}}:{{EventScheduler.minute}}:{{EventScheduler.second}}]
             </td>
 
             {% set ns = namespace(found=false) %}
             {% for job in get_jobs %}
-            {% if job.id == functionScheduler.schedulerID%}
+            {% if job.id == EventScheduler.schedulerId%}
             {% set ns.found = true %}
             <td>{{job.trigger}}</td>
             {% if job.next_run_time == None %}
@@ -72,12 +72,12 @@ functionsScheduler
             <td>-</td>
             <td>-</td>
             <td>
-                <a href="{{url_for('start_job',runSchedulerID=functionScheduler.schedulerID)}}"
+                <a href="{{url_for('start_job',runschedulerId=EventScheduler.schedulerId)}}"
                     class="btn btn-success btn-lg active d-grid gap-2" role="button" aria-pressed="true">Start</a>
             </td>
             {% endif %}
             <td>
-                <a href="{{url_for('scheduler_remove',id=functionScheduler.id)}}"
+                <a href="{{url_for('scheduler_remove',id=EventScheduler.id)}}"
                     onclick="return confirm('Are you sure?')" class="btn btn-danger btn-lg active d-grid gap-2"
                     role="button" aria-pressed="true">Delete</a>
             </td>

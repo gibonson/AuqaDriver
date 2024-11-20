@@ -9,89 +9,143 @@ Event List
 <h1>Event List</h1>
 <p>
     <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
-        aria-expanded="false" aria-controls="collapseExample">
-        Add function
+        aria-expanded="false" aria-controls="collapseForm">
+        Add Event Link
     </button>
 </p>
 <div class="collapse" id="form">
     <div class="card card-body">
         <form method="POST" class="form-register" style="color:white" novalidate>
-            {{ form.hidden_tag() }}
+            {{ formLink.hidden_tag() }}
             <table>
                 <tr>
                     <td>
-                        {{ form.deviceId.label() }}
+                        {{ formLink.deviceId.label() }}
                     </td>
                     <td>
-                        {{ form.deviceId(class="form-select" , placeholder = 'deviceId') }}
-                        <small class="form-text text-danger">{{ form.deviceId.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.eventDescription.label() }}
-                    </td>
-                    <td>
-                        {{ form.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
-                        <small class="form-text text-danger">{{ form.eventDescription.errors[0] }}</small>
+                        {{ formLink.deviceId(class="form-select" , placeholder = 'deviceId') }}
+                        <small class="form-text text-danger">{{ formLink.deviceId.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {{ form.eventLink.label() }}
+                        {{ formLink.eventDescription.label() }}
                     </td>
                     <td>
-                        {{ form.eventLink(class="form-control" , placeholder = 'eventLink') }}
-                        <small class="form-text text-danger">{{ form.eventLink.errors[0] }}</small>
+                        {{ formLink.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
+                        <small class="form-text text-danger">{{ formLink.eventDescription.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {{ form.eventStatus.label() }}
+                        {{ formLink.eventLink.label() }}
                     </td>
                     <td>
-                        {{ form.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
-                        <small class="form-text text-danger">{{ form.eventStatus.errors[0] }}</small>
+                        {{ formLink.eventLink(class="form-control" , placeholder = 'eventLink') }}
+                        <small class="form-text text-danger">{{ formLink.eventLink.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ formLink.eventStatus.label() }}
+                    </td>
+                    <td>
+                        {{ formLink.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
+                        <small class="form-text text-danger">{{ formLink.eventStatus.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
                 </tr>
             </table>
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
+            {{ formLink.submitLink(class="btn btn-lg btn-block btn-primary") }}
         </form>
     </div>
+</br>
+</div>
+<p>
+    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form1"
+        aria-expanded="false" aria-controls="collapseForm2">
+        Add Event Report
+    </button>
+</p>
+<div class="collapse" id="form1">
+    <div class="card card-body">
+        <form method="POST" class="form-register" style="color:white" novalidate>
+            {{ formReport.hidden_tag() }}
+            <table>
+                <tr>
+                    <td>
+                        {{ formReport.eventDescription.label() }}
+                    </td>
+                    <td>
+                        {{ formReport.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
+                        <small class="form-text text-danger">{{ formReport.eventDescription.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ formReport.reportIds.label() }}
+                    </td>
+                    <td>
+                        {{ formReport.reportIds(class="form-select" , placeholder = 'reportIds') }}
+                        <small class="form-text text-danger">{{ formReport.reportIds.errors[0] }}</small>
+                    </td>
+                </tr>             
+                <tr>
+                    <td>
+                        {{ formReport.eventStatus.label() }}
+                    </td>
+                    <td>
+                        {{ formReport.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
+                        <small class="form-text text-danger">{{ formReport.eventStatus.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            {{ formReport.submitReport(class="btn btn-lg btn-block btn-primary") }}
+        </form>
+    </div>
+</br>
 </div>
 <table class="table table-dark table-striped align-middle">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Device</br>IP</th>
-            <th scope="col">Device</br>Name</th>
+            <th scope="col">Event</br>Type</th>
+            <th scope="col">Device</br>IP - Name</th>
             <th scope="col">Event</br>Link</th>
+            <th scope="col">Report</br>Ids</th>
             <th scope="col">Event</br>Description</th>
             <th scope="col">Event</br>Status</th>
             <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for devicesFunction in Events %}
+        {% for event in Events %}
         <tr>
-            <th scope="row">{{devicesFunction.id}}</th>
-            <td>{{devices[devicesFunction.deviceId-1].deviceIP}}</td>
-            <td>{{devices[devicesFunction.deviceId-1].deviceName}}</td>
-            <td>{{devicesFunction.eventLink}}</td>
-            <td>{{devicesFunction.eventDescription}}</td>
-            <td>{{devicesFunction.eventStatus}}</td>
+            <th scope="row">{{event.id}}</th>
+            <th>{{event.eventType}}</th>
+            {% if event.deviceId != 0 %}
+            <td>{{devices[event.deviceId-1].deviceIP}} - {{devices[event.deviceId-1].deviceName}}</td>
+            {% else %}
+            <td> - </td>
+            {% endif %}
+            <td>{{event.eventLink}}</td>
+            <td>{{event.reportIds}}</td>
+            <td>{{event.eventDescription}}</td>
+            <td>{{event.eventStatus}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('device_functions_remove', id = devicesFunction.id)}}"
+                    <a href="{{url_for('device_functions_remove', id = event.id)}}"
                         class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
-                    <a href="{{url_for('change_device_functions_status', id = devicesFunction.id)}}"
+                    <a href="{{url_for('change_device_functions_status', id = event.id)}}"
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
-                    <a href="{{url_for('event_list_link_creator', id = devicesFunction.id)}}"
+                    <a href="{{url_for('event_list_link_creator', id = event.id)}}"
                         class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
-                    <a href="{{url_for('event_list_web_content_collector', id = devicesFunction.id)}}"
+                    <a href="{{url_for('event_list_web_content_collector', id = event.id)}}"
                         class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
                 </div>
             </td>

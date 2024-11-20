@@ -1,10 +1,9 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 from mainApp import app, logger
 from mainApp.routes import create_engine, text
-from mainApp.models.archive import Archive
-from mainApp.models.archive_report_package import ArchiveFunctions
 from mainApp.models.archive_report import ArchiveReport
+from mainApp.models.event import Event
 from mainApp.email_operations import emailSender
 
 class HtmlBuilder:
@@ -91,7 +90,7 @@ class ReportCreator:
         for archive_report_id in archive_report_id_list:
             reportAll += self.create_one_line(str(archive_report_id.id))
         reportAll += HtmlBuilder.HTML_END
-        logger.debug(reportAll)
+        # logger.debug(reportAll)
         return reportAll
 
 
@@ -100,7 +99,6 @@ class ReportCreator:
         for archive_report_id in archive_report_id_list:
             reportAll += self.create_one_line(archive_report_id)
         reportAll += HtmlBuilder.HTML_END
-        logger.debug(reportAll)
         return reportAll
 
 
@@ -111,8 +109,8 @@ class ReportCreator:
         dateFrom = str(dateFrom)
         formatedDateTo =  datetime.fromtimestamp(int(float(dateTo)))
         formatedDateFrom =  datetime.fromtimestamp(int(float(dateFrom)))
-        logger.debug(formatedDateTo)
-        logger.debug(formatedDateFrom)
+        logger.debug(f"date from: {formatedDateTo}")
+        logger.debug(f"date from: {formatedDateFrom}")
         time_range = archiveReportConfig.timerRangeHours
         indicator = ""
         unit_type = ""
@@ -163,9 +161,9 @@ class ReportSender:
 
     def collect_and_send(self):
         with app.app_context():
-            archiveFunctions = ArchiveFunctions.query.filter_by(id=self.functionId).first()
-            logger.debug("Report ids to schow: " + archiveFunctions.archiveReportIds)
-            archive_report_id_list = archiveFunctions.archiveReportIds.replace("[","").replace("]","").replace(" ","").replace("'","").split(',')
+            event = Event.query.filter_by(id=self.functionId).first()
+            logger.debug("Report ids to schow: " + event.archiveReportIds)
+            archive_report_id_list = event.archiveReportIds.replace("[","").replace("]","").replace(" ","").replace("'","").split(',')
             reportCreator = ReportCreator()
             report = reportCreator.create_from_list(archive_report_id_list=archive_report_id_list)
             emailSender( "raport", report)

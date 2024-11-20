@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from mainApp import app
-from mainApp.models.device import Devices
+from mainApp.models.device import Device
 from wtforms.validators import DataRequired, Length, Optional
 from wtforms import SelectField, SubmitField, IntegerField, TextAreaField
 

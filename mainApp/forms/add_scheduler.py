@@ -1,43 +1,45 @@
 from flask_wtf import FlaskForm
 from mainApp import app
 from mainApp import logger
-from mainApp.models.device import Devices
+from mainApp.models.device import Device
 from mainApp.models.event import Event
-from mainApp.models.archive_report_package import ArchiveFunctions
+from mainApp.models.scheduler import EventScheduler
+# from mainApp.models.archive_report_package import ArchiveFunctions
 from wtforms.validators import DataRequired, NumberRange
-from wtforms import SelectField, SubmitField, HiddenField, IntegerField
+from wtforms import SelectField, SubmitField, HiddenField, IntegerField, ValidationError
 
 
-class AddFunctionScheduler(FlaskForm):
+class AddEventScheduler(FlaskForm):
        
-    triggerList = [("interval", "interval"),("date", "date"),("cron", "cron")]
+    triggerList = [("interval", "interval"),("cron", "cron")]
     dayOfWeekList = [(None, None),("mon", "mon"),("tue", "tue"),("wed", "wed"),("thu", "thu"),("fri", "fri"),("sat", "sat")]
-    yearList = [(None, None),(2023, 2023),(2024, 2024),(2025, 2025)]
-    monthList = [(None,None),(1,"January"),(2,"February"),(3,"March"),(4,"April"),(5,"May"),(6,"June"),(7,"July"),(8,"August"),(9,"September"),(10,"October"),(11,"November"),(12,"December")]
     dayList = [(0,"0"),(1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"),(6,"6"),(7,"7"),(8,"8"),(9,"9"),(10,"10"),(11,"11"),(12,"12"),(13,"13"),(14,"14"),(15,"15"),(16,"16"),(17,"17"),(18,"18"),(19,"19"),(20,"20"),(21,"21"),(22,"22"),(23,"23"),(24,"24"),(25,"25"),(26,"26"),(27,"27"),(28,"28"),(29,"29"),(30,"30"),(31,"31")]
     schedulerStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
-    functionIdList = []
+    eventIdList = []
 
-    def functionIdListUpdate():
-        AddFunctionScheduler.functionIdList.clear()
+    def eventIdListUpdate():
+        AddEventScheduler.eventIdList.clear()
         with app.app_context():
             events = Event.query.all()
             for event in events:
                 logger.debug(event.__dict__)
-                device = Devices.query.get(event.deviceId)
-                AddFunctionScheduler.functionIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
-                    event.eventLink) + " " + str(event.eventDescription)))
-            
-            archiveFunctions = ArchiveFunctions.query.all()
-            for archiveFunction in archiveFunctions:
-                logger.debug(archiveFunction.__dict__)
-                AddFunctionScheduler.functionIdList.append(("R" + str(archiveFunction.id), "Report: " + str(archiveFunction.title) + " - " + archiveFunction.description + " - " + archiveFunction.archiveReportIds))
+                device = Device.query.get(event.deviceId)
+                if event.eventType == "Report":
+                    AddEventScheduler.eventIdList.append((str(event.id), "Report: " + str(event.reportIds) + " " + str(event.eventDescription)))
+                else:
+                    AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+                        event.eventLink) + " " + str(event.eventDescription)))
 
-    functionId = SelectField(label='functionId',choices = functionIdList, validators=[DataRequired()])
+    
+    def validate_schedulerId(self, schedulerId_to_check):
+            schedulerId_to_check = (str(self.eventId.data) + str(self.trigger.data) +str(self.day.data) + str(self.day_of_week.data) + str(self.hour.data) + str(self.minute.data) + str(self.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
+            existing_scheduler = EventScheduler.query.filter_by(schedulerId=schedulerId_to_check).first()
+            if existing_scheduler:
+                raise ValidationError(f'schedulerId "{schedulerId_to_check}" już istnieje w bazie danych.')
+
+    eventId = SelectField(label='eventId',choices = eventIdList, validators=[DataRequired()])
     trigger = SelectField(label='jobType', choices=triggerList)
-    schedulerID = HiddenField()
-    year = SelectField(label='year', choices = yearList)
-    month = SelectField(label='month', choices = monthList)
+    schedulerId = HiddenField()
     day = SelectField(label='day', choices=dayList)
     day_of_week = SelectField(label='dayOfWeekList', choices=dayOfWeekList)
     hour = IntegerField(label='hour',validators= [NumberRange(min=0, max=59, message='hour: must be between 0 and 23.')])

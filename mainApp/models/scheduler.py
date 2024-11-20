@@ -2,13 +2,11 @@ from mainApp.routes import db
 from mainApp import logger
 
 
-class FunctionScheduler(db.Model):
+class EventScheduler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    functionId = db.Column(db.String())
+    eventId = db.Column(db.String())
     trigger = db.Column(db.String())
-    schedulerID = db.Column(db.String())
-    year = db.Column(db.Integer()) #4-digit year
-    month = db.Column(db.Integer()) #(1-12)
+    schedulerId = db.Column(db.String())
     day = db.Column(db.Integer()) #(1-31)
     day_of_week = db.Column(db.String()) #mon,tue,wed,thu,fri,sat,sun
     hour = db.Column(db.Integer()) #(0-23)
@@ -16,12 +14,10 @@ class FunctionScheduler(db.Model):
     second = db.Column(db.Integer()) #(0-59)
     schedulerStatus = db.Column(db.String())
 
-    def __init__(self, functionId , trigger, schedulerID, year , month , day , day_of_week , hour , minute, second, schedulerStatus):
-        self.functionId = functionId
+    def __init__(self, eventId , trigger, schedulerId , day , day_of_week , hour , minute, second, schedulerStatus):
+        self.eventId = eventId
         self.trigger = trigger
-        self.schedulerID = schedulerID
-        self.year = year
-        self.month = month
+        self.schedulerId = schedulerId
         self.day = day
         self.day_of_week = day_of_week
         self.hour = hour
@@ -29,78 +25,81 @@ class FunctionScheduler(db.Model):
         self.second = second
         self.schedulerStatus = schedulerStatus
 
-class FunctionSchedulerLister():
-    def __init__(self):
-        try:
-            self.functionScheduler = FunctionScheduler.query.all()
-        except Exception as e:
-            logger.error(f"An error occurred while fetching FunctionScheduler: {e}")
-            self.functionScheduler = []
+class EventSchedulerLister():
+    def __init__(self, schedulerStatus = "All"):
+        if schedulerStatus == "All":
+            try:
+                self.EventScheduler = EventScheduler.query.all()
+            except Exception as e:
+                logger.error(f"An error occurred while fetching EventScheduler: {e}")
+                self.EventScheduler = []
+        elif schedulerStatus == "Ready":
+            try:
+                self.EventScheduler = EventScheduler.query.filter(EventScheduler.schedulerStatus=="Ready").all()
+            except Exception as e:
+                logger.error(f"An error occurred while fetching EventScheduler: {e}")
+                self.EventScheduler = []
     def get_list(self):
-        return self.functionScheduler
-    
+        return self.EventScheduler
 
-class FunctionSchedulereAdder():
-    def __init__(self, formData: dict, schedulerID):
-        self.message = 'FunctionScheduler added'
-        logger.info("Adding FunctionScheduler to DB")
+class EventSchedulerAdder():
+    def __init__(self, formData: dict, schedulerId):
+        self.message = 'EventScheduler added'
+        logger.info("Adding EventScheduler to DB")
 
         try:
-            functionId = formData["functionId"][0]
+            eventId = formData["eventId"][0]
             trigger = formData["trigger"][0]
-            schedulerID = schedulerID
-            year = formData["year"][0]
-            month = formData["month"][0]
+            schedulerId = schedulerId
             day = formData["day"][0]
             day_of_week = formData["day_of_week"][0]
             hour = formData["hour"][0]
             minute = formData["minute"][0]
             second = formData["second"][0]
             schedulerStatus = formData["schedulerStatus"][0]
-            scheduler_to_add = FunctionScheduler(functionId=functionId, trigger=trigger, schedulerID=schedulerID, year=year, month=month,
-                                             day=day, day_of_week=day_of_week, hour=hour, minute=minute, second=second, schedulerStatus=schedulerStatus)
+            scheduler_to_add = EventScheduler(eventId=eventId, trigger=trigger, schedulerId=schedulerId, day=day, day_of_week=day_of_week, hour=hour, minute=minute, second=second, schedulerStatus=schedulerStatus)
             db.session.add(scheduler_to_add)
             db.session.commit()
         except Exception as e:
             logger.error(f"An error occurred: {e}")
-            self.message = "Error: FunctionScheduler could not be added"
+            self.message = "Error: EventScheduler could not be added"
     def __str__(self) -> str:
         return self.message
     
 
-class FunctionSchedulereManager:
+class EventSchedulereManager:
     def __init__(self, id):
         self.id = id
         self.message = ""
-        self.functionScheduler = FunctionScheduler.query.filter_by(id=self.id).first()
+        self.EventScheduler = EventScheduler.query.filter_by(id=self.id).first()
 
     def remove_function_scheduler(self):
-        if self.functionScheduler:
-            FunctionScheduler.query.filter(FunctionScheduler.id == self.id).delete()
+        if self.EventScheduler:
+            EventScheduler.query.filter(EventScheduler.id == self.id).delete()
             db.session.commit()
-            logger.info(f'functionScheduler with ID {self.id} removed')
-            self.message = f'functionScheduler with ID {self.id} removed'
+            logger.info(f'EventScheduler with ID {self.id} removed')
+            self.message = f'EventScheduler with ID {self.id} removed'
         else:
-            logger.error(f'functionScheduler with ID {self.id} does not exist')
-            self.message = f'functionScheduler with ID {self.id} does not exist'
+            logger.error(f'EventScheduler with ID {self.id} does not exist')
+            self.message = f'EventScheduler with ID {self.id} does not exist'
     
     def change_status(self):
         if self.device:
-            if self.functionScheduler.schedulerStatus == "Ready":
-                self.functionScheduler.schedulerStatus = "Not ready"
-                self.message = "functionScheduler status changed to: Not ready"
-                logger.info(f'functionScheduler with ID {self.id} status changed')
-            elif self.functionScheduler.schedulerStatus == "Not ready":
-                self.functionScheduler.schedulerStatus = "Ready"
-                logger.info(f'functionScheduler with ID {self.id} status changed')
-                self.message = "functionScheduler status changed to: Ready"
+            if self.EventScheduler.schedulerStatus == "Ready":
+                self.EventScheduler.schedulerStatus = "Not ready"
+                self.message = "EventScheduler status changed to: Not ready"
+                logger.info(f'EventScheduler with ID {self.id} status changed')
+            elif self.EventScheduler.schedulerStatus == "Not ready":
+                self.EventScheduler.schedulerStatus = "Ready"
+                logger.info(f'EventScheduler with ID {self.id} status changed')
+                self.message = "EventScheduler status changed to: Ready"
             else:
-                logger.info(f'functionScheduler with ID {self.id} status error')
+                logger.info(f'EventScheduler with ID {self.id} status error')
                 self.message = "Status error!"
             db.session.commit()
         else:
-            logger.error(f'functionScheduler with ID {self.id} does not exist')
-            self.message = f'functionScheduler with ID {self.id} does not exist'
+            logger.error(f'EventScheduler with ID {self.id} does not exist')
+            self.message = f'EventScheduler with ID {self.id} does not exist'
     
     def __str__(self) -> str:
         return self.message

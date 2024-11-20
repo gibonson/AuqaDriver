@@ -11,11 +11,10 @@ from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
-from mainApp.forms.add_archive_report_package import AddArchiveReportFunction
 from mainApp.forms.add_archive_ignore import AddArchiveIgnore
 from mainApp.forms.add_device import AddDevice
-from mainApp.forms.add_event import AddEvent
-from mainApp.forms.add_scheduler import AddFunctionScheduler
+from mainApp.forms.add_event import AddEventLink, AddEventReport
+from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
@@ -23,12 +22,11 @@ from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
 from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
-from mainApp.models.archive_report_package import  ArchiveFunctionsLister, ArchiveFunctionsAdder
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager
-from mainApp.models.event import  DeviceFunctionAdder, DeviceFunctionsLister, DeviceFunctionsManager
+from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
-from mainApp.models.scheduler import FunctionScheduler, FunctionSchedulerLister, FunctionSchedulereAdder, FunctionSchedulereManager
+from mainApp.models.scheduler import EventScheduler, EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
 from mainApp.report_operations import ReportCreator
 from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
@@ -105,13 +103,22 @@ def change_device_status(id):
 
 @app.route("/event_list", methods=['POST', 'GET'])
 def event_list():
-    AddEvent.deviceIdListUpdate()
-    form = AddEvent()
-    if validate_and_log_form(form):
-        DeviceFunctionAdder(request.form.to_dict(flat=False))
+    AddEventLink.deviceIdListUpdate()
+    formLink = AddEventLink()
+    AddEventReport.reportIdListUpdate()
+    formReport = AddEventReport()
+    print(request.form)
+    if request.form.get("eventType") == "Link":
+        print("validajca formLink")
+        if validate_and_log_form(formLink):
+            EventAdder(request.form.to_dict(flat=False))
+    if request.form.get("eventType") == "Report":
+        print("validajca formReport")
+        if validate_and_log_form(formReport):
+            EventAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
-    events = DeviceFunctionsLister().get_list()
-    return render_template_with_addons("eventList.html", Events=events, devices=devices, form=form)
+    events = EventLister().get_list()
+    return render_template_with_addons("eventList.html", Events=events, devices=devices, formLink=formLink, formReport=formReport)
 
 @app.route("/event_list_link_creator/<id>")
 def event_list_link_creator(id):
@@ -129,14 +136,14 @@ def event_list_web_content_collector(id):
 
 @app.route("/device_functions_remove/<id>")
 def device_functions_remove(id):
-    manager = DeviceFunctionsManager(id)
-    manager.remove_device_function()
+    manager = EventManager(id)
+    manager.remove_event()
     flash(str(manager), category='danger')
     return redirect(url_for("event_list"))
 
 @app.route("/change_device_functions_status/<id>")
 def change_device_functions_status(id):
-    manager = DeviceFunctionsManager(id)
+    manager = EventManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("event_list"))
@@ -148,23 +155,15 @@ def change_device_functions_status(id):
 
 @app.route("/scheduler_list", methods=['POST', 'GET'])
 def scheduler_list():
-    AddFunctionScheduler.functionIdListUpdate()
-    form = AddFunctionScheduler()
-    if validate_and_log_form(form):
-        schedulerID = str(form.functionId.data) + str(form.trigger.data) + str(form.year.data) + str(
-            form.month.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)
-        schedulerID = schedulerID.replace("None", "-")
-        number = FunctionScheduler.query.filter_by(schedulerID=schedulerID).first()
-        if number:
-            flash(form.schedulerID.data +
-                  " record exists in the DB", category='warning')
-            return redirect(url_for("scheduler_list"))
-        FunctionSchedulereAdder(request.form.to_dict(flat=False), schedulerID)
-    devices = DeviceLister().get_list()
-    Event = DeviceFunctionsLister().get_list()
-    functionsScheduler = FunctionSchedulerLister().get_list()
-    archiveFunctions = ArchiveFunctionsLister().get_list()
-    return render_template_with_addons("schedulerList.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, archiveFunctions=archiveFunctions, form=form, startswith=str.startswith, int=int)
+    AddEventScheduler.eventIdListUpdate()
+    form = AddEventScheduler()
+    if validate_and_log_form(form=form):
+        schedulerId = (str(form.eventId.data) + str(form.trigger.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
+        EventSchedulerAdder(request.form.to_dict(flat=False), schedulerId)
+    device = DeviceLister().get_list()
+    event = EventLister().get_list()
+    eventSchedulerList = EventSchedulerLister().get_list()
+    return render_template_with_addons("schedulerList.html", eventSchedulerList=eventSchedulerList, event=event, device=device, form=form, startswith=str.startswith, int=int)
 
 
 # -----------------------------------------
@@ -182,13 +181,13 @@ def get_jobs():
 @app.route("/functions_scheduler_list_get_jobs")
 def functions_scheduler_list_get_jobs():
     devices = DeviceLister().get_list()
-    Event = DeviceFunctionsLister().get_list()
-    functionsScheduler = FunctionSchedulerLister().get_list()
+    Event = EventLister().get_list()
+    functionsScheduler = EventSchedulerLister().get_list()
     return render_template_with_addons("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
-    message = FunctionSchedulereManager(id)
+    message = EventSchedulereManager(id)
     message.remove_function_scheduler()
     flash(str(message), category='danger')
     return redirect(url_for("get_jobs"))
@@ -208,11 +207,11 @@ def remove_job(id):
     sched.remove_job(id)
     return redirect(url_for("get_jobs"))
 
-@app.route("/start_job/<runSchedulerID>")
-def start_job(runSchedulerID):
+@app.route("/start_job/<runschedulerId>")
+def start_job(runschedulerId):
     if sched.state == 0:
         sched.start()
-    sched_start(sched, runSchedulerID)
+    sched_start(sched, runschedulerId)
     return redirect(url_for("get_jobs"))
 
 
@@ -311,20 +310,6 @@ def get_report(id):
 def get_report_all():
     report = ReportCreator().create_all()
     return render_template_with_addons("archiveReportListAll.html", report=report)
-
-
-# -----------------------------------------
-# report functions section
-# -----------------------------------------
-
-@app.route("/report_functions_list", methods=['POST', 'GET'])
-def report_functions_list():
-    AddArchiveReportFunction.add_archive_report_function_lists_update()
-    form = AddArchiveReportFunction()
-    if validate_and_log_form(form):
-        ArchiveFunctionsAdder(request.form.to_dict(flat=False))
-    archiveFunctionsList = ArchiveFunctionsLister().get_list()
-    return render_template_with_addons("archiveReportPackageList.html", archiveFunctionsList=archiveFunctionsList, form=form, datetime=datetime)
 
 
 # -----------------------------------------
