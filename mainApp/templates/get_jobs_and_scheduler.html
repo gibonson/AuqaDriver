@@ -22,26 +22,8 @@ functionsScheduler
         <tr>
 
             <td>{{EventScheduler.schedulerId}}</td>
-            {% set my_string = EventScheduler.functionId %}
-            {% if my_string[0] == 'S' %}
-            <td> Pierwszy znak to 'S'.</td>
-            {% elif my_string[0] == 'R' %}
-            <td>Raport</td>
             <td>-</td>
-            {% else %}
-            <td>{{devices[Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
-                ''))-1].deviceId-1].deviceIP}} -
-                {{devices[Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
-                ''))-1].deviceId-1].deviceName}}</td>
-            {% if Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
-            ''))-1].eventLink == "" %}
             <td>-</td>
-            {% else %}
-            <td>{{Event[int(str(EventScheduler.functionId).replace('S', '').replace('R',
-                ''))-1].eventLink}}</td>
-            {% endif %}
-            {% endif %}
-
             <td>{{EventScheduler.trigger}}[{{EventScheduler.year}}:{{EventScheduler.month}}:{{EventScheduler.day}}-{{EventScheduler.day_of_week}}-{{EventScheduler.hour}}:{{EventScheduler.minute}}:{{EventScheduler.second}}]
             </td>
 

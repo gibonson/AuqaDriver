@@ -115,6 +115,14 @@ Scheduler List
         <td>{{eventScheduler.id}}</td>
         <td>{{eventScheduler.eventId}}</td>
         <td>{{event[int(eventScheduler.eventId)-1].eventType}} - {{event[int(eventScheduler.eventId)-1].eventDescription}}</td>
+        <td>{{event[int(eventScheduler.eventId)-1].eventLink}} - {{event[int(eventScheduler.eventId)-1].reportIds}}</td>
+        <td>
+            {% if event[int(eventScheduler.eventId)-1].deviceId == 0%}
+            SERVER
+            {% else %}
+            {{ device[int(event[int(eventScheduler.eventId)-1].deviceId)-1].deviceIP }}
+            {% endif %}
+        </td>
         <td>{{eventScheduler.trigger}}</td>
         <td>{{eventScheduler.schedulerId}}</td>
         <td>[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]</td>

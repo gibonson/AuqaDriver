@@ -30,7 +30,7 @@ class ConnectionStatus:
             for device in devices:
                 counterNOK = Archive.query.filter(
                     Archive.deviceIP == device.deviceIP,
-                    Archive.addInfo == "Connection error",
+                    Archive.type == "Error",
                     Archive.timestamp >= minusOneDayDate,
                     Archive.timestamp <= currentDate).count()
                 counterAll = Archive.query.filter(

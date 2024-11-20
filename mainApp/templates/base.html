@@ -101,7 +101,12 @@
                            {{deviceStatus.successRate}}% </a></li>
                      {% else %}
                      <li><a class="btn btn-danger m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
-                           {{deviceStatus.successRate}}% </a></li>
+                        {% if deviceStatus.successRate == -1 %}
+                        No Connection
+                    {% else %}
+                        {{ deviceStatus.successRate }} %
+                    {% endif %}
+                            </a></li>
                      {% endif %}
                      {% else %}
                      <li><a class="btn btn-secondary m-1 active nav-link" href="#" role="button"> {{deviceStatus.ip}} -
@@ -134,23 +139,21 @@
                </li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_jobs')}}"><i class='fa fa-gears'></i>
                      Jobs</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('functions_scheduler_list_get_jobs')}}"><i
+               <li class="nav-item"><a class="nav-link" href="{{url_for('get_jobs_and_scheduler')}}"><i
                         class='fa fa-gears'></i> Jobs and Scheduler</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('archive_search')}}"><i
                         class='fa fa-search'></i> Archive Search</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('email_send')}}"><i class='fa fa-envelope'></i>
                      Email Send</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('dashboard')}}"><i
+               <li class="nav-item"><a class="nav-link" href="{{url_for('get_dashboard')}}"><i
                         class='fa fa-info-circle'></i>
                      Dashboard</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_report_all')}}"><i class='fa fa-table'></i>
                      Get Report All</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('charts')}}"><i class='fa fa-line-chart'></i>
                      Charts</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('manually_add_to_archive')}}"><i
+               <li class="nav-item"><a class="nav-link" href="{{url_for('archive_add_manually')}}"><i
                         class='fa fa-hand-spock-o'></i> Add Manually</a></li>
-
-
             </ul>
          </div>
       </div>

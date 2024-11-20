@@ -80,7 +80,7 @@ def device_list():
     if validate_and_log_form(form):
         DeviceAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
-    return render_template_with_addons("deviceList.html", devices=devices, form=form)
+    return render_template_with_addons("device_list.html", devices=devices, form=form)
 
 @app.route("/device_remove/<id>")
 def device_remove(id):
@@ -89,8 +89,8 @@ def device_remove(id):
     flash_message(str(manager), category='success')
     return redirect(url_for("device_list"))
 
-@app.route("/change_device_status/<id>")
-def change_device_status(id):
+@app.route("/device_change_status/<id>")
+def device_change_status(id):
     manager = DeviceManager(id)
     manager.change_status()
     flash_message(str(manager), category='success')
@@ -109,40 +109,38 @@ def event_list():
     formReport = AddEventReport()
     print(request.form)
     if request.form.get("eventType") == "Link":
-        print("validajca formLink")
         if validate_and_log_form(formLink):
             EventAdder(request.form.to_dict(flat=False))
     if request.form.get("eventType") == "Report":
-        print("validajca formReport")
         if validate_and_log_form(formReport):
             EventAdder(request.form.to_dict(flat=False))
     devices = DeviceLister().get_list()
     events = EventLister().get_list()
-    return render_template_with_addons("eventList.html", Events=events, devices=devices, formLink=formLink, formReport=formReport)
+    return render_template_with_addons("event_list.html", Events=events, devices=devices, formLink=formLink, formReport=formReport)
 
-@app.route("/event_list_link_creator/<id>")
-def event_list_link_creator(id):
+@app.route("/event_link_creator/<id>")
+def event_link_creator(id):
     linkCreator = LinkCreator(id).functions_list_link_creator()
     flash(Markup('<a href="' + linkCreator + '">' +
           linkCreator + '</a>'), category='success')
     return redirect(url_for("event_list"))
 
-@app.route("/event_list_web_content_collector/<id>")
-def event_list_web_content_collector(id):
+@app.route("/event_web_content_collector/<id>")
+def event_web_content_collector(id):
     WebContentCollector(LinkCreator(
         id).functions_list_link_creator()).collect()
     flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
 
-@app.route("/device_functions_remove/<id>")
-def device_functions_remove(id):
+@app.route("/event_remove/<id>")
+def event_remove(id):
     manager = EventManager(id)
     manager.remove_event()
     flash(str(manager), category='danger')
     return redirect(url_for("event_list"))
 
-@app.route("/change_device_functions_status/<id>")
-def change_device_functions_status(id):
+@app.route("/event_change_status/<id>")
+def event_change_status(id):
     manager = EventManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
@@ -163,7 +161,7 @@ def scheduler_list():
     device = DeviceLister().get_list()
     event = EventLister().get_list()
     eventSchedulerList = EventSchedulerLister().get_list()
-    return render_template_with_addons("schedulerList.html", eventSchedulerList=eventSchedulerList, event=event, device=device, form=form, startswith=str.startswith, int=int)
+    return render_template_with_addons("scheduler_list.html", eventSchedulerList=eventSchedulerList, event=event, device=device, form=form, startswith=str.startswith, int=int)
 
 
 # -----------------------------------------
@@ -176,14 +174,14 @@ def get_jobs():
     for job in sched.get_jobs():
         logger.info("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
                     str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
-    return render_template_with_addons('getJobs.html', get_jobs=sched.get_jobs())
+    return render_template_with_addons('get_jobs.html', get_jobs=sched.get_jobs())
 
-@app.route("/functions_scheduler_list_get_jobs")
-def functions_scheduler_list_get_jobs():
+@app.route("/get_jobs_and_scheduler")
+def get_jobs_and_scheduler():
     devices = DeviceLister().get_list()
     Event = EventLister().get_list()
     functionsScheduler = EventSchedulerLister().get_list()
-    return render_template_with_addons("SchedulerListWithJobs.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
+    return render_template_with_addons("get_jobs_and_scheduler.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
@@ -255,7 +253,7 @@ def archive_search():
             Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
             Archive.type.in_(type)
         ).order_by(Archive.id.desc()).limit(form.limit.data)
-    return render_template_with_addons("archiveSearch.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
+    return render_template_with_addons("archive_search.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 @app.route("/archive_remove/<id>")
@@ -271,7 +269,7 @@ def archive_ignore():
     if validate_and_log_form(form):
         ArchiveIgoneAdder(request.form.to_dict(flat=False))
     archiveIgoneLister = ArchiveIgoneLister().get_list()
-    return render_template_with_addons("archiveIgnore.html", archiveIgoneLister=archiveIgoneLister, form=form)
+    return render_template_with_addons("archive_ignore.html", archiveIgoneLister=archiveIgoneLister, form=form)
 
 @app.route("/archive_ignore_remove/<id>")
 def archive_ignore_remove(id):
@@ -280,8 +278,8 @@ def archive_ignore_remove(id):
     flash(str(manager), category='danger')
     return redirect(url_for("archive_ignore"))
 
-@app.route("/change_archive_ignore_status/<id>")
-def change_archive_ignore_status(id):
+@app.route("/archive_ignore_change_status/<id>")
+def archive_ignore_change_status(id):
     manager = ArchiveIgnoreManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
@@ -299,7 +297,7 @@ def report_list():
     if validate_and_log_form(form):
         ArchiveReporAdder(request.form.to_dict(flat=False))
     archiveReportList = ArchiveReportLister().get_list()
-    return render_template_with_addons("archiveReportList.html", archiveReportList=archiveReportList, form=form)
+    return render_template_with_addons("report_list.html", archiveReportList=archiveReportList, form=form)
 
 @app.route("/get_report/<id>")
 def get_report(id):
@@ -309,30 +307,48 @@ def get_report(id):
 @app.route("/get_report_all")
 def get_report_all():
     report = ReportCreator().create_all()
-    return render_template_with_addons("archiveReportListAll.html", report=report)
+    return render_template_with_addons("get_report_all.html", report=report)
 
 
 # -----------------------------------------
 # email sender
 # -----------------------------------------
 
-@app.route('/emailSend', methods=['POST', 'GET'])
+@app.route('/email_send', methods=['POST', 'GET'])
 def email_send():
     form = EmailSend()
     if validate_and_log_form(form):
         emailSender(form.subject.data, form.message.data, flashMessage=True)
-    return render_template_with_addons("emailSend.html", form=form)
+    return render_template_with_addons("email_send.html", form=form)
 
 
 # -----------------------------------------
 # DB Dashboard
 # -----------------------------------------
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/get_dashboard')
+def get_dashboard():
     dbSizeKB = DashboardData().getDbSizeKB()
     sqlTable = DashboardData().getSqlTable()
-    return render_template_with_addons("dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
+    return render_template_with_addons("get_dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
+
+
+# -----------------------------------------
+# charts
+# -----------------------------------------
+
+@app.route("/charts", methods=['POST', 'GET'])
+def charts():
+    ChartsSearch.archive_search_lists_update()
+    form = ChartsSearch()
+    currentDate = datetime.now()
+    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
+    minusOneDayDate = datetime.now() - timedelta(days=1)
+    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
+    chart = Table(delta=10, type="%")
+    chart.reportGenerator()
+    final_chart = chart.get_final_results()
+    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 # -----------------------------------------
@@ -381,7 +397,7 @@ def notification_list():
     if validate_and_log_form(form):
         NotificationAdder(request.form.to_dict(flat=False))
     notificationList = NotificationLister().get_list()
-    return render_template_with_addons("notificationList.html", notificationList=notificationList, form=form, datetime=datetime)
+    return render_template_with_addons("notification_list.html", notificationList=notificationList, form=form, datetime=datetime)
 
 @app.route("/change_notification_status/<id>")
 def change_notification_status(id):
@@ -397,31 +413,12 @@ def remove_notification(id):
     flash(str(manager), category='danger')
     return redirect(url_for("notification_list"))
 
-
-# -----------------------------------------
-# charts
-# -----------------------------------------
-
-@app.route("/charts", methods=['POST', 'GET'])
-def charts():
-    ChartsSearch.archive_search_lists_update()
-    form = ChartsSearch()
-    currentDate = datetime.now()
-    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
-    minusOneDayDate = datetime.now() - timedelta(days=1)
-    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
-    chart = Table(delta=10, type="%")
-    chart.reportGenerator()
-    final_chart = chart.get_final_results()
-    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
-
-
 # -----------------------------------------
 # manually adding to archive
 # -----------------------------------------
 
-@app.route("/manually_add_to_archive", methods=['POST', 'GET'])
-def manually_add_to_archive():
+@app.route("/archive_add_manually", methods=['POST', 'GET'])
+def archive_add_manually():
     AddArchiveManualRecord.deviceListUpdate()
     form = AddArchiveManualRecord()
     if validate_and_log_form(form):
@@ -430,4 +427,4 @@ def manually_add_to_archive():
         requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRawList[0],
                        'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
         ResponseTrigger(requestData=requestData)
-    return render_template_with_addons("archiveAddManually.html", form=form)
+    return render_template_with_addons("archive_add_manually.html", form=form)

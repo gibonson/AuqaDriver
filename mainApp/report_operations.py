@@ -156,14 +156,15 @@ class ReportCreator:
         return table_row
         
 class ReportSender:
-    def __init__(self, functionId):
-        self.functionId = str(functionId).replace("R","")
+    def __init__(self, reportIds):
+        self.reportIds = str(reportIds)
 
     def collect_and_send(self):
         with app.app_context():
-            event = Event.query.filter_by(id=self.functionId).first()
-            logger.debug("Report ids to schow: " + event.archiveReportIds)
-            archive_report_id_list = event.archiveReportIds.replace("[","").replace("]","").replace(" ","").replace("'","").split(',')
+            event = Event.query.filter_by(id=self.reportIds).first()
+            logger.debug("Report ids to schow: " + event.reportIds)
+            archive_report_id_list = event.reportIds.replace("[","").replace("]","").replace(" ","").replace("'","").split(',')
             reportCreator = ReportCreator()
             report = reportCreator.create_from_list(archive_report_id_list=archive_report_id_list)
-            emailSender( "raport", report)
+            # logger.debug(f"Message to sent: {report}")
+            # emailSender( "raport", report)

@@ -139,13 +139,13 @@ Event List
             <td>{{event.eventStatus}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('device_functions_remove', id = event.id)}}"
+                    <a href="{{url_for('event_remove', id = event.id)}}"
                         class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
-                    <a href="{{url_for('change_device_functions_status', id = event.id)}}"
+                    <a href="{{url_for('event_change_status', id = event.id)}}"
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
-                    <a href="{{url_for('event_list_link_creator', id = event.id)}}"
+                    <a href="{{url_for('event_link_creator', id = event.id)}}"
                         class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
-                    <a href="{{url_for('event_list_web_content_collector', id = event.id)}}"
+                    <a href="{{url_for('event_web_content_collector', id = event.id)}}"
                         class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
                 </div>
             </td>
