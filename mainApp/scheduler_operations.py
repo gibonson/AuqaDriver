@@ -42,7 +42,6 @@ def sched_start(sched, schedulerIdToRun = None):
             http_link =  linkCreator.functions_list_link_creator()
             logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
 
-
         trigger = eventScheduler.trigger
         day = eventScheduler.day
         day_of_week = eventScheduler.day_of_week

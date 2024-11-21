@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Scheduler List
+AquaDriver - Scheduler List
 {% endblock %}
 {% block content %}
 <h1>Scheduler List</h1>
@@ -102,10 +102,8 @@ Scheduler List
 <table class="table table-striped table-dark" style="width: 100%">
     <tr>
         <th>#</th>
-        <th>Event</br>ID</th>
-        <th>Event</br>Details</th>
-        <th>Scheduler</br>Trigger</th>
         <th>Scheduler</br>Id</th>
+        <th>Details</th>
         <th>DB Trigger</br>[D-day-H:M:S]</th>
         <th>Scheduler</br>Status</th>
         <th>Action</th>
@@ -113,24 +111,31 @@ Scheduler List
     {% for eventScheduler in eventSchedulerList %}
     <tr>
         <td>{{eventScheduler.id}}</td>
-        <td>{{eventScheduler.eventId}}</td>
-        <td>{{event[int(eventScheduler.eventId)-1].eventType}} - {{event[int(eventScheduler.eventId)-1].eventDescription}}</td>
-        <td>{{event[int(eventScheduler.eventId)-1].eventLink}} - {{event[int(eventScheduler.eventId)-1].reportIds}}</td>
-        <td>
-            {% if event[int(eventScheduler.eventId)-1].deviceId == 0%}
-            SERVER
-            {% else %}
-            {{ device[int(event[int(eventScheduler.eventId)-1].deviceId)-1].deviceIP }}
-            {% endif %}
-        </td>
-        <td>{{eventScheduler.trigger}}</td>
         <td>{{eventScheduler.schedulerId}}</td>
-        <td>[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]</td>
+        {% if event[int(eventScheduler.eventId)-1].eventType == "Report" %}
+        <td>{{event[int(eventScheduler.eventId)-1].eventType}}
+            <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
+                title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
+            {{event[int(eventScheduler.eventId)-1].reportIds}}
+
+        </td>
+        {% elif event[int(eventScheduler.eventId)-1].eventType == "Link" %}
+        <td>{{event[int(eventScheduler.eventId)-1].eventType}}
+            <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
+                title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
+            {{device[int(event[int(eventScheduler.eventId)-1].deviceId)-1].deviceIP}}{{event[int(eventScheduler.eventId)-1].eventLink}}
+
+        </td>
+        {% endif %}
+        <td>{{eventScheduler.trigger}}[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
+        </td>
         <td>{{eventScheduler.schedulerStatus}}</td>
         <td>
             <div class="btn-group">
-                <a href="{{url_for('scheduler_remove', id = eventScheduler.id)}}"
-                    class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
+                <a href="{{url_for('scheduler_remove', id = eventScheduler.id)}}" class="btn btn-danger btn-lg active"
+                    role="button" aria-pressed="true">Remove</a>
+                <a href="{{url_for('scheduler_change_status', id = eventScheduler.id)}}" class="btn btn-warning btn-lg active"
+                    role="button" aria-pressed="true">Change Status</a>
             </div>
         </td>
     </tr>

@@ -20,15 +20,14 @@ from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.forms.charts_search import ChartsSearch
-from mainApp.models.archive import Archive, ArchiveAdder, ArchiveLister, ArchiveManager
+from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
 from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager
 from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
-from mainApp.models.scheduler import EventScheduler, EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
+from mainApp.models.scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
 from mainApp.report_operations import ReportCreator
-from mainApp.notification_operations import NotificationTrigger
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp.charts import Table
@@ -163,6 +162,20 @@ def scheduler_list():
     eventSchedulerList = EventSchedulerLister().get_list()
     return render_template_with_addons("scheduler_list.html", eventSchedulerList=eventSchedulerList, event=event, device=device, form=form, startswith=str.startswith, int=int)
 
+@app.route("/scheduler_remove/<id>")
+def scheduler_remove(id):
+    message = EventSchedulereManager(id)
+    message.remove_function_scheduler()
+    flash(str(message), category='warning')
+    return redirect(url_for("scheduler_list"))
+
+@app.route("/scheduler_change_status/<id>")
+def scheduler_change_status(id):
+    manager = EventSchedulereManager(id)
+    manager.change_status()
+    flash(str(manager), category='warning')
+    return redirect(url_for("scheduler_list"))
+
 
 # -----------------------------------------
 # job section
@@ -182,13 +195,6 @@ def get_jobs_and_scheduler():
     Event = EventLister().get_list()
     functionsScheduler = EventSchedulerLister().get_list()
     return render_template_with_addons("get_jobs_and_scheduler.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
-
-@app.route("/scheduler_remove/<id>")
-def scheduler_remove(id):
-    message = EventSchedulereManager(id)
-    message.remove_function_scheduler()
-    flash(str(message), category='danger')
-    return redirect(url_for("get_jobs"))
 
 @app.route("/pause_job/<id>")
 def pause_job(id):
@@ -214,6 +220,24 @@ def start_job(runschedulerId):
 
 
 # -----------------------------------------
+# charts
+# -----------------------------------------
+
+@app.route("/charts", methods=['POST', 'GET'])
+def charts():
+    ChartsSearch.archive_search_lists_update()
+    form = ChartsSearch()
+    currentDate = datetime.now()
+    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
+    minusOneDayDate = datetime.now() - timedelta(days=1)
+    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
+    chart = Table(delta=10, type="%")
+    chart.reportGenerator()
+    final_chart = chart.get_final_results()
+    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
+
+
+# -----------------------------------------
 # archive section
 # -----------------------------------------
 
@@ -222,39 +246,16 @@ def archive_search():
     ArchiveSearch.archive_search_lists_update()
     form = ArchiveSearch()
     archive = ArchiveLister().get_list()
-    currentDate = datetime.now()
-    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
-    minusOneDayDate = datetime.now() - timedelta(days=1)
-    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
-
+    searchEndDate = datetime.now()
+    searchStartDate = datetime.now() - timedelta(days=1)
+    formatSearchEndDate = searchEndDate.strftime("%Y-%m-%d %H:%M")
+    formatSearchStartDate = searchStartDate.strftime("%Y-%m-%d %H:%M")
     if form.validate_on_submit():
-        logger.debug(str(request.form.to_dict(flat=False)))
-        logger.debug("date time to timestampStart: " + str(datetime.timestamp(form.timestampStart.data)))
-        logger.debug("date time to timestampEnd: " + str(datetime.timestamp(form.timestampEnd.data)))
-        logger.debug("recordType:" + str(form.recordType.data))
-
-        recordTypes = form.recordType.data
-        deviceIP = []
-        deviceName = []
-        addInfo = []
-        type = []
-        for recordType in recordTypes:
-            recordTypeList = recordType.split(" -> ")
-            deviceIP.append(recordTypeList[0])
-            deviceName.append(recordTypeList[1])
-            addInfo.append(recordTypeList[2])
-            type.append(recordTypeList[3])
-
-        archive = Archive.query.filter(
-            Archive.deviceIP.in_(deviceIP),
-            Archive.addInfo.in_(addInfo),
-            Archive.deviceName.in_(deviceName),
-            Archive.timestamp >= datetime.timestamp(form.timestampStart.data),
-            Archive.timestamp <= datetime.timestamp(form.timestampEnd.data),
-            Archive.type.in_(type)
-        ).order_by(Archive.id.desc()).limit(form.limit.data)
-    return render_template_with_addons("archive_search.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
-
+        formatSearchStartDate = form.timestampStart.data
+        formatSearchEndDate = form.timestampEnd.data
+        archiveSearch = ArchiveSearchList(request.form.to_dict(flat=False))
+        archive = archiveSearch.get_list()
+    return render_template_with_addons("archive_search.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatSearchStartDate, formatedCurrentDate=formatSearchEndDate)
 
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
@@ -263,27 +264,27 @@ def archive_remove(id):
     flash(str(manager), category='danger')
     return redirect(url_for("archive_search"))
 
-@app.route("/archive_ignore", methods=['POST','GET'])
-def archive_ignore():
+@app.route("/ignore_list", methods=['POST','GET'])
+def ignore_list():
     form = AddArchiveIgnore()
     if validate_and_log_form(form):
         ArchiveIgoneAdder(request.form.to_dict(flat=False))
     archiveIgoneLister = ArchiveIgoneLister().get_list()
-    return render_template_with_addons("archive_ignore.html", archiveIgoneLister=archiveIgoneLister, form=form)
+    return render_template_with_addons("ignore_list.html", archiveIgoneLister=archiveIgoneLister, form=form)
 
-@app.route("/archive_ignore_remove/<id>")
-def archive_ignore_remove(id):
+@app.route("/ignore_remove/<id>")
+def ignore_remove(id):
     manager = ArchiveIgnoreManager(id)
     manager.remove()
     flash(str(manager), category='danger')
-    return redirect(url_for("archive_ignore"))
+    return redirect(url_for("ignore_list"))
 
-@app.route("/archive_ignore_change_status/<id>")
-def archive_ignore_change_status(id):
+@app.route("/ignore_change_status/<id>")
+def ignore_change_status(id):
     manager = ArchiveIgnoreManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
-    return redirect(url_for("archive_ignore"))
+    return redirect(url_for("ignore_list"))
 
 
 # -----------------------------------------
@@ -331,24 +332,6 @@ def get_dashboard():
     dbSizeKB = DashboardData().getDbSizeKB()
     sqlTable = DashboardData().getSqlTable()
     return render_template_with_addons("get_dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
-
-
-# -----------------------------------------
-# charts
-# -----------------------------------------
-
-@app.route("/charts", methods=['POST', 'GET'])
-def charts():
-    ChartsSearch.archive_search_lists_update()
-    form = ChartsSearch()
-    currentDate = datetime.now()
-    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
-    minusOneDayDate = datetime.now() - timedelta(days=1)
-    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
-    chart = Table(delta=10, type="%")
-    chart.reportGenerator()
-    final_chart = chart.get_final_results()
-    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 # -----------------------------------------

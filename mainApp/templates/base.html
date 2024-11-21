@@ -133,8 +133,8 @@
                            Report</a></li>
                      <li><a class="dropdown-item" href="{{url_for('notification_list')}}"><i class='fa fa-bell-o'></i>
                            Notification</a></li>
-                     <li><a class="dropdown-item" href="{{url_for('archive_ignore')}}"><i class="fa fa-low-vision"></i>
-                           archive_ignore</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('ignore_list')}}"><i class="fa fa-low-vision"></i>
+                           Ignore</a></li>
                   </ul>
                </li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_jobs')}}"><i class='fa fa-gears'></i>
@@ -189,6 +189,11 @@
          color: white;
       }
    </style>
+   <script>
+      // tooltip initialization
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+   </script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Event List
+AquaDriver - Event List
 {% endblock %}
 
 
@@ -143,10 +143,12 @@ Event List
                         class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
                     <a href="{{url_for('event_change_status', id = event.id)}}"
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
+                    {% if event.deviceId != 0 %}
                     <a href="{{url_for('event_link_creator', id = event.id)}}"
                         class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
                     <a href="{{url_for('event_web_content_collector', id = event.id)}}"
                         class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
+                    {% endif %}
                 </div>
             </td>
         </tr>

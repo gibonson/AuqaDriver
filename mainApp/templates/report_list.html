@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block title %}
-archiveReportList
+AquaDriver - Archive Report List
 {% endblock %}
 
 
 {% block content %}
-
+<h1>Archive Report List</h1>
 <p>
     <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
         aria-expanded="false" aria-controls="collapseExample">
-        Add Archive Report
+        Add Report
     </button>
 </p>
 <div class="collapse" id="form">
@@ -141,30 +141,24 @@ archiveReportList
             </table>
             {{ form.submit(class="btn btn-lg btn-block btn-primary w-100") }}
         </form>
-
     </div>
-</div>
-</div>
 </br>
-
-<h1>Archive Report List</h1>
+</div>
 <table class="table table-dark table-striped align-middle">
     <thead>
         <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>description</th>
-            <th>device</br>IP</th>
-            <th>device</br>Name</th>
-            <th>add</br>Info</th>
-            <th>type</th>
-            <th>avgOr</br>Sum</th>
-            <th>timerRange</br>Hours</th>
-            <th>quantity</br>Values</th>
-            <th>min</br>Value</th>
-            <th>okMin</br>Value</th>
-            <th>okMax</br>Value</th>
-            <th>max</br>Value</th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Device (IP - Name)</th>
+            <th>Additional Info - Type</th>
+            <th>Aggregation (Avg/Sum)</th>
+            <th>Time Range (Hours)</th>
+            <th>Quantity of Values</th>
+            <th>Min Value</th>
+            <th>OK Min Value</th>
+            <th>OK Max Value</th>
+            <th>Max Value</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -174,10 +168,8 @@ archiveReportList
             <td>{{archiveReporRow.id}}</td>
             <td>{{archiveReporRow.title}}</td>
             <td>{{archiveReporRow.description}}</td>
-            <td>{{archiveReporRow.deviceIP}}</td>
-            <td>{{archiveReporRow.deviceName}}</td>
-            <td>{{archiveReporRow.addInfo}}</td>
-            <td>{{archiveReporRow.type}}</td>
+            <td>{{archiveReporRow.deviceIP}} - {{archiveReporRow.deviceName}}</td>
+            <td>{{archiveReporRow.addInfo}} - {{archiveReporRow.type}}</td>
             <td>{{archiveReporRow.avgOrSum}}</td>
             <td>{{archiveReporRow.timerRangeHours}}</td>
             <td>{{archiveReporRow.quantityValues}}</td>

@@ -1,5 +1,6 @@
 from mainApp.routes import db
 from mainApp import logger
+from datetime import datetime, timedelta
 import time
 
 
@@ -30,6 +31,38 @@ class ArchiveLister():
             self.archive = []
     def get_list(self):
         return self.archive
+
+class ArchiveSearchList():
+    def __init__(self, searchedValues):
+        self.archiveSearchList = []
+        self.searchedValues = searchedValues
+
+        deviceIP = []
+        deviceName = []
+        addInfo = []
+        type = []
+        limit = searchedValues["limit"][0]
+        timestampEnd = searchedValues["timestampEnd"][0]
+        timestampStart = searchedValues["timestampStart"][0]
+        recordType = searchedValues["recordType"][0]
+
+        recordTypeList = recordType.split(" -> ")
+        deviceIP.append(recordTypeList[0])
+        deviceName.append(recordTypeList[1])
+        addInfo.append(recordTypeList[2])
+        type.append(recordTypeList[3])
+
+        self.archiveSearchList = Archive.query.filter(
+            Archive.deviceIP.in_(deviceIP),
+            Archive.addInfo.in_(addInfo),
+            Archive.deviceName.in_(deviceName),
+            Archive.timestamp >= datetime.strptime(timestampStart, "%Y-%m-%dT%H:%M").timestamp(),
+            Archive.timestamp <= datetime.strptime(timestampEnd, "%Y-%m-%dT%H:%M").timestamp(),
+            Archive.type.in_(type)
+        ).order_by(Archive.id.desc()).limit(limit)
+
+    def get_list(self):
+        return self.archiveSearchList
 
 
 class ArchiveAdder():

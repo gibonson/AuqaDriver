@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-archiveSearch
+AquaDriver - Ignore List
 {% endblock %}
 
 
@@ -107,9 +107,9 @@ archiveSearch
             <td>{{archiveIgoneValue.status}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('archive_ignore_remove',id=archiveIgoneValue.id)}}" class="btn btn-danger btn-lg active"
+                    <a href="{{url_for('ignore_remove',id=archiveIgoneValue.id)}}" class="btn btn-danger btn-lg active"
                         role="button" aria-pressed="true">Remove</a>
-                    <a href="{{url_for('archive_ignore_change_status',id=archiveIgoneValue.id)}}" class="btn btn-warning btn-lg active"
+                    <a href="{{url_for('ignore_change_status',id=archiveIgoneValue.id)}}" class="btn btn-warning btn-lg active"
                         role="button" aria-pressed="true">Change
                         Status</a>
                 </div>

@@ -84,7 +84,7 @@ class EventSchedulereManager:
             self.message = f'EventScheduler with ID {self.id} does not exist'
     
     def change_status(self):
-        if self.device:
+        if self.EventScheduler:
             if self.EventScheduler.schedulerStatus == "Ready":
                 self.EventScheduler.schedulerStatus = "Not ready"
                 self.message = "EventScheduler status changed to: Not ready"

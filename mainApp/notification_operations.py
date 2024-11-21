@@ -32,11 +32,9 @@ class NotificationTrigger:
                     else:
                         logger.debug("Wrong condition")
 
-
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             self.message = "Error: Record could not be parsed"
-        
 
 
     def handle_notification(self, readyNotification):

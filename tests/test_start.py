@@ -66,7 +66,7 @@ driver.get("http://127.0.0.1:5000/charts")
 time.sleep(testDelay)
 driver.get("http://127.0.0.1:5000/archive_add_manually")
 time.sleep(testDelay)
-driver.get("http://127.0.0.1:5000/archive_ignore")
+driver.get("http://127.0.0.1:5000/ignore_list")
 time.sleep(testDelay)
 
 
