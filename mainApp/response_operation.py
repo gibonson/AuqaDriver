@@ -16,8 +16,8 @@ class ResponseTrigger:
 
             
             if IgnoreTrigger(requestData=requestData).get_request_to_ignore() == False:
-                NotificationTrigger(requestData=requestData)
                 ArchiveAdder(requestData=requestData)
+                NotificationTrigger(requestData=requestData)
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")

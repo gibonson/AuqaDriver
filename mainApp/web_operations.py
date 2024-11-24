@@ -14,7 +14,11 @@ class LinkCreator:
         device = Device.query.get(event.deviceId)
         IP = device.deviceIP
         eventLink = event.eventLink
-        httpLink = "http://" + IP + eventLink
+        if self.eventLinkAndParameters == None:
+            parameters = ""
+        else:
+            parameters = (self.eventLinkAndParameters)
+        httpLink = "http://" + IP + eventLink + parameters
         return httpLink
 
 

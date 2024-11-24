@@ -18,6 +18,6 @@ class AddNotification(FlaskForm):
     value = IntegerField(label='value',validators= [DataRequired()])
     notificationStatus = SelectField(label='notificationStatus', choices=notificationStatusValuesList) # Ready, Not ready
     notificationType = SelectField(label='notificationType', choices=notificationTypeValuesList) # email, function
-    functionId = IntegerField(label='functionId',validators=[Optional()])
+    eventId = IntegerField(label='eventId',validators=[Optional()])
     message = StringField(label='message',validators=[Optional()])
     submit = SubmitField(label='Add Report')

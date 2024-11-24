@@ -12,10 +12,10 @@ class Notification(db.Model):
     value = db.Column(db.Integer())
     notificationStatus = db.Column(db.String())# Ready, Not ready
     notificationType = db.Column(db.String()) # email, function
-    functionId = db.Column(db.String())
+    eventId = db.Column(db.String())
     message = db.Column(db.String())
 
-    def __init__(self, description, deviceIP, deviceName, addInfo, type, condition, value, notificationStatus, notificationType, functionId, message):
+    def __init__(self, description, deviceIP, deviceName, addInfo, type, condition, value, notificationStatus, notificationType, eventId, message):
         self.description = description
         self.deviceIP = deviceIP
         self.deviceName = deviceName
@@ -25,7 +25,7 @@ class Notification(db.Model):
         self.value = value
         self.notificationStatus = notificationStatus
         self.notificationType = notificationType
-        self.functionId = functionId
+        self.eventId = eventId
         self.message = message
 
 class NotificationLister():
@@ -61,9 +61,9 @@ class NotificationAdder():
             value = formData["value"][0]
             notificationStatus = formData["notificationStatus"][0]
             notificationType = formData["notificationType"][0]
-            functionId = formData["functionId"][0]
+            eventId = formData["eventId"][0]
             message = formData["message"][0]
-            notification_to_add = Notification(description=description, deviceIP=deviceIP, deviceName=deviceName, addInfo =addInfo, type =type, condition =condition, value =value, notificationStatus =notificationStatus, notificationType =notificationType, functionId =functionId, message=message)
+            notification_to_add = Notification(description=description, deviceIP=deviceIP, deviceName=deviceName, addInfo =addInfo, type =type, condition =condition, value =value, notificationStatus =notificationStatus, notificationType =notificationType, eventId =eventId, message=message)
             db.session.add(notification_to_add)
             db.session.commit()
         except Exception as e:

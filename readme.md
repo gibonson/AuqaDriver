@@ -98,7 +98,7 @@ graph TD
 ### DOCKER
 
 - sudo docker build . -t ptapp
-- sudo docker run -v $(pwd):/usr/src/app -d --restart=always --name aquadriver -p 5000:5000 ptapp 
+- sudo docker run -v $(pwd):/usr/src/app -d --restart=always --name aquadriver -p 5000:5000 ptapp
 
 ### JSON EXAMPLE
 
@@ -112,4 +112,4 @@ graph TD
 
 ### TO DO
 
-- add API https://danepubliczne.imgw.pl/apiinfo
+- add [API](https://danepubliczne.imgw.pl/apiinfo)

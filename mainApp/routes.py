@@ -1,5 +1,6 @@
 # Standard library imports
 from datetime import datetime, timedelta
+import os
 
 # Third-party imports
 from flask import Markup, flash, jsonify, redirect, request, url_for
@@ -192,9 +193,9 @@ def get_jobs():
 @app.route("/get_jobs_and_scheduler")
 def get_jobs_and_scheduler():
     devices = DeviceLister().get_list()
-    Event = EventLister().get_list()
-    functionsScheduler = EventSchedulerLister().get_list()
-    return render_template_with_addons("get_jobs_and_scheduler.html", functionsScheduler=functionsScheduler, Event=Event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
+    event = EventLister().get_list()
+    eventSchedulerList = EventSchedulerLister().get_list()
+    return render_template_with_addons("get_jobs_and_scheduler.html", eventSchedulerList=eventSchedulerList, event=event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
 
 @app.route("/pause_job/<id>")
 def pause_job(id):
@@ -411,3 +412,25 @@ def archive_add_manually():
                        'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0]}
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
+
+# -----------------------------------------
+# get_logs
+# -----------------------------------------
+
+@app.route("/get_logs", methods=["GET"])
+def get_logs():
+    log_file_path = os.path.join("userFiles", "app.log")
+    if not os.path.exists(log_file_path):
+        flash("Log file does not exist!", category="danger")
+        return redirect(url_for("get_dashboard"))
+    try:
+        with open(log_file_path, "r") as log_file:
+            lines = log_file.readlines()
+            lines = [line.strip() for line in lines if line.strip()]
+            last_200_lines = lines[-200:] if len(lines) > 200 else lines
+            last_200_lines.reverse()
+        return render_template_with_addons("get_logs.html", log_lines=last_200_lines)
+
+    except Exception as e:
+        flash(f"Error reading log file: {str(e)}", category="danger")
+        return redirect(url_for("get_dashboard"))

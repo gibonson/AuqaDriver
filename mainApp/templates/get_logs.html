@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AquaDriver - Job Page
+{% endblock %}
+
+
+{% block content %}
+<h1>Log file</h1>
+<table>
+    <thead>
+        <tr>
+            <th class="text-nowrap" style="width: 1%;">#</th>
+            <th>Log Entry</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in log_lines %}
+            <tr>
+                <td class="text-nowrap" style="width: 1%;">{{ loop.index }}</td>
+                <td>{{ line }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -4,9 +4,8 @@
 AquaDriver - Ignore List
 {% endblock %}
 
-
 {% block content %}
-
+<h1>List Of Ignore Values</h1>
 <p>
     <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form"
         aria-expanded="false" aria-controls="collapseExample">
@@ -54,7 +53,7 @@ AquaDriver - Ignore List
                         <small class="form-text text-danger">{{ form.value.errors[0] }}</small>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td>
                         {{ form.type.label() }}
@@ -81,25 +80,24 @@ AquaDriver - Ignore List
             {{ form.submit(class="btn btn-lg btn-block btn-success w-100") }}
         </form>
     </div>
+    </br>
 </div>
-</br>
-<h1>List of ignore values</h1>
 <table class="table table-dark table-striped align-middle">
     <thead>
         <tr>
-            <th scope="col">deviceIP</th>
-            <th scope="col">deviceName</th>
-            <th scope="col">addInfo</th>
-            <th scope="col">value</th>
-            <th scope="col">type</th>
-            <th scope="col">status</th>
-            <th scope="col">actions</th>
+            <th scope="col">Device IP</th>
+            <th scope="col">Device Name</th>
+            <th scope="col">Additional Info</th>
+            <th scope="col">Value</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for archiveIgoneValue in archiveIgoneLister %}
         <tr>
-            <th>{{archiveIgoneValue.deviceIP}}</th>
+            <td>{{archiveIgoneValue.deviceIP}}</th>
             <td>{{archiveIgoneValue.deviceName}}</td>
             <td>{{archiveIgoneValue.addInfo}}</td>
             <td>{{archiveIgoneValue.value}}</td>
@@ -109,8 +107,8 @@ AquaDriver - Ignore List
                 <div class="btn-group">
                     <a href="{{url_for('ignore_remove',id=archiveIgoneValue.id)}}" class="btn btn-danger btn-lg active"
                         role="button" aria-pressed="true">Remove</a>
-                    <a href="{{url_for('ignore_change_status',id=archiveIgoneValue.id)}}" class="btn btn-warning btn-lg active"
-                        role="button" aria-pressed="true">Change
+                    <a href="{{url_for('ignore_change_status',id=archiveIgoneValue.id)}}"
+                        class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Change
                         Status</a>
                 </div>
             </td>

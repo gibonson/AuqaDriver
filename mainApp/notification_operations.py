@@ -1,5 +1,6 @@
 from mainApp.models.notification import NotificationLister
 from mainApp.email_operations import emailSender
+# from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp import logger
 import time
 
@@ -38,15 +39,24 @@ class NotificationTrigger:
 
 
     def handle_notification(self, readyNotification):
+        from mainApp.web_operations import LinkCreator, WebContentCollector
+        from mainApp.models.archive import ArchiveAdder
+
+        message = readyNotification.message
+        message = message.replace("<addInfo>",readyNotification.addInfo)
+        message = message.replace("<type>",readyNotification.type)
+        message = message.replace("<condition>",readyNotification.condition)
+        message = message.replace("<value>",str(readyNotification.value))
+        message = message.replace("<self.value>",str(self.value))
+
         if readyNotification.notificationType == "email":
             subject = "Notification: " + readyNotification.type + " for " + readyNotification.deviceName
-            message = readyNotification.message
-            message = message.replace("<addInfo>",readyNotification.addInfo)
-            message = message.replace("<type>",readyNotification.type)
-            message = message.replace("<condition>",readyNotification.condition)
-            message = message.replace("<value>",str(readyNotification.value))
-            message = message.replace("<self.value>",str(self.value))
             logger.debug("Email to send. subject: " + subject + ", and message: " + message)
+            requestData = {'addInfo': 'Automatic-> email sent', 'deviceIP': readyNotification.deviceIP, 'deviceName': readyNotification.deviceName, 'type': 'Info', 'value': '-'}
+            ArchiveAdder(requestData)
             # emailSender(subject=subject, message=message)
         elif readyNotification.notificationType == "function":
-            logger.debug("ID function to run: " + readyNotification.functionId)
+            requestData = {'addInfo': 'Automatic -> event start: ' + readyNotification.eventId , 'deviceIP': readyNotification.deviceIP, 'deviceName': readyNotification.deviceName, 'type': 'Info', 'value': '-'}
+            ArchiveAdder(requestData)
+            logger.debug("ID function to run: " + readyNotification.eventId)
+            WebContentCollector(LinkCreator(readyNotification.eventId, message).functions_list_link_creator()).collect()

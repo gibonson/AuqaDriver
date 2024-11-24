@@ -1,14 +1,12 @@
 import os
 from sqlalchemy import create_engine, text
 from mainApp.routes import app
-from mainApp import logger
 
 
 class DashboardData:
     def __init__(self):
         DBFile = os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/db.sqlite"
         self.dbSizeKB = os.path.getsize(DBFile) / 1024
-        logger.debug("current size: " + str(self.dbSizeKB) + "KB")
         engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
         with engine.connect() as conn:
                 sqlSelect = conn.execute(text(

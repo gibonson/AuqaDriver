@@ -10,26 +10,37 @@ functionsScheduler
     <table class="table table-striped table-dark" style="width: 100%">
         <tr>
             <th>Scheduler Name</th>
-            <th>IP - name</th>
-            <th>Action Link</th>
+            <th>Description</th>
             <th>DB Trigger [Y:M:D-day-H:M:S]</th>
             <th>Real Trigger</th>
             <th>Next Run</th>
             <th>Job Actions</th>
             <th>Sch Actions</th>
         </tr>
-        {% for EventScheduler in functionsScheduler %}
+        {% for eventScheduler in eventSchedulerList %}
         <tr>
 
-            <td>{{EventScheduler.schedulerId}}</td>
-            <td>-</td>
-            <td>-</td>
-            <td>{{EventScheduler.trigger}}[{{EventScheduler.year}}:{{EventScheduler.month}}:{{EventScheduler.day}}-{{EventScheduler.day_of_week}}-{{EventScheduler.hour}}:{{EventScheduler.minute}}:{{EventScheduler.second}}]
+            <td>{{eventScheduler.schedulerId}}</td>
+            {% if event[int(eventScheduler.eventId)-1].eventType == "Report" %}
+            <td>{{event[int(eventScheduler.eventId)-1].eventType}}
+                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
+                {{event[int(eventScheduler.eventId)-1].reportIds}}
+    
             </td>
-
+            {% elif event[int(eventScheduler.eventId)-1].eventType == "Link" %}
+            <td>{{event[int(eventScheduler.eventId)-1].eventType}}
+                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
+                {{devices[int(event[int(eventScheduler.eventId)-1].deviceId)-1].deviceIP}}{{event[int(eventScheduler.eventId)-1].eventLink}}
+    
+            </td>
+            {% endif %}
+            <td>{{eventScheduler.trigger}}[{{eventScheduler.year}}:{{eventScheduler.month}}:{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
+            </td>
             {% set ns = namespace(found=false) %}
             {% for job in get_jobs %}
-            {% if job.id == EventScheduler.schedulerId%}
+            {% if job.id == eventScheduler.schedulerId%}
             {% set ns.found = true %}
             <td>{{job.trigger}}</td>
             {% if job.next_run_time == None %}
@@ -54,12 +65,12 @@ functionsScheduler
             <td>-</td>
             <td>-</td>
             <td>
-                <a href="{{url_for('start_job',runschedulerId=EventScheduler.schedulerId)}}"
+                <a href="{{url_for('start_job',runschedulerId=eventScheduler.schedulerId)}}"
                     class="btn btn-success btn-lg active d-grid gap-2" role="button" aria-pressed="true">Start</a>
             </td>
             {% endif %}
             <td>
-                <a href="{{url_for('scheduler_remove',id=EventScheduler.id)}}"
+                <a href="{{url_for('scheduler_remove',id=eventScheduler.id)}}"
                     onclick="return confirm('Are you sure?')" class="btn btn-danger btn-lg active d-grid gap-2"
                     role="button" aria-pressed="true">Delete</a>
             </td>
