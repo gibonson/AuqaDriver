@@ -8,7 +8,7 @@ class AddDevice(FlaskForm):
     deviceStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready"),("Old", "Old")]
 
     def validate_deviceIP(self, deviceIP_to_check):
-        deviceIP = Devices.query.filter(Devices.deviceIP == deviceIP_to_check.data).first()
+        deviceIP = Device.query.filter(Device.deviceIP == deviceIP_to_check.data).first()
         if deviceIP:
             raise ValidationError('DevieIP already exist')
 

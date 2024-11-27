@@ -3,6 +3,7 @@ from mainApp.email_operations import emailSender
 # from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp import logger
 import time
+from datetime import datetime
 
 
 class NotificationTrigger:
@@ -48,6 +49,9 @@ class NotificationTrigger:
         message = message.replace("<condition>",readyNotification.condition)
         message = message.replace("<value>",str(readyNotification.value))
         message = message.replace("<self.value>",str(self.value))
+        message = message.replace("<date>",str(datetime.now().strftime('%Y-%m-%d')))
+        message = message.replace("<time>",str(datetime.now().strftime('%H:%M:%S')))
+
 
         if readyNotification.notificationType == "email":
             subject = "Notification: " + readyNotification.type + " for " + readyNotification.deviceName

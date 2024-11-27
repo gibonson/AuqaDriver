@@ -167,4 +167,4 @@ class ReportSender:
             reportCreator = ReportCreator()
             report = reportCreator.create_from_list(archive_report_id_list=archive_report_id_list)
             # logger.debug(f"Message to sent: {report}")
-            # emailSender( "raport", report)
+            emailSender( "raport", report)

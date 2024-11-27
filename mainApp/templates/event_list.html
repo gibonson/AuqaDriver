@@ -127,7 +127,7 @@ AquaDriver - Event List
         {% for event in Events %}
         <tr>
             <th scope="row">{{event.id}}</th>
-            <th>{{event.eventType}}</th>
+            <td>{{event.eventType}}</th>
             {% if event.deviceId != 0 %}
             <td>{{devices[event.deviceId-1].deviceIP}} - {{devices[event.deviceId-1].deviceName}}</td>
             {% else %}

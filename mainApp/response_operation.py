@@ -14,7 +14,6 @@ class ResponseTrigger:
             self.type = requestData["type"]
             self.value = requestData["value"]
 
-            
             if IgnoreTrigger(requestData=requestData).get_request_to_ignore() == False:
                 ArchiveAdder(requestData=requestData)
                 NotificationTrigger(requestData=requestData)
@@ -22,5 +21,3 @@ class ResponseTrigger:
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             self.message = "Error: Record could not be parsed"
-
-
