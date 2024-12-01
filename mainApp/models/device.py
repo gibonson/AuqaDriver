@@ -58,6 +58,23 @@ class DeviceManager:
         else:
             self.message = f'Device with ID {self.id} does not exist'
             logger.error(self.message)
+
+    def edit_device(self, formData: dict):
+        if self.device:
+            try:
+                self.device.deviceIP = formData["deviceIP"][0]
+                self.device.deviceName = formData["deviceName"][0]
+                self.device.deviceStatus = formData["deviceStatus"][0]
+                db.session.commit()
+                self.message = f"Device with ID {self.id} successfully updated"
+                logger.info(self.message)
+            except Exception as e:
+                db.session.rollback()
+                self.message = f"An error occurred while updating device: {e}"
+                logger.error(self.message)
+        else:
+            self.message = f"Device with ID {self.id} does not exist"
+            logger.error(self.message)
     
     def change_status(self):
         if self.device:

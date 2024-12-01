@@ -34,6 +34,12 @@
          text-align: left;
          border-top: 1px solid #ddd;
       }
+
+      .modal-content {
+         background-color: #212121;
+         /* Jasny beżowy kolor */
+
+      }
    </style>
 </head>
 
@@ -145,8 +151,8 @@
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_dashboard')}}"><i
                         class='fa fa-info-circle'></i>
                      Dashboard</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('get_logs')}}"><i
-                        class='fa fa-bug'></i> Logs</a></li>      
+               <li class="nav-item"><a class="nav-link" href="{{url_for('get_logs')}}"><i class='fa fa-bug'></i>
+                     Logs</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('get_report_all')}}"><i class='fa fa-table'></i>
                      Get Report All</a></li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('charts')}}"><i class='fa fa-line-chart'></i>

@@ -97,6 +97,15 @@ def device_change_status(id):
     return redirect(url_for("device_list"))
 
 
+@app.route("/device_edit/<id>", methods=['POST'])
+def device_edit(id):
+    manager = DeviceManager(id)
+    manager.device
+    form = AddDevice()
+    if validate_and_log_form(form):
+        manager.edit_device(request.form.to_dict(flat=False))
+    return redirect(url_for("device_list"))
+
 # -----------------------------------------
 # function section
 # -----------------------------------------

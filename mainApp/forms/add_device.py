@@ -15,4 +15,4 @@ class AddDevice(FlaskForm):
     deviceIP = StringField(label='deviceIP', validators=[DataRequired(), IPAddress(ipv4=True, ipv6=False, message="deviceIP: wrong IP format")])
     deviceName = StringField(label='deviceName', validators= [DataRequired(),Length(min=3, max=20, message='deviceName: must be between 3 and 20 characters.')])
     deviceStatus = SelectField(label='deviceStatus',choices = deviceStatusList, validators=[DataRequired()])
-    submit = SubmitField(label='submit new')
+    submit = SubmitField(label='Submit')

@@ -61,7 +61,7 @@ AquaDriver - Event List
             {{ formLink.submitLink(class="btn btn-lg btn-block btn-primary") }}
         </form>
     </div>
-</br>
+    </br>
 </div>
 <p>
     <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form1"
@@ -91,7 +91,7 @@ AquaDriver - Event List
                         {{ formReport.reportIds(class="form-select" , placeholder = 'reportIds') }}
                         <small class="form-text text-danger">{{ formReport.reportIds.errors[0] }}</small>
                     </td>
-                </tr>             
+                </tr>
                 <tr>
                     <td>
                         {{ formReport.eventStatus.label() }}
@@ -108,7 +108,7 @@ AquaDriver - Event List
             {{ formReport.submitReport(class="btn btn-lg btn-block btn-primary") }}
         </form>
     </div>
-</br>
+    </br>
 </div>
 <table class="table table-dark table-striped align-middle">
     <thead>
@@ -128,6 +128,7 @@ AquaDriver - Event List
         <tr>
             <th scope="row">{{event.id}}</th>
             <td>{{event.eventType}}</th>
+            {% if devices[event.deviceId-1] or not event.deviceId != 0 %}
             {% if event.deviceId != 0 %}
             <td>{{devices[event.deviceId-1].deviceIP}} - {{devices[event.deviceId-1].deviceName}}</td>
             {% else %}
@@ -139,18 +140,31 @@ AquaDriver - Event List
             <td>{{event.eventStatus}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('event_remove', id = event.id)}}"
-                        class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
-                    <a href="{{url_for('event_change_status', id = event.id)}}"
-                        class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
+                    <a href="{{url_for('event_remove', id = event.id)}}" class="btn btn-danger btn-lg active"
+                        role="button" aria-pressed="true">Remove</a>
+                    <a href="{{url_for('event_change_status', id = event.id)}}" class="btn btn-warning btn-lg active"
+                        role="button" aria-pressed="true">Status</a>
                     {% if event.deviceId != 0 %}
-                    <a href="{{url_for('event_link_creator', id = event.id)}}"
-                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Link</a>
+                    <a href="{{url_for('event_link_creator', id = event.id)}}" class="btn btn-primary btn-lg active"
+                        role="button" aria-pressed="true">Link</a>
                     <a href="{{url_for('event_web_content_collector', id = event.id)}}"
                         class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
                     {% endif %}
                 </div>
             </td>
+            {% else %}
+            <td> Device Error!!! check device with ID {{ event.deviceId-1 }} or remove</td>
+            <td>{{event.eventLink}}</td>
+            <td>{{event.reportIds}}</td>
+            <td>{{event.eventDescription}}</td>
+            <td>{{event.eventStatus}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('event_remove', id = event.id)}}" class="btn btn-danger btn-lg active"
+                        role="button" aria-pressed="true">Remove</a>
+                </div>
+            </td>
+            {% endif %}
         </tr>
         {% endfor %}
 </table>
