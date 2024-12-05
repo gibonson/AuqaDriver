@@ -116,7 +116,6 @@ def event_list():
     formLink = AddEventLink()
     AddEventReport.reportIdListUpdate()
     formReport = AddEventReport()
-    print(request.form)
     if request.form.get("eventType") == "Link":
         if validate_and_log_form(formLink):
             EventAdder(request.form.to_dict(flat=False))
@@ -153,6 +152,23 @@ def event_change_status(id):
     manager = EventManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
+    return redirect(url_for("event_list"))
+
+
+@app.route("/event_edit/<id>", methods=['POST'])
+def event_edit(id):
+    manager = EventManager(id)
+    if manager.eventType == "Link":
+        print("AddEventLink")
+        form = AddEventLink()
+    elif manager.eventType == "Report":
+        print("AddEventReport")
+        form = AddEventReport()
+    else:
+        logger.error(f"Unknown event type: {manager.event.eventType}")
+        return redirect(url_for("event_list"))
+    if validate_and_log_form(form=form):
+        manager.edit_event(request.form.to_dict(flat=False))
     return redirect(url_for("event_list"))
 
 

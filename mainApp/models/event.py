@@ -24,12 +24,12 @@ class Event(db.Model):
 class EventLister():
     def __init__(self):
         try:
-            self.deviceFunctions = Event.query.all()
+            self.events = Event.query.all()
         except Exception as e:
             logger.error(f"An error occurred while fetching devices functions: {e}")
-            self.deviceFunctions = []
+            self.events = []
     def get_list(self):
-        return self.deviceFunctions
+        return self.events
     
 
 class EventAdder():
@@ -58,10 +58,11 @@ class EventManager:
     def __init__(self, id):
         self.id = id
         self.message = ""
-        self.deviceFunction = Event.query.filter_by(id=self.id).first()
+        self.event = Event.query.filter_by(id=self.id).first()
+        self.eventType = self.event.eventType
 
     def remove_event(self):
-        if self.deviceFunction:
+        if self.event:
             Event.query.filter(Event.id == self.id).delete()
             db.session.commit()
             logger.info(f'Event with ID {self.id} removed')
@@ -70,14 +71,35 @@ class EventManager:
             logger.error(f'Event with ID {self.id} does not exist')
             self.message = f'Event with ID {self.id} does not exist'
     
+
+    def edit_event(self, formData: dict):
+        if self.event:
+            try:
+                self.event.eventDescription = formData["eventDescription"][0]
+                self.event.deviceId = formData["deviceId"][0]
+                self.event.eventLink = formData["eventLink"][0]
+                self.event.reportIds = str(formData["reportIds"])
+                self.event.eventStatus = formData["eventStatus"][0]
+                self.event.eventType = formData["eventType"][0]
+                db.session.commit()
+                self.message = f"Event with ID {self.id} successfully updated"
+                logger.info(self.message)
+            except Exception as e:
+                db.session.rollback()
+                self.message = f"An error occurred while updating event: {e}"
+                logger.error(self.message)
+        else:
+            self.message = f"Event with ID {self.id} does not exist"
+            logger.error(self.message)
+
     def change_status(self):
-        if self.deviceFunction:
-            if self.deviceFunction.eventStatus == "Ready":
-                self.deviceFunction.eventStatus = "Not ready"
+        if self.event:
+            if self.event.eventStatus == "Ready":
+                self.event.eventStatus = "Not ready"
                 self.message = "Event status changed to: Not ready"
                 logger.info(f'Event with ID {self.id} status changed')
-            elif self.deviceFunction.eventStatus == "Not ready":
-                self.deviceFunction.eventStatus = "Ready"
+            elif self.event.eventStatus == "Not ready":
+                self.event.eventStatus = "Ready"
                 logger.info(f'Event with ID {self.id} status changed')
                 self.message = "Event status changed to: Ready"
             else:
