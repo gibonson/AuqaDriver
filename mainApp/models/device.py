@@ -3,7 +3,7 @@ from mainApp import logger
 
 
 class Device(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     deviceIP = db.Column(db.String())
     deviceName = db.Column(db.String())
     deviceStatus = db.Column(db.String())
@@ -17,13 +17,22 @@ class Device(db.Model):
 class DeviceLister():
     def __init__(self):
         try:
-            self.devices = Device.query.all()
+            self.devices = Device.query.filter(Device.deviceStatus != "Old").all()
         except Exception as e:
             logger.error(f"An error occurred while fetching device: {e}")
             self.devices = []
     def get_list(self):
         return self.devices
 
+class DeviceListerAll():
+    def __init__(self):
+        try:
+            self.devices = Device.query.all()
+        except Exception as e:
+            logger.error(f"An error occurred while fetching device: {e}")
+            self.devices = []
+    def get_list(self):
+        return self.devices
 
 class DeviceAdder():
     def __init__(self, formData: dict):
@@ -51,7 +60,10 @@ class DeviceManager:
 
     def remove_device(self):
         if self.device:
-            Device.query.filter(Device.id == self.id).delete()
+            self.device.deviceIP = ""
+            self.device.deviceName = ""
+            self.device.deviceStatus = "Old"
+            # Device.query.filter(Device.id == self.id).delete()
             db.session.commit()
             self.message = f'Device with ID {self.id} removed'
             logger.info(self.message)

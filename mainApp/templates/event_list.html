@@ -128,7 +128,7 @@ AquaDriver - Event List
         <tr>
             <th scope="row">{{event.id}}</th>
             <td>{{event.eventType}}</th>
-            {% if devices[event.deviceId-1] or not event.deviceId != 0 %}
+            {% if (devices[event.deviceId-1] or not event.deviceId != 0) and devices[event.deviceId-1].deviceStatus != "Old" %}
             {% if event.deviceId != 0 %}
             <td>{{devices[event.deviceId-1].deviceIP}} - {{devices[event.deviceId-1].deviceName}}</td>
             {% else %}
@@ -152,6 +152,18 @@ AquaDriver - Event List
                     {% endif %}
                     <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal" data-bs-target="#editEventModal{{ event.id }}">Edit</button>
 
+                </div>
+            </td>
+            {% elif devices[event.deviceId-1].deviceStatus == "Old" %}
+            <td> Old Device!!! check device with ID {{ event.deviceId-1 }} or remove</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{event.eventStatus}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('event_remove', id = event.id)}}" class="btn btn-danger btn-lg active"
+                        role="button" aria-pressed="true">Remove</a>
                 </div>
             </td>
             {% else %}

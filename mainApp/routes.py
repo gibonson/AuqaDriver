@@ -24,7 +24,7 @@ from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
 from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
-from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager
+from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager, DeviceListerAll
 from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
 from mainApp.models.scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
@@ -34,6 +34,7 @@ from mainApp.web_operations import LinkCreator, WebContentCollector
 from mainApp.charts import Table
 from mainApp.response_operation import ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
+from mainApp.device_status_checker import DeviceStatusChecker
 
 # -----------------------------------------
 # create new DB
@@ -96,7 +97,6 @@ def device_change_status(id):
     flash_message(str(manager), category='success')
     return redirect(url_for("device_list"))
 
-
 @app.route("/device_edit/<id>", methods=['POST'])
 def device_edit(id):
     manager = DeviceManager(id)
@@ -106,8 +106,14 @@ def device_edit(id):
         manager.edit_device(request.form.to_dict(flat=False))
     return redirect(url_for("device_list"))
 
+
+@app.route("/device_status_checker_restart")
+def device_status_checker_restart():
+    DeviceStatusChecker(sched=sched)
+    return redirect(url_for("get_jobs"))
+
 # -----------------------------------------
-# function section
+# event section
 # -----------------------------------------
 
 @app.route("/event_list", methods=['POST', 'GET'])
@@ -122,7 +128,7 @@ def event_list():
     if request.form.get("eventType") == "Report":
         if validate_and_log_form(formReport):
             EventAdder(request.form.to_dict(flat=False))
-    devices = DeviceLister().get_list()
+    devices = DeviceListerAll().get_list()
     events = EventLister().get_list()
     return render_template_with_addons("event_list.html", Events=events, devices=devices, formLink=formLink, formReport=formReport)
 
