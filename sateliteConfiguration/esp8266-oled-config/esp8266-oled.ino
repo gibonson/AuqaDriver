@@ -32,6 +32,8 @@ const long timeoutTime = 500;          // Timeout time in milliseconds
 int c = 0; // uptime counter
 Adafruit_SSD1306 *display;
 
+#define CONFIG_TIMEOUT 2000  // Czas oczekiwania na dane (2 sekundy)
+
 
 void init_oled() {
   display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -65,8 +67,52 @@ void handle_oled(String value1, String value2, String value3, String value4, Str
   display->display();
 }
 
+
+//////  config 
+// Funkcja obsługująca tryb konfiguracji
+void konfiguracja() {
+  Serial.println("Wprowadź dane konfiguracji:");
+  while (true) {
+    if (Serial.available() > 0) {
+      String dane = Serial.readString();
+      Serial.print("Otrzymano: ");
+      Serial.println(dane);
+      break; // Zakończenie konfiguracji
+    }
+  }
+}
+void standardowyKod() {
+  Serial.println("Standardowy kod uruchomiony.");
+  // Dodaj tutaj logikę standardowego programu
+}
+///////
+
 void setup() {
   Serial.begin(9600);
+
+  Serial.println("Uruchamianie...");
+  
+  unsigned long startTime = millis(); // Pobranie aktualnego czasu
+  bool configMode = false;            // Flaga trybu konfiguracji
+
+  // Czekanie na dane przez 2 sekundy
+  while (millis() - startTime < CONFIG_TIMEOUT) {
+    if (Serial.available() > 0) {
+      configMode = true;  // Wykryto dane
+      break;
+    }
+  }
+
+//////  config 
+  if (configMode) {
+    Serial.println("Tryb konfiguracji...");
+    konfiguracja(); // Wywołanie funkcji konfiguracji
+  } else {
+    Serial.println("Uruchamianie standardowego kodu...");
+    standardowyKod(); // Wywołanie standardowego kodu
+  }
+}
+//////  
 
   if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
     Serial.println("STA Failed to configure");
@@ -104,7 +150,6 @@ void sendJson(String addInfo, int value, String type) {
   Serial.println("Json to sent: " + jsonString);
   Serial.println(http.POST(jsonString));
 }
-
 
 void loop() {
   WebGui webGui;
