@@ -12,14 +12,17 @@ class Archive(db.Model):
     addInfo = db.Column(db.String())
     value = db.Column(db.Integer())
     type = db.Column(db.String())
+    comment = db.Column(db.String())
 
-    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type):
+
+    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, comment):
         self.timestamp = timestamp
         self.deviceIP = deviceIP
         self.deviceName = deviceName
         self.addInfo = addInfo
         self.value = value
         self.type = type
+        self.comment = comment
 
 
 class ArchiveLister():
@@ -78,8 +81,12 @@ class ArchiveAdder():
             deviceIP = requestData["deviceIP"]
             type = requestData["type"]
             value = requestData["value"]
+            if "comment" in requestData:
+                comment = requestData["comment"]
+            else:
+                comment = "-"
             add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type)
+                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, comment=comment)
             db.session.add(add_to_archiwe)
             db.session.commit()
 

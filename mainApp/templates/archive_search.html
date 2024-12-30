@@ -55,6 +55,7 @@ AquaDriver - Archive
             <th>Additional Info</th>
             <th>Value</th>
             <th>Type</th>
+            <th>Comment</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -68,6 +69,7 @@ AquaDriver - Archive
             <td>{{archiveRow.addInfo}}</td>
             <td>{{archiveRow.value}}</td>
             <td>{{archiveRow.type}}</td>
+            <td>{{archiveRow.comment}}</td>
             <td>
                 <div class="btn-group">
                     <a href="{{url_for('archive_remove',id=archiveRow.id)}}" class="btn btn-danger btn-lg active"
