@@ -2,7 +2,6 @@ __pycache__
 .venv
 .vscode
 wifiPass.h
-configuration.h
 userFiles/config_email.ini
 userFiles/db.sqlite
 userFiles/app.log
