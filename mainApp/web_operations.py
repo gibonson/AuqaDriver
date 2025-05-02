@@ -1,25 +1,104 @@
 import requests
+import re
+from datetime import datetime
 from mainApp.models.event import Event
 from mainApp.models.device import Device
 from mainApp.response_operation import ResponseTrigger
 from mainApp import app, logger
 
 class LinkCreator:
-    def __init__(self, id, eventLinkAndParameters = None):
+    def __init__(self, id, eventLink = None):
         self.id = id
-        self.eventLinkAndParameters = eventLinkAndParameters
+        self.eventLink = eventLink
+
+    def extract_placeholders(eventLink):
+        """zwraca w formie tabel 
+        nazwy wszystkich zmiennych w linku
+        znajdujących sie w <<>>"""
+        pattern = r"<<(.*?)>>"  # Wzorzec do znajdowania tekstu w <<>>
+        return re.findall(pattern, eventLink)
+    
+
 
     def functions_list_link_creator(self):
         event = Event.query.get(self.id)
         device = Device.query.get(event.deviceId)
         IP = device.deviceIP
         eventLink = event.eventLink
-        if self.eventLinkAndParameters == None:
-            parameters = ""
-        else:
-            parameters = (self.eventLinkAndParameters)
-        httpLink = "http://" + IP + eventLink + parameters
+
+
+        placeholders = LinkCreator.extract_placeholders(eventLink)
+        resolver = PlaceholderGetter(placeholders)
+        received_values = resolver.vlue_getter()
+
+        print(received_values)
+        print(placeholders)
+        eventLink = self.inject_values_into_link(eventLink, received_values)
+        httpLink = "http://" + IP + eventLink
         return httpLink
+
+
+
+    def inject_values_into_link(self, eventLink, received_values):
+        """
+            Zastępuje placeholdery w eventLink odpowiednimi wartościami.
+
+            Args:
+                eventLink (str): Link zawierający placeholdery w formacie <<placeholder>>.
+                values (dict): Słownik z wartościami dla placeholderów.
+
+            Returns:
+                str: Link z wstrzykniętymi wartościami.
+        """
+        for placeholder, value in received_values.items():
+            eventLink = eventLink.replace(f"<<{placeholder}>>", str(value))
+        return eventLink
+
+
+class PlaceholderGetter:
+    def __init__(self, placeholders):
+        """
+        Inicjalizuje klasę z listą placeholderów.
+        
+        Args:
+            placeholders (list): Lista placeholderów do przetworzenia.
+        """
+        self.placeholders = placeholders
+        self.values = {}
+        
+    def vlue_getter(self):
+        """
+        Przetwarza listę placeholderów i przypisuje im odpowiednie wartości.
+        
+        Returns:
+            dict: Słownik z przypisanymi wartościami dla placeholderów.
+        """
+        for placeholder in self.placeholders:
+            if placeholder == "date":
+                self.values["date"] = self.get_date()
+            elif placeholder == "time":
+                self.values["time"] = self.get_time()
+            else:
+                self.values[placeholder] = f"UnknownValue"
+        return self.values
+    
+
+    def get_date(self):
+        """
+        Zwraca aktualną datę w formacie YYYY-MM-DD.
+        
+        Returns:
+            str: Aktualna data.
+        """
+        return datetime.now().strftime("%Y-%m-%d")
+    def get_time(self):
+        """
+        Zwraca aktualny czas w formacie HH:MM:SS.
+        
+        Returns:
+            str: Aktualny czas.
+        """
+        return datetime.now().strftime("%H:%M:%S")
 
 
 class WebContentCollector:

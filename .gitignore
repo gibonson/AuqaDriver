@@ -1,5 +1,6 @@
 __pycache__
 .venv
+venv
 .vscode
 wifiPass.h
 userFiles/config_email.ini
