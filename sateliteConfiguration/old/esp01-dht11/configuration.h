@@ -1,8 +1,8 @@
 //  LAN CONFIGURATION
 
 //wifi name and password
-const char* ssid = "Monkey_town";
-const char* password = "Avika666";
+const char* ssid = "";
+const char* password = "";
 
 //device server settings
 WiFiServer server(80);                 // Set web server port number to 80
