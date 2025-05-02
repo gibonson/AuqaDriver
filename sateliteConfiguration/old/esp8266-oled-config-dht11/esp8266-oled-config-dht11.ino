@@ -39,11 +39,6 @@ const long timeoutTime = 500;          // Timeout time in milliseconds
 Adafruit_SSD1306 *display;
 
 
-// DHT sensor setup
-#define DHTTYPE DHT22                  // DHT22 - DHT 22(AM2302)
-const int DHT_PIN = 4;                 // GPIO4 = D2 Digital pin connected to the DHT sensor
-DHT dht(DHT_PIN, DHTTYPE);             // Initialize DHT sensor
-
 // DS18B20 sensor setup
 const int ONE_WIRE_BUS = 16;           // GPIO16 = D0 pin connected to the  sensor
 OneWire oneWire(ONE_WIRE_BUS);         // Setup a oneWire instance to communicate with any OneWire devices
@@ -75,20 +70,9 @@ const char *configFilePath = "/config.txt"; // Configuration path on device
 
 
 
-// Checks if motion was detected
-ICACHE_RAM_ATTR void detectsMovement() {
-  Serial.println("Interrupt!!!");
-  sthToSend = "yes";
-  pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
-  digitalWrite(LED_PIN_ALERT, LOW);
-  analogWrite(LED_PIN_ALERT, 5);
-}
-
-
-
 void setup() {
   delay(100);
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.println("\nDevice starting - configuration...\n");
 
   pinMode(LED_PIN_1, OUTPUT);
@@ -98,7 +82,7 @@ void setup() {
   pinMode(LED_PIN_5, OUTPUT);
 
   pinMode(MOTION_SENSOR, INPUT_PULLUP);  // PIR Motion Sensor mode INPUT_PULLUP
-  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
+//  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
 
   pinMode(LED_PIN_ALERT, OUTPUT); // Set LED to LOW
   digitalWrite(LED_PIN_ALERT, LOW);
@@ -167,17 +151,7 @@ void setup() {
 
 
 void readSensors() {
-  sensors.requestTemperatures();
-  float temperature_Celsius = sensors.getTempCByIndex(0);
-  float newT = dht.readTemperature();
-  float newH = dht.readHumidity();
-  //  if (isnan(newT)) {
-  //    Serial.println("Failed to read from  sensor!");
-  //    sendJson("DHT issue" , 1 , "Error");
-  //  }
-  webTableSTD[1][2] = String(newT);
-  webTableSTD[2][2] = String(newH);
-  webTableSTD[3][2] = String(temperature_Celsius);
+
 }
 
 void loop() {
