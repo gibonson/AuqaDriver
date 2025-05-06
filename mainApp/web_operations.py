@@ -4,6 +4,7 @@ from datetime import datetime
 from mainApp.models.event import Event
 from mainApp.models.device import Device
 from mainApp.response_operation import ResponseTrigger
+from mainApp.dashboard_data import DashboardData
 from mainApp import app, logger
 
 class LinkCreator:
@@ -64,7 +65,7 @@ class PlaceholderGetter:
             placeholders (list): Lista placeholderów do przetworzenia.
         """
         self.placeholders = placeholders
-        self.values = {}
+        self.dashboard_data = DashboardData()  # Inicjalizacja DashboardData
         
     def vlue_getter(self):
         """
@@ -73,33 +74,7 @@ class PlaceholderGetter:
         Returns:
             dict: Słownik z przypisanymi wartościami dla placeholderów.
         """
-        for placeholder in self.placeholders:
-            if placeholder == "date":
-                self.values["date"] = self.get_date()
-            elif placeholder == "time":
-                self.values["time"] = self.get_time()
-            else:
-                self.values[placeholder] = f"UnknownValue"
-        return self.values
-    
-
-    def get_date(self):
-        """
-        Zwraca aktualną datę w formacie YYYY-MM-DD.
-        
-        Returns:
-            str: Aktualna data.
-        """
-        return datetime.now().strftime("%Y-%m-%d")
-    def get_time(self):
-        """
-        Zwraca aktualny czas w formacie HH:MM:SS.
-        
-        Returns:
-            str: Aktualny czas.
-        """
-        return datetime.now().strftime("%H:%M:%S")
-
+        return {placeholder: self.dashboard_data.get_placeholder_value(placeholder) for placeholder in self.placeholders}
 
 class WebContentCollector:
 
