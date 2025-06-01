@@ -110,6 +110,53 @@ AquaDriver - Event List
     </div>
     </br>
 </div>
+<p>
+    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form2"
+        aria-expanded="false" aria-controls="collapseForm2">
+        Add Api
+    </button>
+</p>
+<div class="collapse" id="form2">
+    <div class="card card-body">
+        <form method="POST" class="form-register" style="color:white" novalidate>
+            {{ formApi.hidden_tag() }}
+            <table>
+                <tr>
+                    <td>
+                        {{ formApi.eventDescription.label() }}
+                    </td>
+                    <td>
+                        {{ formApi.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
+                        <small class="form-text text-danger">{{ formApi.eventDescription.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ formApi.eventLink.label() }}
+                    </td>
+                    <td>
+                        {{ formApi.eventLink(class="form-control" , placeholder = 'eventLink') }}
+                        <small class="form-text text-danger">{{ formApi.eventLink.errors[0] }}</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <td>
+                        {{ formApi.eventStatus.label() }}
+                    </td>
+                    <td>
+                        {{ formApi.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
+                        <small class="form-text text-danger">{{ formApi.eventStatus.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            {{ formApi.submitApi(class="btn btn-lg btn-block btn-primary") }}
+        </form>
+    </div>
+    </br>
+</div>
 <table class="table table-dark table-striped align-middle">
     <thead>
         <tr>

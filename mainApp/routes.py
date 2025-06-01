@@ -14,7 +14,7 @@ from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_archive_ignore import AddArchiveIgnore
 from mainApp.forms.add_device import AddDevice
-from mainApp.forms.add_event import AddEventLink, AddEventReport
+from mainApp.forms.add_event import AddEventLink, AddEventReport, AddEventApi
 from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
@@ -119,6 +119,7 @@ def device_status_checker_restart():
 @app.route("/event_list", methods=['POST', 'GET'])
 def event_list():
     AddEventLink.deviceIdListUpdate()
+    formApi = AddEventApi()
     formLink = AddEventLink()
     AddEventReport.reportIdListUpdate()
     formReport = AddEventReport()
@@ -128,9 +129,12 @@ def event_list():
     if request.form.get("eventType") == "Report":
         if validate_and_log_form(formReport):
             EventAdder(request.form.to_dict(flat=False))
+    if request.form.get("eventType") == "Api":
+        if validate_and_log_form(formApi):
+            EventAdder(request.form.to_dict(flat=False))
     devices = DeviceListerAll().get_list()
     events = EventLister().get_list()
-    return render_template_with_addons("event_list.html", Events=events, devices=devices, formLink=formLink, formReport=formReport)
+    return render_template_with_addons("event_list.html", Events=events, devices=devices, formLink=formLink, formReport=formReport, formApi=formApi)
 
 @app.route("/event_link_creator/<id>")
 def event_link_creator(id):
