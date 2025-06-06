@@ -181,7 +181,10 @@ AquaDriver - Event List
             {% else %}
             <td> - </td>
             {% endif %}
-            <td>{{event.eventLink}}</td>
+            <td>{{ event.eventLink[:20] }}
+                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
+                    title={{event.eventLink}}></i></br>
+            </td>
             <td>{{event.reportIds}}</td>
             <td>{{event.eventDescription}}</td>
             <td>{{event.eventStatus}}</td>
@@ -191,11 +194,14 @@ AquaDriver - Event List
                         role="button" aria-pressed="true">Remove</a>
                     <a href="{{url_for('event_change_status', id = event.id)}}" class="btn btn-warning btn-lg active"
                         role="button" aria-pressed="true">Status</a>
-                    {% if event.deviceId != 0 %}
+                    {% if event.eventType == "Link" %}
                     <a href="{{url_for('event_link_creator', id = event.id)}}" class="btn btn-primary btn-lg active"
                         role="button" aria-pressed="true">Link</a>
                     <a href="{{url_for('event_web_content_collector', id = event.id)}}"
                         class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
+                    {% elif event.eventType == "Api" %}
+                    <a href="{{url_for('event_api_collector', id = event.id)}}" class="btn btn-primary btn-lg active"
+                        role="button" aria-pressed="true">Api</a>
                     {% endif %}
                     <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal" data-bs-target="#editEventModal{{ event.id }}">Edit</button>
 

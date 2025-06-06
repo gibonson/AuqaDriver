@@ -19,7 +19,17 @@ class LinkCreator:
         pattern = r"<<(.*?)>>"  # Wzorzec do znajdowania tekstu w <<>>
         return re.findall(pattern, eventLink)
     
+    def functions_api_link_creator(self):
+        """
+        Tworzy link do API funkcji na podstawie ID zdarzenia.
 
+        Returns:
+            str: Link do API funkcji.
+        """
+        event = Event.query.get(self.id)
+        eventLink = event.eventLink
+        httpLink = eventLink
+        return httpLink
 
     def functions_list_link_creator(self):
         event = Event.query.get(self.id)

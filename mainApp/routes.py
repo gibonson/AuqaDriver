@@ -143,6 +143,13 @@ def event_link_creator(id):
           linkCreator + '</a>'), category='success')
     return redirect(url_for("event_list"))
 
+@app.route("/event_api_collector/<id>")
+def event_api_collector(id):
+    linkCreator = LinkCreator(id).functions_api_link_creator()
+    flash(Markup('<a href="' + linkCreator + '">' +
+          linkCreator + '</a>'), category='success')
+    return redirect(url_for("event_list"))
+
 @app.route("/event_web_content_collector/<id>")
 def event_web_content_collector(id):
     WebContentCollector(LinkCreator(
