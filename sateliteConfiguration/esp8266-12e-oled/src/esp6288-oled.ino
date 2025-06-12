@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <LittleFS.h> // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
+#include <ArduinoJson.h>   // JSON library for Arduino, used to create and parse JSON objects
 
 // Project files
 #include "Configuration.h"
@@ -8,11 +9,13 @@
 #include "OledOperation.h"
 #include "WebGui.h"
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   delay(1000);
 
-  if (!LittleFS.begin()) {
+  if (!LittleFS.begin())
+  {
     Serial.println("Błąd inicjalizacji LittleFS.");
     return;
   }
@@ -20,9 +23,11 @@ void setup() {
 
   Serial.println("Czekam 5 sekund na dowolny znak w Serial...");
   unsigned long startCzas = millis();
-  while (millis() - startCzas < 5000) {
-    if (Serial.available() > 0) {
-      char c = Serial.read();  // Odbierz znak (choć treść nieistotna)
+  while (millis() - startCzas < 5000)
+  {
+    if (Serial.available() > 0)
+    {
+      char c = Serial.read(); // Odbierz znak (choć treść nieistotna)
       Serial.println("Znak odebrany. Rozpoczynam konfigurację...");
       showMenu(); // Show the main menu
       configMode();
@@ -36,41 +41,89 @@ void setup() {
   sendJson("Device Start", 1, "Log");
 }
 
-void loop() {
+void loop()
+{
   WebGui webGui;
-  WiFiClient client = server.available();  // Listen for incoming clients
+  WiFiClient client = server.available(); // Listen for incoming clients
 
-  if (client) {
-    Serial.println("\nNew Client.");  // print a message out in the serial port
-    String currentLine = "";        // make a String to hold incoming data from the client
+  if (client)
+  {
+    Serial.println("\nNew Client."); // print a message out in the serial port
+    String currentLine = "";         // make a String to hold incoming data from the client
 
-    while (client.connected()) {  // loop while the client's connected
-      if (client.available()) {  // if there's bytes to read from the client,
-        char c = client.read();  // read a byte, then
-        Serial.write(c);         // print it out the serial monitor
+    while (client.connected())
+    { // loop while the client's connected
+      if (client.available())
+      {                         // if there's bytes to read from the client,
+        char c = client.read(); // read a byte, then
+        Serial.write(c);        // print it out the serial monitor
         header += c;
-        if (c == '\n') {  // if the byte is a newline character
+        if (c == '\n')
+        { // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
           // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
+          if (currentLine.length() == 0)
+          {
             String resultHtml = webGui.resultLogBegin();
-            if (header.indexOf("GET / HTTP/1.1") >= 0) {
-              if (deviceConfig.deviceType == "LCD") {
+            if (header.indexOf("GET / HTTP/1.1") >= 0)
+            {
+              if (deviceConfig.deviceType == "LCD")
+              {
                 client.print(webGui.generator(webTableLCD));
-              } else {
+              }
+              else
+              {
                 client.print(webGui.generator(webTableSTD));
               }
-              client.stop();    // Close the connection
+              client.stop(); // Close the connection
             }
-            else if (header.indexOf("noGui") >= 0) {
-              if (deviceConfig.deviceType == "LCD") {
-                client.print(webGui.generator(webTableLCD));
-              } else {
-                client.print(webGui.generator(webTableSTD));
+            if (header.indexOf("json") >= 0) {
+              String jsonString = ""; // Zmienna do przechowywania odebranego JSON-a
+            
+              while (client.available()) {
+                char c = client.read();
+                jsonString += c; // Dodaj odebrane dane do ciągu znaków
               }
-              client.stop();    // Close the connection
+            
+              // Parsowanie odebranego JSON-a
+              Serial.print(jsonString);
+            
+              // Wyślij odpowiedź do klienta
+              client.print("HTTP/1.1 200 OK\r\n");
+              client.print("Content-Type: text/plain\r\n");
+              client.print("Connection: close\r\n\r\n");
+              client.print("JSON odebrany i przetworzony.");
+              client.stop(); // Zamknij połączenie
             }
-            else if (header.indexOf("GET /lcd") >= 0) {
+            else if (header.indexOf("noGui") >= 0)
+            {
+              // if (deviceConfig.deviceType == "LCD") {
+              //   client.print(webGui.generator(webTableLCD));
+              // } else {
+              //   client.print(webGui.generator(webTableSTD));
+              // }
+              // client.stop();    // Close the connection
+              StaticJsonDocument<200> jsonDoc;
+
+              // Dodaj dane do JSON
+              jsonDoc["deviceType"] = deviceConfig.deviceType;
+              jsonDoc["status"] = "OK";
+              jsonDoc["message"] = "No GUI requested";
+
+              // Serializacja JSON do ciągu znaków
+              String jsonString;
+              serializeJson(jsonDoc, jsonString);
+
+              // Wyślij JSON do klienta
+              client.print("HTTP/1.1 200 OK\r\n");
+              client.print("Content-Type: application/json\r\n");
+              client.print("Connection: close\r\n\r\n");
+              client.print(jsonString);
+
+              client.stop(); // Zamknij połączenie
+            }
+            else if (header.indexOf("GET /lcd") >= 0)
+            {
               int start = header.indexOf(" ? ");
               int var1Start = header.indexOf("value1=");
               int var1Stop = header.indexOf("&", 0);
@@ -88,7 +141,6 @@ void loop() {
               int var7Stop = header.indexOf("&", var6Stop + 1);
               int var8Start = header.indexOf("value8=");
               int var8Stop = header.indexOf(" HTTP/1.1");
-
 
               String value1 = "IP:" + String(local_IP[0]) + "." + String(local_IP[1]) + "." + String(local_IP[2]) + "." + String(local_IP[3]);
               // String value2 = WiFi.status();
@@ -112,30 +164,33 @@ void loop() {
               resultHtml += webGui.resultLogContent(0, "lcd log");
               resultHtml += webGui.RESULT_LOG_END;
               client.print(resultHtml);
-              client.stop();    // Close the connection
+              client.stop(); // Close the connection
 
-
-
-              handle_oled(value1, value2, value3, value4, value5, value6 , value7 , value8);
-              sendJson("LCD" , 0 , "Log");
+              handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
+              sendJson("LCD", 0, "Log");
             }
 
-            else {
+            else
+            {
               resultHtml += webGui.resultLogContent(0, "Not Found");
             }
             resultHtml = resultHtml + webGui.RESULT_LOG_END;
             client.print(resultHtml);
             break;
-          } else {  // if you got a newline, then clear currentLine
+          }
+          else
+          { // if you got a newline, then clear currentLine
             currentLine = "";
           }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
+        }
+        else if (c != '\r')
+        {                   // if you got anything else but a carriage return character,
+          currentLine += c; // add it to the end of the currentLine
         }
       }
     }
-    header = "";      // Clear the header variable
-    client.stop();    // Close the connection
+    header = "";   // Clear the header variable
+    client.stop(); // Close the connection
     Serial.println("Client disconnected.\n");
   }
 }
