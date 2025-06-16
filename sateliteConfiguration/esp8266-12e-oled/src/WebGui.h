@@ -1,5 +1,3 @@
-
-
 class WebGui {
   public:
     const String SEP_START = "<sep>";
@@ -20,27 +18,12 @@ class WebGui {
     const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
     const String HTML_ERROR = "</br>\n";
 
-
-    String noGui(String webContent[31][4]) {
-      String html = HTML_BEGIN + SEP_START + "hHtml" + SEP_END + SEP_START + deviceConfig.deviceName + SEP_END + END_LINE;
-      for (int htmlLine = 1; htmlLine < 31; htmlLine++) {
-        html = html + SEP_START + webContent[htmlLine][0] + SEP_END + SEP_START + webContent[htmlLine][1] + SEP_END + SEP_START + webContent[htmlLine][2] + SEP_END + SEP_START + webContent[htmlLine][3] + SEP_END + END_LINE;
-      }
-      html = html + RESULT_LOG_END;
-      return html;
-    }
-
-    String resultLogBegin() {
-      return HTML_BEGIN + SEP_START + "hHtml" + SEP_END + SEP_START + deviceConfig.deviceName + SEP_END + END_LINE;
-    }
-
-    String resultLogContent(int value, String status) {
-      return SEP_START + "pHtml" + SEP_END + SEP_START + status + SEP_END + SEP_START + value + SEP_END + SEP_START + "Log" + SEP_END + END_LINE;
-    }
-
-    String generator(String webContent[31][4]) {
+    String generator(String webContent[31][4], String logs = "no logs") {
       String html = "";
       html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
+      html = html + "<div class='container'>" + "<textarea readonly name='logs' rows='4' cols='80'>" + logs + "</textarea>"
+      "</div>";
+
       for (int htmlLine = 1; htmlLine < 31; htmlLine++) {
         // Serial.println(webContent[htmlLine][0] + webContent[htmlLine][1] + webContent[htmlLine][2] + webContent[htmlLine][3]);
         if (webContent[htmlLine][0] == "hHtml") {

@@ -1,6 +1,7 @@
 //Supports sending json to server address. Requires deviceConfig from Configuration.h file
 
-void sendJson(String addInfo, int value, String type) {
+void sendJson(String addInfo, int value, String type, String requestID = "")
+{
   http.begin(client, deviceConfig.serverAddress);
   http.addHeader("Content-Type", "application/json");
   String jsonString = "{\"deviceIP\":\"" +

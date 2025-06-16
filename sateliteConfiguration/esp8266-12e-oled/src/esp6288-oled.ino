@@ -8,6 +8,7 @@
 #include "JsonOperation.h"
 #include "OledOperation.h"
 #include "WebGui.h"
+String logs = "";
 
 void setup()
 {
@@ -38,7 +39,8 @@ void setup()
   init_wifi();
   delay(500);
   init_oled();
-  sendJson("Device Start", 1, "Log");
+  logs = "Device startted successfully.\n";
+  sendJson("Device Start", 1, logs);
 }
 
 void loop()
@@ -64,7 +66,6 @@ void loop()
           // that's the end of the client HTTP request, so send a response:
           if (currentLine.length() == 0)
           {
-            String resultHtml = webGui.resultLogBegin();
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
               if (deviceConfig.deviceType == "LCD")
@@ -87,41 +88,44 @@ void loop()
             
               // Parsowanie odebranego JSON-a
               Serial.print(jsonString);
-            
-              // Wyślij odpowiedź do klienta
-              client.print("HTTP/1.1 200 OK\r\n");
-              client.print("Content-Type: text/plain\r\n");
-              client.print("Connection: close\r\n\r\n");
-              client.print("JSON odebrany i przetworzony.");
-              client.stop(); // Zamknij połączenie
-            }
-            else if (header.indexOf("noGui") >= 0)
-            {
-              // if (deviceConfig.deviceType == "LCD") {
-              //   client.print(webGui.generator(webTableLCD));
-              // } else {
-              //   client.print(webGui.generator(webTableSTD));
-              // }
-              // client.stop();    // Close the connection
-              StaticJsonDocument<200> jsonDoc;
+              StaticJsonDocument<256> jsonDoc; // Rozmiar dokumentu zależy od wielkości JSON-a
 
-              // Dodaj dane do JSON
-              jsonDoc["deviceType"] = deviceConfig.deviceType;
-              jsonDoc["status"] = "OK";
-              jsonDoc["message"] = "No GUI requested";
+                // Parsowanie JSON
+              DeserializationError error = deserializeJson(jsonDoc, jsonString);
+
+              if (error) {
+                Serial.print("Błąd parsowania JSON: ");
+                Serial.println(error.c_str());
+                return; // Zakończ funkcję w przypadku błędu
+              }
+            
+              Serial.println( "Parsing JSON...");
+              Serial.println(String(jsonDoc["requestID"]));
+              Serial.println(String(jsonDoc["deviceIP"]));
+              Serial.println(String(jsonDoc["deviceName"]));
+              Serial.println(String(jsonDoc["addInfo"]));
+              Serial.println(String(jsonDoc["type"]));
+              
+              StaticJsonDocument<200> newjsonDoc;
+
+              
+              newjsonDoc["deviceType"] = deviceConfig.deviceType;
+              newjsonDoc["status"] = "OK";
+              newjsonDoc["message"] = "No GUI requested";
 
               // Serializacja JSON do ciągu znaków
-              String jsonString;
-              serializeJson(jsonDoc, jsonString);
+              String newjsonString;
+              serializeJson(newjsonDoc, newjsonString);
 
               // Wyślij JSON do klienta
               client.print("HTTP/1.1 200 OK\r\n");
               client.print("Content-Type: application/json\r\n");
               client.print("Connection: close\r\n\r\n");
-              client.print(jsonString);
+              client.print(newjsonString);
 
               client.stop(); // Zamknij połączenie
             }
+
             else if (header.indexOf("GET /lcd") >= 0)
             {
               int start = header.indexOf(" ? ");
@@ -152,7 +156,7 @@ void loop()
               //    WL_CONNECTION_LOST  = 5,
               //    WL_DISCONNECTED     = 6
 
-              value1 = header.substring(var1Start + 7, var1Stop);
+              // value1 = header.substring(var1Start + 7, var1Stop);
               String value2 = header.substring(var2Start + 7, var2Stop);
               String value3 = header.substring(var3Start + 7, var3Stop);
               String value4 = header.substring(var4Start + 7, var4Stop);
@@ -161,21 +165,17 @@ void loop()
               String value7 = header.substring(var7Start + 7, var7Stop);
               String value8 = header.substring(var8Start + 7, var8Stop);
 
-              resultHtml += webGui.resultLogContent(0, "lcd log");
-              resultHtml += webGui.RESULT_LOG_END;
-              client.print(resultHtml);
-              client.stop(); // Close the connection
-
+              logs = "changes on LCD:\n";
               handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
               sendJson("LCD", 0, "Log");
             }
-
             else
             {
-              resultHtml += webGui.resultLogContent(0, "Not Found");
+              logs = "Page not Found";
             }
-            resultHtml = resultHtml + webGui.RESULT_LOG_END;
-            client.print(resultHtml);
+            client.print(webGui.generator(webTableLCD, logs ));
+            sendJson("LCD", 0, "Log");  
+            Serial.println("Client disconnected.");
             break;
           }
           else
