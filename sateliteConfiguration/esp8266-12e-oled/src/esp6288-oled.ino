@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include <LittleFS.h> // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
-#include <ArduinoJson.h>   // JSON library for Arduino, used to create and parse JSON objects
+#include <LittleFS.h>    // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
+#include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // Project files
 #include "Configuration.h"
@@ -9,6 +9,9 @@
 #include "OledOperation.h"
 #include "WebGui.h"
 String logs = "";
+
+#define LED_PIN 2
+
 
 void setup()
 {
@@ -41,6 +44,8 @@ void setup()
   init_oled();
   logs = "Device startted successfully.\n";
   sendJson("Device Start", 1, logs);
+
+  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop()
@@ -68,113 +73,81 @@ void loop()
           {
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
-              if (deviceConfig.deviceType == "LCD")
-              {
-                client.print(webGui.generator(webTableLCD));
-              }
-              else
-              {
-                client.print(webGui.generator(webTableSTD));
-              }
+              client.print(webGui.generator(webTableLCD));
               client.stop(); // Close the connection
             }
-            if (header.indexOf("json") >= 0) {
+            if (header.indexOf("json") >= 0)
+            {
               String jsonString = ""; // Zmienna do przechowywania odebranego JSON-a
-            
-              while (client.available()) {
+
+              while (client.available())
+              {
                 char c = client.read();
                 jsonString += c; // Dodaj odebrane dane do ciągu znaków
               }
-            
+
               // Parsowanie odebranego JSON-a
               Serial.print(jsonString);
               StaticJsonDocument<256> jsonDoc; // Rozmiar dokumentu zależy od wielkości JSON-a
 
-                // Parsowanie JSON
+              // Parsowanie JSON
               DeserializationError error = deserializeJson(jsonDoc, jsonString);
 
-              if (error) {
+              if (error)
+              {
                 Serial.print("Błąd parsowania JSON: ");
                 Serial.println(error.c_str());
-                return; // Zakończ funkcję w przypadku błędu
+                return;
               }
-            
-              Serial.println( "Parsing JSON...");
-              Serial.println(String(jsonDoc["requestID"]));
-              Serial.println(String(jsonDoc["deviceIP"]));
-              Serial.println(String(jsonDoc["deviceName"]));
-              Serial.println(String(jsonDoc["addInfo"]));
-              Serial.println(String(jsonDoc["type"]));
-              
-              StaticJsonDocument<200> newjsonDoc;
 
-              
-              newjsonDoc["deviceType"] = deviceConfig.deviceType;
-              newjsonDoc["status"] = "OK";
-              newjsonDoc["message"] = "No GUI requested";
+              Serial.println("Parsing JSON...");
 
-              // Serializacja JSON do ciągu znaków
-              String newjsonString;
-              serializeJson(newjsonDoc, newjsonString);
+              for (JsonPair kv : jsonDoc.as<JsonObject>())
+              {
+                Serial.print(kv.key().c_str());
+                Serial.print(": ");
+                Serial.println(kv.value().as<String>());
+              }
 
-              // Wyślij JSON do klienta
-              client.print("HTTP/1.1 200 OK\r\n");
-              client.print("Content-Type: application/json\r\n");
-              client.print("Connection: close\r\n\r\n");
-              client.print(newjsonString);
+              if (jsonDoc["function"] == "lcd")
+              {
+                String value1 = jsonDoc["value1"].as<String>();
+                String value2 = jsonDoc["value2"].as<String>();
+                String value3 = jsonDoc["value3"].as<String>();
+                String value4 = jsonDoc["value4"].as<String>();
+                String value5 = jsonDoc["value5"].as<String>();
+                String value6 = jsonDoc["value6"].as<String>();
+                String value7 = jsonDoc["value7"].as<String>();
+                String value8 = jsonDoc["value8"].as<String>();
 
+                handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
+              }
+
+              if (jsonDoc["function"] == "builtinLed")
+              {
+                String ledState = jsonDoc["ledState"].as<String>();
+                if (ledState == "on")
+                {
+                  digitalWrite(LED_PIN, HIGH);
+                  logs = "LED is ON";
+                }
+                else if (ledState == "off")
+                {
+                  digitalWrite(LED_PIN, LOW);
+                  logs = "LED is OFF";
+                }
+                else
+                {
+                  logs = "Invalid LED state";
+                }
+              }
+              responseJson(client, "addInfoTest", 0, "typeTest", "requestIDTest");
               client.stop(); // Zamknij połączenie
-            }
-
-            else if (header.indexOf("GET /lcd") >= 0)
-            {
-              int start = header.indexOf(" ? ");
-              int var1Start = header.indexOf("value1=");
-              int var1Stop = header.indexOf("&", 0);
-              int var2Start = header.indexOf("value2=");
-              int var2Stop = header.indexOf("&", var1Stop + 1);
-              int var3Start = header.indexOf("value3=");
-              int var3Stop = header.indexOf("&", var2Stop + 1);
-              int var4Start = header.indexOf("value4=");
-              int var4Stop = header.indexOf("&", var3Stop + 1);
-              int var5Start = header.indexOf("value5=");
-              int var5Stop = header.indexOf("&", var4Stop + 1);
-              int var6Start = header.indexOf("value6=");
-              int var6Stop = header.indexOf("&", var5Stop + 1);
-              int var7Start = header.indexOf("value7=");
-              int var7Stop = header.indexOf("&", var6Stop + 1);
-              int var8Start = header.indexOf("value8=");
-              int var8Stop = header.indexOf(" HTTP/1.1");
-
-              String value1 = "IP:" + String(local_IP[0]) + "." + String(local_IP[1]) + "." + String(local_IP[2]) + "." + String(local_IP[3]);
-              // String value2 = WiFi.status();
-              //    WL_IDLE_STATUS      = 0,
-              //    WL_NO_SSID_AVAIL    = 1,
-              //    WL_SCAN_COMPLETED   = 2,
-              //    WL_CONNECTED        = 3,
-              //    WL_CONNECT_FAILED   = 4,
-              //    WL_CONNECTION_LOST  = 5,
-              //    WL_DISCONNECTED     = 6
-
-              // value1 = header.substring(var1Start + 7, var1Stop);
-              String value2 = header.substring(var2Start + 7, var2Stop);
-              String value3 = header.substring(var3Start + 7, var3Stop);
-              String value4 = header.substring(var4Start + 7, var4Stop);
-              String value5 = header.substring(var5Start + 7, var5Stop);
-              String value6 = header.substring(var6Start + 7, var6Stop);
-              String value7 = header.substring(var7Start + 7, var7Stop);
-              String value8 = header.substring(var8Start + 7, var8Stop);
-
-              logs = "changes on LCD:\n";
-              handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
-              sendJson("LCD", 0, "Log");
             }
             else
             {
               logs = "Page not Found";
             }
-            client.print(webGui.generator(webTableLCD, logs ));
-            sendJson("LCD", 0, "Log");  
             Serial.println("Client disconnected.");
             break;
           }
