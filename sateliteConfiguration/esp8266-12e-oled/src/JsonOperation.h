@@ -1,4 +1,4 @@
-//Supports sending json to server address. Requires deviceConfig from Configuration.h file
+// Supports sending json to server address. Requires deviceConfig from Configuration.h file
 
 void sendJson(String addInfo, int value, String type, String requestID = "")
 {
@@ -15,7 +15,14 @@ void sendJson(String addInfo, int value, String type, String requestID = "")
                       "\",\"type\":\"" + type +
                       "\",\"value\":" + String(value) + "}";
   Serial.println("Json to sent: " + jsonString);
-  Serial.println(http.POST(jsonString));
+  if (http.POST(jsonString) == -1)
+  {
+    Serial.println("Błąd wysyłania JSON-a: " + jsonString);
+  }
+  else
+  {
+    Serial.println("JSON wysłany pomyślnie: " + jsonString);
+  }
 }
 
 void responseJson(WiFiClient &client, String addInfo, int value, String type, String requestID = "")

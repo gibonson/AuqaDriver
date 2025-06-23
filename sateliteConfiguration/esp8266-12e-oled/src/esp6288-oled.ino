@@ -164,8 +164,8 @@ void loop()
                 String value8 = jsonDoc["value8"].as<String>();
 
                 addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
-                handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
                 responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
+                handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
               }
 
               else if (jsonDoc["function"] == "builtinLed")
