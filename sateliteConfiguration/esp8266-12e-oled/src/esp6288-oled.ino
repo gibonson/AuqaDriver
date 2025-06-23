@@ -8,10 +8,39 @@
 #include "JsonOperation.h"
 #include "OledOperation.h"
 #include "WebGui.h"
-String logs = "";
+String logBuffer = "";
 
 #define LED_PIN 2
 
+const int LOG_SIZE = 10;
+String logs[LOG_SIZE];
+int logIndex = 0;
+int logCount = 0;
+
+// Dodaje nowy wpis do logów (ring buffer)
+void addLog(const String entry)
+{
+  logs[logIndex] = entry;
+  logIndex = (logIndex + 1) % LOG_SIZE;
+  if (logCount < LOG_SIZE)
+    logCount++;
+}
+
+// Zwraca wszystkie logi jako jeden String (od najstarszego do najnowszego)
+String getLogs()
+{
+  String result = "";
+  int start = (logIndex + LOG_SIZE - logCount) % LOG_SIZE;
+  for (int i = 0; i < logCount; i++)
+  {
+    int idx = (start + i) % LOG_SIZE;
+    if (logs[idx].length() > 0)
+    { // Pomija puste wpisy
+      result += logs[idx] + "\n";
+    }
+  }
+  return result;
+}
 
 void setup()
 {
@@ -42,8 +71,8 @@ void setup()
   init_wifi();
   delay(500);
   init_oled();
-  logs = "Device startted successfully.\n";
-  sendJson("Device Start", 1, logs);
+  addLog("Device started");
+  sendJson("Device started", 1, "log");
 
   pinMode(LED_PIN, OUTPUT);
 }
@@ -73,10 +102,15 @@ void loop()
           {
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
-              client.print(webGui.generator(webTableLCD));
+              client.print(webGui.generator(webTableLCD, getLogs()));
               client.stop(); // Close the connection
             }
-            if (header.indexOf("json") >= 0)
+            else if (header.indexOf("logs") >= 0)
+            {
+              client.print(getLogs());
+              client.stop(); // Close the connection
+            }
+            else if (header.indexOf("json") >= 0)
             {
               String jsonString = ""; // Zmienna do przechowywania odebranego JSON-a
 
@@ -88,14 +122,14 @@ void loop()
 
               // Parsowanie odebranego JSON-a
               Serial.print(jsonString);
-              StaticJsonDocument<256> jsonDoc; // Rozmiar dokumentu zależy od wielkości JSON-a
+              StaticJsonDocument<400> jsonDoc; // Rozmiar dokumentu zależy od wielkości JSON-a
 
               // Parsowanie JSON
               DeserializationError error = deserializeJson(jsonDoc, jsonString);
 
               if (error)
               {
-                Serial.print("Błąd parsowania JSON: ");
+                Serial.print("Parsing JSON error: ");
                 Serial.println(error.c_str());
                 return;
               }
@@ -108,8 +142,17 @@ void loop()
                 Serial.print(": ");
                 Serial.println(kv.value().as<String>());
               }
+              if (!jsonDoc["requestID"].isNull())
+              {
+                addLog("Received requestID: " + jsonDoc["requestID"].as<String>());
+              }
+              else
+              {
+                addLog("No requestID in JSON (empyt or null)");
+                jsonDoc["requestID"] = "manual request";
+              }
 
-              if (jsonDoc["function"] == "lcd")
+              if (jsonDoc["function"] == "lcd") // Oled display fun
               {
                 String value1 = jsonDoc["value1"].as<String>();
                 String value2 = jsonDoc["value2"].as<String>();
@@ -120,34 +163,61 @@ void loop()
                 String value7 = jsonDoc["value7"].as<String>();
                 String value8 = jsonDoc["value8"].as<String>();
 
+                addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
                 handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
+                responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
               }
 
-              if (jsonDoc["function"] == "builtinLed")
+              else if (jsonDoc["function"] == "builtinLed")
               {
                 String ledState = jsonDoc["ledState"].as<String>();
                 if (ledState == "on")
                 {
                   digitalWrite(LED_PIN, HIGH);
-                  logs = "LED is ON";
+                  addLog("LED is ON");
+                  responseJson(client, "LED ON", 1, "log", jsonDoc["requestID"].as<String>());
                 }
                 else if (ledState == "off")
                 {
                   digitalWrite(LED_PIN, LOW);
-                  logs = "LED is OFF";
+                  addLog("LED is OFF");
+                  responseJson(client, "LED OFF", 1, "log", jsonDoc["requestID"].as<String>());
                 }
                 else
                 {
-                  logs = "Invalid LED state";
+                  addLog("Unknown LED state: " + ledState);
+                  responseJson(client, "Unknown LED state", 0, "error", jsonDoc["requestID"].as<String>());
                 }
               }
-              responseJson(client, "addInfoTest", 0, "typeTest", "requestIDTest");
-              client.stop(); // Zamknij połączenie
+              else if (jsonDoc["function"] == "getDHT11")
+              {
+                float newT = random(20, 30); // Simulated temperature value
+                float newH = random(40, 60); // Simulated humidity value
+                addLog("Simulated DHT11 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
+                sendJson("DHT11 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
+                sendJson("DHT11 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
+                responseJson(client, "DHT11 data", 1, "log", jsonDoc["requestID"].as<String>());
+              }
+              else if (jsonDoc["function"] == "getDS18B20")
+              {
+                float newT = random(20, 30); // Simulated temperature value
+                addLog("Simulated DS18B20 data: Temperature = " + String(newT) + "°C");
+                sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
+                responseJson(client, "DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
+              }
+              else
+              {
+                addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());
+                responseJson(client, "Unknown function", 0, "error", jsonDoc["requestID"].as<String>());
+              }
+              client.stop(); // Close the connection
             }
             else
             {
-              logs = "Page not Found";
+              addLog("Unknown request");
+              client.stop(); // Close the connection
             }
+            client.stop(); // Zamknij połączenie
             Serial.println("Client disconnected.");
             break;
           }

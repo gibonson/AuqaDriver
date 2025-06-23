@@ -10,6 +10,7 @@ void sendJson(String addInfo, int value, String type, String requestID = "")
                       String(local_IP[2]) + "." +
                       String(local_IP[3]) +
                       "\",\"deviceName\":\"" + deviceConfig.deviceName +
+                      "\",\"requestID\":\"" + requestID +
                       "\",\"addInfo\":\"" + addInfo +
                       "\",\"type\":\"" + type +
                       "\",\"value\":" + String(value) + "}";

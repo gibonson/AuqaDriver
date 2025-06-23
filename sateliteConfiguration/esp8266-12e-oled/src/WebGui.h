@@ -34,27 +34,39 @@ public:
                           "  .then(response => response.json())"
                           "  .then(data => {"
                           "    console.log('Sukces:', data);"
-                          "alert('JSON sent successfully!');" // Success alert"
+                          "    alert('JSON sent successfully!');"
+                          "    refreshLogs();" // <-- Refresh logs after success
                           "  })"
                           "  .catch(error => {"
                           "    console.error('Błąd:', error);"
-                          "alert('Error sending JSON: ' + error.message);" // Error alert"
+                          "    alert('Error sending JSON: ' + error.message);"
+                          "    refreshLogs();" // <-- Refresh logs after error
                           "  });"
                           "});"
                           "});"
+                          "function refreshLogs() {"
+                          "  fetch('/logs')"
+                          "    .then(response => response.text())"
+                          "    .then(data => {"
+                          "      document.getElementById('logs').value = data;"
+                          "    })"
+                          "    .catch(error => {"
+                          "      console.error('Error fetching logs:', error);"
+                          "    });"
+                          "}"
                           "</script>"
                           "</body>\n</html>\n";
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
   const String HTML_ERROR = "</br>\n";
 
-  String generator(String webContent[31][4], String logs = "no logs")
+  String generator(String webContent[40][4], String logs = "no logs")
   {
     String html = "";
     html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
-    html = html + "<div class='container'>" + "<textarea readonly name='logs' rows='4' cols='80'>" + logs + "</textarea>"
+    html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea>"
                                                                                                             "</div>";
 
-    for (int htmlLine = 1; htmlLine < 31; htmlLine++)
+    for (int htmlLine = 1; htmlLine < 40; htmlLine++)
     {
       // Serial.println(webContent[htmlLine][0] + webContent[htmlLine][1] + webContent[htmlLine][2] + webContent[htmlLine][3]);
       if (webContent[htmlLine][0] == "hHtml")
