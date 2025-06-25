@@ -2,6 +2,11 @@
 #include <LittleFS.h>    // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
+#include <DHT.h>                // DHT sensor library
+#include <OneWire.h>            // OneWire library
+#include <RCSwitch.h>           // RF remote control library
+#include <DallasTemperature.h>  // DS18B20 Dallas Temperature library
+
 // Project files
 #include "Configuration.h"
 #include "WifiOperation.h"
@@ -189,14 +194,14 @@ void loop()
                   responseJson(client, "Unknown LED state", 0, "error", jsonDoc["requestID"].as<String>());
                 }
               }
-              else if (jsonDoc["function"] == "getDHT11")
+              else if (jsonDoc["function"] == "getDHT22")
               {
                 float newT = random(20, 30); // Simulated temperature value
                 float newH = random(40, 60); // Simulated humidity value
-                addLog("Simulated DHT11 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
-                sendJson("DHT11 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
-                sendJson("DHT11 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
-                responseJson(client, "DHT11 data", 1, "log", jsonDoc["requestID"].as<String>());
+                addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
+                sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
+                sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
+                responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
               }
               else if (jsonDoc["function"] == "getDS18B20")
               {
