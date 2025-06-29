@@ -13,10 +13,11 @@ class ResponseTrigger:
             self.deviceIP = requestData["deviceIP"]
             self.type = requestData["type"]
             self.value = requestData["value"]
+            self.requestID = requestData["requestID"]
 
             if IgnoreTrigger(requestData=requestData).get_request_to_ignore() == False:
-                ArchiveAdder(requestData=requestData)
-                NotificationTrigger(requestData=requestData)
+               ArchiveAdder(requestData=requestData)
+               NotificationTrigger(requestData=requestData)
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")

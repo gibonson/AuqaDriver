@@ -16,7 +16,7 @@ class Archive(db.Model):
     requestID = db.Column(db.String())
 
 
-    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, comment, requestID=None):
+    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, comment=None, requestID=None):
         self.timestamp = timestamp
         self.deviceIP = deviceIP
         self.deviceName = deviceName
@@ -83,12 +83,9 @@ class ArchiveAdder():
             deviceIP = requestData["deviceIP"]
             type = requestData["type"]
             value = requestData["value"]
-            if "comment" in requestData:
-                comment = requestData["comment"]
-            else:
-                comment = "-"
+            requestID = requestData["requestID"]
             add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, comment=comment)
+                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, requestID=requestID)
             db.session.add(add_to_archiwe)
             db.session.commit()
 

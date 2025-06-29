@@ -10,8 +10,9 @@ from mainApp import app, logger
 
 
 class WebContentCollector:
-    def __init__(self, id):
+    def __init__(self, id, requestID="Manual request"):
         self.id = id
+        self.requestID = requestID
 
     def send_request(self):
         event = Event.query.get(self.id)
@@ -20,22 +21,27 @@ class WebContentCollector:
             httpLink = event.eventLink
             print("httpLink: " + httpLink)
             try:
-                response = requests.get(httpLink,timeout=5)
-                response.raise_for_status()  # Sprawdza, czy odpowiedź jest poprawna
+                response = requests.get(httpLink, timeout=5)
+
                 print("response: " + str(response.content))
-                return response.content.decode('utf-8')  # Zwraca odpowiedź w formacie tekstu
+                return response.content.decode(
+                    "utf-8"
+                )  # Zwraca odpowiedź w formacie tekstu
             except requests.exceptions.Timeout:
+
                 logger.error(f"Timeout error while trying to reach {httpLink}")
                 return {"error": "Connection timeout"}
             except requests.exceptions.RequestException as e:
+
                 logger.error(f"Request error: {e} while trying to reach {httpLink}")
-                return {"error": "Connection error"}    
-            
+                return {"error": "Connection error"}
+
         else:
             device = Device.query.get(event.deviceId)
             deviceIP = device.deviceIP
             deviceSSL = device.deviceSSL
             devicePort = device.devicePort
+            deviceName = device.deviceName
             deviceProtocol = device.deviceProtocol
             eventLink = event.eventLink
 
@@ -46,35 +52,85 @@ class WebContentCollector:
             print(received_values)
             print(placeholders)
             jsonEvent = self.inject_values_into_link(eventLink, received_values)
+            jsonEvent = json.loads(jsonEvent)
+            jsonEvent["requestID"] = self.requestID
             if deviceProtocol == "json":
-                httpLink = deviceSSL + "://" + deviceIP
+                httpLink = deviceSSL + "://" + deviceIP + "/json"
                 print("httpLink: " + httpLink)
-                print(type(jsonEvent))
-                # jsonEvent = {'somekey': 'somevalue'}
-                # data = {"name": "Anna", "age": 25}
+                print("type of meaasge: " + str(type(jsonEvent)))
                 print(jsonEvent)
-                # response = requests.post("http://192.168.0.196", json=data) 
+                attempt = 1
+                for attempt in range(5):
+                    try:
+                        attempt += 1
+                        response = requests.post(httpLink, json=jsonEvent, timeout=5)
+                        print(response.status_code)
+                        print(
+                            response.raise_for_status()
+                        )  # Sprawdza, czy odpowiedź jest poprawna
+                        print("response: " + str(response.content))
+                        print("response:", response.text)
+                        if response.status_code == 200:
+                            logger.error(
+                                f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {httpLink}"
+                            )
+                            requestData =response.json()
+                            requestData["requestID"] = self.requestID
+                            ResponseTrigger(requestData)
 
+                            break
+                        else:
+                            logger.error(
+                                f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {httpLink}"
+                            )
+                            requestData = {
+                                "requestID": self.requestID,
+                                "addInfo": "Other  error "
+                                + str(response.status_code)
+                                + ". Attempt:"
+                                + str(attempt),
+                                "deviceIP": deviceIP,
+                                "deviceName": deviceName,
+                                "type": "Error",
+                                "value": 0,
+                            }
+                        ResponseTrigger(requestData)
 
-                try:
-                    response = requests.post(httpLink, json=jsonEvent)
-                    print(response.status_code)
-                    # response.raise_for_status()  # Sprawdza, czy odpowiedź jest poprawna
-                    print("response: " + str(response.content))
-                    print("Odpowiedź:", response.text)
-                    return response.json()  # Zwraca odpowiedź w formacie JSON
-                except requests.exceptions.Timeout:
-                    logger.error(f"Timeout error while trying to reach {httpLink}")
-                    return {"error": "Connection timeout"}
-                except requests.exceptions.RequestException as e:
-                    logger.error(f"Request error: {e} while trying to reach {httpLink}")
-                    return {"error": "Connection error"}
+                    except requests.exceptions.Timeout:
+
+                        logger.error(
+                            f"Attempt: {attempt}. Timeout error while trying to reach {httpLink}"
+                        )
+                        requestData = {
+                            "requestID": self.requestID,
+                            "addInfo": "Timmeout error. Attempt:" + str(attempt),
+                            "deviceIP": deviceIP,
+                            "deviceName": deviceName,
+                            "type": "Error",
+                            "value": 0,
+                        }
+                        ResponseTrigger(requestData)
+
+                    except requests.exceptions.RequestException as e:
+
+                        logger.error(
+                            f"Attempt: {attempt}. Request error: {e} while trying to reach {httpLink}"
+                        )
+                        requestData = {
+                            "requestID": self.requestID,
+                            "addInfo": "Other  error. Attempt:" + str(attempt),
+                            "deviceIP": deviceIP,
+                            "deviceName": deviceName,
+                            "type": "Error",
+                            "value": 0,
+                        }
+                        ResponseTrigger(requestData)
+
             elif deviceProtocol == "http":
                 # to development
                 httpLink = (
                     deviceSSL + "://" + deviceIP + ":" + str(devicePort) + eventLink
                 )
-        # return httpLink
 
     # def send_json(self, jsonData=None):
     #     if jsonData is None:
@@ -91,8 +147,8 @@ class WebContentCollector:
     #     except requests.exceptions.RequestException as e:
     #         logger.error(f"Request error: {e} while trying to reach {self.httpAddress}")
     #         return {"error": "Connection error"}
-    
-        #                 requestData = {'addInfo': 'Unrecognized device', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
+
+    #                 requestData = {'addInfo': 'Unrecognized device', 'deviceIP': self.deviceIP, 'deviceName': '-', 'type': 'Error', 'value': 0}
     #                 ResponseTrigger(requestData)
 
     def extract_placeholders(eventLink):
@@ -140,6 +196,3 @@ class PlaceholderGetter:
             placeholder: self.dashboard_data.get_placeholder_value(placeholder)
             for placeholder in self.placeholders
         }
-
-
-
