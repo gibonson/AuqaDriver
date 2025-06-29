@@ -14,16 +14,14 @@ class AddEventLink(FlaskForm):
         AddEventLink.deviceIdList.clear()
         with app.app_context():
             devices = Device.query.filter(Device.deviceStatus=="Ready").all()
+            AddEventLink.deviceIdList.append((0, "External Link"))
             for device in devices:
                 AddEventLink.deviceIdList.append(
                     (device.id, device.deviceIP + " " + device.deviceName))
 
-    def validate_eventLink(self, eventLink_to_check):
-        if "/"  not in eventLink_to_check.data: 
-            raise ValidationError('eventLink: no / in eventLink')
 
     deviceId = SelectField(label='deviceId', choices = deviceIdList, validators=[DataRequired()])
-    eventLink = StringField(label='eventLink - form values "value1=1&value2=1&value3=1&value4=1', validators= [DataRequired(),Length(min=1, max=200, message='eventLink: must be between 1 and 60 characters.')])
+    eventLink = StringField(label='eventLink with \ or json or full address')
     eventDescription = StringField(label='eventDescription', validators = [DataRequired(),Length(min=3, max=100, message='eventDescription: must be between 3 and 20 characters.')])
     eventStatus = SelectField(label='eventStatus', choices = eventStatusList, validators=[DataRequired()])
     eventType = HiddenField(default="Link")
@@ -52,13 +50,3 @@ class AddEventReport(FlaskForm):
     eventType = HiddenField(default="Report")
     reportIds = SelectMultipleField(coerce=int, label='reportIds', choices=archiveReportIdList, validators=[DataRequired()])
     submitReport = SubmitField(label='Add event')
-
-class AddEventApi(FlaskForm):
-    eventStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
-    deviceId = HiddenField(default=0)
-    eventLink = StringField(label='with https', validators= [DataRequired(),Length(min=1, max=200, message='eventLink: must be between 1 and 60 characters.')])
-    eventDescription = StringField(label='eventDescription', validators = [DataRequired(),Length(min=3, max=100, message='eventDescription: must be between 3 and 20 characters.')])
-    eventStatus = SelectField(label='eventStatus', choices = eventStatusList, validators=[DataRequired()])
-    eventType = HiddenField(default="Api")
-    reportIds = HiddenField(default="-")
-    submitApi = SubmitField(label='Add event')   

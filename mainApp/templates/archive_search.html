@@ -50,6 +50,7 @@ AquaDriver - Archive
         <tr>
             <th>#</th>
             <th>Timestamp</th>
+            <th>requestID</th>
             <th>Device IP</th>
             <th>Device Name</th>
             <th>Additional Info</th>
@@ -64,6 +65,7 @@ AquaDriver - Archive
         <tr>
             <td>{{archiveRow.id}}</td>
             <td>{{datetime.fromtimestamp(archiveRow.timestamp).strftime("%Y-%m-%d %H:%M:%S")}}</td>
+            <td>{{archiveRow.requestID}}</td>
             <td>{{archiveRow.deviceIP}}</td>
             <td>{{archiveRow.deviceName}}</td>
             <td>{{archiveRow.addInfo}}</td>

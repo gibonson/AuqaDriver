@@ -4,7 +4,7 @@
 
 #include <DHT.h>                // DHT sensor library
 #include <OneWire.h>            // OneWire library
-#include <RCSwitch.h>           // RF remote control library
+//#include <RCSwitch.h>           // RF remote control library to fix
 #include <DallasTemperature.h>  // DS18B20 Dallas Temperature library
 
 // Project files
@@ -82,9 +82,11 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
 }
 
+  WebGui webGui;
+
+
 void loop()
 {
-  WebGui webGui;
   WiFiClient client = server.available(); // Listen for incoming clients
 
   if (client)
@@ -108,12 +110,12 @@ void loop()
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
               client.print(webGui.generator(webTableLCD, getLogs()));
-              client.stop(); // Close the connection
+              client.stop(); // Close the connection (1)
             }
             else if (header.indexOf("logs") >= 0)
             {
               client.print(getLogs());
-              client.stop(); // Close the connection
+              client.stop(); // Close the connection (2)
             }
             else if (header.indexOf("json") >= 0)
             {
@@ -136,6 +138,7 @@ void loop()
               {
                 Serial.print("Parsing JSON error: ");
                 Serial.println(error.c_str());
+                client.stop(); // Close the connection (3) - missing in original, should be added here to close on error
                 return;
               }
 
@@ -215,14 +218,14 @@ void loop()
                 addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());
                 responseJson(client, "Unknown function", 0, "error", jsonDoc["requestID"].as<String>());
               }
-              client.stop(); // Close the connection
+              client.stop(); // Close the connection (4)
             }
             else
             {
               addLog("Unknown request");
-              client.stop(); // Close the connection
+              client.stop(); // Close the connection (5)
             }
-            client.stop(); // Zamknij połączenie
+            // client.stop(); // Zamknij połączenie (6) -- this is redundant, already called above in all branches
             Serial.println("Client disconnected.");
             break;
           }
@@ -238,7 +241,8 @@ void loop()
       }
     }
     header = "";   // Clear the header variable
-    client.stop(); // Close the connection
+    delay(10);
+    client.stop(); // Close the connection (7) -- this is a final safety, but may be redundant if already closed above
     Serial.println("Client disconnected.\n");
   }
 }

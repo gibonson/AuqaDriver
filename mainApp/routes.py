@@ -14,13 +14,12 @@ from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_archive_ignore import AddArchiveIgnore
 from mainApp.forms.add_device import AddDevice
-from mainApp.forms.add_event import AddEventLink, AddEventReport, AddEventApi
+from mainApp.forms.add_event import AddEventLink, AddEventReport
 from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
-from mainApp.forms.charts_search import ChartsSearch
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
 from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
@@ -30,8 +29,7 @@ from mainApp.models.notification import  NotificationLister, NotificationAdder, 
 from mainApp.models.scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
-from mainApp.web_operations import LinkCreator, WebContentCollector
-from mainApp.charts import Table
+from mainApp.web_operations import WebContentCollector
 from mainApp.response_operation import ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
 from mainApp.device_status_checker import DeviceStatusChecker
@@ -119,42 +117,39 @@ def device_status_checker_restart():
 @app.route("/event_list", methods=['POST', 'GET'])
 def event_list():
     AddEventLink.deviceIdListUpdate()
-    formApi = AddEventApi()
-    formLink = AddEventLink()
+    formRequest = AddEventLink()
     AddEventReport.reportIdListUpdate()
     formReport = AddEventReport()
     if request.form.get("eventType") == "Link":
-        if validate_and_log_form(formLink):
+        if validate_and_log_form(formRequest):
             EventAdder(request.form.to_dict(flat=False))
     if request.form.get("eventType") == "Report":
         if validate_and_log_form(formReport):
             EventAdder(request.form.to_dict(flat=False))
-    if request.form.get("eventType") == "Api":
-        if validate_and_log_form(formApi):
-            EventAdder(request.form.to_dict(flat=False))
     devices = DeviceListerAll().get_list()
     events = EventLister().get_list()
-    return render_template_with_addons("event_list.html", Events=events, devices=devices, formLink=formLink, formReport=formReport, formApi=formApi)
+    return render_template_with_addons("event_list.html", Events=events, devices=devices, formRequest=formRequest, formReport=formReport)
 
-@app.route("/event_link_creator/<id>")
-def event_link_creator(id):
-    linkCreator = LinkCreator(id).functions_list_link_creator()
-    flash(Markup('<a href="' + linkCreator + '">' +
-          linkCreator + '</a>'), category='success')
-    return redirect(url_for("event_list"))
+# @app.route("/event_link_creator/<id>")
+# def event_link_creator(id):
+#     linkCreator = LinkCreator(id).functions_list_link_creator()
+#     flash(Markup('<a href="' + linkCreator + '">' +
+#           linkCreator + '</a>'), category='success')
+#     return redirect(url_for("event_list"))
 
-@app.route("/event_api_collector/<id>")
-def event_api_collector(id):
-    linkCreator = LinkCreator(id).functions_api_link_creator()
-    flash(Markup('<a href="' + linkCreator + '">' +
-          linkCreator + '</a>'), category='success')
-    return redirect(url_for("event_list"))
+# # @app.route("/event_api_collector/<id>")
+# # def event_api_collector(id):
+# #     linkCreator = LinkCreator(id).functions_api_link_creator()
+# #     flash(Markup('<a href="' + linkCreator + '">' +
+# #           linkCreator + '</a>'), category='success')
+# #     return redirect(url_for("event_list"))
 
 @app.route("/event_web_content_collector/<id>")
 def event_web_content_collector(id):
-    WebContentCollector(LinkCreator(
-        id).functions_list_link_creator()).collect()
-    flash("Check out some recent records", category='success')
+    # WebContentCollector(LinkCreator(
+    #     id).functions_list_link_creator()).collect()
+    # flash("Check out some recent records", category='success')
+    WebContentCollector(id).send_request()
     return redirect(url_for("archive_search"))
 
 @app.route("/event_remove/<id>")
@@ -260,24 +255,6 @@ def start_job(runschedulerId):
         sched.start()
     sched_start(sched, runschedulerId)
     return redirect(url_for("get_jobs"))
-
-
-# -----------------------------------------
-# charts
-# -----------------------------------------
-
-@app.route("/charts", methods=['POST', 'GET'])
-def charts():
-    ChartsSearch.archive_search_lists_update()
-    form = ChartsSearch()
-    currentDate = datetime.now()
-    formatedCurrentDate = currentDate.strftime("%Y-%m-%d %H:%M")
-    minusOneDayDate = datetime.now() - timedelta(days=1)
-    formatedMinusOneDayDate = minusOneDayDate.strftime("%Y-%m-%d %H:%M")
-    chart = Table(delta=10, type="%")
-    chart.reportGenerator()
-    final_chart = chart.get_final_results()
-    return render_template_with_addons("charts.html", final_chart=final_chart, datetime=datetime, form=form, formatedMinusOneDayDate=formatedMinusOneDayDate, formatedCurrentDate=formatedCurrentDate)
 
 
 # -----------------------------------------

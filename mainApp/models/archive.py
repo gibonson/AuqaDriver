@@ -13,9 +13,10 @@ class Archive(db.Model):
     value = db.Column(db.Integer())
     type = db.Column(db.String())
     comment = db.Column(db.String())
+    requestID = db.Column(db.String())
 
 
-    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, comment):
+    def __init__(self, timestamp, deviceIP, deviceName, addInfo, value, type, comment, requestID=None):
         self.timestamp = timestamp
         self.deviceIP = deviceIP
         self.deviceName = deviceName
@@ -23,6 +24,7 @@ class Archive(db.Model):
         self.value = value
         self.type = type
         self.comment = comment
+        self.requestID = requestID
 
 
 class ArchiveLister():

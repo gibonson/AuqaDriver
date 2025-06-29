@@ -19,28 +19,64 @@ AquaDriver - Device List
             <table>
                 <tr>
                     <th>
-                        {{ form.deviceName.label() }}
+                        {{ form.deviceSSL.label() }}
                     </th>
                     <td>
-                        {{ form.deviceName(class="form-control" , placeholder = 'deviceName') }}
-                        <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                        {{ form.deviceSSL(class="form-select", placeholder='SSL') }}
+                        <small class="form-text text-danger">{{ form.deviceSSL.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <th>
                         {{ form.deviceIP.label() }}
-                    </td>
+                    </th>
                     <td>
-                        {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP') }}
+                        {{ form.deviceIP(class="form-control", placeholder='IP Address') }}
                         <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
+                    <th>
+                        {{ form.devicePort.label() }}
+                    </th>
                     <td>
-                        {{ form.deviceStatus.label() }}
+                        {{ form.devicePort(class="form-control", placeholder='Port') }}
+                        <small class="form-text text-danger">{{ form.devicePort.errors[0] }}</small>
                     </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.deviceProtocol.label() }}
+                    </th>
                     <td>
-                        {{ form.deviceStatus(class="form-select" , placeholder = 'deviceStatus') }}
+                        {{ form.deviceProtocol(class="form-select", placeholder='Protocol') }}
+                        <small class="form-text text-danger">{{ form.deviceProtocol.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.deviceName.label() }}
+                    </th>
+                    <td>
+                        {{ form.deviceName(class="form-control", placeholder='Device Name') }}
+                        <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.deviceToScan.label() }}
+                    </th>
+                    <td>
+                        {{ form.deviceToScan(class="form-select", placeholder='To Scan') }}
+                        <small class="form-text text-danger">{{ form.deviceToScan.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        {{ form.deviceStatus.label() }}
+                    </th>
+                    <td>
+                        {{ form.deviceStatus(class="form-select", placeholder='Status') }}
                         <small class="form-text text-danger">{{ form.deviceStatus.errors[0] }}</small>
                     </td>
                 </tr>
@@ -54,7 +90,11 @@ AquaDriver - Device List
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">SSL</th>
             <th scope="col">IP</th>
+            <th scope="col">Port</th>
+            <th scope="col">Protocol</th>
+            <th scope="col">To Scan</th>
             <th scope="col">Name</th>
             <th scope="col">Status</th>
             <th scope="col">Action</th>
@@ -64,7 +104,11 @@ AquaDriver - Device List
         {% for device in devices %}
         <tr>
             <th>{{device.id}}</th>
+            <th>{{device.deviceSSL}}</th>
             <td>{{device.deviceIP}}</td>
+            <td>{{device.devicePort}}</td>
+            <td>{{device.deviceProtocol}}</td>
+            <td>{{device.deviceToScan}}</td>
             <td>{{device.deviceName}}</td>
             <td>{{device.deviceStatus}}</td>
             <td>
@@ -93,9 +137,9 @@ AquaDriver - Device List
                         <div class="modal-body">
                             {{ form.hidden_tag() }}
                             <div class="mb-3">
-                                {{ form.deviceName.label(class="form-label") }}
-                                {{ form.deviceName(class="form-control", value=device.deviceName) }}
-                                <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                                {{ form.deviceSSL.label(class="form-label") }}
+                                {{ form.deviceSSL(class="form-select", value=device.deviceSSL) }}
+                                <small class="form-text text-danger">{{ form.deviceSSL.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
                                 {{ form.deviceIP.label(class="form-label") }}
@@ -103,8 +147,28 @@ AquaDriver - Device List
                                 <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
+                                {{ form.devicePort.label(class="form-label") }}
+                                {{ form.devicePort(class="form-control", value=device.devicePort) }}
+                                <small class="form-text text-danger">{{ form.devicePort.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.deviceProtocol.label(class="form-label") }}
+                                {{ form.deviceProtocol(class="form-select", value=device.deviceProtocol) }}
+                                <small class="form-text text-danger">{{ form.deviceProtocol.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.deviceName.label(class="form-label") }}
+                                {{ form.deviceName(class="form-control", value=device.deviceName) }}
+                                <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.deviceToScan.label(class="form-label") }}
+                                {{ form.deviceToScan(class="form-select", value=device.deviceToScan) }}
+                                <small class="form-text text-danger">{{ form.deviceToScan.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
                                 {{ form.deviceStatus.label(class="form-label") }}
-                                {{ form.deviceStatus(class="form-select") }}
+                                {{ form.deviceStatus(class="form-select", value=device.deviceStatus) }}
                                 <small class="form-text text-danger">{{ form.deviceStatus.errors[0] }}</small>
                             </div>
                         </div>

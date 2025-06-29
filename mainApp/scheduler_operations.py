@@ -1,4 +1,4 @@
-from mainApp.web_operations import WebContentCollector, LinkCreator
+from mainApp.web_operations import WebContentCollector
 from mainApp.report_operations import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
@@ -38,9 +38,9 @@ def sched_start(sched, schedulerIdToRun = None):
             logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
         if eventList[int(eventScheduler.eventId)-1].eventType  == "Link":
             job_type = "job_collector"
-            linkCreator = LinkCreator(eventScheduler.eventId)
-            http_link =  linkCreator.functions_list_link_creator()
-            logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
+            # linkCreator = LinkCreator(eventScheduler.eventId)
+            # http_link =  linkCreator.functions_list_link_creator()
+            # logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
 
         trigger = eventScheduler.trigger
         day = eventScheduler.day
@@ -50,7 +50,7 @@ def sched_start(sched, schedulerIdToRun = None):
         second = eventScheduler.second
 
         logger.debug(f"schedulerId = {scheduler_id} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
-        add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
+        # add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
 
 
 def add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second):
