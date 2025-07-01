@@ -6,10 +6,10 @@ from mainApp.models.device import Device
 from mainApp.models.event import Event, EventLister
 from mainApp.models.scheduler import EventScheduler, EventSchedulerLister
 
-def job_collector(http_address):
-   logger.info(f"Job collects: {http_address}")
-   webContentCollector = WebContentCollector(http_address)
-   webContentCollector.collect()
+def job_collector(scheduler_id):
+   logger.info(f"Job collects: {scheduler_id}")
+   webContentCollector = WebContentCollector(scheduler_id)
+   webContentCollector.collector()
    logger.info(f"Job collected")
 
 
@@ -38,6 +38,7 @@ def sched_start(sched, schedulerIdToRun = None):
             logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
         if eventList[int(eventScheduler.eventId)-1].eventType  == "Link":
             job_type = "job_collector"
+            http_link = eventScheduler.eventId
             # linkCreator = LinkCreator(eventScheduler.eventId)
             # http_link =  linkCreator.functions_list_link_creator()
             # logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
@@ -50,10 +51,11 @@ def sched_start(sched, schedulerIdToRun = None):
         second = eventScheduler.second
 
         logger.debug(f"schedulerId = {scheduler_id} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
-        # add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
+        add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
 
 
 def add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second):
+    print("Adding job to scheduler")
     try:
         if trigger == "interval":
             sched.add_job(id=scheduler_id, func=globals()[job_type], args=[http_link], trigger=trigger, hours=hour, minutes=minute, seconds=second, max_instances=10)

@@ -2,10 +2,10 @@
 #include <LittleFS.h>    // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
-#include <DHT.h>                // DHT sensor library
-#include <OneWire.h>            // OneWire library
-//#include <RCSwitch.h>           // RF remote control library to fix
-#include <DallasTemperature.h>  // DS18B20 Dallas Temperature library
+#include <DHT.h>     // DHT sensor library
+#include <OneWire.h> // OneWire library
+// #include <RCSwitch.h>           // RF remote control library to fix
+#include <DallasTemperature.h> // DS18B20 Dallas Temperature library
 
 // Project files
 #include "Configuration.h"
@@ -82,8 +82,7 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
 }
 
-  WebGui webGui;
-
+WebGui webGui;
 
 void loop()
 {
@@ -115,6 +114,11 @@ void loop()
             else if (header.indexOf("logs") >= 0)
             {
               client.print(getLogs());
+              client.stop(); // Close the connection (2)
+            }
+            else if (header.indexOf("status") >= 0)
+            {
+              responseJson(client, "Connection ok", 1, "log", "Device Status");
               client.stop(); // Close the connection (2)
             }
             else if (header.indexOf("json") >= 0)
@@ -157,7 +161,7 @@ void loop()
               else
               {
                 addLog("No requestID in JSON (empyt or null)");
-                jsonDoc["requestID"] = "manual request";
+                jsonDoc["requestID"] = "Device request";
               }
 
               if (jsonDoc["function"] == "lcd") // Oled display fun
@@ -182,19 +186,19 @@ void loop()
                 if (ledState == "on")
                 {
                   digitalWrite(LED_PIN, HIGH);
-                  addLog("LED is ON");
-                  responseJson(client, "LED ON", 1, "log", jsonDoc["requestID"].as<String>());
+                  addLog("builtinLed - ON");
+                  responseJson(client, "builtinLed ON", 1, "log", jsonDoc["requestID"].as<String>());
                 }
                 else if (ledState == "off")
                 {
                   digitalWrite(LED_PIN, LOW);
                   addLog("LED is OFF");
-                  responseJson(client, "LED OFF", 1, "log", jsonDoc["requestID"].as<String>());
+                  responseJson(client, "builtinLed OFF", 1, "log", jsonDoc["requestID"].as<String>());
                 }
                 else
                 {
                   addLog("Unknown LED state: " + ledState);
-                  responseJson(client, "Unknown LED state", 0, "error", jsonDoc["requestID"].as<String>());
+                  responseJson(client, "Unknown builtinLed state", 0, "error", jsonDoc["requestID"].as<String>());
                 }
               }
               else if (jsonDoc["function"] == "getDHT22")
@@ -202,16 +206,16 @@ void loop()
                 float newT = random(20, 30); // Simulated temperature value
                 float newH = random(40, 60); // Simulated humidity value
                 addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
+                responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
                 sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
                 sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
-                responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
               }
               else if (jsonDoc["function"] == "getDS18B20")
               {
                 float newT = random(20, 30); // Simulated temperature value
                 addLog("Simulated DS18B20 data: Temperature = " + String(newT) + "°C");
-                sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
                 responseJson(client, "DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
+                sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
               }
               else
               {
@@ -225,7 +229,6 @@ void loop()
               addLog("Unknown request");
               client.stop(); // Close the connection (5)
             }
-            // client.stop(); // Zamknij połączenie (6) -- this is redundant, already called above in all branches
             Serial.println("Client disconnected.");
             break;
           }
@@ -240,9 +243,11 @@ void loop()
         }
       }
     }
-    header = "";   // Clear the header variable
+    header = ""; // Clear the header variable
     delay(10);
     client.stop(); // Close the connection (7) -- this is a final safety, but may be redundant if already closed above
     Serial.println("Client disconnected.\n");
   }
+  // Add a delay here to slow down requests and avoid error 104
+  delay(1000); // 1 second delay between handling clients
 }

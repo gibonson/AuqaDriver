@@ -84,8 +84,9 @@ class ArchiveAdder():
             type = requestData["type"]
             value = requestData["value"]
             requestID = requestData["requestID"]
+            comment = requestData["comment"] if "comment" in requestData else None
             add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, requestID=requestID)
+                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, requestID=requestID, comment=comment)
             db.session.add(add_to_archiwe)
             db.session.commit()
 

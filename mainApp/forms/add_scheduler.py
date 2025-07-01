@@ -27,11 +27,12 @@ class AddEventScheduler(FlaskForm):
                 if event.eventType == "Report":
                     AddEventScheduler.eventIdList.append((str(event.id), "Report: " + str(event.reportIds) + " " + str(event.eventDescription)))
                 elif event.eventType == "Link":
-                    AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+                    if event.deviceId != 0:
+                        AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
                         event.eventLink) + " " + str(event.eventDescription)))
-                elif event.eventType == "Api":
-                    print('test')
-                     
+                    elif event.deviceId == 0:
+                        AddEventScheduler.eventIdList.append((str(event.id), "External link: " + str(event.eventLink) + " " + str(event.eventDescription)))
+
 
     
     def validate_schedulerId(self, schedulerId_to_check):

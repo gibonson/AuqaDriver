@@ -146,10 +146,8 @@ def event_list():
 
 @app.route("/event_web_content_collector/<id>")
 def event_web_content_collector(id):
-    # WebContentCollector(LinkCreator(
-    #     id).functions_list_link_creator()).collect()
-    # flash("Check out some recent records", category='success')
-    WebContentCollector(id).send_request()
+    WebContentCollector(id, requestID= "M").collector()
+    flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
 
 @app.route("/event_remove/<id>")
@@ -428,7 +426,7 @@ def archive_add_manually():
         requestDataRaw = request.form.to_dict(flat=False)
         requestDataRawList = requestDataRaw["device"][0].split(" -> ")
         requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRawList[0],
-                       'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0]}
+                       'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0], 'requestID': 'M' + str(int(datetime.now().timestamp()))}
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
 
