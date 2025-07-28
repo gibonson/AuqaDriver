@@ -17,8 +17,10 @@ class WebContentCollector:
     def collector(self):
         with app.app_context():
             event = Event.query.get(self.id)
-
-            if event.deviceId == 0:
+            if event is None:
+                print("Event not found")
+                response = requests.get(httpLink, timeout=5)
+            elif event.deviceId == 0:
                 httpLink = event.eventLink
                 print("httpLink: " + httpLink)
                 try:
