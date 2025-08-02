@@ -192,7 +192,7 @@ void configMode()
       {
         if (input == "1")
         {
-          deviceConfig = {"ssidName", "ssidPass", "192.168.0.196", "deviceName", "LCD", "192.168.0.196"};
+          deviceConfig = {"SSID", "PASS", "192.168.0.197", "deviceName", "LCD", "http://192.168.0.103:5000/api/addEvent"};
           saveConfig();
         }
         else if (input == "2")
