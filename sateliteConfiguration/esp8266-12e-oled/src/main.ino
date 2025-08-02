@@ -1,19 +1,19 @@
 #include <Arduino.h>
-#include <LittleFS.h>    // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // #include <RCSwitch.h>           // RF remote control library to fix
 
 // Project files
-#include "logs.h" // Log management file
-#include "Configuration.h"
-#include "WifiOperation.h"
+#include "BOARD_LOGGING.h" // Log management file
+#include "BOARD_CONFIGURATION.h"
+#include "BOARD_WIFI.h"
 #include "JsonOperation.h"
-#include "CONF_OLED.h"
 #include "WebGui.h"
-#include "CONF_DS18b20.h" // DS18B20 configuration file
-#include "CONF_DTH22.h"   // DHT22 configuration file
-#include "CONF_LED_PIN.h" // LED pin configuration file
+
+#include "MODULE_OLED.h"
+#include "MODULE_DS18B20.h" // DS18B20 configuration file
+#include "MODULE_DTH22.h"   // DHT22 configuration file
+#include "MODULE_LED_PIN.h" // LED pin configuration file
 String logBuffer = "";
 
 void setup()
@@ -21,36 +21,18 @@ void setup()
   Serial.begin(115200);
   delay(1000);
 
-  if (!LittleFS.begin())
-  {
-    Serial.println("Błąd inicjalizacji LittleFS.");
-    return;
-  }
-  Serial.println("System plików LittleFS gotowy.");
-
-  Serial.println("Czekam 5 sekund na dowolny znak w Serial...");
-  unsigned long startCzas = millis();
-  while (millis() - startCzas < 5000)
-  {
-    if (Serial.available() > 0)
-    {
-      char c = Serial.read(); // Odbierz znak (choć treść nieistotna)
-      Serial.println("Znak odebrany. Rozpoczynam konfigurację...");
-      showMenu(); // Show the main menu
-      configMode();
-      break;
-    }
-  }
+  init_baord_file_system(); // Initialize the file system
+  init_configuration(); // Initialize configuration settings
   readSettings();
-  init_wifi(); // Initialize Wi-Fi connection
 
+  init_wifi(); // Initialize Wi-Fi connection
   delay(500);
 
   init_oled();     // Initialize OLED display
   init_led_pins(); // Initialize LED pins
   init_ds18b20();  // Initialize DS18B20 sensor configuration
   init_dht22();    // Initialize DHT22 sensor configuration
-  
+
   addLog("Device started");
   sendJson("Device started", 1, "log");
 }

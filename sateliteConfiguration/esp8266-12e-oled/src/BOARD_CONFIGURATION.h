@@ -1,4 +1,15 @@
 const char *configFilePath = "/config.txt";
+#include <LittleFS.h> // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
+
+void init_baord_file_system()
+{
+  if (!LittleFS.begin())
+  {
+    Serial.println("Błąd inicjalizacji LittleFS.");
+    return;
+  }
+  Serial.println("System plików LittleFS gotowy.");
+}
 
 struct Config
 {
@@ -269,3 +280,20 @@ String webTableLCD[40][4] = {
     {"formHidden", "", "function", "socket1OFF"},
     {"formEnd", "socket1OFF", "", ""},
     {"", "", "", ""}};
+
+void init_configuration()
+{
+  Serial.println("Czekam 5 sekund na dowolny znak w Serial...");
+  unsigned long startCzas = millis();
+  while (millis() - startCzas < 5000)
+  {
+    if (Serial.available() > 0)
+    {
+      Serial.print(Serial.read()); // Odbierz znak (choć treść nieistotna)
+      Serial.println("Znak odebrany. Rozpoczynam konfigurację...");
+      showMenu(); // Show the main menu
+      configMode();
+      break;
+    }
+  }
+}
