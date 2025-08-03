@@ -21,3 +21,7 @@ void execute_dht22(StaticJsonDocument<400> jsonDoc)
     sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
     sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
 }
+
+String webFormDHT22[3][4] = {{"formBegin", "", "form", ""},
+                               {"formHidden", "", "function", "getDHT22"},
+                               {"formEnd", "Get sensor value DHT22", "", ""}};

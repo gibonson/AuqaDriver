@@ -1,3 +1,56 @@
+// WEB LAYOUT CONFIGURATION
+String webGuiTable[40][4];
+
+void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
+{
+  int tableSize = sizeof(webGuiTable) / sizeof(webGuiTable[0]); // Calculate the size of the webGuiTable array
+  for (int i = 0; i < tableSize; i++)
+  {
+    Serial.print("row: " + String(i) + " ");
+    for (int j = 0; j < 4; j++)
+    {
+      Serial.print(webGuiTable[i][j]);
+    }
+    Serial.println(); // Print a new line after each row
+  }
+
+  Serial.println(sizeof(webGuiTable) / sizeof(webGuiTable[0])); // Print the size of the webGuiTable array
+
+  int firstFree = 0;
+  for (int i = 0; i < tableSize; i++)
+  {
+    Serial.print("wiersz: " + String(i) + " ");
+
+    if (webGuiTable[i][0] == "")
+    {
+      Serial.print(webGuiTable[i][0]);
+      firstFree = i; // Find the first free row in the webGuiTable array
+      Serial.print("First free row: ");
+      Serial.println(firstFree);
+      break; // Exit the loop after finding the first free row
+    }
+  }
+
+  // Copy 3 rows from newForm to webGuiTable starting at firstFree
+  for (int k = 0; k < newFormRows; k++)
+  {
+    for (int m = 0; m < 4; m++)
+    {
+      webGuiTable[firstFree + k][m] = newForm[k][m]; // Fill the webGuiTable array with the newForm data
+    }
+  }
+
+  for (int i = 0; i < tableSize; i++)
+  {
+    Serial.print("row: " + String(i) + " ");
+    for (int j = 0; j < 4; j++)
+    {
+      Serial.print(webGuiTable[i][j]);
+    }
+    Serial.println(); // Print a new line after each row
+  }
+}
+
 class WebGui
 {
 public:
@@ -64,9 +117,9 @@ public:
     String html = "";
     html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
     html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea>"
-                                                                                                            "</div>";
+                                                                                                                       "</div>";
 
-    for (int htmlLine = 1; htmlLine < 40; htmlLine++)
+    for (int htmlLine = 0; htmlLine < 40; htmlLine++)
     {
       // Serial.println(webContent[htmlLine][0] + webContent[htmlLine][1] + webContent[htmlLine][2] + webContent[htmlLine][3]);
       if (webContent[htmlLine][0] == "hHtml")
@@ -143,7 +196,7 @@ public:
   String formHidden(String label, String name, String value)
   {
     return "<input type='hidden' name='" + name + "' value='" + value + "'>\n";
-  } 
+  }
 
   String formEnd(String value)
   {

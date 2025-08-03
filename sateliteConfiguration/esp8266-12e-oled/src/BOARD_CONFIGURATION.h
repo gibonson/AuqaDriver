@@ -238,48 +238,7 @@ void configMode()
   }
 }
 
-// WEB LAYOUT CONFIGURATION
-String webTableLCD[40][4] = {
-    {"hHtml", deviceConfig.deviceName, "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "lcd"},
-    {"formText", "Text to send:", "value1", "1"},
-    {"formText", "Text to send:", "value2", "1"},
-    {"formText", "Text to send:", "value3", "1"},
-    {"formText", "Text to send:", "value4", "1"},
-    {"formText", "Text to send:", "value5", "1"},
-    {"formText", "Text to send:", "value6", "1"},
-    {"formText", "Text to send:", "value7", "1"},
-    {"formText", "Text to send:", "value8", "1"},
-    {"formEnd", "Send to LCD", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "builtinLed"},
-    {"formHidden", "", "ledState", "on"},
-    {"formEnd", "Led ON", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "builtinLed"},
-    {"formHidden", "", "ledState", "off"},
-    {"formEnd", "Led OFF", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "getDHT22"},
-    {"formEnd", "Get sensor value DHT22", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "getDS18B20"},
-    {"formEnd", "Get sensor value DS18B20", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "socket1ON"},
-    {"formEnd", "socket1ON", "", ""},
-    {"", "", "", ""},
-    {"formBegin", "", "form", ""},
-    {"formHidden", "", "function", "socket1OFF"},
-    {"formEnd", "socket1OFF", "", ""},
-    {"", "", "", ""}};
+
 
 void init_configuration()
 {

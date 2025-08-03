@@ -23,7 +23,11 @@ void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
         responseJson(client, "DS18B20 sensor disconnected", 0, "error", jsonDoc["requestID"].as<String>());
     }
     // float newT = random(20, 30); // Simulated temperature value
-    addLog("Simulated DS18B20 data: Temperature = " + String(newT) + "°C");
+    addLog("DS18B20 sensor data: Temperature = " + String(newT) + "°C");
     responseJson(client, "DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
     sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
 }
+
+String webFormDS18B20[3][4] = {{"formBegin", "", "form", ""},
+                               {"formHidden", "", "function", "getDS18B20"},
+                               {"formEnd", "Get sensor value DS18B20", "", ""}};

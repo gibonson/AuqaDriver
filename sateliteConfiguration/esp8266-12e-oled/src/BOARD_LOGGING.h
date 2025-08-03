@@ -1,4 +1,4 @@
-
+String logBuffer = "";
 const int LOG_SIZE = 10;
 String logs[LOG_SIZE];
 int logIndex = 0;

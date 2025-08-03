@@ -4,30 +4,36 @@
 // #include <RCSwitch.h>           // RF remote control library to fix
 
 // Project files
-#include "BOARD_LOGGING.h" // Log management file
-#include "BOARD_CONFIGURATION.h"
-#include "BOARD_WIFI.h"
+#include "BOARD_LOGGING.h"       // Log management file
+#include "BOARD_CONFIGURATION.h" // Board configuration file
+#include "BOARD_WIFI.h"          // Wi-Fi management file
 #include "JsonOperation.h"
-#include "WebGui.h"
-
+#include "BOARD_WEB_GUI.h" // Web GUI management file
 #include "MODULE_OLED.h"
-#include "MODULE_DS18B20.h" // DS18B20 configuration file
-#include "MODULE_DTH22.h"   // DHT22 configuration file
-#include "MODULE_LED_PIN.h" // LED pin configuration file
-String logBuffer = "";
+#include "MODULE_DS18B20.h"   // DS18B20 configuration file
+#include "MODULE_DTH22.h"     // DHT22 configuration file
+#include "MODULE_LED_PIN.h"   // LED pin configuration file
+#include "MODULE_RADIO_433.h" // RF remote control configuration file
 
 void setup()
 {
   Serial.begin(115200);
   delay(1000);
 
+  // here add new forms to the web GUI table
+  addNewFormToWebGuiTable(webFormDS18B20, 3);
+  addNewFormToWebGuiTable(webFormDHT22, 3);
+  addNewFormToWebGuiTable(webFormBuiltinLed, 8);
+  addNewFormToWebGuiTable(webFormOLED, 11);
+
   init_baord_file_system(); // Initialize the file system
-  init_configuration(); // Initialize configuration settings
+  init_configuration();     // Initialize configuration settings
   readSettings();
 
   init_wifi(); // Initialize Wi-Fi connection
   delay(500);
 
+  // here add all initialization functions
   init_oled();     // Initialize OLED display
   init_led_pins(); // Initialize LED pins
   init_ds18b20();  // Initialize DS18B20 sensor configuration
@@ -63,7 +69,7 @@ void loop()
           {
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
-              client.print(webGui.generator(webTableLCD, getLogs()));
+              client.print(webGui.generator(webGuiTable, getLogs()));
               client.stop(); // Close the connection (1)
             }
             else if (header.indexOf("logs") >= 0)
@@ -119,6 +125,7 @@ void loop()
                 jsonDoc["requestID"] = "Device request";
               }
 
+              //here add all functions to handle JSON requests
               if (jsonDoc["function"] == "lcd") // Oled display fun
               {
                 execute_oled(jsonDoc); // Execute OLED display function
@@ -151,6 +158,8 @@ void loop()
               {
                 execute_ds18b20(jsonDoc); // Read DS18B20 sensor data
               }
+
+              
               else
               {
                 addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());

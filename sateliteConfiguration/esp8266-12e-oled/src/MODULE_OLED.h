@@ -62,3 +62,15 @@ void execute_oled(StaticJsonDocument<400> jsonDoc)
   responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
   handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
 }
+
+String webFormOLED[11][4] = {{"formBegin", "", "form", ""},
+                            {"formHidden", "", "function", "lcd"},
+                            {"formText", "Text to send:", "value1", "1"},
+                            {"formText", "Text to send:", "value2", "1"},
+                            {"formText", "Text to send:", "value3", "1"},
+                            {"formText", "Text to send:", "value4", "1"},
+                            {"formText", "Text to send:", "value5", "1"},
+                            {"formText", "Text to send:", "value6", "1"},
+                            {"formText", "Text to send:", "value7", "1"},
+                            {"formText", "Text to send:", "value8", "1"},
+                            {"formEnd", "Send to LCD", "", ""}};

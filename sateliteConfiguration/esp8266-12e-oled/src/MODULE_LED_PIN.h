@@ -122,3 +122,12 @@ void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
     responseJson(client, "Unknown led_pin_5 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
+
+String webFormBuiltinLed[8][4] = {{"formBegin", "", "form", ""},
+                                  {"formHidden", "", "function", "builtinLed"},
+                                  {"formHidden", "", "ledState", "on"},
+                                  {"formEnd", "Led ON", "", ""},
+                                  {"formBegin", "", "form", ""},
+                                  {"formHidden", "", "function", "builtinLed"},
+                                  {"formHidden", "", "ledState", "off"},
+                                  {"formEnd", "Led OFF", "", ""}};
