@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
-// #include <RCSwitch.h>           // RF remote control library to fix
-
 // Project files
 #include "BOARD_LOGGING.h"       // Log management file
 #include "BOARD_CONFIGURATION.h" // Board configuration file
@@ -159,7 +157,7 @@ void loop()
                 execute_ds18b20(jsonDoc); // Read DS18B20 sensor data
               }
 
-              
+
               else
               {
                 addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());
