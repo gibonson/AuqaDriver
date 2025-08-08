@@ -5,8 +5,13 @@
 const int DHT_PIN = 4;     // GPIO4 = D2 Digital pin connected to the DHT sensor
 DHT dht(DHT_PIN, DHTTYPE); // Initialize DHT sensor
 
+String webFormDHT22[3][4] = {{"formBegin", "", "form", ""},
+                             {"formHidden", "", "function", "getDHT22"},
+                             {"formEnd", "Get sensor value DHT22", "", ""}};
+
 void init_dht22()
 {
+    addNewFormToWebGuiTable(webFormDHT22, sizeof(webFormDHT22) / sizeof(webFormDHT22[0]));
     dht.begin(); // Initialize the DHT sensor
 }
 
@@ -21,7 +26,3 @@ void execute_dht22(StaticJsonDocument<400> jsonDoc)
     sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
     sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
 }
-
-String webFormDHT22[3][4] = {{"formBegin", "", "form", ""},
-                               {"formHidden", "", "function", "getDHT22"},
-                               {"formEnd", "Get sensor value DHT22", "", ""}};

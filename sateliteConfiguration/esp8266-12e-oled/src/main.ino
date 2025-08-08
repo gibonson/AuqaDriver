@@ -2,6 +2,8 @@
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // Project files
+String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of modules available in the system
+
 #include "BOARD_LOGGING.h"       // Log management file
 #include "BOARD_CONFIGURATION.h" // Board configuration file
 #include "BOARD_WIFI.h"          // Wi-Fi management file
@@ -9,7 +11,7 @@
 #include "BOARD_WEB_GUI.h" // Web GUI management file
 #include "MODULE_OLED.h"
 #include "MODULE_DS18B20.h"   // DS18B20 configuration file
-#include "MODULE_DTH22.h"     // DHT22 configuration file
+#include "MODULE_DHT22.h"     // DHT22 configuration file
 #include "MODULE_LED_PIN.h"   // LED pin configuration file
 #include "MODULE_RADIO_433.h" // RF remote control configuration file
 
@@ -17,12 +19,6 @@ void setup()
 {
   Serial.begin(115200);
   delay(1000);
-
-  // here add new forms to the web GUI table
-  addNewFormToWebGuiTable(webFormDS18B20, 3);
-  addNewFormToWebGuiTable(webFormDHT22, 3);
-  addNewFormToWebGuiTable(webFormBuiltinLed, 8);
-  addNewFormToWebGuiTable(webFormOLED, 11);
 
   init_baord_file_system(); // Initialize the file system
   init_configuration();     // Initialize configuration settings
@@ -75,6 +71,64 @@ void loop()
               client.print(getLogs());
               client.stop(); // Close the connection (2)
             }
+            else if (header.indexOf("disableModuleList") >= 0)
+            {
+
+              disableModuleList = readDisableList();
+              // File file = LittleFS.open("/disableList.txt", "r");
+              // if (!file)
+              // {
+              //   Serial.println("Nie udało się otworzyć pliku disableList do odczytu.");
+              //   return;
+              // }
+              // disableModuleList = file.readStringUntil('\n'); // Odczytaj zawartość pliku
+              // file.close();
+              // Serial.println("Zawartość pliku disableList:");
+              // Serial.println(disableModuleList); // Wyświetl zawartość pliku
+
+              String html = "<form method='GET' action='/saveDisableList'>"
+                            "<textarea name='disableList' rows='10' cols='50'>" +
+                            disableModuleList + "</textarea><br>"
+                                                "<input type='submit' value='Save'>"
+                                                "</form>";
+              client.println("HTTP/1.1 200 OK");
+              client.println("Content-Type: text/html");
+              client.println("Connection: close");
+              client.println();
+              client.println(html);
+              client.stop(); // Close the connection (2)
+            }
+
+            else if (header.indexOf("saveDisableList?") >= 0)
+            {
+              // Pobierz dane z URL
+              int start = header.indexOf("saveDisableList?disableList=");
+              if (start >= 0)
+              {
+                start += strlen("saveDisableList?disableList=");
+                int end = header.indexOf(" ", start); // Koniec linii GET
+                String newContent = header.substring(start, end);
+                // Zamień + na spacje i %0A na nową linię
+                newContent.replace("+", " ");
+                newContent.replace("%0A", "\n");
+                newContent.replace("%0D", "");
+                newContent.replace("%2C", ",");
+                // Zapisz do pliku
+                File file = LittleFS.open("/disableList.txt", "w");
+                if (file)
+                {
+                  file.print(newContent);
+                  file.close();
+                }
+                client.println("HTTP/1.1 200 OK");
+                client.println("Content-Type: text/html");
+                client.println("Connection: close");
+                client.println();
+                client.println("<p>File updated!</p>");
+                client.stop();
+              }
+            }
+
             else if (header.indexOf("status") >= 0)
             {
               responseJson(client, "Connection ok", 1, "log", "Device Status");
@@ -123,7 +177,7 @@ void loop()
                 jsonDoc["requestID"] = "Device request";
               }
 
-              //here add all functions to handle JSON requests
+              // here add all functions to handle JSON requests
               if (jsonDoc["function"] == "lcd") // Oled display fun
               {
                 execute_oled(jsonDoc); // Execute OLED display function
@@ -156,7 +210,6 @@ void loop()
               {
                 execute_ds18b20(jsonDoc); // Read DS18B20 sensor data
               }
-
 
               else
               {

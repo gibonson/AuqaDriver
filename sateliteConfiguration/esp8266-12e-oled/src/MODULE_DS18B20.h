@@ -6,8 +6,13 @@ const int ONE_WIRE_BUS = 16;         // GPIO16 = D0 pin connected to the  sensor
 OneWire oneWire(ONE_WIRE_BUS);       // Setup a oneWire instance to communicate with any OneWire devices
 DallasTemperature sensors(&oneWire); // Pass our oneWire reference to Dallas Temperature sensor
 
+String webFormDS18B20[3][4] = {{"formBegin", "", "form", ""},
+                               {"formHidden", "", "function", "getDS18B20"},
+                               {"formEnd", "Get sensor value DS18B20", "", ""}};
+
 void init_ds18b20()
 {
+    addNewFormToWebGuiTable(webFormDS18B20, sizeof(webFormDS18B20) / sizeof(webFormDS18B20[0]));
     sensors.begin(); // Initialize the DS18B20 sensor
 }
 
@@ -28,6 +33,4 @@ void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
     sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
 }
 
-String webFormDS18B20[3][4] = {{"formBegin", "", "form", ""},
-                               {"formHidden", "", "function", "getDS18B20"},
-                               {"formEnd", "Get sensor value DS18B20", "", ""}};
+

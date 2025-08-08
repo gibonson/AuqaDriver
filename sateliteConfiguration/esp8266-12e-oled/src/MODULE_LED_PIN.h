@@ -4,8 +4,18 @@ const int LED_PIN_3 = 13; // GPIO13= D7 - Relay 2 control pin
 const int LED_PIN_4 = 15; // GPIO15= D8 - Relay 3 control pin
 const int LED_PIN_5 = 3;  // GPIO5 = RX - Relay 4 control pin
 
+String webFormBuiltinLed[8][4] = {{"formBegin", "", "form", ""},
+                                  {"formHidden", "", "function", "builtinLed"},
+                                  {"formHidden", "", "ledState", "on"},
+                                  {"formEnd", "Led ON", "", ""},
+                                  {"formBegin", "", "form", ""},
+                                  {"formHidden", "", "function", "builtinLed"},
+                                  {"formHidden", "", "ledState", "off"},
+                                  {"formEnd", "Led OFF", "", ""}};
+
 void init_led_pins()
 {
+  addNewFormToWebGuiTable(webFormBuiltinLed, sizeof(webFormBuiltinLed) / sizeof(webFormBuiltinLed[0]));
   pinMode(LED_PIN_1, OUTPUT);
   pinMode(LED_PIN_2, OUTPUT);
   pinMode(LED_PIN_3, OUTPUT);
@@ -123,11 +133,4 @@ void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-String webFormBuiltinLed[8][4] = {{"formBegin", "", "form", ""},
-                                  {"formHidden", "", "function", "builtinLed"},
-                                  {"formHidden", "", "ledState", "on"},
-                                  {"formEnd", "Led ON", "", ""},
-                                  {"formBegin", "", "form", ""},
-                                  {"formHidden", "", "function", "builtinLed"},
-                                  {"formHidden", "", "ledState", "off"},
-                                  {"formEnd", "Led OFF", "", ""}};
+

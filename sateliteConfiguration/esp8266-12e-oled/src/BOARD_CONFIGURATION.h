@@ -1,4 +1,5 @@
 const char *configFilePath = "/config.txt";
+const char *disableModulePath = "/disableList.txt";
 #include <LittleFS.h> // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)
 
 void init_baord_file_system()
@@ -17,11 +18,11 @@ struct Config
   String password;
   String deviceIP;
   String deviceName;
-  String deviceType;
   String serverAddress;
 };
 
 Config deviceConfig;
+String disableModuleList; // Lista modułów wyłączonych, oddzielonych enterami
 
 int inputStep = 0;        // Etap interaktywnego wprowadzania danych
 bool isInputMode = false; // Czy użytkownik wprowadza dane
@@ -39,11 +40,43 @@ void saveConfig()
   file.println(deviceConfig.password);
   file.println(deviceConfig.deviceIP);
   file.println(deviceConfig.deviceName);
-  file.println(deviceConfig.deviceType);
   file.println(deviceConfig.serverAddress);
 
   file.close();
   Serial.println("Plik konfiguracyjny zapisany.");
+}
+
+void saveDisableModuleList(String moduleList)
+{
+  File file = LittleFS.open(disableModulePath, "w");
+  if (!file)
+  {
+    Serial.println("Nie udało się otworzyć pliku disableList.");
+    return;
+  }
+  file.println(moduleList); // Zapisz zawartość disableModuleList do pliku
+  file.close();
+  Serial.println("Plik disableList zapisany.");
+}
+
+String readDisableList()
+{
+  if (!LittleFS.exists(disableModulePath))
+  {
+    Serial.println("Plik disableList nie istnieje.");
+    return "";
+  }
+  File file = LittleFS.open(disableModulePath, "r");
+  if (!file)
+  {
+    Serial.println("Nie udało się otworzyć pliku disableList do odczytu.");
+    return "";
+  }
+  disableModuleList = file.readStringUntil('\n'); // Odczytaj zawartość pliku
+  file.close();
+  Serial.println("Zawartość pliku disableList:");
+  Serial.println(disableModuleList); // Wyświetl zawartość pliku
+  return disableModuleList; // Zwróć zawartość pliku
 }
 
 void readConfig()
@@ -86,8 +119,6 @@ void readSettings()
   deviceConfig.deviceIP.trim();
   deviceConfig.deviceName = configFile.readStringUntil('\n');
   deviceConfig.deviceName.trim();
-  deviceConfig.deviceType = configFile.readStringUntil('\n');
-  deviceConfig.deviceType.trim();
   deviceConfig.serverAddress = configFile.readStringUntil('\n');
   deviceConfig.serverAddress.trim();
 
@@ -98,7 +129,6 @@ void readSettings()
   Serial.println("Password: " + deviceConfig.password);
   Serial.println("DeviceIP: " + deviceConfig.deviceIP);
   Serial.println("DeviceName: " + deviceConfig.deviceName);
-  Serial.println("DeviceType: " + deviceConfig.deviceType);
   Serial.println("serverAddress: " + deviceConfig.serverAddress);
 }
 
@@ -124,17 +154,6 @@ void listFiles()
   }
 }
 
-void showMenu()
-{
-  Serial.println("\nWybierz opcję:");
-  Serial.println("1 - Utwórz plik konfiguracyjny (domyślne dane)");
-  Serial.println("2 - Usuń plik konfiguracyjny");
-  Serial.println("3 - Odczytaj plik konfiguracyjny");
-  Serial.println("4 - Lista plików");
-  Serial.println("5 - Wprowadź dane ręcznie i zapisz plik");
-  Serial.println("6 - Odczytaj plik konfiguracyjny v2");
-  Serial.print("Wpisz numer i naciśnij Enter: ");
-}
 
 void handleUserInput(String input)
 {
@@ -166,24 +185,20 @@ void handleUserInput(String input)
     break;
   case 4:
     deviceConfig.deviceName = input;
-    Serial.print("Device Type: ");
-    break;
-  case 5:
-    deviceConfig.deviceType = input;
     Serial.print("Server Address: ");
     break;
-  case 6:
+  case 5:
     deviceConfig.serverAddress = input;
     Serial.println("✅ Dane wprowadzone. Zapisuję plik...");
     saveConfig();        // Save the configuration to the file
     isInputMode = false; // Exit input mode
-    showMenu();          // Show the main menu
     inputStep = 0;       // Reset the step counter
     return;              // Exit the function
   }
 
   inputStep++; // Move to the next step
 }
+
 
 void configMode()
 {
@@ -203,7 +218,7 @@ void configMode()
       {
         if (input == "1")
         {
-          deviceConfig = {"SSID", "PASS", "192.168.0.197", "deviceName", "LCD", "http://192.168.0.103:5000/api/addEvent"};
+          deviceConfig = {"SSID", "PASS", "192.168.0.197", "deviceName", "http://192.168.0.103:5000/api/addEvent"};
           saveConfig();
         }
         else if (input == "2")
@@ -222,12 +237,23 @@ void configMode()
         {
           isInputMode = true; // Wejdź w tryb wprowadzania danych
           Serial.println("Rozpoczynam wprowadzanie danych...");
-          inputStep = 0;          // Zresetuj licznik kroków
-          Serial.print("SSID: "); // Poproś o pierwszy krok
+          inputStep = 0; // Zresetuj licznik kroków
         }
         else if (input == "6")
         {
           readSettings();
+        }
+        else if (input == "7")
+        {
+          saveDisableModuleList(moduleList); // Create or overwrite the disableList file
+        }
+        else if (input == "8")
+        {
+          readDisableList(); // Read the disableList file
+        }
+        else if (input == "9")
+        {
+          ESP.restart(); // Restart the ESP
         }
         else
         {
@@ -237,8 +263,6 @@ void configMode()
     }
   }
 }
-
-
 
 void init_configuration()
 {
@@ -250,7 +274,17 @@ void init_configuration()
     {
       Serial.print(Serial.read()); // Odbierz znak (choć treść nieistotna)
       Serial.println("Znak odebrany. Rozpoczynam konfigurację...");
-      showMenu(); // Show the main menu
+      Serial.println("\nWybierz opcję:");
+      Serial.println("1 - Utwórz plik konfiguracyjny (domyślne dane)");
+      Serial.println("2 - Usuń plik konfiguracyjny");
+      Serial.println("3 - Odczytaj plik konfiguracyjny");
+      Serial.println("4 - Lista plików");
+      Serial.println("5 - Wprowadź dane ręcznie i zapisz plik");
+      Serial.println("6 - Odczytaj plik konfiguracyjny v2");
+      Serial.println("7 - Utwórz plik BlackList");
+      Serial.println("8 - Odczytaj plik BlackList");
+      Serial.println("9 - Restart ESP");
+      Serial.print("Wpisz numer i naciśnij Enter: ");
       configMode();
       break;
     }

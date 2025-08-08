@@ -40,15 +40,15 @@ void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
     }
   }
 
-  for (int i = 0; i < tableSize; i++)
-  {
-    Serial.print("row: " + String(i) + " ");
-    for (int j = 0; j < 4; j++)
-    {
-      Serial.print(webGuiTable[i][j]);
-    }
-    Serial.println(); // Print a new line after each row
-  }
+  // for (int i = 0; i < tableSize; i++)
+  // {
+  //   Serial.print("row: " + String(i) + " ");
+  //   for (int j = 0; j < 4; j++)
+  //   {
+  //     Serial.print(webGuiTable[i][j]);
+  //   }
+  //   Serial.println(); // Print a new line after each row
+  // }
 }
 
 class WebGui
@@ -67,7 +67,10 @@ public:
                             ".button2 {background-color: tomato;}\n"
                             "table {width: 80%;  margin: auto;}\n"
                             "th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}\n"
-                            "</style>\n</head>\n<body></br>\n";
+                            "</style>\n</head>\n<body></br>\n"
+                            "<a href='/disableModuleList'><button class='button'>Disable Module List</button></a>"
+                            "<a href='/logs'><button class='button'>Logs</button></a>"
+                            "<a href='/status'><button class='button'>Status</button></a>";
   const String HTML_END = "<script>"
                           "document.querySelectorAll('.json-form').forEach(form => {"
                           "form.addEventListener('submit', function(event) {"
