@@ -71,6 +71,10 @@ void loop()
               client.print(getLogs());
               client.stop(); // Close the connection (2)
             }
+            else if (header.indexOf("restart") >= 0)
+            {
+              ESP.restart();
+            }
             else if (header.indexOf("disableModuleList") >= 0)
             {
 

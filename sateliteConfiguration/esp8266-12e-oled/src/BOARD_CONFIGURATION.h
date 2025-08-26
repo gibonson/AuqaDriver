@@ -22,7 +22,7 @@ struct Config
 };
 
 Config deviceConfig;
-String disableModuleList; // Lista modułów wyłączonych, oddzielonych enterami
+String disableModuleList; // Lista modułów wyłączonych, oddzielonych przecinkami
 
 int inputStep = 0;        // Etap interaktywnego wprowadzania danych
 bool isInputMode = false; // Czy użytkownik wprowadza dane
@@ -130,6 +130,14 @@ void readSettings()
   Serial.println("DeviceIP: " + deviceConfig.deviceIP);
   Serial.println("DeviceName: " + deviceConfig.deviceName);
   Serial.println("serverAddress: " + deviceConfig.serverAddress);
+
+  File disableFile = LittleFS.open(disableModulePath, "r");
+  if (!disableFile)
+  {
+    Serial.println("Error opening disableList file for reading!");
+    return; // Exit if the file cannot be opened
+  }
+  disableModuleList = disableFile.readString();
 }
 
 void deleteConfig()

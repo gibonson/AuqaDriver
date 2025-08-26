@@ -11,18 +11,38 @@ String webFormDHT22[3][4] = {{"formBegin", "", "form", ""},
 
 void init_dht22()
 {
-    addNewFormToWebGuiTable(webFormDHT22, sizeof(webFormDHT22) / sizeof(webFormDHT22[0]));
-    dht.begin(); // Initialize the DHT sensor
+    String moduleName = "DHT22";
+    Serial.println(disableModuleList);
+    if (disableModuleList.indexOf(moduleName) != -1)
+    {
+        Serial.println("Module " + moduleName + " is disabled.");
+    }
+    else
+    {
+        Serial.println("Initializing module: " + moduleName);
+        addNewFormToWebGuiTable(webFormDHT22, sizeof(webFormDHT22) / sizeof(webFormDHT22[0]));
+        dht.begin(); // Initialize the DHT sensor
+    }
 }
 
 void execute_dht22(StaticJsonDocument<400> jsonDoc)
 {
-    // float newT = random(20, 30); // Simulated temperature value
-    // float newH = random(40, 60); // Simulated humidity value
-    float newT = dht.readTemperature();
-    float newH = dht.readHumidity();
-    addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
-    responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
-    sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
-    sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
+    String moduleName = "DHT22";
+    if (disableModuleList.indexOf(moduleName) != -1)
+    {
+        addLog("Module " + moduleName + " is disabled in disableModuleList");
+        responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
+    }
+    else
+    {
+        // float newT = random(20, 30); // Simulated temperature value
+        // float newH = random(40, 60); // Simulated humidity value
+        float newT = dht.readTemperature();
+        float newH = dht.readHumidity();
+        addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
+        responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
+        delay(500); // Small delay to ensure proper logging order
+        sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
+        sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
+    }
 }
