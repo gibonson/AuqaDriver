@@ -27,7 +27,7 @@ void init_ds18b20()
     }
 }
 
-void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
+void execute_ds18b20(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
     String moduleName = "DS18B20";
     if (disableModuleList.indexOf(moduleName) != -1)
@@ -46,11 +46,12 @@ void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
         {
             addLog("Error: DS18B20 sensor disconnected");
             responseJson(client, "DS18B20 sensor disconnected", 0, "error", jsonDoc["requestID"].as<String>());
+            sendJson("DS18B20 sensor disconnected: ", 0, "error", jsonDoc["requestID"].as<String>());
         }
         // float newT = random(20, 30); // Simulated temperature value
         addLog("DS18B20 sensor data: Temperature = " + String(newT) + "°C");
         responseJson(client, "DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
-        delay(500); // Small delay to ensure proper logging order
         sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
+        client.stop();
     }
 }

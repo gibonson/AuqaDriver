@@ -67,10 +67,14 @@ public:
                             ".button2 {background-color: tomato;}\n"
                             "table {width: 80%;  margin: auto;}\n"
                             "th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}\n"
+                            ".button-row {display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;}\n"
                             "</style>\n</head>\n<body></br>\n"
+                            "<div class='button-row'>"
                             "<a href='/disableModuleList'><button class='button'>Disable Module List</button></a>"
                             "<a href='/logs'><button class='button'>Logs</button></a>"
-                            "<a href='/status'><button class='button'>Status</button></a>";
+                            "<a href='/status'><button class='button'>Status</button></a>"
+                            "<a href='/restart'><button class='button2'>restart</button></a>"
+                            "</div>";
   const String HTML_END = "<script>"
                           "document.querySelectorAll('.json-form').forEach(form => {"
                           "form.addEventListener('submit', function(event) {"

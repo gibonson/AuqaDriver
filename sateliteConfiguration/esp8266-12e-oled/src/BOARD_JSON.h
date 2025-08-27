@@ -27,7 +27,7 @@ void sendJson(String addInfo, int value, String type, String requestID = "")
 
 void responseJson(WiFiClient &client, String addInfo, int value, String type, String requestID = "")
 {
-  StaticJsonDocument<200> jsonDoc;
+  StaticJsonDocument<400> jsonDoc;
   jsonDoc["requestID"] = requestID;
   jsonDoc["deviceIP"] = String(local_IP[0]) + "." + String(local_IP[1]) + "." + String(local_IP[2]) + "." + String(local_IP[3]);
   jsonDoc["deviceName"] = deviceConfig.deviceName;

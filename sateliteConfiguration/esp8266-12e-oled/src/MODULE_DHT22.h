@@ -25,7 +25,7 @@ void init_dht22()
     }
 }
 
-void execute_dht22(StaticJsonDocument<400> jsonDoc)
+void execute_dht22(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
     String moduleName = "DHT22";
     if (disableModuleList.indexOf(moduleName) != -1)
@@ -41,8 +41,8 @@ void execute_dht22(StaticJsonDocument<400> jsonDoc)
         float newH = dht.readHumidity();
         addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
         responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
-        delay(500); // Small delay to ensure proper logging order
         sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
         sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());
+        client.stop();
     }
 }

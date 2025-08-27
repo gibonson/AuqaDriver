@@ -11,35 +11,41 @@
 #define OLED_SCL D6         // They swap SDA with SCL ;)
 Adafruit_SSD1306 *display;
 
-
 String webFormOLED[11][4] = {{"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "lcd"},
-                            {"formText", "Text to send:", "value1", "1"},
-                            {"formText", "Text to send:", "value2", "1"},
-                            {"formText", "Text to send:", "value3", "1"},
-                            {"formText", "Text to send:", "value4", "1"},
-                            {"formText", "Text to send:", "value5", "1"},
-                            {"formText", "Text to send:", "value6", "1"},
-                            {"formText", "Text to send:", "value7", "1"},
-                            {"formText", "Text to send:", "value8", "1"},
-                            {"formEnd", "Send to LCD", "", ""}};
+                             {"formHidden", "", "function", "lcd"},
+                             {"formText", "Text to send:", "value1", "1"},
+                             {"formText", "Text to send:", "value2", "1"},
+                             {"formText", "Text to send:", "value3", "1"},
+                             {"formText", "Text to send:", "value4", "1"},
+                             {"formText", "Text to send:", "value5", "1"},
+                             {"formText", "Text to send:", "value6", "1"},
+                             {"formText", "Text to send:", "value7", "1"},
+                             {"formText", "Text to send:", "value8", "1"},
+                             {"formEnd", "Send to LCD", "", ""}};
 
 // to void setup
 void init_oled()
 {
-  addNewFormToWebGuiTable(webFormOLED, sizeof(webFormOLED) / sizeof(webFormOLED[0]));
+  String moduleName = "OLED";
+  Serial.println(disableModuleList);
 
-
-  display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-  // OLED used nonstandard SDA and SCL pins
-  Wire.begin(D5, D6);
-
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if (!display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+  if (disableModuleList.indexOf(moduleName) != -1)
   {
-    Serial.println(F("SSD1306 allocation failed"));
-    return;
+    Serial.println("Module " + moduleName + " is disabled.");
+  }
+  else
+  {
+
+    addNewFormToWebGuiTable(webFormOLED, sizeof(webFormOLED) / sizeof(webFormOLED[0]));
+    display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+    // OLED used nonstandard SDA and SCL pins
+    Wire.begin(D5, D6);
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+    if (!display->begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+    {
+      Serial.println(F("SSD1306 allocation failed"));
+      return;
+    }
   }
 }
 
@@ -63,19 +69,27 @@ void handle_oled(String value1, String value2, String value3, String value4, Str
   display->display();
 }
 
-void execute_oled(StaticJsonDocument<400> jsonDoc)
+void execute_oled(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
-  String value1 = jsonDoc["value1"].as<String>();
-  String value2 = jsonDoc["value2"].as<String>();
-  String value3 = jsonDoc["value3"].as<String>();
-  String value4 = jsonDoc["value4"].as<String>();
-  String value5 = jsonDoc["value5"].as<String>();
-  String value6 = jsonDoc["value6"].as<String>();
-  String value7 = jsonDoc["value7"].as<String>();
-  String value8 = jsonDoc["value8"].as<String>();
+  String moduleName = "OLED";
+  if (disableModuleList.indexOf(moduleName) != -1)
+  {
+    addLog("Module " + moduleName + " is disabled in disableModuleList");
+    responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
+  }
+  else
+  {
+    String value1 = jsonDoc["value1"].as<String>();
+    String value2 = jsonDoc["value2"].as<String>();
+    String value3 = jsonDoc["value3"].as<String>();
+    String value4 = jsonDoc["value4"].as<String>();
+    String value5 = jsonDoc["value5"].as<String>();
+    String value6 = jsonDoc["value6"].as<String>();
+    String value7 = jsonDoc["value7"].as<String>();
+    String value8 = jsonDoc["value8"].as<String>();
 
-  addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
-  responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
-  handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
+    addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
+    responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
+    handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
+  }
 }
-

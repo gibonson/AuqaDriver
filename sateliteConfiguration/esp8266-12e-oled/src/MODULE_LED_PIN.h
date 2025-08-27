@@ -23,7 +23,7 @@ void init_led_pins()
   pinMode(LED_PIN_5, OUTPUT);
 }
 
-void execute_builtinLed(StaticJsonDocument<400> jsonDoc)
+void execute_builtinLed(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
@@ -45,7 +45,7 @@ void execute_builtinLed(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-void execute_led_pin_2(StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_2(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
@@ -67,7 +67,7 @@ void execute_led_pin_2(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-void execute_led_pin_3(StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_3(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
@@ -89,7 +89,7 @@ void execute_led_pin_3(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-void execute_led_pin_4(StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_4(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
@@ -111,7 +111,7 @@ void execute_led_pin_4(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_5(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")

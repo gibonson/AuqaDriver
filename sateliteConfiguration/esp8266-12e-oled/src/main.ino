@@ -7,7 +7,7 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 #include "BOARD_LOGGING.h"       // Log management file
 #include "BOARD_CONFIGURATION.h" // Board configuration file
 #include "BOARD_WIFI.h"          // Wi-Fi management file
-#include "JsonOperation.h"
+#include "BOARD_JSON.h"
 #include "BOARD_WEB_GUI.h" // Web GUI management file
 #include "MODULE_OLED.h"
 #include "MODULE_DS18B20.h"   // DS18B20 configuration file
@@ -73,6 +73,8 @@ void loop()
             }
             else if (header.indexOf("restart") >= 0)
             {
+              responseJson(client, "Reset", 1, "log", "Device Status");
+              client.stop();
               ESP.restart();
             }
             else if (header.indexOf("disableModuleList") >= 0)
@@ -184,35 +186,35 @@ void loop()
               // here add all functions to handle JSON requests
               if (jsonDoc["function"] == "lcd") // Oled display fun
               {
-                execute_oled(jsonDoc); // Execute OLED display function
+                execute_oled(client, jsonDoc); // Execute OLED display function
               }
               else if (jsonDoc["function"] == "builtinLed")
               {
-                execute_builtinLed(jsonDoc); // Execute built-in LED function
+                execute_builtinLed(client, jsonDoc); // Execute built-in LED function
               }
               else if (jsonDoc["function"] == "led_pin_2")
               {
-                execute_led_pin_2(jsonDoc); // Execute LED pin 3 function
+                execute_led_pin_2(client, jsonDoc); // Execute LED pin 3 function
               }
               else if (jsonDoc["function"] == "led_pin_3")
               {
-                execute_led_pin_3(jsonDoc); // Execute LED pin 3 function
+                execute_led_pin_3(client, jsonDoc); // Execute LED pin 3 function
               }
               else if (jsonDoc["function"] == "led_pin_4")
               {
-                execute_led_pin_4(jsonDoc); // Execute LED pin 5 function
+                execute_led_pin_4(client, jsonDoc); // Execute LED pin 5 function
               }
               else if (jsonDoc["function"] == "led_pin_5")
               {
-                execute_led_pin_5(jsonDoc); // Execute LED pin 5 function
+                execute_led_pin_5(client, jsonDoc); // Execute LED pin 5 function
               }
               else if (jsonDoc["function"] == "getDHT22")
               {
-                execute_dht22(jsonDoc); // Read DHT22 sensor data
+                execute_dht22(client, jsonDoc); // Read DHT22 sensor data
               }
               else if (jsonDoc["function"] == "getDS18B20")
               {
-                execute_ds18b20(jsonDoc); // Read DS18B20 sensor data
+                execute_ds18b20(client, jsonDoc); // Read DS18B20 sensor data
               }
 
               else
