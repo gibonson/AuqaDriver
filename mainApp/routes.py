@@ -311,7 +311,6 @@ def ignore_change_status(id):
 
 @app.route("/report_list", methods=['POST', 'GET'])
 def report_list():
-    AddArchiveReport.add_archive_report_lists_update()
     form = AddArchiveReport()
     if validate_and_log_form(form):
         ArchiveReporAdder(request.form.to_dict(flat=False))
@@ -451,3 +450,22 @@ def get_logs():
     except Exception as e:
         flash(f"Error reading log file: {str(e)}", category="danger")
         return redirect(url_for("get_dashboard"))
+    
+    
+# -----------------------------------------
+# get_logs
+# -----------------------------------------
+
+@app.route("/sql_test", methods=["GET"])
+def sql_test():
+
+
+# gibon@GIBON-LAP:~$ for z in /sys/class/thermal/thermal_zone*/temp; do echo "$z: $(cat $z)"; done
+
+    def cpu_temp_os():
+        output = os.popen("cat /sys/class/thermal/thermal_zone12/temp").read().strip()
+        temp_c = int(output) / 1000.0
+        return f"{temp_c:.1f}°C"
+
+    return cpu_temp_os()
+    

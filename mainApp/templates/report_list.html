@@ -29,74 +29,29 @@ AquaDriver - Archive Report List
                 </tr>
                 <tr>
                     <td>
-                        {{ form.description.label() }}
+                        {{ form.querryString.label() }}
                     </td>
                     <td>
-                        {{ form.description(class="form-control" , placeholder = 'description') }}
-                        <small class="form-text text-danger">{{ form.description.errors[0] }}</small>
+                        {{ form.querryString(class="form-control" , placeholder = 'querryString') }}
+                        <small class="form-text text-danger">{{ form.querryString.errors[0] }}</small>
+                    </td>
+                </tr>
+                                <tr>
+                    <td>
+                        {{ form.message.label() }}
+                    </td>
+                    <td>
+                        {{ form.message(class="form-control" , placeholder = 'message') }}
+                        <small class="form-text text-danger">{{ form.message.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {{ form.deviceIP.label() }}
+                        {{ form.unit.label() }}
                     </td>
                     <td>
-                        {{ form.deviceIP(class="form-select" , placeholder = 'deviceIP') }}
-                        <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.deviceName.label() }}
-                    </td>
-                    <td>
-                        {{ form.deviceName(class="form-select" , placeholder = 'deviceName') }}
-                        <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.addInfo.label() }}
-                    </td>
-                    <td>
-                        {{ form.addInfo(class="form-select" , placeholder = 'addInfo') }}
-                        <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.type.label() }}
-                    </td>
-                    <td>
-                        {{ form.type(class="form-select" , placeholder = 'type') }}
-                        <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.avgOrSum.label() }}
-                    </td>
-                    <td>
-                        {{ form.avgOrSum(class="form-select" , placeholder = 'avgOrSum') }}
-                        <small class="form-text text-danger">{{ form.avgOrSum.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.timerRangeHours.label() }}
-                    </td>
-                    <td>
-                        {{ form.timerRangeHours(class="form-select" , placeholder = 'timerRangeHours') }}
-                        <small class="form-text text-danger">{{ form.timerRangeHours.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.quantityValues.label() }}
-                    </td>
-                    <td>
-                        {{ form.quantityValues(class="form-select" , placeholder = 'quantityValues') }}
-                        <small class="form-text text-danger">{{ form.quantityValues.errors[0] }}</small>
+                        {{ form.unit(class="form-control" , placeholder = 'unit') }}
+                        <small class="form-text text-danger">{{ form.unit.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -149,12 +104,9 @@ AquaDriver - Archive Report List
         <tr>
             <th>#</th>
             <th>Title</th>
-            <th>Description</th>
-            <th>Device (IP - Name)</th>
-            <th>Additional Info - Type</th>
-            <th>Aggregation (Avg/Sum)</th>
-            <th>Time Range (Hours)</th>
-            <th>Quantity of Values</th>
+            <th>message</th>
+            <th>unit</th>
+            <th>queryString</th>
             <th>Min Value</th>
             <th>OK Min Value</th>
             <th>OK Max Value</th>
@@ -167,12 +119,9 @@ AquaDriver - Archive Report List
         <tr>
             <td>{{archiveReporRow.id}}</td>
             <td>{{archiveReporRow.title}}</td>
-            <td>{{archiveReporRow.description}}</td>
-            <td>{{archiveReporRow.deviceIP}} - {{archiveReporRow.deviceName}}</td>
-            <td>{{archiveReporRow.addInfo}} - {{archiveReporRow.type}}</td>
-            <td>{{archiveReporRow.avgOrSum}}</td>
-            <td>{{archiveReporRow.timerRangeHours}}</td>
-            <td>{{archiveReporRow.quantityValues}}</td>
+            <td>{{archiveReporRow.message}}</td>
+            <td>{{archiveReporRow.unit}}</td>
+            <td>{{archiveReporRow.queryString}}</td>
             <td>{{archiveReporRow.minValue}}</td>
             <td>{{archiveReporRow.okMinValue}}</td>
             <td>{{archiveReporRow.okMaxValue}}</td>
