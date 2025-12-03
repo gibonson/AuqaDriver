@@ -12,27 +12,24 @@ from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
-from mainApp.forms.add_archive_ignore import AddArchiveIgnore
+from mainApp.forms.add_validation import AddValidation
 from mainApp.forms.add_device import AddDevice
 from mainApp.forms.add_event import AddEventLink, AddEventReport
 from mainApp.forms.add_scheduler import AddEventScheduler
-from mainApp.forms.add_notification import AddNotification
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
-from mainApp.models.archive_ignore import ArchiveIgoneLister, ArchiveIgoneAdder, ArchiveIgnoreManager
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager, DeviceListerAll
 from mainApp.models.event import  EventAdder, EventLister, EventManager
-from mainApp.models.notification import  NotificationLister, NotificationAdder, NotificationManager
+from mainApp.models.validation import  ValidationLister, ValidationAdder, ValidationManager
 from mainApp.models.scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
-from mainApp.web_operations import WebContentCollector
-from mainApp.response_operation import ResponseTrigger
+from mainApp.web_operations import WebContentCollector, ResponseTrigger
+# from mainApp.response_operation import ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
-from mainApp.device_status_checker import DeviceStatusChecker
 
 # -----------------------------------------
 # create new DB
@@ -104,11 +101,6 @@ def device_edit(id):
         manager.edit_device(request.form.to_dict(flat=False))
     return redirect(url_for("device_list"))
 
-
-@app.route("/device_status_checker_restart")
-def device_status_checker_restart():
-    DeviceStatusChecker(sched=sched)
-    return redirect(url_for("get_jobs"))
 
 # -----------------------------------------
 # event section
@@ -282,29 +274,6 @@ def archive_remove(id):
     flash(str(manager), category='danger')
     return redirect(url_for("archive_search"))
 
-@app.route("/ignore_list", methods=['POST','GET'])
-def ignore_list():
-    form = AddArchiveIgnore()
-    if validate_and_log_form(form):
-        ArchiveIgoneAdder(request.form.to_dict(flat=False))
-    archiveIgoneLister = ArchiveIgoneLister().get_list()
-    return render_template_with_addons("ignore_list.html", archiveIgoneLister=archiveIgoneLister, form=form)
-
-@app.route("/ignore_remove/<id>")
-def ignore_remove(id):
-    manager = ArchiveIgnoreManager(id)
-    manager.remove()
-    flash(str(manager), category='danger')
-    return redirect(url_for("ignore_list"))
-
-@app.route("/ignore_change_status/<id>")
-def ignore_change_status(id):
-    manager = ArchiveIgnoreManager(id)
-    manager.change_status()
-    flash(str(manager), category='danger')
-    return redirect(url_for("ignore_list"))
-
-
 # -----------------------------------------
 # report section
 # -----------------------------------------
@@ -388,30 +357,30 @@ def add_event():
 
 
 # -----------------------------------------
-# notification
+# validation section
 # -----------------------------------------
 
-@app.route("/notification_list", methods=['POST', 'GET'])
-def notification_list():
-    form = AddNotification()
+@app.route("/validation_list", methods=['POST', 'GET'])
+def validation_list():
+    form = AddValidation()
     if validate_and_log_form(form):
-        NotificationAdder(request.form.to_dict(flat=False))
-    notificationList = NotificationLister().get_list()
-    return render_template_with_addons("notification_list.html", notificationList=notificationList, form=form, datetime=datetime)
+        ValidationAdder(request.form.to_dict(flat=False))
+    validationList = ValidationLister().get_list()
+    return render_template_with_addons("validation_list.html", validationList=validationList, form=form, datetime=datetime)
 
-@app.route("/change_notification_status/<id>")
-def change_notification_status(id):
-    manager = NotificationManager(id)
+@app.route("/change_validation_status/<id>")
+def change_validation_status(id):
+    manager = ValidationManager(id)
     manager.change_status()
     flash(str(manager), category='danger')
-    return redirect(url_for("notification_list"))
+    return redirect(url_for("validation_list"))
 
-@app.route("/remove_notification/<id>")
-def remove_notification(id):
-    manager = NotificationManager(id)
-    manager.remove_notification()
+@app.route("/remove_validation/<id>")
+def remove_validation(id):
+    manager = ValidationManager(id)
+    manager.remove_validation()
     flash(str(manager), category='danger')
-    return redirect(url_for("notification_list"))
+    return redirect(url_for("validation_list"))
 
 # -----------------------------------------
 # manually adding to archive

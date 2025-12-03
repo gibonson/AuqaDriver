@@ -58,12 +58,10 @@ sched = APScheduler()
 
 from mainApp import routes
 from mainApp.scheduler_operations import sched_start
-from mainApp.device_status_checker import DeviceStatusChecker
 
 # start process in scheduler
 try:
     sched_start(sched)
-    DeviceStatusChecker = DeviceStatusChecker(sched)
     sched.start()
     logger.critical("Scheduler started")
 except exc.OperationalError:

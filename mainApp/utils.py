@@ -3,7 +3,6 @@ from flask import render_template
 from mainApp import flash
 from mainApp import logger
 from mainApp.routes import sched
-from mainApp.device_status_checker import ConnectionStatus
 
 def flash_message(message, category='info'):
     if category == "info":
@@ -36,11 +35,8 @@ def validate_and_log_form(form):
 
 def render_template_with_addons(template_name, **kwargs):
     sched_state = str(sched.state)
-    connectionStatus = ConnectionStatus()
-    deviceStatusList =connectionStatus.getDeviceStatusList()
     addons = {
-        'state': sched_state,
-        'deviceStatusList' : deviceStatusList
+        'state': sched_state
     }
     kwargs.update(addons)
     return render_template(template_name, **kwargs)

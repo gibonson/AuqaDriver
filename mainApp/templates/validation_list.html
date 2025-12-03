@@ -86,20 +86,20 @@ AquaDriver - Notification List
 
                 <tr>
                     <td>
-                        {{ form.notificationStatus.label() }}
+                        {{ form.status.label() }}
                     </td>
                     <td>
-                        {{ form.notificationStatus(class="form-select" , placeholder = 'notificationStatus') }}
-                        <small class="form-text text-danger">{{ form.notificationStatus.errors[0] }}</small>
+                        {{ form.status(class="form-select" , placeholder = 'status') }}
+                        <small class="form-text text-danger">{{ form.status.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {{ form.notificationType.label() }}
+                        {{ form.actionType.label() }}
                     </td>
                     <td>
-                        {{ form.notificationType(class="form-select" , placeholder = 'notificationType') }}
-                        <small class="form-text text-danger">{{ form.notificationType.errors[0] }}</small>
+                        {{ form.actionType(class="form-select" , placeholder = 'actionType') }}
+                        <small class="form-text text-danger">{{ form.actionType.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -141,34 +141,34 @@ AquaDriver - Notification List
             <th>Type</th>
             <th>Condition</th>
             <th>Value</th>
-            <th>Notification Type</th>
+            <th>validation Type</th>
             <th>Event ID</th>
             <th>Message</th>
-            <th>Notification Status</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for notification in notificationList %}
+        {% for validation in validationList %}
         <tr>
-            <td>{{notification.id}}</td>
-            <td>{{notification.description}}</td>
-            <td>{{notification.deviceIP}}</td>
-            <td>{{notification.deviceName}}</td>
-            <td>{{notification.addInfo}}</td>
-            <td>{{notification.type}}</td>
-            <td>{{notification.condition}}</td>
-            <td>{{notification.value}}</td>
-            <td>{{notification.notificationType}}</td>
-            <td>{{notification.eventId}}</td>
-            <td>{{notification.message}}</td>
-            <td>{{notification.notificationStatus}}</td>
+            <td>{{validation.id}}</td>
+            <td>{{validation.description}}</td>
+            <td>{{validation.deviceIP}}</td>
+            <td>{{validation.deviceName}}</td>
+            <td>{{validation.addInfo}}</td>
+            <td>{{validation.type}}</td>
+            <td>{{validation.condition}}</td>
+            <td>{{validation.value}}</td>
+            <td>{{validation.actionType}}</td>
+            <td>{{validation.eventId}}</td>
+            <td>{{validation.message}}</td>
+            <td>{{validation.status}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('change_notification_status',id=notification.id)}}"
+                    <a href="{{url_for('change_validation_status',id=validation.id)}}"
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Change
                         Status</a>
-                    <a href="{{url_for('remove_notification',id=notification.id)}}" class="btn btn-danger btn-lg active"
+                    <a href="{{url_for('remove_validation',id=validation.id)}}" class="btn btn-danger btn-lg active"
                         role="button" aria-pressed="true">Remove</a>
                 </div>
             </td>
