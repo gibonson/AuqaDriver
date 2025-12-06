@@ -15,4 +15,5 @@ class AddArchiveReport(FlaskForm):
     querryString = StringField(label='querryString', validators= [DataRequired(),Length(min=1, max=200, message='querryString: must be between 1 and 200 characters.')])
     unit = StringField(label='unit', validators= [Optional(),Length(min=0, max=20, message='unit: must be between 0 and 20 characters.')])
     message = StringField(label='message', validators= [Optional(),Length(min=0, max=100, message='message: must be between 0 and 100 characters.')])   
+    reportGroupId = IntegerField(label='reportGroupId', validators=[Optional()])
     submit = SubmitField(label='Add Report')

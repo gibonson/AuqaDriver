@@ -10,9 +10,10 @@ class ArchiveReport(db.Model):
     okMaxValue = db.Column(db.Integer())
     maxValue = db.Column(db.Integer())
     unit = db.Column(db.String())
+    reportGroupId = db.Column(db.String())
     message = db.Column(db.String())
 
-    def __init__(self, title, querryString, minValue, okMinValue, okMaxValue, maxValue, unit, message):
+    def __init__(self, title, querryString, minValue, okMinValue, okMaxValue, maxValue, unit, message, reportGroupId):
         self.title = title
         self.queryString = querryString
         self.minValue = minValue
@@ -21,6 +22,7 @@ class ArchiveReport(db.Model):
         self.maxValue = maxValue
         self.unit = unit
         self.message = message
+        self.reportGroupId = reportGroupId
 
 class ArchiveReportLister():
     def __init__(self):
@@ -47,7 +49,8 @@ class ArchiveReporAdder():
             maxValue=formData["maxValue"][0]
             unit=formData["unit"][0]
             message=formData["message"][0]
-            srchive_report_to_add = ArchiveReport(title=title,querryString=querryString, minValue=minValue, okMinValue=okMinValue, okMaxValue=okMaxValue, maxValue=maxValue, unit=unit, message=message)
+            reportGroupId=formData["reportGroupId"][0]
+            srchive_report_to_add = ArchiveReport(title=title,querryString=querryString, minValue=minValue, okMinValue=okMinValue, okMaxValue=okMaxValue, maxValue=maxValue, unit=unit, message=message, reportGroupId=reportGroupId)
             db.session.add(srchive_report_to_add)
             db.session.commit()
         except Exception as e:

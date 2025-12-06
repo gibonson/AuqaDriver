@@ -91,6 +91,15 @@ AquaDriver - Archive Report List
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        {{ form.reportGroupId.label() }}
+                    </td>
+                    <td>
+                        {{ form.reportGroupId(class="form-control" , placeholder = 'reportGroupId') }}
+                        <small class="form-text text-danger">{{ form.reportGroupId.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2"></td>
                 </tr>
             </table>
@@ -111,6 +120,7 @@ AquaDriver - Archive Report List
             <th>OK Min Value</th>
             <th>OK Max Value</th>
             <th>Max Value</th>
+            <th>reportGroupId</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -126,6 +136,7 @@ AquaDriver - Archive Report List
             <td>{{archiveReporRow.okMinValue}}</td>
             <td>{{archiveReporRow.okMaxValue}}</td>
             <td>{{archiveReporRow.maxValue}}</td>
+            <td>{{archiveReporRow.reportGroupId}}</td>
             <td>
                 <div class="btn-group">
                     <a href="{{url_for('get_report', id = archiveReporRow.id)}}"
