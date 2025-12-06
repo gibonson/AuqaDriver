@@ -4,20 +4,18 @@ from mainApp import logger
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    eventType = db.Column(db.String())
+    eventAddress = db.Column(db.String())
     eventDescription = db.Column(db.String())
-    deviceId = db.Column(db.Integer())
-    eventLink = db.Column(db.String())
-    reportIds = db.Column(db.String())
+    eventPayload = db.Column(db.String())
+    eventGroupId = db.Column(db.Integer())
     eventStatus = db.Column(db.String())
 
 
-    def __init__(self, eventDescription, eventType, deviceId, eventLink, reportIds, eventStatus):
-        self.eventType = eventType
+    def __init__(self, eventAddress, eventDescription, eventPayload, eventGroupId, eventStatus):
+        self.eventAddress = eventAddress
         self.eventDescription = eventDescription
-        self.deviceId = deviceId
-        self.eventLink = eventLink
-        self.reportIds = reportIds
+        self.eventPayload = eventPayload
+        self.eventGroupId = eventGroupId
         self.eventStatus = eventStatus
 
 
@@ -38,13 +36,12 @@ class EventAdder():
         logger.info("Adding Event to DB")
 
         try:
-            device_id = formData["deviceId"][0]
-            event_link = formData["eventLink"][0]
-            event_description = formData["eventDescription"][0]
-            event_status = formData["eventStatus"][0]
-            event_type = formData["eventType"][0]
-            report_ids = formData["reportIds"]
-            device_function_to_add = Event(deviceId=device_id, eventLink=event_link, eventDescription=event_description, eventStatus=event_status, eventType= event_type, reportIds = str(report_ids))
+            eventAddress = formData["eventAddress"][0]
+            eventDescription = formData["eventDescription"][0]
+            eventPayload = formData["eventPayload"][0]
+            eventGroupId = formData["eventGroupId"][0]
+            eventStatus = formData["eventStatus"][0]
+            device_function_to_add = Event(eventAddress=eventAddress, eventDescription=eventDescription, eventPayload=eventPayload, eventGroupId=eventGroupId, eventStatus=eventStatus)
             db.session.add(device_function_to_add)
             db.session.commit()
         except Exception as e:
@@ -59,7 +56,6 @@ class EventManager:
         self.id = id
         self.message = ""
         self.event = Event.query.filter_by(id=self.id).first()
-        self.eventType = self.event.eventType
 
     def remove_event(self):
         if self.event:
@@ -73,14 +69,14 @@ class EventManager:
     
 
     def edit_event(self, formData: dict):
+        print("editform")
         if self.event:
             try:
+                self.event.eventAddress = formData["eventAddress"][0]
                 self.event.eventDescription = formData["eventDescription"][0]
-                self.event.deviceId = formData["deviceId"][0]
-                self.event.eventLink = formData["eventLink"][0]
-                self.event.reportIds = str(formData["reportIds"])
+                self.event.eventPayload = formData["eventPayload"][0]
+                self.event.eventGroupId = formData["eventGroupId"][0]
                 self.event.eventStatus = formData["eventStatus"][0]
-                self.event.eventType = formData["eventType"][0]
                 db.session.commit()
                 self.message = f"Event with ID {self.id} successfully updated"
                 logger.info(self.message)

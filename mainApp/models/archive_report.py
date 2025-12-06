@@ -10,7 +10,7 @@ class ArchiveReport(db.Model):
     okMaxValue = db.Column(db.Integer())
     maxValue = db.Column(db.Integer())
     unit = db.Column(db.String())
-    reportGroupId = db.Column(db.String())
+    reportGroupId = db.Column(db.Integer())
     message = db.Column(db.String())
 
     def __init__(self, title, querryString, minValue, okMinValue, okMaxValue, maxValue, unit, message, reportGroupId):

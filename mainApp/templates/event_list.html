@@ -16,96 +16,59 @@ AquaDriver - Event List
 <div class="collapse" id="form">
     <div class="card card-body">
         <form method="POST" class="form-register" style="color:white" novalidate>
-            {{ formRequest.hidden_tag() }}
+            {{ form.hidden_tag() }}
             <table>
                 <tr>
                     <td>
-                        {{ formRequest.deviceId.label() }}
+                        {{ form.eventAddress.label() }}
                     </td>
                     <td>
-                        {{ formRequest.deviceId(class="form-select" , placeholder = 'deviceId') }}
-                        <small class="form-text text-danger">{{ formRequest.deviceId.errors[0] }}</small>
+                        {{ form.eventAddress(class="form-control" , placeholder = 'eventAddress') }}
+                        <small class="form-text text-danger">{{ form.eventAddress.errors[0] }}</small>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        {{ form.eventDescription.label() }}
+                    </td>
+                    <td>
+                        {{ form.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
+                        <small class="form-text text-danger">{{ form.eventDescription.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {{ formRequest.eventDescription.label() }}
+                        {{ form.eventPayload.label() }}
                     </td>
                     <td>
-                        {{ formRequest.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
-                        <small class="form-text text-danger">{{ formRequest.eventDescription.errors[0] }}</small>
+                        {{ form.eventPayload(class="form-control" , placeholder = 'eventPayload') }}
+                        <small class="form-text text-danger">{{ form.eventPayload.errors[0] }}</small>
                     </td>
-                </tr>
-                <tr>
+                </tr>                <tr>
                     <td>
-                        {{ formRequest.eventLink.label() }}
-                    </td>
-                    <td>
-                        {{ formRequest.eventLink(class="form-control" , placeholder = 'eventLink') }}
-                        <small class="form-text text-danger">{{ formRequest.eventLink.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ formRequest.eventStatus.label() }}
+                        {{ form.eventGroupId.label() }}
                     </td>
                     <td>
-                        {{ formRequest.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
-                        <small class="form-text text-danger">{{ formRequest.eventStatus.errors[0] }}</small>
+                        {{ form.eventGroupId(class="form-control" , placeholder = 'eventGroupId') }}
+                        <small class="form-text text-danger">{{ form.eventGroupId.errors[0] }}</small>
                     </td>
-                </tr>
+                </tr> 
+                </tr>                <tr>
+                    <td>
+                        {{ form.eventStatus.label() }}
+                    </td>
+                    <td>
+                        {{ form.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
+                        <small class="form-text text-danger">{{ form.eventStatus.errors[0] }}</small>
+                    </td>
+                </tr> 
+
                 <tr>
                     <td colspan="2"></td>
                 </tr>
             </table>
-            {{ formRequest.submitLink(class="btn btn-lg btn-block btn-primary") }}
-        </form>
-    </div>
-    </br>
-</div>
-<p>
-    <button class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#form1"
-        aria-expanded="false" aria-controls="collapseForm2">
-        Add Event Report
-    </button>
-</p>
-<div class="collapse" id="form1">
-    <div class="card card-body">
-        <form method="POST" class="form-register" style="color:white" novalidate>
-            {{ formReport.hidden_tag() }}
-            <table>
-                <tr>
-                    <td>
-                        {{ formReport.eventDescription.label() }}
-                    </td>
-                    <td>
-                        {{ formReport.eventDescription(class="form-control" , placeholder = 'eventDescription') }}
-                        <small class="form-text text-danger">{{ formReport.eventDescription.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ formReport.reportIds.label() }}
-                    </td>
-                    <td>
-                        {{ formReport.reportIds(class="form-select" , placeholder = 'reportIds') }}
-                        <small class="form-text text-danger">{{ formReport.reportIds.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ formReport.eventStatus.label() }}
-                    </td>
-                    <td>
-                        {{ formReport.eventStatus(class="form-select" , placeholder = 'eventStatus') }}
-                        <small class="form-text text-danger">{{ formReport.eventStatus.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"></td>
-                </tr>
-            </table>
-            {{ formReport.submitReport(class="btn btn-lg btn-block btn-primary") }}
+            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
         </form>
     </div>
     </br>
@@ -114,12 +77,11 @@ AquaDriver - Event List
     <thead>
         <tr>
             <th data-col="id">#</th>
-            <th data-col="eventType">Event<br>Type</th>
-            <th data-col="device">Device<br>IP - Name</th>
-            <th data-col="eventLink">Event<br>Link</th>
-            <th data-col="reportIds">Report<br>Ids</th>
-            <th data-col="eventDescription">Event<br>Description</th>
-            <th data-col="eventStatus">Event<br>Status</th>
+            <th data-col="eventAddress">eventAddress<br>Type</th>
+            <th data-col="eventDescription">eventDescription</th>
+            <th data-col="eventPayload">eventPayload</th>
+            <th data-col="eventGroupId">eventGroupId</th>
+            <th data-col="eventStatus">eventStatus</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -127,19 +89,10 @@ AquaDriver - Event List
         {% for event in Events %}
         <tr>
             <th scope="row">{{event.id}}</th>
-            <td>{{event.eventType}}</th>
-            {% if (devices[event.deviceId-1] or not event.deviceId != 0) and devices[event.deviceId-1].deviceStatus != "Old" %}
-            {% if event.deviceId != 0 %}
-            <td>{{devices[event.deviceId-1].deviceIP}} - {{devices[event.deviceId-1].deviceName}}</td>
-            {% else %}
-            <td> - </td>
-            {% endif %}
-            <td>{{ event.eventLink[:20] }}
-                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title={{event.eventLink}}></i></br>
-            </td>
-            <td>{{event.reportIds}}</td>
+            <td>{{event.eventAddress}}</td>
             <td>{{event.eventDescription}}</td>
+            <td>{{event.eventPayload}}</td>
+            <td>{{event.eventGroupId}}</td>
             <td>{{event.eventStatus}}</td>
             <td>
                 <div class="btn-group">
@@ -147,39 +100,9 @@ AquaDriver - Event List
                         role="button" aria-pressed="true">Remove</a>
                     <a href="{{url_for('event_change_status', id = event.id)}}" class="btn btn-warning btn-lg active"
                         role="button" aria-pressed="true">Status</a>
-                    {% if event.eventType == "Link" %}
-                    <a href="{{url_for('event_web_content_collector', id = event.id)}}"
-                        class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Open</a>
-                    {% endif %}
                     <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal" data-bs-target="#editEventModal{{ event.id }}">Edit</button>
-
                 </div>
             </td>
-            {% elif devices[event.deviceId-1].deviceStatus == "Old" %}
-            <td> Old Device!!! check device with ID {{ event.deviceId-1 }} or remove</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{event.eventStatus}}</td>
-            <td>
-                <div class="btn-group">
-                    <a href="{{url_for('event_remove', id = event.id)}}" class="btn btn-danger btn-lg active"
-                        role="button" aria-pressed="true">Remove</a>
-                </div>
-            </td>
-            {% else %}
-            <td> Device Error!!! check device with ID {{ event.deviceId-1 }} or remove</td>
-            <td>{{event.eventLink}}</td>
-            <td>{{event.reportIds}}</td>
-            <td>{{event.eventDescription}}</td>
-            <td>{{event.eventStatus}}</td>
-            <td>
-                <div class="btn-group">
-                    <a href="{{url_for('event_remove', id = event.id)}}" class="btn btn-danger btn-lg active"
-                        role="button" aria-pressed="true">Remove</a>
-                </div>
-            </td>
-            {% endif %}
         </tr>
                 <!-- Modal -->
         <div class="modal fade" id="editEventModal{{ event.id }}" tabindex="-1" aria-labelledby="editEventModalLabel{{ event.id }}" aria-hidden="true">
@@ -191,46 +114,33 @@ AquaDriver - Event List
                     </div>
                     <form method="POST" action="{{ url_for('event_edit', id=event.id) }}">
                         <div class="modal-body">
-                            {% if event.eventType == 'Link' %}
-                            {{ formRequest.hidden_tag() }}
+  
+                            {{ form.hidden_tag() }}
                             <div class="mb-3">
-                                {{ formRequest.deviceId.label(class="form-label") }}
-                                {{ formRequest.deviceId(class="form-select", value=event.deviceId) }}
-                                <small class="form-text text-danger">{{ formRequest.deviceId.errors[0] }}</small>
+                                {{ form.eventAddress.label(class="form-label") }}
+                                {{ form.eventAddress(class="form-control", value=event.eventAddress) }}
+                                <small class="form-text text-danger">{{ form.eventAddress.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
-                                {{ formRequest.eventDescription.label(class="form-label") }}
-                                {{ formRequest.eventDescription(class="form-control", value=event.eventDescription) }}
-                                <small class="form-text text-danger">{{ formRequest.eventDescription.errors[0] }}</small>
+                                {{ form.eventDescription.label(class="form-label") }}
+                                {{ form.eventDescription(class="form-control", value=event.eventDescription) }}
+                                <small class="form-text text-danger">{{ form.eventDescription.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
-                                {{ formRequest.eventLink.label(class="form-label") }}
-                                {{ formRequest.eventLink(class="form-control", value=event.eventLink) }}
-                                <small class="form-text text-danger">{{ formRequest.eventLink.errors[0] }}</small>
+                                {{ form.eventPayload.label(class="form-label") }}
+                                {{ form.eventPayload(class="form-control", value=event.eventPayload) }}
+                                <small class="form-text text-danger">{{ form.eventPayload.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
-                                {{ formRequest.eventStatus.label(class="form-label") }}
-                                {{ formRequest.eventStatus(class="form-select", value=event.eventStatus) }}
-                                <small class="form-text text-danger">{{ formRequest.eventStatus.errors[0] }}</small>
-                            </div>
-                            {% elif event.eventType == 'Report' %}
-                            {{ formReport.hidden_tag() }}
-                            <div class="mb-3">
-                                {{ formReport.eventDescription.label(class="form-label") }}
-                                {{ formReport.eventDescription(class="form-control", value=event.eventDescription) }}
-                                <small class="form-text text-danger">{{ formReport.eventDescription.errors[0] }}</small>
+                                {{ form.eventGroupId.label(class="form-label") }}
+                                {{ form.eventGroupId(class="form-control", value=event.eventGroupId) }}
+                                <small class="form-text text-danger">{{ form.eventGroupId.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
-                                {{ formReport.reportIds.label(class="form-label") }}
-                                {{ formReport.reportIds(class="form-select", value=event.reportIds.split(',')) }}
-                                <small class="form-text text-danger">{{ formReport.reportIds.errors[0] }}</small>
+                                {{ form.eventStatus.label(class="form-label") }}
+                                {{ form.eventStatus(class="form-control", value=event.eventStatus) }}
+                                <small class="form-text text-danger">{{ form.eventStatus.errors[0] }}</small>
                             </div>
-                            <div class="mb-3">
-                                {{ formReport.eventStatus.label(class="form-label") }}
-                                {{ formReport.eventStatus(class="form-select", value=event.eventStatus) }}
-                                <small class="form-text text-danger">{{ formReport.eventStatus.errors[0] }}</small>
-                            </div>
-                            {% endif %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

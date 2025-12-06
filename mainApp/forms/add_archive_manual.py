@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
 from mainApp import app
-from mainApp.models.device import Device
 from wtforms.validators import DataRequired, Length, Optional
 from wtforms import SelectField, SubmitField, IntegerField, TextAreaField
 
@@ -12,13 +11,13 @@ class AddArchiveManualRecord(FlaskForm):
     deviceList = []
 
 
-    def deviceListUpdate():
-        AddArchiveManualRecord.deviceList.clear()
-        with app.app_context():
-            devices = Device.query.filter(Device.deviceStatus=="Ready").all()
-            for device in devices:
-                AddArchiveManualRecord.deviceList.append(
-                    ( device.deviceIP +  " -> " + device.deviceName, device.deviceIP +  " -> " + device.deviceName))
+    # def deviceListUpdate():
+    #     AddArchiveManualRecord.deviceList.clear()
+    #     with app.app_context():
+    #         devices = Device.query.filter(Device.deviceStatus=="Ready").all()
+    #         for device in devices:
+    #             AddArchiveManualRecord.deviceList.append(
+    #                 ( device.deviceIP +  " -> " + device.deviceName, device.deviceIP +  " -> " + device.deviceName))
 
 
     device = SelectField(label='deviceIP -> name', validators= [DataRequired()], choices=deviceList)

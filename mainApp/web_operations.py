@@ -3,7 +3,7 @@ import re
 import json
 from datetime import datetime
 from mainApp.models.event import Event
-from mainApp.models.device import Device
+# from mainApp.models.device import Device
 # from mainApp.response_operation import ResponseTrigger
 from mainApp.dashboard_data import DashboardData
 from mainApp import app, logger
@@ -239,7 +239,7 @@ class PlaceholderGetter:
 
 
 from mainApp.models.archive import ArchiveAdder
-from mainApp.models.validation import ValidationLister
+from mainApp.models.event_validation import ValidationLister
 from mainApp.email_operations import emailSender
 
 

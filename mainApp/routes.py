@@ -13,18 +13,16 @@ from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender
 from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_validation import AddValidation
-from mainApp.forms.add_device import AddDevice
-from mainApp.forms.add_event import AddEventLink, AddEventReport
+from mainApp.forms.add_event import AddEventLink
 from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
-from mainApp.models.device import DeviceAdder, DeviceLister, DeviceManager, DeviceListerAll
 from mainApp.models.event import  EventAdder, EventLister, EventManager
-from mainApp.models.validation import  ValidationLister, ValidationAdder, ValidationManager
-from mainApp.models.scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
+from mainApp.models.event_validation import  ValidationLister, ValidationAdder, ValidationManager
+from mainApp.models.event_scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
@@ -67,60 +65,16 @@ def handle_operational_error(error):
 
 
 # -----------------------------------------
-# device section
-# -----------------------------------------
-
-@app.route("/device_list", methods=['POST', 'GET'])
-def device_list():
-    form = AddDevice()
-    if validate_and_log_form(form):
-        DeviceAdder(request.form.to_dict(flat=False))
-    devices = DeviceLister().get_list()
-    return render_template_with_addons("device_list.html", devices=devices, form=form)
-
-@app.route("/device_remove/<id>")
-def device_remove(id):
-    manager = DeviceManager(id)
-    manager.remove_device()
-    flash_message(str(manager), category='success')
-    return redirect(url_for("device_list"))
-
-@app.route("/device_change_status/<id>")
-def device_change_status(id):
-    manager = DeviceManager(id)
-    manager.change_status()
-    flash_message(str(manager), category='success')
-    return redirect(url_for("device_list"))
-
-@app.route("/device_edit/<id>", methods=['POST'])
-def device_edit(id):
-    manager = DeviceManager(id)
-    manager.device
-    form = AddDevice()
-    if validate_and_log_form(form):
-        manager.edit_device(request.form.to_dict(flat=False))
-    return redirect(url_for("device_list"))
-
-
-# -----------------------------------------
 # event section
 # -----------------------------------------
 
 @app.route("/event_list", methods=['POST', 'GET'])
 def event_list():
-    AddEventLink.deviceIdListUpdate()
-    formRequest = AddEventLink()
-    AddEventReport.reportIdListUpdate()
-    formReport = AddEventReport()
-    if request.form.get("eventType") == "Link":
-        if validate_and_log_form(formRequest):
-            EventAdder(request.form.to_dict(flat=False))
-    if request.form.get("eventType") == "Report":
-        if validate_and_log_form(formReport):
-            EventAdder(request.form.to_dict(flat=False))
-    devices = DeviceListerAll().get_list()
+    form = AddEventLink()
+    if validate_and_log_form(form):
+        EventAdder(request.form.to_dict(flat=False))
     events = EventLister().get_list()
-    return render_template_with_addons("event_list.html", Events=events, devices=devices, formRequest=formRequest, formReport=formReport)
+    return render_template_with_addons("event_list.html", Events=events, form=form)
 
 # @app.route("/event_link_creator/<id>")
 # def event_link_creator(id):
@@ -160,15 +114,7 @@ def event_change_status(id):
 @app.route("/event_edit/<id>", methods=['POST'])
 def event_edit(id):
     manager = EventManager(id)
-    if manager.eventType == "Link":
-        print("AddEventLink")
-        form = AddEventLink()
-    elif manager.eventType == "Report":
-        print("AddEventReport")
-        form = AddEventReport()
-    else:
-        logger.error(f"Unknown event type: {manager.event.eventType}")
-        return redirect(url_for("event_list"))
+    form = AddEventLink()
     if validate_and_log_form(form=form):
         manager.edit_event(request.form.to_dict(flat=False))
     return redirect(url_for("event_list"))

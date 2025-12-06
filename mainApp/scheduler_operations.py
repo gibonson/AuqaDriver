@@ -2,9 +2,9 @@ from mainApp.web_operations import WebContentCollector
 from mainApp.report_operations import ReportSender
 from mainApp import app, db, logger
 from datetime import datetime
-from mainApp.models.device import Device
+# from mainApp.models.device import Device
 from mainApp.models.event import Event, EventLister
-from mainApp.models.scheduler import EventScheduler, EventSchedulerLister
+from mainApp.models.event_scheduler import EventScheduler, EventSchedulerLister
 
 def job_collector(scheduler_id):
    logger.info(f"Job collects: {scheduler_id}")

@@ -1,9 +1,8 @@
 from flask_wtf import FlaskForm
 from mainApp import app
 from mainApp import logger
-from mainApp.models.device import Device
 from mainApp.models.event import Event
-from mainApp.models.scheduler import EventScheduler
+from mainApp.models.event_scheduler import EventScheduler
 # from mainApp.models.archive_report_package import ArchiveFunctions
 from wtforms.validators import DataRequired, NumberRange
 from wtforms import SelectField, SubmitField, HiddenField, IntegerField, ValidationError
@@ -17,21 +16,21 @@ class AddEventScheduler(FlaskForm):
     schedulerStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
     eventIdList = []
 
-    def eventIdListUpdate():
-        AddEventScheduler.eventIdList.clear()
-        with app.app_context():
-            events = Event.query.all()
-            for event in events:
-                logger.debug(event.__dict__)
-                device = Device.query.get(event.deviceId)
-                if event.eventType == "Report":
-                    AddEventScheduler.eventIdList.append((str(event.id), "Report: " + str(event.reportIds) + " " + str(event.eventDescription)))
-                elif event.eventType == "Link":
-                    if event.deviceId != 0:
-                        AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
-                        event.eventLink) + " " + str(event.eventDescription)))
-                    elif event.deviceId == 0:
-                        AddEventScheduler.eventIdList.append((str(event.id), "External link: " + str(event.eventLink) + " " + str(event.eventDescription)))
+    # def eventIdListUpdate():
+    #     AddEventScheduler.eventIdList.clear()
+    #     with app.app_context():
+    #         events = Event.query.all()
+    #         for event in events:
+    #             logger.debug(event.__dict__)
+    #             device = Device.query.get(event.deviceId)
+    #             if event.eventType == "Report":
+    #                 AddEventScheduler.eventIdList.append((str(event.id), "Report: " + str(event.reportIds) + " " + str(event.eventDescription)))
+    #             elif event.eventType == "Link":
+    #                 if event.deviceId != 0:
+    #                     AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
+    #                     event.eventLink) + " " + str(event.eventDescription)))
+    #                 elif event.deviceId == 0:
+    #                     AddEventScheduler.eventIdList.append((str(event.id), "External link: " + str(event.eventLink) + " " + str(event.eventDescription)))
 
 
     
