@@ -10,7 +10,7 @@ class AddValidation(FlaskForm):
     actionTypeValuesList = [("email","email"),("event","event"),("ignore","ignore")]
 
     description = StringField(label='description', validators= [DataRequired(),Length(min=1, max=60, message='description: must be between 1 and 60 characters.')])
-    deviceIP = StringField(label='deviceIP', validators=[DataRequired(), IPAddress(ipv4=True, ipv6=False, message="deviceIP: wrong IP format")])
+    deviceIP = StringField(label='deviceIP', validators=[DataRequired()])
     deviceName = StringField(label='deviceName', validators= [DataRequired(),Length(min=3, max=20, message='deviceName: must be between 3 and 20 characters.')])
     addInfo = StringField(label='addInfo', validators= [DataRequired(),Length(min=3, max=20, message='addInfo: must be between 3 and 20 characters.')])
     type = StringField(label='type', validators= [DataRequired(),Length(min=3, max=20, message='type: must be between 3 and 10 characters.')])

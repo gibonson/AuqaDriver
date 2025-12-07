@@ -117,7 +117,6 @@
                      <li><a class="dropdown-item" href="{{url_for('get_jobs')}}"><i class='fa fa-cog'></i> Jobs</a></li>
                      <li><a class="dropdown-item" href="{{url_for('get_jobs_and_scheduler')}}"><i class='fa fa-gears'></i>Jobs and Scheduler</a></li>
                      <li><a class="dropdown-item" href="{{url_for('email_send')}}"><i class='fa fa-clock-o'></i>Email Send</a></li>
-                     <li><a class="dropdown-item" href="{{url_for('get_dashboard')}}"><i class='fa fa-bell-o'></i>Dashboard</a></li>
                      <li><a class="dropdown-item" href="{{url_for('get_logs')}}"><i class="fa fa-low-vision"></i>Logs</a></li>
                   </ul>
                </li>
@@ -172,7 +171,7 @@
 <script>
   $(document).ready(function() {
     $('#sortingTable').DataTable({
-      "order": [["asc", 0]],   // default sort column index and direction
+      "order": [[0, "desc"]],   // default sort column index and direction
       "pageLength": 25
     });
   });

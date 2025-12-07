@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import os
 
 # Third-party imports
-from flask import Markup, flash, jsonify, redirect, request, url_for
+from flask import Markup, flash, jsonify, redirect, request, url_for, abort
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 
@@ -76,20 +76,6 @@ def event_list():
     events = EventLister().get_list()
     return render_template_with_addons("event_list.html", Events=events, form=form)
 
-# @app.route("/event_link_creator/<id>")
-# def event_link_creator(id):
-#     linkCreator = LinkCreator(id).functions_list_link_creator()
-#     flash(Markup('<a href="' + linkCreator + '">' +
-#           linkCreator + '</a>'), category='success')
-#     return redirect(url_for("event_list"))
-
-# # @app.route("/event_api_collector/<id>")
-# # def event_api_collector(id):
-# #     linkCreator = LinkCreator(id).functions_api_link_creator()
-# #     flash(Markup('<a href="' + linkCreator + '">' +
-# #           linkCreator + '</a>'), category='success')
-# #     return redirect(url_for("event_list"))
-
 @app.route("/event_open/<id>")
 def event_open(id):
     WebContentCollector(id, requestID= "Manual").collector()
@@ -109,7 +95,6 @@ def event_change_status(id):
     manager.change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("event_list"))
-
 
 @app.route("/event_edit/<id>", methods=['POST'])
 def event_edit(id):
@@ -131,10 +116,9 @@ def scheduler_list():
     if validate_and_log_form(form=form):
         schedulerId = (str(form.eventId.data) + str(form.trigger.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
         EventSchedulerAdder(request.form.to_dict(flat=False), schedulerId)
-    device = DeviceLister().get_list()
     event = EventLister().get_list()
     eventSchedulerList = EventSchedulerLister().get_list()
-    return render_template_with_addons("scheduler_list.html", eventSchedulerList=eventSchedulerList, event=event, device=device, form=form, startswith=str.startswith, int=int)
+    return render_template_with_addons("scheduler_list.html", eventSchedulerList=eventSchedulerList, event=event, form=form, startswith=str.startswith, int=int)
 
 @app.route("/scheduler_remove/<id>")
 def scheduler_remove(id):
@@ -256,17 +240,6 @@ def email_send():
 
 
 # -----------------------------------------
-# DB Dashboard
-# -----------------------------------------
-
-@app.route('/get_dashboard')
-def get_dashboard():
-    dbSizeKB = DashboardData().getDbSizeKB()
-    sqlTable = DashboardData().getSqlTable()
-    return render_template_with_addons("get_dashboard.html", dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
-
-
-# -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
 
@@ -334,7 +307,6 @@ def remove_validation(id):
 
 @app.route("/archive_add_manually", methods=['POST', 'GET'])
 def archive_add_manually():
-    AddArchiveManualRecord.deviceListUpdate()
     form = AddArchiveManualRecord()
     if validate_and_log_form(form):
         requestDataRaw = request.form.to_dict(flat=False)
@@ -350,21 +322,23 @@ def archive_add_manually():
 
 @app.route("/get_logs", methods=["GET"])
 def get_logs():
+    dbSizeKB = DashboardData().getDbSizeKB()
+    sqlTable = DashboardData().getSqlTable()
     log_file_path = os.path.join("userFiles", "app.log")
     if not os.path.exists(log_file_path):
         flash("Log file does not exist!", category="danger")
-        return redirect(url_for("get_dashboard"))
+        abort(404)
     try:
         with open(log_file_path, "r") as log_file:
             lines = log_file.readlines()
             lines = [line.strip() for line in lines if line.strip()]
             last_200_lines = lines[-200:] if len(lines) > 200 else lines
             last_200_lines.reverse()
-        return render_template_with_addons("get_logs.html", log_lines=last_200_lines)
+        return render_template_with_addons("get_logs.html", log_lines=last_200_lines, dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
     except Exception as e:
         flash(f"Error reading log file: {str(e)}", category="danger")
-        return redirect(url_for("get_dashboard"))
+        abort(404)
     
     
 # -----------------------------------------

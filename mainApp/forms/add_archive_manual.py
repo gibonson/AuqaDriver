@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from mainApp import app
 from wtforms.validators import DataRequired, Length, Optional
-from wtforms import SelectField, SubmitField, IntegerField, TextAreaField
+from wtforms import SelectField, SubmitField, IntegerField, TextAreaField, StringField
 
 
 class AddArchiveManualRecord(FlaskForm):
@@ -20,8 +20,8 @@ class AddArchiveManualRecord(FlaskForm):
     #                 ( device.deviceIP +  " -> " + device.deviceName, device.deviceIP +  " -> " + device.deviceName))
 
 
-    device = SelectField(label='deviceIP -> name', validators= [DataRequired()], choices=deviceList)
-    addInfo = SelectField(label='addInfo',validators= [DataRequired()], choices=addInfoList)
+    device = StringField(label='deviceIP -> name', validators= [DataRequired()])
+    addInfo = StringField(label='addInfo',validators= [DataRequired()])
     value = IntegerField(label='value',validators= [DataRequired()])
     type = SelectField(label='type',validators= [DataRequired()], choices=typeList)
     comment = TextAreaField(label='comment', validators= [Optional(),Length(min=3, max=20, message='comment: must be between 1 and 100 characters.')])
