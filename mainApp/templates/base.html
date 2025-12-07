@@ -172,7 +172,7 @@
 <script>
   $(document).ready(function() {
     $('#sortingTable').DataTable({
-      "order": [[0, "asc"]],   // default sort column index and direction
+      "order": [["asc", 0]],   // default sort column index and direction
       "pageLength": 25
     });
   });

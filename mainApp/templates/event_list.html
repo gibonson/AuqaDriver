@@ -77,7 +77,7 @@ AquaDriver - Event List
     <thead>
         <tr>
             <th data-col="id">#</th>
-            <th data-col="eventAddress">eventAddress<br>Type</th>
+            <th data-col="eventAddress">eventAddress</th>
             <th data-col="eventDescription">eventDescription</th>
             <th data-col="eventPayload">eventPayload</th>
             <th data-col="eventGroupId">eventGroupId</th>
@@ -100,6 +100,8 @@ AquaDriver - Event List
                         role="button" aria-pressed="true">Remove</a>
                     <a href="{{url_for('event_change_status', id = event.id)}}" class="btn btn-warning btn-lg active"
                         role="button" aria-pressed="true">Status</a>
+                    <a href="{{url_for('event_open', id = event.id)}}" class="btn btn-success btn-lg active"
+                        role="button" aria-pressed="true">Open</a>
                     <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal" data-bs-target="#editEventModal{{ event.id }}">Edit</button>
                 </div>
             </td>

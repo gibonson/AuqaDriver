@@ -90,9 +90,9 @@ def event_list():
 # #           linkCreator + '</a>'), category='success')
 # #     return redirect(url_for("event_list"))
 
-@app.route("/event_web_content_collector/<id>")
-def event_web_content_collector(id):
-    WebContentCollector(id, requestID= "M").collector()
+@app.route("/event_open/<id>")
+def event_open(id):
+    WebContentCollector(id, requestID= "Manual").collector()
     flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
 

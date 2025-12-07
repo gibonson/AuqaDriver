@@ -22,7 +22,7 @@ class WebContentCollector:
             event = Event.query.get(self.id)
             if event is None:
                 print("Event not found")
-                response = requests.get(httpLink, timeout=5)
+                response = requests.get(eventAddress, timeout=5)
             # elif event.deviceId == 0:
             #     httpLink = event.eventLink
             #     print("httpLink: " + httpLink)
@@ -94,26 +94,23 @@ class WebContentCollector:
             #         # return {"error": "Connection error"}
 
             else:
-                device = Device.query.get(event.deviceId)
-                deviceIP = device.deviceIP
-                deviceSSL = device.deviceSSL
-                devicePort = device.devicePort
-                deviceName = device.deviceName
-                deviceProtocol = device.deviceProtocol
-                eventLink = event.eventLink
+                event = Event.query.get(self.id)
+                eventAddress = event.eventAddress
+                eventPayload = event.eventPayload   
+                eventGroupId = event.eventGroupId
 
-                placeholders = WebContentCollector.extract_placeholders(eventLink)
+                placeholders = WebContentCollector.extract_placeholders(eventPayload)
                 resolver = PlaceholderGetter(placeholders)
                 received_values = resolver.vlue_getter()
 
+                print(eventPayload)
                 print(received_values)
                 print(placeholders)
-                jsonEvent = self.inject_values_into_link(eventLink, received_values)
+                jsonEvent = self.inject_values_into_link(eventPayload, received_values)
                 jsonEvent = json.loads(jsonEvent)
                 jsonEvent["requestID"] = self.requestID
-                if deviceProtocol == "json":
-                    httpLink = deviceSSL + "://" + deviceIP + "/json"
-                    print("httpLink: " + httpLink)
+                print("httpLink: " + eventAddress)
+                if (eventPayload.startswith("{") and eventPayload.endswith("}")):                    
                     print("type of meaasge: " + str(type(jsonEvent)))
                     print(jsonEvent)
                     attempt = 1
@@ -121,7 +118,7 @@ class WebContentCollector:
                         try:
                             attempt += 1
                             response = requests.post(
-                                httpLink, json=jsonEvent, timeout=5
+                                eventAddress, json=jsonEvent, timeout=5
                             )
                             print(response.status_code)
                             print(
@@ -131,7 +128,7 @@ class WebContentCollector:
                             print("response:", response.text)
                             if response.status_code == 200:
                                 logger.error(
-                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {httpLink}"
+                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
                                 )
                                 requestData = response.json()
                                 requestData["requestID"] = self.requestID
@@ -140,7 +137,7 @@ class WebContentCollector:
                                 break
                             else:
                                 logger.error(
-                                    f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {httpLink}"
+                                    f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
                                 )
                                 requestData = {
                                     "requestID": self.requestID,
@@ -148,8 +145,8 @@ class WebContentCollector:
                                     + str(response.status_code)
                                     + ". Attempt:"
                                     + str(attempt),
-                                    "deviceIP": deviceIP,
-                                    "deviceName": deviceName,
+                                    "deviceIP": eventAddress,
+                                    "deviceName": "",
                                     "type": "error",
                                     "value": 0,
                                 }
@@ -158,13 +155,13 @@ class WebContentCollector:
                         except requests.exceptions.Timeout:
 
                             logger.error(
-                                f"Attempt: {attempt}. Timeout error while trying to reach {httpLink}"
+                                f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
                             )
                             requestData = {
                                 "requestID": self.requestID,
                                 "addInfo": "Timmeout error. Attempt:" + str(attempt),
-                                "deviceIP": deviceIP,
-                                "deviceName": deviceName,
+                                "deviceIP": eventAddress,
+                                "deviceName": "",
                                 "type": "error",
                                 "value": 0,
                             }
@@ -173,23 +170,21 @@ class WebContentCollector:
                         except requests.exceptions.RequestException as e:
 
                             logger.error(
-                                f"Attempt: {attempt}. Request error: {e} while trying to reach {httpLink}"
+                                f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
                             )
                             requestData = {
                                 "requestID": self.requestID,
                                 "addInfo": "Other  error. Attempt:" + str(attempt),
-                                "deviceIP": deviceIP,
-                                "deviceName": deviceName,
+                                "deviceIP": eventAddress,
+                                "deviceName": "",
                                 "type": "Error",
                                 "value": 0,
                             }
                             ResponseTrigger(requestData)
 
-                elif deviceProtocol == "http":
-                    # to development
-                    httpLink = (
-                        deviceSSL + "://" + deviceIP + ":" + str(devicePort) + eventLink
-                    )
+                else:
+                    print("totally not json")
+
 
     def extract_placeholders(eventLink):
         """zwraca w formie tabel
@@ -201,11 +196,9 @@ class WebContentCollector:
     def inject_values_into_link(self, eventLink, received_values):
         """
         Zastępuje placeholdery w eventLink odpowiednimi wartościami.
-
         Args:
             eventLink (str): Link zawierający placeholdery w formacie <<placeholder>>.
             values (dict): Słownik z wartościami dla placeholderów.
-
         Returns:
             str: Link z wstrzykniętymi wartościami.
         """
@@ -218,7 +211,6 @@ class PlaceholderGetter:
     def __init__(self, placeholders):
         """
         Inicjalizuje klasę z listą placeholderów.
-
         Args:
             placeholders (list): Lista placeholderów do przetworzenia.
         """
@@ -228,7 +220,6 @@ class PlaceholderGetter:
     def vlue_getter(self):
         """
         Przetwarza listę placeholderów i przypisuje im odpowiednie wartości.
-
         Returns:
             dict: Słownik z przypisanymi wartościami dla placeholderów.
         """
