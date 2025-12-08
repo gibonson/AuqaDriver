@@ -19,7 +19,7 @@ from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
-from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
+from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder, ArchiveReportManager
 from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.event_validation import  ValidationLister, ValidationAdder, ValidationManager
 from mainApp.models.event_scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
@@ -225,6 +225,29 @@ def get_report(id):
 def get_report_all():
     report = ReportCreator().create_all()
     return render_template_with_addons("get_report_all.html", report=report)
+
+@app.route("/sarchive_report_remove/<id>")
+def archive_report_remove(id):
+    message = ArchiveReportManager(id)
+    message.remove()
+    flash(str(message), category='warning')
+    return redirect(url_for("report_list"))
+
+@app.route("/archive_report_hange_status/<id>")
+def archive_report_change_status(id):
+    manager = ArchiveReportManager(id)
+    manager.change_status()
+    flash(str(manager), category='warning')
+    return redirect(url_for("report_list"))
+
+@app.route("/archive_report_edit/<id>", methods=['POST'])
+def archive_report_edit(id):
+    manager = ArchiveReportManager(id)
+    form = AddArchiveReport()
+    if validate_and_log_form(form=form):
+        manager.edit(request.form.to_dict(flat=False))
+    return redirect(url_for("report_list"))
+
 
 
 # -----------------------------------------

@@ -29,29 +29,11 @@ AquaDriver - Archive Report List
                 </tr>
                 <tr>
                     <td>
-                        {{ form.querryString.label() }}
+                        {{ form.queryString.label() }}
                     </td>
                     <td>
-                        {{ form.querryString(class="form-control" , placeholder = 'querryString') }}
-                        <small class="form-text text-danger">{{ form.querryString.errors[0] }}</small>
-                    </td>
-                </tr>
-                                <tr>
-                    <td>
-                        {{ form.message.label() }}
-                    </td>
-                    <td>
-                        {{ form.message(class="form-control" , placeholder = 'message') }}
-                        <small class="form-text text-danger">{{ form.message.errors[0] }}</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        {{ form.unit.label() }}
-                    </td>
-                    <td>
-                        {{ form.unit(class="form-control" , placeholder = 'unit') }}
-                        <small class="form-text text-danger">{{ form.unit.errors[0] }}</small>
+                        {{ form.queryString(class="form-control" , placeholder = 'queryString') }}
+                        <small class="form-text text-danger">{{ form.queryString.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -92,11 +74,38 @@ AquaDriver - Archive Report List
                 </tr>
                 <tr>
                     <td>
+                        {{ form.unit.label() }}
+                    </td>
+                    <td>
+                        {{ form.unit(class="form-control" , placeholder = 'unit') }}
+                        <small class="form-text text-danger">{{ form.unit.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         {{ form.reportGroupId.label() }}
                     </td>
                     <td>
                         {{ form.reportGroupId(class="form-control" , placeholder = 'reportGroupId') }}
                         <small class="form-text text-danger">{{ form.reportGroupId.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.message.label() }}
+                    </td>
+                    <td>
+                        {{ form.message(class="form-control" , placeholder = 'message') }}
+                        <small class="form-text text-danger">{{ form.message.errors[0] }}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {{ form.status.label() }}
+                    </td>
+                    <td>
+                        {{ form.status(class="form-control" , placeholder = 'status') }}
+                        <small class="form-text text-danger">{{ form.status.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -106,45 +115,133 @@ AquaDriver - Archive Report List
             {{ form.submit(class="btn btn-lg btn-block btn-primary w-100") }}
         </form>
     </div>
-</br>
+    </br>
 </div>
-<table class="table table-dark table-striped align-middle">
-    <thead>
+<table id="sortingTable" class="table table-dark table-striped align-middle">
+        <thead>
         <tr>
             <th>#</th>
             <th>Title</th>
-            <th>message</th>
-            <th>unit</th>
             <th>queryString</th>
             <th>Min Value</th>
             <th>OK Min Value</th>
             <th>OK Max Value</th>
             <th>Max Value</th>
+            <th>unit</th>
             <th>reportGroupId</th>
+            <th>message</th>
+            <th>status</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for archiveReporRow in archiveReportList %}
+        {% for archiveReportRow in archiveReportList %}
         <tr>
-            <td>{{archiveReporRow.id}}</td>
-            <td>{{archiveReporRow.title}}</td>
-            <td>{{archiveReporRow.message}}</td>
-            <td>{{archiveReporRow.unit}}</td>
-            <td>{{archiveReporRow.queryString}}</td>
-            <td>{{archiveReporRow.minValue}}</td>
-            <td>{{archiveReporRow.okMinValue}}</td>
-            <td>{{archiveReporRow.okMaxValue}}</td>
-            <td>{{archiveReporRow.maxValue}}</td>
-            <td>{{archiveReporRow.reportGroupId}}</td>
+            <td>{{archiveReportRow.id}}</td>
+            <td>{{archiveReportRow.title}}</td>
+            <td>{{archiveReportRow.queryString}}</td>
+            <td>{{archiveReportRow.minValue}}</td>
+            <td>{{archiveReportRow.okMinValue}}</td>
+            <td>{{archiveReportRow.okMaxValue}}</td>
+            <td>{{archiveReportRow.maxValue}}</td>
+            <td>{{archiveReportRow.unit}}</td>
+            <td>{{archiveReportRow.reportGroupId}}</td>
+            <td>{{archiveReportRow.message}}</td>
+            <td>{{archiveReportRow.status}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('get_report', id = archiveReporRow.id)}}"
-                        class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Check</a>
+                    <a href="{{url_for('archive_report_remove', id = archiveReportRow.id)}}"
+                        class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
+                    <a href="{{url_for('archive_report_change_status', id = archiveReportRow.id)}}"
+                        class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Status</a>
+                    <a href="{{url_for('get_report', id = archiveReportRow.id)}}" class="btn btn-success btn-lg active"
+                        role="button" aria-pressed="true">Open</a>
+                    <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal"
+                        data-bs-target="#editArchiveReportModal{{ archiveReportRow.id }}">Edit</button>
                 </div>
             </td>
         </tr>
+        <!-- Modal -->
+        <div class="modal fade" id="editArchiveReportModal{{ archiveReportRow.id }}" tabindex="-1"
+            aria-labelledby="editArchiveReportModalLabel{{ archiveReportRow.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editArchiveReportModalLabel{{ archiveReportRow.id }}">Edit
+                            archiveReportRow {{ archiveReportRow.id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ url_for('archive_report_edit', id=archiveReportRow.id) }}">
+                        <div class="modal-body">
+
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ form.title.label(class="form-label") }}
+                                {{ form.title(class="form-control", value=archiveReportRow.title) }}
+                                <small class="form-text text-danger">{{ form.title.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.queryString.label(class="form-label") }}
+                                {{ form.queryString(class="form-control", value=archiveReportRow.queryString) }}
+                                <small class="form-text text-danger">{{ form.queryString.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.minValue.label(class="form-label") }}
+                                {{ form.minValue(class="form-control", value=archiveReportRow.minValue) }}
+                                <small class="form-text text-danger">{{ form.minValue.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.okMinValue.label(class="form-label") }}
+                                {{ form.okMinValue(class="form-control", value=archiveReportRow.okMinValue) }}
+                                <small class="form-text text-danger">{{ form.okMinValue.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.okMaxValue.label(class="form-label") }}
+                                {{ form.okMaxValue(class="form-control", value=archiveReportRow.okMaxValue) }}
+                                <small class="form-text text-danger">{{ form.okMaxValue.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.maxValue.label(class="form-label") }}
+                                {{ form.maxValue(class="form-control", value=archiveReportRow.maxValue) }}
+                                <small class="form-text text-danger">{{ form.maxValue.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.unit.label(class="form-label") }}
+                                {{ form.unit(class="form-control", value=archiveReportRow.unit) }}
+                                <small class="form-text text-danger">{{ form.unit.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.reportGroupId.label(class="form-label") }}
+                                {{ form.reportGroupId(class="form-control", value=archiveReportRow.reportGroupId) }}
+                                <small class="form-text text-danger">{{ form.reportGroupId.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.message.label(class="form-label") }}
+                                {{ form.message(class="form-control", value=archiveReportRow.message) }}
+                                <small class="form-text text-danger">{{ form.message.errors[0]
+                                    }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.status.label(class="form-label") }}
+                                {{ form.status(class="form-control", value=archiveReportRow.status) }}
+                                <small class="form-text text-danger">{{ form.status.errors[0]
+                                    }}</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </tbody>
 </table>
 {% endblock %}
