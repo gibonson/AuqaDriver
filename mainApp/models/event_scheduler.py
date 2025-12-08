@@ -4,7 +4,7 @@ from mainApp import logger
 
 class EventScheduler(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    eventId = db.Column(db.String())
+    groupId = db.Column(db.String())
     trigger = db.Column(db.String())
     schedulerId = db.Column(db.String())
     day = db.Column(db.Integer()) #(1-31)
@@ -14,8 +14,8 @@ class EventScheduler(db.Model):
     second = db.Column(db.Integer()) #(0-59)
     schedulerStatus = db.Column(db.String())
 
-    def __init__(self, eventId , trigger, schedulerId , day , day_of_week , hour , minute, second, schedulerStatus):
-        self.eventId = eventId
+    def __init__(self, groupId , trigger, schedulerId , day , day_of_week , hour , minute, second, schedulerStatus):
+        self.groupId = groupId
         self.trigger = trigger
         self.schedulerId = schedulerId
         self.day = day
@@ -48,7 +48,7 @@ class EventSchedulerAdder():
         logger.info("Adding EventScheduler to DB")
 
         try:
-            eventId = formData["eventId"][0]
+            groupId = formData["groupId"][0]
             trigger = formData["trigger"][0]
             schedulerId = schedulerId
             day = formData["day"][0]
@@ -57,7 +57,7 @@ class EventSchedulerAdder():
             minute = formData["minute"][0]
             second = formData["second"][0]
             schedulerStatus = formData["schedulerStatus"][0]
-            scheduler_to_add = EventScheduler(eventId=eventId, trigger=trigger, schedulerId=schedulerId, day=day, day_of_week=day_of_week, hour=hour, minute=minute, second=second, schedulerStatus=schedulerStatus)
+            scheduler_to_add = EventScheduler(groupId=groupId, trigger=trigger, schedulerId=schedulerId, day=day, day_of_week=day_of_week, hour=hour, minute=minute, second=second, schedulerStatus=schedulerStatus)
             db.session.add(scheduler_to_add)
             db.session.commit()
         except Exception as e:

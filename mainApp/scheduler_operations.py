@@ -30,18 +30,18 @@ def sched_start(sched, schedulerIdToRun = None):
       eventList = EventLister().get_list()
 
       for eventScheduler in eventSchedulerLister:
-        scheduler_id = eventScheduler.schedulerId
-        logger.debug(f"schedulerId = {scheduler_id}")
-        if eventList[int(eventScheduler.eventId)-1].eventType  == "Report":
-            job_type = "report_sender"
-            http_link = eventScheduler.eventId
-            logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
-        if eventList[int(eventScheduler.eventId)-1].eventType  == "Link":
-            job_type = "job_collector"
-            http_link = eventScheduler.eventId
-            # linkCreator = LinkCreator(eventScheduler.eventId)
-            # http_link =  linkCreator.functions_list_link_creator()
-            # logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
+        # scheduler_id = eventScheduler.schedulerId
+        # logger.debug(f"schedulerId = {scheduler_id}")
+        # if eventList[int(eventScheduler.groupId)-1].eventType  == "Report":
+        #     job_type = "report_sender"
+        #     http_link = eventScheduler.groupId
+        #     logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
+        # if eventList[int(eventScheduler.groupId)-1].eventType  == "Link":
+        #     job_type = "job_collector"
+        #     http_link = eventScheduler.groupId
+        #     # linkCreator = LinkCreator(eventScheduler.groupId)
+        #     # http_link =  linkCreator.functions_list_link_creator()
+        #     # logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
 
         trigger = eventScheduler.trigger
         day = eventScheduler.day
@@ -50,8 +50,8 @@ def sched_start(sched, schedulerIdToRun = None):
         minute = eventScheduler.minute
         second = eventScheduler.second
 
-        logger.debug(f"schedulerId = {scheduler_id} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
-        add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
+        # logger.debug(f"schedulerId = {scheduler_id} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
+        # add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)
 
 
 def add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second):

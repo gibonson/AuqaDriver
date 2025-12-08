@@ -14,10 +14,10 @@ class AddEventScheduler(FlaskForm):
     dayOfWeekList = [(None, None),("mon", "mon"),("tue", "tue"),("wed", "wed"),("thu", "thu"),("fri", "fri"),("sat", "sat")]
     dayList = [(0,"0"),(1,"1"),(2,"2"),(3,"3"),(4,"4"),(5,"5"),(6,"6"),(7,"7"),(8,"8"),(9,"9"),(10,"10"),(11,"11"),(12,"12"),(13,"13"),(14,"14"),(15,"15"),(16,"16"),(17,"17"),(18,"18"),(19,"19"),(20,"20"),(21,"21"),(22,"22"),(23,"23"),(24,"24"),(25,"25"),(26,"26"),(27,"27"),(28,"28"),(29,"29"),(30,"30"),(31,"31")]
     schedulerStatusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
-    eventIdList = []
+    groupIdList = []
 
-    def eventIdListUpdate():
-        AddEventScheduler.eventIdList.clear()
+    def groupIdListUpdate():
+        AddEventScheduler.groupIdList.clear()
         with app.app_context():
             # events = Event.query.all()
             # archive_report = ArchiveReport.query.all()
@@ -26,37 +26,23 @@ class AddEventScheduler(FlaskForm):
             print(report_groups)
             for report_group in report_groups:
                 print(report_group[0])
-                AddEventScheduler.eventIdList.append(("ReportGroup:" + str(report_group[0]),"ReportGroup:" + str(report_group[0])))
+                AddEventScheduler.groupIdList.append(("ReportGroup:" + str(report_group[0]),"ReportGroup:" + str(report_group[0])))
             events = Event.query.with_entities(Event.eventGroupId).distinct().all()
             print(events)
             for event in events:
                 print(event[0])
-                AddEventScheduler.eventIdList.append(("EventGroup: " + str(event[0]),"EventGroup: " + str(event[0])))
+                AddEventScheduler.groupIdList.append(("EventGroup: " + str(event[0]),"EventGroup: " + str(event[0])))
         
-        print(AddEventScheduler.eventIdList)
-
-
-            # for event in events:
-            #     logger.debug(event.__dict__)
-            #     device = Device.query.get(event.deviceId)
-            #     if event.eventType == "Report":
-                    # AddEventScheduler.eventIdList.append((str(event.id), "Report: " + str(event.reportIds) + " " + str(event.eventDescription)))
-            #     elif event.eventType == "Link":
-            #         if event.deviceId != 0:
-            #             AddEventScheduler.eventIdList.append((str(event.id), "Sensor: " + str(device.deviceIP) + " - " + str(device.deviceName) + ": " + " " + str(
-            #             event.eventLink) + " " + str(event.eventDescription)))
-            #         elif event.deviceId == 0:
-            #             AddEventScheduler.eventIdList.append((str(event.id), "External link: " + str(event.eventLink) + " " + str(event.eventDescription)))
-
+        print(AddEventScheduler.groupIdList)
 
     
     def validate_schedulerId(self, schedulerId_to_check):
-            schedulerId_to_check = (str(self.eventId.data) + str(self.trigger.data) +str(self.day.data) + str(self.day_of_week.data) + str(self.hour.data) + str(self.minute.data) + str(self.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
+            schedulerId_to_check = (str(self.groupId.data) + str(self.trigger.data) +str(self.day.data) + str(self.day_of_week.data) + str(self.hour.data) + str(self.minute.data) + str(self.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
             existing_scheduler = EventScheduler.query.filter_by(schedulerId=schedulerId_to_check).first()
             if existing_scheduler:
                 raise ValidationError(f'schedulerId "{schedulerId_to_check}" już istnieje w bazie danych.')
 
-    eventId = SelectField(label='eventId',choices = eventIdList, validators=[DataRequired()])
+    groupId = SelectField(label='groupId',choices = groupIdList, validators=[DataRequired()])
     trigger = SelectField(label='jobType', choices=triggerList)
     schedulerId = HiddenField()
     day = SelectField(label='day', choices=dayList)

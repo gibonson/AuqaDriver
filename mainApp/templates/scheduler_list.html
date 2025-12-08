@@ -21,11 +21,11 @@ AquaDriver - Scheduler List
                 <small class="form-text text-danger">{{ form.schedulerId.errors[0] }}</small>
                 <tr>
                     <td>
-                        {{ form.eventId.label() }}
+                        {{ form.groupId.label() }}
                     </td>
                     <td>
-                        {{ form.eventId(class="form-select" , placeholder = 'eventId:') }}
-                        <small class="form-text text-danger">{{ form.eventId.errors[0] }}</small>
+                        {{ form.groupId(class="form-select" , placeholder = 'groupId:') }}
+                        <small class="form-text text-danger">{{ form.groupId.errors[0] }}</small>
                     </td>
                 </tr>
                 <tr>
@@ -104,7 +104,7 @@ AquaDriver - Scheduler List
         <tr>
             <th data-col="id">#</th>
             <th data-col="schedulerId">Scheduler<br>Id</th>
-            <th data-col="details">Details</th>
+            <th data-col="groupId">groupId</th>
             <th data-col="dbTrigger">DB Trigger<br>[D-day-H:M:S]</th>
             <th data-col="schedulerStatus">Scheduler<br>Status</th>
             <th>Action</th>
@@ -115,20 +115,7 @@ AquaDriver - Scheduler List
         <tr>
             <td>{{eventScheduler.id}}</td>
             <td>{{eventScheduler.schedulerId}}</td>
-            <td>
-                {% if event[int(eventScheduler.eventId)-1].eventType == "Report" %}
-                {{event[int(eventScheduler.eventId)-1].eventType}}
-                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
-                {{event[int(eventScheduler.eventId)-1].reportIds}}
-
-                {% elif event[int(eventScheduler.eventId)-1].eventType == "Link" %}
-                {{event[int(eventScheduler.eventId)-1].eventType}}
-                <i class="fa fa-info-circle" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="top"
-                    title={{event[int(eventScheduler.eventId)-1].eventDescription}}></i></br>
-                {{device[int(event[int(eventScheduler.eventId)-1].deviceId)-1].deviceIP}}{{event[int(eventScheduler.eventId)-1].eventLink}}
-                {% endif %}
-            </td>
+            <td>{{eventScheduler.groupId}}</td>
             <td>{{eventScheduler.trigger}}[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
             </td>
             <td>{{eventScheduler.schedulerStatus}}</td>

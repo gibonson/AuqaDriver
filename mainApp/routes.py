@@ -111,10 +111,10 @@ def event_edit(id):
 
 @app.route("/scheduler_list", methods=['POST', 'GET'])
 def scheduler_list():
-    AddEventScheduler.eventIdListUpdate()
+    AddEventScheduler.groupIdListUpdate()
     form = AddEventScheduler()
     if validate_and_log_form(form=form):
-        schedulerId = (str(form.eventId.data) + str(form.trigger.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
+        schedulerId = (str(form.groupId.data) + str(form.trigger.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
         EventSchedulerAdder(request.form.to_dict(flat=False), schedulerId)
     event = EventLister().get_list()
     eventSchedulerList = EventSchedulerLister().get_list()
