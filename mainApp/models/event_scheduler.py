@@ -83,6 +83,32 @@ class EventSchedulereManager:
             logger.error(f'EventScheduler with ID {self.id} does not exist')
             self.message = f'EventScheduler with ID {self.id} does not exist'
     
+    
+    def edit_event_scheduler(self, formData: dict):
+        print("editform")
+        if self.EventScheduler:
+            try:
+                self.EventScheduler.schedulerId = formData["schedulerId"][0]
+                self.EventScheduler.groupId = formData["groupId"][0]
+                self.EventScheduler.trigger = formData["trigger"][0]
+                self.EventScheduler.day = formData["day"][0]
+                self.EventScheduler.day_of_week = formData["day_of_week"][0]
+                self.EventScheduler.hour = formData["hour"][0]
+                self.EventScheduler.minute = formData["minute"][0]
+                self.EventScheduler.second = formData["second"][0]
+                self.EventScheduler.schedulerStatus = formData["schedulerStatus"][0]
+                db.session.commit()
+                self.message = f"Event scheduler with ID {self.id} successfully updated"
+                logger.info(self.message)
+            except Exception as e:
+                db.session.rollback()
+                self.message = f"An error occurred while updating event scheduler: {e}"
+                logger.error(self.message)
+        else:
+            self.message = f"Event scheduler with ID {self.id} does not exist"
+            logger.error(self.message)
+        
+        
     def change_status(self):
         if self.EventScheduler:
             if self.EventScheduler.schedulerStatus == "Ready":

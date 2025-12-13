@@ -102,6 +102,35 @@ class ValidationManager:
         else:
             logger.error(f'Validation with ID {self.id} does not exist')
             self.message = f'Validation with ID {self.id} does not exist'
+            
+    def edit_event_validation(self, formData: dict):
+        print("editform")
+        if self.Validation:
+            try:
+                print("edit form")
+                self.Validation.description = formData["description"][0]
+                self.Validation.deviceIP = formData["deviceIP"][0]
+                self.Validation.deviceName = formData["deviceName"][0]
+                self.Validation.addInfo = formData["addInfo"][0]
+                self.Validation.type = formData["type"][0]
+                self.Validation.condition = formData["condition"][0]
+                self.Validation.value = formData["value"][0]
+                self.Validation.status = formData["status"][0]
+                self.Validation.actionType = formData["actionType"][0]
+                self.Validation.eventId = formData["eventId"][0]
+                self.Validation.message = formData["message"][0]
+                db.session.commit()
+                self.message = f"Event validation with ID {self.id} successfully updated"
+                logger.info(self.message)
+            except Exception as e:
+                db.session.rollback()
+                self.message = f"An error occurred while updating event validation: {e}"
+                logger.error(self.message)
+        else:
+            self.message = f"Event validation with ID {self.id} does not exist"
+            logger.error(self.message)
+    
+    
     
     def change_status(self):
         if self.Validation:

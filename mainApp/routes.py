@@ -134,6 +134,13 @@ def scheduler_change_status(id):
     flash(str(manager), category='warning')
     return redirect(url_for("scheduler_list"))
 
+@app.route("/event_scheduler_edit/<id>", methods=['POST'])
+def event_scheduler_edit(id):
+    manager = EventSchedulereManager(id)
+    form = AddEventScheduler()
+    if validate_and_log_form(form=form):
+        manager.edit_event_scheduler(request.form.to_dict(flat=False))
+    return redirect(url_for("scheduler_list"))
 
 # -----------------------------------------
 # job section
@@ -322,6 +329,14 @@ def remove_validation(id):
     manager = ValidationManager(id)
     manager.remove_validation()
     flash(str(manager), category='danger')
+    return redirect(url_for("validation_list"))
+
+@app.route("/event_validation_edit/<id>", methods=['POST'])
+def event_validation_edit(id):
+    manager = ValidationManager(id)
+    form = AddValidation()
+    if validate_and_log_form(form=form):
+        manager.edit_event_validation(request.form.to_dict(flat=False))
     return redirect(url_for("validation_list"))
 
 # -----------------------------------------

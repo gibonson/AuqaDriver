@@ -5,7 +5,7 @@ from mainApp.models.event import Event
 from mainApp.models.event_scheduler import EventScheduler
 from mainApp.models.archive_report import ArchiveReport
 from wtforms.validators import DataRequired, NumberRange
-from wtforms import SelectField, SubmitField, HiddenField, IntegerField, ValidationError
+from wtforms import SelectField, SubmitField, HiddenField, IntegerField, ValidationError, StringField
 
 
 class AddEventScheduler(FlaskForm):
@@ -44,7 +44,7 @@ class AddEventScheduler(FlaskForm):
 
     groupId = SelectField(label='groupId',choices = groupIdList, validators=[DataRequired()])
     trigger = SelectField(label='jobType', choices=triggerList)
-    schedulerId = HiddenField()
+    schedulerId = StringField(label='schedulerId', validators=[DataRequired()])
     day = SelectField(label='day', choices=dayList)
     day_of_week = SelectField(label='dayOfWeekList', choices=dayOfWeekList)
     hour = IntegerField(label='hour',validators= [NumberRange(min=0, max=59, message='hour: must be between 0 and 23.')])

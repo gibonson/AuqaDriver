@@ -116,7 +116,7 @@ AquaDriver - Scheduler List
             <td>{{eventScheduler.id}}</td>
             <td>{{eventScheduler.schedulerId}}</td>
             <td>{{eventScheduler.groupId}}</td>
-            <td>{{eventScheduler.trigger}}[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
+            <td>{{eventScheduler.trigger}}<br>[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
             </td>
             <td>{{eventScheduler.schedulerStatus}}</td>
             <td>
@@ -125,9 +125,80 @@ AquaDriver - Scheduler List
                         class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Remove</a>
                     <a href="{{url_for('scheduler_change_status', id = eventScheduler.id)}}"
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Change Status</a>
+                    <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal"
+                        data-bs-target="#editEventSchedulerModal{{ event.id }}">Edit</button>
                 </div>
             </td>
         </tr>
+
+        <!-- Modal -->
+        <div class="modal fade" id="editEventSchedulerModal{{ event.id }}" tabindex="-1"
+            aria-labelledby="editEventSchedulerModalLabel{{ event.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editEventSchedulerModalLabel{{ event.id }}">Edit Event {{ event.id }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ url_for('event_scheduler_edit', id=eventScheduler.id) }}">
+                        <div class="modal-body">
+
+                            {{ form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ form.schedulerId.label(class="form-label") }}
+                                {{ form.schedulerId(class="form-control", value=eventScheduler.schedulerId) }}
+                                <small class="form-text text-danger">{{ form.schedulerId.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.groupId.label(class="form-label") }}
+                                {{ form.groupId(class="form-control", value=eventScheduler.groupId) }}
+                                <small class="form-text text-danger">{{ form.groupId.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.trigger.label(class="form-label") }}
+                                {{ form.trigger(class="form-control", value=eventScheduler.trigger) }}
+                                <small class="form-text text-danger">{{ form.trigger.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.day.label(class="form-label") }}
+                                {{ form.day(class="form-control", value=eventScheduler.day) }}
+                                <small class="form-text text-danger">{{ form.day.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.day_of_week.label(class="form-label") }}
+                                {{ form.day_of_week(class="form-control", value=eventScheduler.day_of_week) }}
+                                <small class="form-text text-danger">{{ form.day_of_week.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.hour.label(class="form-label") }}
+                                {{ form.hour(class="form-control", value=eventScheduler.hour) }}
+                                <small class="form-text text-danger">{{ form.hour.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.minute.label(class="form-label") }}
+                                {{ form.minute(class="form-control", value=eventScheduler.minute) }}
+                                <small class="form-text text-danger">{{ form.minute.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.second.label(class="form-label") }}
+                                {{ form.second(class="form-control", value=eventScheduler.second) }}
+                                <small class="form-text text-danger">{{ form.second.errors[0] }}</small>
+                            </div>
+                            <div class="mb-3">
+                                {{ form.schedulerStatus.label(class="form-label") }}
+                                {{ form.schedulerStatus(class="form-control", value=eventScheduler.schedulerStatus) }}
+                                <small class="form-text text-danger">{{ form.schedulerStatus.errors[0] }}</small>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </tbody>
 </table>
