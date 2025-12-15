@@ -17,8 +17,13 @@ AquaDriver - Scheduler List
 
             {{ form.hidden_tag() }}
             <table>
-                {{ form.schedulerId(class="form-control" , placeholder = 'schedulerId:') }}
-                <small class="form-text text-danger">{{ form.schedulerId.errors[0] }}</small>
+                <td>
+                    {{ form.schedulerId.label() }}
+                </td>
+                <td>
+                    {{ form.schedulerId(class="form-control" , placeholder = 'schedulerId:') }}
+                    <small class="form-text text-danger">{{ form.schedulerId.errors[0] }}</small>
+                </td>
                 <tr>
                     <td>
                         {{ form.groupId.label() }}
@@ -151,22 +156,22 @@ AquaDriver - Scheduler List
                             </div>
                             <div class="mb-3">
                                 {{ form.groupId.label(class="form-label") }}
-                                {{ form.groupId(class="form-control", value=eventScheduler.groupId) }}
+                                {{ form.groupId(class="form-select", value=eventScheduler.groupId) }}
                                 <small class="form-text text-danger">{{ form.groupId.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
                                 {{ form.trigger.label(class="form-label") }}
-                                {{ form.trigger(class="form-control", value=eventScheduler.trigger) }}
+                                {{ form.trigger(class="form-select", value=eventScheduler.trigger) }}
                                 <small class="form-text text-danger">{{ form.trigger.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
                                 {{ form.day.label(class="form-label") }}
-                                {{ form.day(class="form-control", value=eventScheduler.day) }}
+                                {{ form.day(class="form-select", value=eventScheduler.day) }}
                                 <small class="form-text text-danger">{{ form.day.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
                                 {{ form.day_of_week.label(class="form-label") }}
-                                {{ form.day_of_week(class="form-control", value=eventScheduler.day_of_week) }}
+                                {{ form.day_of_week(class="form-select", value=eventScheduler.day_of_week) }}
                                 <small class="form-text text-danger">{{ form.day_of_week.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
@@ -186,7 +191,7 @@ AquaDriver - Scheduler List
                             </div>
                             <div class="mb-3">
                                 {{ form.schedulerStatus.label(class="form-label") }}
-                                {{ form.schedulerStatus(class="form-control", value=eventScheduler.schedulerStatus) }}
+                                {{ form.schedulerStatus(class="form-select", value=eventScheduler.schedulerStatus) }}
                                 <small class="form-text text-danger">{{ form.schedulerStatus.errors[0] }}</small>
                             </div>
 

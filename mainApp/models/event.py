@@ -20,12 +20,16 @@ class Event(db.Model):
 
 
 class EventLister():
-    def __init__(self):
+    def __init__(self, eventGroupId=None):
+        self.eventGroupId = eventGroupId
+        self.events = []
         try:
-            self.events = Event.query.all()
+            if self.eventGroupId:
+                self.events = Event.query.filter_by(eventGroupId=self.eventGroupId).all()
+            else:
+                self.events = Event.query.all()
         except Exception as e:
             logger.error(f"An error occurred while fetching devices functions: {e}")
-            self.events = []
     def get_list(self):
         return self.events
     

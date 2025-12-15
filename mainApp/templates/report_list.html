@@ -104,7 +104,7 @@ AquaDriver - Archive Report List
                         {{ form.status.label() }}
                     </td>
                     <td>
-                        {{ form.status(class="form-control" , placeholder = 'status') }}
+                        {{ form.status(class="form-select" , placeholder = 'status') }}
                         <small class="form-text text-danger">{{ form.status.errors[0] }}</small>
                     </td>
                 </tr>
@@ -229,7 +229,7 @@ AquaDriver - Archive Report List
                             </div>
                             <div class="mb-3">
                                 {{ form.status.label(class="form-label") }}
-                                {{ form.status(class="form-control", value=archiveReportRow.status) }}
+                                {{ form.status(class="form-select", value=archiveReportRow.status) }}
                                 <small class="form-text text-danger">{{ form.status.errors[0]
                                     }}</small>
                             </div>

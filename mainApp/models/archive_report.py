@@ -27,9 +27,14 @@ class ArchiveReport(db.Model):
         self.reportGroupId = reportGroupId
 
 class ArchiveReportLister():
-    def __init__(self):
+    def __init__(self, reportGroupId=None):
+        self.reportGroupId = reportGroupId
+        self.archiveReport = []
         try:
-            self.archiveReport = ArchiveReport.query.all()
+            if self.reportGroupId:
+                self.archiveReport = ArchiveReport.query.filter_by(reportGroupId=self.reportGroupId).all()
+            else:
+                self.archiveReport = ArchiveReport.query.all()
         except Exception as e:
             logger.error(f"An error occurred while fetching archive report: {e}")
             self.archiveReport = []

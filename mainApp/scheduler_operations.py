@@ -4,6 +4,7 @@ from mainApp import app, db, logger
 from datetime import datetime
 # from mainApp.models.device import Device
 from mainApp.models.event import Event, EventLister
+from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister
 from mainApp.models.event_scheduler import EventScheduler, EventSchedulerLister
 
 def job_collector(scheduler_id):
@@ -30,6 +31,36 @@ def sched_start(sched, schedulerIdToRun = None):
       eventList = EventLister().get_list()
 
       for eventScheduler in eventSchedulerLister:
+        print(eventScheduler.schedulerId)
+        print(eventScheduler.groupId)
+        if "ReportGroup:" in eventScheduler.groupId:
+            print("Report Group found")
+            reportGroupId = eventScheduler.groupId.replace("ReportGroup:","")
+            reportsGroup=ArchiveReportLister(reportGroupId).get_list()
+            for reportGroup in reportsGroup:
+                print(reportGroup.id)
+                print(reportGroup.title)  
+                print(reportGroup.queryString)  
+                print(reportGroup.minValue)  
+                print(reportGroup.okMinValue)  
+                print(reportGroup.okMaxValue)  
+                print(reportGroup.maxValue)  
+                print(reportGroup.unit)  
+                print(reportGroup.message)  
+                print(reportGroup.status)  
+        elif "EventGroup:" in eventScheduler.groupId:
+            print("Event Group found")
+            eventGroupId = eventScheduler.groupId.replace("EventGroup:","")
+            eventsGroup=EventLister(eventGroupId).get_list()
+            for eventGroup in eventsGroup:
+                print(eventGroup.id)  
+                print(eventGroup.eventAddress)  
+                print(eventGroup.eventPayload)  
+                print(eventGroup.eventStatus)  
+        else: 
+            print("No Group found")
+            
+            
         # scheduler_id = eventScheduler.schedulerId
         # logger.debug(f"schedulerId = {scheduler_id}")
         # if eventList[int(eventScheduler.groupId)-1].eventType  == "Report":
