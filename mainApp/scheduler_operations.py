@@ -7,18 +7,22 @@ from mainApp.models.event import Event, EventLister
 from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister
 from mainApp.models.event_scheduler import EventScheduler, EventSchedulerLister
 
-def job_collector(scheduler_id):
-   logger.info(f"Job collects: {scheduler_id}")
-   webContentCollector = WebContentCollector(scheduler_id)
-   webContentCollector.collector()
-   logger.info(f"Job collected")
+def event_trigger(scheduler_id):
+    print("Event trigger called")
+    logger.info(f"Event triggers: {scheduler_id}")
+#    logger.info(f"Job collects: {scheduler_id}")
+#    webContentCollector = WebContentCollector(scheduler_id)
+#    webContentCollector.collector()
+#    logger.info(f"Job collected")
 
 
 def report_sender(scheduler_id):
-   logger.info(f"Report sends: {scheduler_id}")
-   reportSender = ReportSender(scheduler_id)
-   reportSender.collect_and_send()
-   logger.info(f"Report sent")
+    print("Report sender called")
+    logger.info(f"Report sending: {scheduler_id}")
+#    logger.info(f"Report sends: {scheduler_id}")
+#    reportSender = ReportSender(scheduler_id)
+#    reportSender.collect_and_send()
+#    logger.info(f"Report sent")
 
 
 def sched_start(sched, schedulerIdToRun = None):
@@ -33,32 +37,55 @@ def sched_start(sched, schedulerIdToRun = None):
       for eventScheduler in eventSchedulerLister:
         print(eventScheduler.schedulerId)
         print(eventScheduler.groupId)
+        schedulerId = eventScheduler.schedulerId
+        
         if "ReportGroup:" in eventScheduler.groupId:
             print("Report Group found")
-            reportGroupId = eventScheduler.groupId.replace("ReportGroup:","")
-            reportsGroup=ArchiveReportLister(reportGroupId).get_list()
-            for reportGroup in reportsGroup:
-                print(reportGroup.id)
-                print(reportGroup.title)  
-                print(reportGroup.queryString)  
-                print(reportGroup.minValue)  
-                print(reportGroup.okMinValue)  
-                print(reportGroup.okMaxValue)  
-                print(reportGroup.maxValue)  
-                print(reportGroup.unit)  
-                print(reportGroup.message)  
-                print(reportGroup.status)  
+            job_type = "report_sender"
         elif "EventGroup:" in eventScheduler.groupId:
             print("Event Group found")
-            eventGroupId = eventScheduler.groupId.replace("EventGroup:","")
-            eventsGroup=EventLister(eventGroupId).get_list()
-            for eventGroup in eventsGroup:
-                print(eventGroup.id)  
-                print(eventGroup.eventAddress)  
-                print(eventGroup.eventPayload)  
-                print(eventGroup.eventStatus)  
+            job_type = "event_trigger"
         else: 
             print("No Group found")
+            
+        
+        trigger = eventScheduler.trigger
+        day = eventScheduler.day
+        day_of_week = eventScheduler.day_of_week
+        hour = eventScheduler.hour
+        minute = eventScheduler.minute
+        second = eventScheduler.second
+        
+        
+        logger.debug(f"schedulerId = {schedulerId} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
+        add_job_to_scheduler(sched, job_type, schedulerId, schedulerId, trigger, day, day_of_week, hour, minute, second)
+        
+        # if "ReportGroup:" in eventScheduler.groupId:
+        #     print("Report Group found")
+        #     reportGroupId = eventScheduler.groupId.replace("ReportGroup:","")
+        #     reportsGroup=ArchiveReportLister(reportGroupId).get_list()
+        #     for reportGroup in reportsGroup:
+        #         print(reportGroup.id)
+        #         print(reportGroup.title)  
+        #         print(reportGroup.queryString)  
+        #         print(reportGroup.minValue)  
+        #         print(reportGroup.okMinValue)  
+        #         print(reportGroup.okMaxValue)  
+        #         print(reportGroup.maxValue)  
+        #         print(reportGroup.unit)  
+        #         print(reportGroup.message)  
+        #         print(reportGroup.status)  
+        # elif "EventGroup:" in eventScheduler.groupId:
+        #     print("Event Group found")
+        #     eventGroupId = eventScheduler.groupId.replace("EventGroup:","")
+        #     eventsGroup=EventLister(eventGroupId).get_list()
+        #     for eventGroup in eventsGroup:
+        #         print(eventGroup.id)  
+        #         print(eventGroup.eventAddress)  
+        #         print(eventGroup.eventPayload)  
+        #         print(eventGroup.eventStatus)  
+        # else: 
+        #     print("No Group found")
             
             
         # scheduler_id = eventScheduler.schedulerId
@@ -68,18 +95,18 @@ def sched_start(sched, schedulerIdToRun = None):
         #     http_link = eventScheduler.groupId
         #     logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
         # if eventList[int(eventScheduler.groupId)-1].eventType  == "Link":
-        #     job_type = "job_collector"
+        #     job_type = "event_trigger"
         #     http_link = eventScheduler.groupId
         #     # linkCreator = LinkCreator(eventScheduler.groupId)
         #     # http_link =  linkCreator.functions_list_link_creator()
         #     # logger.debug(f"schedulerId = {scheduler_id} - job_type = {job_type}, httpLink = {http_link}")
 
-        trigger = eventScheduler.trigger
-        day = eventScheduler.day
-        day_of_week = eventScheduler.day_of_week
-        hour = eventScheduler.hour
-        minute = eventScheduler.minute
-        second = eventScheduler.second
+        # trigger = eventScheduler.trigger
+        # day = eventScheduler.day
+        # day_of_week = eventScheduler.day_of_week
+        # hour = eventScheduler.hour
+        # minute = eventScheduler.minute
+        # second = eventScheduler.second
 
         # logger.debug(f"schedulerId = {scheduler_id} - trigger = {trigger}, day = {day}, day_of_week = {day_of_week}, hour = {hour}, minute = {minute}, second = {second}")
         # add_job_to_scheduler(sched, job_type, scheduler_id, http_link, trigger, day, day_of_week, hour, minute, second)

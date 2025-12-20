@@ -154,13 +154,6 @@ def get_jobs():
                     str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
     return render_template_with_addons('get_jobs.html', get_jobs=sched.get_jobs())
 
-@app.route("/get_jobs_and_scheduler")
-def get_jobs_and_scheduler():
-    devices = DeviceLister().get_list()
-    event = EventLister().get_list()
-    eventSchedulerList = EventSchedulerLister().get_list()
-    return render_template_with_addons("get_jobs_and_scheduler.html", eventSchedulerList=eventSchedulerList, event=event, devices=devices, get_jobs=sched.get_jobs(), str=str, int=int)
-
 @app.route("/pause_job/<id>")
 def pause_job(id):
     sched.pause_job(id)
