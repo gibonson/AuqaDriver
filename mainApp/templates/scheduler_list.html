@@ -132,6 +132,8 @@ AquaDriver - Scheduler List
                         class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Change Status</a>
                     <button type="button" class="btn btn-info btn-lg active" data-bs-toggle="modal"
                         data-bs-target="#editEventSchedulerModal{{ event.id }}">Edit</button>
+                    <a href="{{url_for('start_job', runschedulerId = eventScheduler.schedulerId)}}"
+                        class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Start Job</a>
                 </div>
             </td>
         </tr>
@@ -190,6 +192,7 @@ AquaDriver - Scheduler List
                                 <small class="form-text text-danger">{{ form.second.errors[0] }}</small>
                             </div>
                             <div class="mb-3">
+                                {{ eventScheduler.schedulerStatus}}
                                 {{ form.schedulerStatus.label(class="form-label") }}
                                 {{ form.schedulerStatus(class="form-select", value=eventScheduler.schedulerStatus) }}
                                 <small class="form-text text-danger">{{ form.schedulerStatus.errors[0] }}</small>
