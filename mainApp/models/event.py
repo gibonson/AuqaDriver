@@ -34,6 +34,20 @@ class EventLister():
         return self.events
     
 
+class GetIdsListWhenGroupId():
+    def __init__(self, eventGroupId):
+        self.eventGroupId = eventGroupId
+        self.ids = []
+        try:
+            lsitNoFlat = db.session.query(Event.id).filter(Event.eventGroupId == self.eventGroupId, Event.eventStatus == 'Ready').all()
+            self.ids = [row[0] for row in lsitNoFlat]
+        except Exception as e:
+            logger.error(f"An error occurred while fetching event IDs: {e}")
+    def get_ids(self):
+        return self.ids 
+    
+    
+
 class EventAdder():
     def __init__(self, formData: dict) -> None:
         self.message = 'Event added'

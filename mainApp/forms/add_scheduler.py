@@ -31,7 +31,7 @@ class AddEventScheduler(FlaskForm):
             print(events)
             for event in events:
                 print(event[0])
-                AddEventScheduler.groupIdList.append(("EventGroup: " + str(event[0]),"EventGroup: " + str(event[0])))
+                AddEventScheduler.groupIdList.append(("EventGroup: " + str(event[0]),"EventGroup:" + str(event[0])))
         
         print(AddEventScheduler.groupIdList)
 

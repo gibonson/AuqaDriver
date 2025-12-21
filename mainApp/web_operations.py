@@ -106,15 +106,16 @@ class WebContentCollector:
                 print(eventPayload)
                 print(received_values)
                 print(placeholders)
-                jsonEvent = self.inject_values_into_link(eventPayload, received_values)
-                jsonEvent = json.loads(jsonEvent)
-                jsonEvent["requestID"] = self.requestID
-                print("httpLink: " + eventAddress)
-                if (eventPayload.startswith("{") and eventPayload.endswith("}")):                    
+
+                if (eventPayload.startswith("{") and eventPayload.endswith("}")): 
+                    jsonEvent = self.inject_values_into_link(eventPayload, received_values)
+                    jsonEvent = json.loads(jsonEvent)
+                    jsonEvent["requestID"] = self.requestID
+                    print("httpLink: " + eventAddress)                   
                     print("type of meaasge: " + str(type(jsonEvent)))
                     print(jsonEvent)
                     attempt = 1
-                    for attempt in range(5):
+                    for attempt in range(2):
                         try:
                             attempt += 1
                             response = requests.post(

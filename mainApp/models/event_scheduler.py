@@ -41,6 +41,18 @@ class EventSchedulerLister():
                 self.EventScheduler = []
     def get_list(self):
         return self.EventScheduler
+    
+class EveentSchedulerGetter(): 
+    def __init__(self, schedulerId = None):
+        self.schedulerId = schedulerId
+        print(self.schedulerId)
+        try:
+            self.EventScheduler = EventScheduler.query.filter(EventScheduler.schedulerId==self.schedulerId).first()
+        except Exception as e:
+            logger.error(f"An error occurred while fetching EventScheduler: {e}")
+            self.EventScheduler = None
+    def get_scheduler(self):
+        return self.EventScheduler
 
 class EventSchedulerAdder():
     def __init__(self, formData: dict, schedulerId):
