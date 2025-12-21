@@ -22,7 +22,7 @@ class WebContentCollector:
             event = Event.query.get(self.id)
             if event is None:
                 print("Event not found")
-                response = requests.get(eventAddress, timeout=5)
+                # response = requests.get(eventAddress, timeout=5)
             # elif event.deviceId == 0:
             #     httpLink = event.eventLink
             #     print("httpLink: " + httpLink)

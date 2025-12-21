@@ -3,7 +3,6 @@ import time
 from mainApp import app, logger
 from mainApp.routes import create_engine, text
 from mainApp.models.archive_report import ArchiveReport
-from mainApp.models.event import Event
 from mainApp.email_operations import emailSender
 
 class HtmlBuilder:
@@ -81,6 +80,8 @@ class HtmlBuilder:
 
 
 class ReportCreator:
+    def __init__(self, archive_report_id_list = None):
+        self.archive_report_id_list = archive_report_id_list
 
     def create_all(self):
         archive_report_id_list = ArchiveReport.query.all()
@@ -92,9 +93,9 @@ class ReportCreator:
         return reportAll
 
 
-    def create_from_list(self, archive_report_id_list):
+    def create_from_list(self): 
         reportAll =  HtmlBuilder.HTML_START
-        for archive_report_id in archive_report_id_list:
+        for archive_report_id in self.archive_report_id_list:
             reportAll += self.create_one_line(archive_report_id)
         reportAll += HtmlBuilder.HTML_END
         return reportAll
@@ -131,14 +132,11 @@ class ReportCreator:
         
 class ReportSender:
     def __init__(self, reportIds):
-        self.reportIds = str(reportIds)
+        self.reportIds = reportIds
 
     def collect_and_send(self):
         with app.app_context():
-            event = Event.query.filter_by(id=self.reportIds).first()
-            logger.debug("Report ids to schow: " + event.reportIds)
-            archive_report_id_list = event.reportIds.replace("[","").replace("]","").replace(" ","").replace("'","").split(',')
-            reportCreator = ReportCreator()
-            report = reportCreator.create_from_list(archive_report_id_list=archive_report_id_list)
-            # logger.debug(f"Message to sent: {report}")
+            reportCreator = ReportCreator(archive_report_id_list= self.reportIds)
+            report = reportCreator.create_from_list()
+            logger.debug(f"Message to sent: {report}")
             emailSender( "raport", report)

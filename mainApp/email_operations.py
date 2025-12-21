@@ -33,14 +33,14 @@ def emailSender(subject, message, flashMessage = False):
             if flashMessage:
                 flash(f'Mail successfully sent!', category='success')
             with app.app_context():
-                requestData = {'addInfo': 'Report sent', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': '-'}
+                requestData = {'addInfo': 'Report sent', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': '-',"requestID": 'EmailSender'}
                 archiveAdder = ArchiveAdder(requestData
                                             )
     except smtplib.SMTPException as e:
         error_message = str(e)
         logger.error("An SMTP error occurred: %s", error_message)
         with app.app_context():
-            requestData = {'addInfo': 'Mail classified as SPAM', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-'}
+            requestData = {'addInfo': 'Mail classified as SPAM', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-',"requestID": 'EmailSender'}
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
             flash('Failed to send mail.', category='danger')
@@ -49,7 +49,7 @@ def emailSender(subject, message, flashMessage = False):
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
         with app.app_context():
-            requestData = {'addInfo': 'Report sent error', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-'}
+            requestData = {'addInfo': 'Report sent error', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-',"requestID": 'EmailSender'}
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
             flash('Failed to send mail.', category='danger')

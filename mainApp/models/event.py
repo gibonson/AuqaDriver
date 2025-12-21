@@ -34,7 +34,7 @@ class EventLister():
         return self.events
     
 
-class GetIdsListWhenGroupId():
+class GetEventIdsListWhenGroupId():
     def __init__(self, eventGroupId):
         self.eventGroupId = eventGroupId
         self.ids = []

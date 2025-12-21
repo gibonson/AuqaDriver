@@ -41,6 +41,18 @@ class ArchiveReportLister():
     def get_list(self):
         return self.archiveReport
 
+class GetReportIdsListWhenGroupId():
+    def __init__(self, reportGroupId):
+        self.reportGroupId = reportGroupId
+        self.ids = []
+        try:
+            lsitNoFlat = db.session.query(ArchiveReport.id).filter(ArchiveReport.reportGroupId == self.reportGroupId, ArchiveReport.status == 'Ready').all()
+            self.ids = [row[0] for row in lsitNoFlat]
+        except Exception as e:
+            logger.error(f"An error occurred while fetching event IDs: {e}")
+    def get_ids(self):
+        return self.ids 
+
 
 class ArchiveReporAdder():
     def __init__(self, formData: dict):
