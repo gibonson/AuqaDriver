@@ -226,7 +226,7 @@ void configMode()
       {
         if (input == "1")
         {
-          deviceConfig = {"SSID", "PASS", "192.168.0.197", "deviceName", "http://192.168.0.103:5000/api/addEvent"};
+          deviceConfig = {"Monkey_town", "Avika666", "192.168.0.197", "deviceName", "http://192.168.0.102:5000/api/addEvent"};
           saveConfig();
         }
         else if (input == "2")

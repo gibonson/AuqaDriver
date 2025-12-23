@@ -32,6 +32,7 @@ void setup()
   init_led_pins(); // Initialize LED pins
   init_ds18b20();  // Initialize DS18B20 sensor configuration
   init_dht22();    // Initialize DHT22 sensor configuration
+  init_433();      // Initialize RF 433 module
 
   addLog("Device started");
   sendJson("Device started", 1, "log");
@@ -216,7 +217,10 @@ void loop()
               {
                 execute_ds18b20(client, jsonDoc); // Read DS18B20 sensor data
               }
-
+              else if (String(jsonDoc["function"]).indexOf("433") >= 0)
+              {
+                execute_433(client, jsonDoc); // Execute 433 function
+              }
               else
               {
                 addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());

@@ -1,5 +1,5 @@
 // WEB LAYOUT CONFIGURATION
-String webGuiTable[40][4];
+String webGuiTable[80][4];
 
 void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
 {
