@@ -55,6 +55,7 @@ class HtmlBuilder:
     HTML_MIN = "Minimum"
     HTML_MAX = "Maximum"
     HTML_VALUE_ERROR = "Empty value"
+    HTML_SQL_ERROR = "SQL Error"
     HTML_TOO_LOW = "<span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>↓↓"
     HTML_LOW = "<span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>↓"
     HTML_OPTIMAL = "<span style='height: 20px;  width: 20px;  background-color: green;  border-radius: 50%;  display: inline-block;'></span>↔"
@@ -107,14 +108,19 @@ class ReportCreator:
         engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
         with engine.connect() as conn:
             query = archiveReportConfig.queryString
-            sqlSelect = conn.execute(text(query))
-            sqlTable = []
-            for row in sqlSelect:
-                sqlTable.append(row)
-            value = sqlTable[0][0]
+            try:
+                sqlSelect = conn.execute(text(query))
+                sqlTable = []
+                for row in sqlSelect:
+                    sqlTable.append(row)
+                value = sqlTable[0][0]
+            except Exception as e:
+                logger.error(f"Error executing query: {e}")
+                value = None
 
             if value is None:
                 value = HtmlBuilder.HTML_VALUE_ERROR
+                indicator = HtmlBuilder.HTML_SQL_ERROR
             else:
                 unit = archiveReportConfig.unit
                 if value < archiveReportConfig.minValue:

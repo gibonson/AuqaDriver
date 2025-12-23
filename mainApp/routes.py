@@ -26,7 +26,6 @@ from mainApp.models.event_scheduler import EventSchedulerLister, EventSchedulerA
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
-# from mainApp.response_operation import ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
 
 # -----------------------------------------
