@@ -209,6 +209,10 @@ void loop()
               {
                 execute_led_pin_5(client, jsonDoc); // Execute LED pin 5 function
               }
+              else if (jsonDoc["function"] == "led_pin_all")
+              {
+                execute_led_pin_all(client, jsonDoc); // Execute LED pin all function
+              }
               else if (jsonDoc["function"] == "getDHT22")
               {
                 execute_dht22(client, jsonDoc); // Read DHT22 sensor data
