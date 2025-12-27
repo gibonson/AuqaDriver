@@ -1,5 +1,5 @@
 // WEB LAYOUT CONFIGURATION
-String webGuiTable[80][4];
+String webGuiTable[160][4];
 
 void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
 {
@@ -119,14 +119,14 @@ public:
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
   const String HTML_ERROR = "</br>\n";
 
-  String generator(String webContent[40][4], String logs = "no logs")
+  String generator(String webContent[160][4], String logs = "no logs")
   {
     String html = "";
     html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
     html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea>"
                                                                                                                        "</div>";
 
-    for (int htmlLine = 0; htmlLine < 40; htmlLine++)
+    for (int htmlLine = 0; htmlLine < 160; htmlLine++)
     {
       // Serial.println(webContent[htmlLine][0] + webContent[htmlLine][1] + webContent[htmlLine][2] + webContent[htmlLine][3]);
       if (webContent[htmlLine][0] == "hHtml")

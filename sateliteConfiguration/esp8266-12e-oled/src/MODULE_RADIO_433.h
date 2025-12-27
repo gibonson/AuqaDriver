@@ -21,8 +21,7 @@ String webForm433[18][4] = {{"formBegin", "", "form", ""},
                             {"formEnd", "socket3ON", "", ""},
                             {"formBegin", "", "form", ""},
                             {"formHidden", "", "function", "433socket3OFF"},
-                            {"formEnd", "socket3OFF", "", "",
-                            }};
+                            {"formEnd", "socket3OFF", "", ""}};
 
 void init_433()
 {
@@ -36,9 +35,11 @@ void init_433()
     {
         Serial.println("Initializing module: " + moduleName);
         addNewFormToWebGuiTable(webForm433, sizeof(webForm433) / sizeof(webForm433[0]));
-        // RF 433 remote control setup
-        RCSwitch mySwitch = RCSwitch();  // Initialize RF switch
-        const int RC_TRANSMITER_PIN = 0; // GPIO0 = D3 Transmitter data pin
+
+        mySwitch.enableTransmit(RC_TRANSMITER_PIN); // Transmitter is connected to Arduino Pin #0
+        mySwitch.setProtocol(1);                    // Optional set protocol (default is 1, will work for most outlets)
+        mySwitch.setPulseLength(350);               // Optional set pulse length.
+                                                    // mySwitch.setRepeatTransmit(15);  // Optional set number of transmission repetitions.
     }
 }
 
@@ -54,47 +55,59 @@ void execute_433(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
     {
         if (String(jsonDoc["function"]).indexOf("socket1ON") >= 0)
         {
-            addLog("Socket_1_ON");
-            responseJson(client, "Socket_1_ON", 1, "log", jsonDoc["requestID"].as<String>());
-            sendJson("Socket_1_ON", 1, "log", jsonDoc["requestID"].as<String>());
+            addLog("S433_1_ON");
+            responseJson(client, "S433_1_ON", 1, "log", jsonDoc["requestID"].as<String>());
             mySwitch.send(4433, 24);
+
+            sendJson("S433_1_ON", 1, "log", jsonDoc["requestID"].as<String>());
         }
         else if (String(jsonDoc["function"]).indexOf("socket1OFF") >= 0)
         {
-            addLog("Socket_1_OFF");
-            responseJson(client, "Socket_1_OFF", 1, "log", jsonDoc["requestID"].as<String>());
-            sendJson("Socket_1_OFF", 0, "log", jsonDoc["requestID"].as<String>());
+            addLog("S433_1_OFF");
+            responseJson(client, "S433_1_OFF", 1, "log", jsonDoc["requestID"].as<String>());
             mySwitch.send(4436, 24);
-        }
-        
-        
 
-            //         else if (header.indexOf("GET /socket1ON") >= 0) {
-            //   mySwitch.send(4433, 24);
-            //   resultHtml += webGui.resultLogContent(1, "S1 - stan");
-            // }
-            // else if (header.indexOf("GET /socket1OFF") >= 0) {
-            //   mySwitch.send(4436, 24);
-            //   resultHtml += webGui.resultLogContent(0, "S1 - stan");
-            // } else if (header.indexOf("GET /socket2ON") >= 0) {
-            //   mySwitch.send(5201, 24);
-            //   resultHtml += webGui.resultLogContent(1, "S2 - stan");
-            // }
-            // else if (header.indexOf("GET /socket2OFF") >= 0) {
-            //   mySwitch.send(5204, 24);
-            //   resultHtml += webGui.resultLogContent(0, "S2 - stan");
-            // }
-            // else if (header.indexOf("GET /socket3ON") >= 0) {
-            //   mySwitch.send(5393, 24);
-            //   resultHtml += webGui.resultLogContent(1, "S3 - stan");
-            // }
-            // else if (header.indexOf("GET /socket3OFF") >= 0) {
-            //   mySwitch.send(5396, 24);
-            //   resultHtml += webGui.resultLogContent(0, "S3 - stan");
-            // }
-        // addLog("Simulated DHT22 data: Temperature = " + String(666) + "°C, Humidity = " + String(666) + "%");
-        // responseJson(client, "DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
-        // sendJson("DHT22 humidity: ", 666, "%", jsonDoc["requestID"].as<String>());
+            sendJson("S433_1_OFF", 0, "log", jsonDoc["requestID"].as<String>());
+        }
+
+        if (String(jsonDoc["function"]).indexOf("socket2ON") >= 0)
+        {
+            addLog("S433_2_ON");
+            responseJson(client, "S433_2_ON", 1, "log", jsonDoc["requestID"].as<String>());
+            mySwitch.send(5201, 24);
+
+            sendJson("S433_2_ON", 1, "log", jsonDoc["requestID"].as<String>());
+        }
+        else if (String(jsonDoc["function"]).indexOf("socket2OFF") >= 0)
+        {
+            addLog("S433_2_OFF");
+            responseJson(client, "S433_2_OFF", 1, "log", jsonDoc["requestID"].as<String>());
+            mySwitch.send(5204, 24);
+
+            sendJson("S433_2_OFF", 0, "log", jsonDoc["requestID"].as<String>());
+        }
+
+        if (String(jsonDoc["function"]).indexOf("socket3ON") >= 0)
+        {
+            addLog("S433_3_ON");
+            responseJson(client, "S433_3_ON", 1, "log", jsonDoc["requestID"].as<String>());
+            mySwitch.send(5393, 24);
+
+            sendJson("S433_3_ON", 1, "log", jsonDoc["requestID"].as<String>());
+        }
+        else if (String(jsonDoc["function"]).indexOf("socket3OFF") >= 0)
+        {
+            addLog("S433_3_OFF");
+            responseJson(client, "S433_2_OFF", 1, "log", jsonDoc["requestID"].as<String>());
+            mySwitch.send(5396, 24);
+
+            sendJson("S433_3_OFF", 0, "log", jsonDoc["requestID"].as<String>());
+        }
+        else
+        {
+            addLog("Unknown 433 function in JSON: " + jsonDoc["function"].as<String>());
+            responseJson(client, "Unknown 433 function", 0, "error", jsonDoc["requestID"].as<String>());
+        }
         client.stop();
     }
 }
