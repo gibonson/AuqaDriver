@@ -11,16 +11,8 @@ class AddArchiveManualRecord(FlaskForm):
     deviceList = []
 
 
-    # def deviceListUpdate():
-    #     AddArchiveManualRecord.deviceList.clear()
-    #     with app.app_context():
-    #         devices = Device.query.filter(Device.deviceStatus=="Ready").all()
-    #         for device in devices:
-    #             AddArchiveManualRecord.deviceList.append(
-    #                 ( device.deviceIP +  " -> " + device.deviceName, device.deviceIP +  " -> " + device.deviceName))
-
-
-    device = StringField(label='deviceIP -> name', validators= [DataRequired()])
+    deviceIP = StringField(label='deviceIP', validators= [DataRequired()])
+    deviceName = StringField(label='deviceName', validators= [DataRequired()])  
     addInfo = StringField(label='addInfo',validators= [DataRequired()])
     value = IntegerField(label='value',validators= [DataRequired()])
     type = SelectField(label='type',validators= [DataRequired()], choices=typeList)

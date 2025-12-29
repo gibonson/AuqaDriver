@@ -64,8 +64,11 @@ void loop()
           {
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
-              client.print(webGui.generator(webGuiTable, getLogs()));
-              client.stop(); // Close the connection (1)
+              String page = webGui.generator(webGuiTable, getLogs());
+              client.print(page); // wyślij całą stronę
+              client.flush();     // upewnij się, że wszystko trafiło do TCP
+              // delay(20);          // krótka pauza na wysłanie (można zmniejszyć)
+              client.stop();      // Close the connection (1)
             }
             else if (header.indexOf("logs") >= 0)
             {
@@ -257,5 +260,5 @@ void loop()
     Serial.println("Client disconnected.\n");
   }
   // Add a delay here to slow down requests and avoid error 104
-  delay(1000); // 1 second delay between handling clients
+  delay(100); // 1 second delay between handling clients
 }

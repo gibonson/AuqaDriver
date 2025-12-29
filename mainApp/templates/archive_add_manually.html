@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-AquaDriver - Manually Adding 
+AquaDriver - Manually Adding
 {% endblock %}
 
 
@@ -13,11 +13,20 @@ AquaDriver - Manually Adding
     <table>
         <tr>
             <td>
-                {{ form.device.label() }}
+                {{ form.deviceIP.label() }}
             </td>
             <td>
-                {{ form.device(class="form-select" , placeholder = 'device') }}
-                <small class="form-text text-danger">{{ form.device.errors[0] }}</small>
+                {{ form.deviceIP(class="form-control" , placeholder = 'deviceIP') }}
+                <small class="form-text text-danger">{{ form.deviceIP.errors[0] }}</small>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.deviceName.label() }}
+            </td>
+            <td>
+                {{ form.deviceName(class="form-control" , placeholder = 'deviceName') }}
+                <small class="form-text text-danger">{{ form.deviceName.errors[0] }}</small>
             </td>
         </tr>
         <tr>
@@ -25,7 +34,7 @@ AquaDriver - Manually Adding
                 {{ form.addInfo.label() }}
             </td>
             <td>
-                {{ form.addInfo(class="form-select" , placeholder = 'addInfo') }}
+                {{ form.addInfo(class="form-control" , placeholder = 'addInfo') }}
                 <small class="form-text text-danger">{{ form.addInfo.errors[0] }}</small>
             </td>
         </tr>
@@ -43,7 +52,7 @@ AquaDriver - Manually Adding
                 {{ form.type.label() }}
             </td>
             <td>
-                {{ form.type(class="form-select" , placeholder = 'type') }}
+                {{ form.type(class="form-control" , placeholder = 'type') }}
                 <small class="form-text text-danger">{{ form.type.errors[0] }}</small>
             </td>
         </tr>

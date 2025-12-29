@@ -87,7 +87,6 @@ class EventManager:
     
 
     def edit_event(self, formData: dict):
-        print("editform")
         if self.event:
             try:
                 self.event.eventAddress = formData["eventAddress"][0]

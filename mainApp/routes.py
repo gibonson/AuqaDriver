@@ -340,9 +340,8 @@ def archive_add_manually():
     form = AddArchiveManualRecord()
     if validate_and_log_form(form):
         requestDataRaw = request.form.to_dict(flat=False)
-        requestDataRawList = requestDataRaw["device"][0].split(" -> ")
-        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRawList[0],
-                       'deviceName':  requestDataRawList[1], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0], 'requestID': 'M' + str(int(datetime.now().timestamp()))}
+        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRaw["deviceIP"][0],
+                       'deviceName':  requestDataRaw["deviceName"][0], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0], 'requestID': 'M' + str(int(datetime.now().timestamp()))}
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
 
