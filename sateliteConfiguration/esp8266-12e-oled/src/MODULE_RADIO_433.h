@@ -4,7 +4,8 @@
 RCSwitch mySwitch = RCSwitch();  // Initialize RF switch
 const int RC_TRANSMITER_PIN = 0; // GPIO0 = D3 Transmitter data pin
 
-String webForm433[18][4] = {{"formBegin", "", "form", ""},
+String webForm433[19][4] = {{"pHtml", "webForm433", "", ""},
+                            {"formBegin", "", "form", ""},
                             {"formHidden", "", "function", "433socket1ON"},
                             {"formEnd", "socket1ON", "", ""},
                             {"formBegin", "", "form", ""},

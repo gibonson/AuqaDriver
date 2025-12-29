@@ -6,7 +6,8 @@ const int ONE_WIRE_BUS = 16;         // GPIO16 = D0 pin connected to the  sensor
 OneWire oneWire(ONE_WIRE_BUS);       // Setup a oneWire instance to communicate with any OneWire devices
 DallasTemperature sensors(&oneWire); // Pass our oneWire reference to Dallas Temperature sensor
 
-String webFormDS18B20[3][4] = {{"formBegin", "", "form", ""},
+String webFormDS18B20[4][4] = {{"pHtml", "webFormDS18B20", "", ""},
+                               {"formBegin", "", "form", ""},
                                {"formHidden", "", "function", "getDS18B20"},
                                {"formEnd", "Get sensor value DS18B20", "", ""}};
 

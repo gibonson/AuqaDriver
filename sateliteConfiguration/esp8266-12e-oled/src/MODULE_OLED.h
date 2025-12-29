@@ -11,7 +11,8 @@
 #define OLED_SCL D6         // They swap SDA with SCL ;)
 Adafruit_SSD1306 *display;
 
-String webFormOLED[11][4] = {{"formBegin", "", "form", ""},
+String webFormOLED[12][4] = {{"pHtml", "webFormOLED", "", ""},
+                             {"formBegin", "", "form", ""},
                              {"formHidden", "", "function", "lcd"},
                              {"formText", "Text to send:", "value1", "1"},
                              {"formText", "Text to send:", "value2", "1"},

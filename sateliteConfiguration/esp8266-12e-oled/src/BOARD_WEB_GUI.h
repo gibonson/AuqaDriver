@@ -66,10 +66,10 @@ public:
                             ".button {background-color: limegreen;}\n"
                             ".button2 {background-color: tomato;}\n"
                             "table {width: 80%;  margin: auto;}\n"
-                            "th, td {width: 50%; padding: 8px; text-align: left; border-bottom: 1px solid #ddd;}\n"
+                            "th, td {width: 50%; padding: 8px; text-align: left; 1px solid #ddd;}\n"
                             ".button-row {display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;}\n"
                             "</style>\n</head>\n<body></br>\n"
-                            "<div class='button-row'>"
+                            "<div class='button-group button-row'>"
                             "<a href='/disableModuleList'><button class='button'>Disable Module List</button></a>"
                             "<a href='/logs'><button class='button'>Logs</button></a>"
                             "<a href='/status'><button class='button'>Status</button></a>"
@@ -117,13 +117,13 @@ public:
                           "</script>"
                           "</body>\n</html>\n";
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
-  const String HTML_ERROR = "</br>\n";
+  const String HTML_ERROR = "\n";
 
   String generator(String webContent[100][4], String logs = "no logs")
   {
     String html = "";
     html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
-    html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea>"
+    html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea></br>\n"
                                                                                                                        "</div>";
 
     for (int htmlLine = 0; htmlLine < 100; htmlLine++)
@@ -135,7 +135,7 @@ public:
       }
       else if (webContent[htmlLine][0] == "pHtml")
       {
-        html = html + pHtml(webContent[htmlLine][1] + " = ", webContent[htmlLine][2], webContent[htmlLine][3]);
+        html = html + pHtml(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
       }
       else if (webContent[htmlLine][0] == "formBegin")
       {
@@ -170,7 +170,7 @@ public:
         html = html + HTML_ERROR;
       }
     }
-    html = html + HTML_END;
+    html = html + "<h6>APP Version: " + APP_VERSION + "</h6>" + HTML_END;
     return html;
   }
 
@@ -181,7 +181,7 @@ public:
 
   String pHtml(String text, String text2, String text3)
   {
-    return "<p>" + text + text2 + text3 + "</p>\n";
+    return "<h3>" + text + text2 + text3 + "</h3>\n";
   }
 
   String formBegin(String action)
