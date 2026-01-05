@@ -387,3 +387,6 @@ def sql_test():
 
     return cpu_temp_os()
     
+@app.route("/dashboard", methods=["GET"])
+def dashboard():
+    return render_template_with_addons("dashboard.html", state=str(sched.state))
