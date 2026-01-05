@@ -4,29 +4,29 @@ String webGuiTable[100][4];
 void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
 {
   int tableSize = sizeof(webGuiTable) / sizeof(webGuiTable[0]); // Calculate the size of the webGuiTable array
-  for (int i = 0; i < tableSize; i++)
-  {
-    Serial.print("row: " + String(i) + " ");
-    for (int j = 0; j < 4; j++)
-    {
-      Serial.print(webGuiTable[i][j]);
-    }
-    Serial.println(); // Print a new line after each row
-  }
+  // for (int i = 0; i < tableSize; i++)
+  // {
+  //   Serial.print("row: " + String(i) + " ");
+  //   for (int j = 0; j < 4; j++)
+  //   {
+  //     Serial.print(webGuiTable[i][j]);
+  //   }
+  //   Serial.println(); // Print a new line after each row
+  // }
 
-  Serial.println(sizeof(webGuiTable) / sizeof(webGuiTable[0])); // Print the size of the webGuiTable array
+  // Serial.println(sizeof(webGuiTable) / sizeof(webGuiTable[0])); // Print the size of the webGuiTable array
 
   int firstFree = 0;
   for (int i = 0; i < tableSize; i++)
   {
-    Serial.print("wiersz: " + String(i) + " ");
+    // Serial.print("wiersz: " + String(i) + " ");
 
     if (webGuiTable[i][0] == "")
     {
-      Serial.print(webGuiTable[i][0]);
+      // Serial.print(webGuiTable[i][0]);
       firstFree = i; // Find the first free row in the webGuiTable array
-      Serial.print("First free row: ");
-      Serial.println(firstFree);
+      // Serial.print("First free row: ");
+      // Serial.println(firstFree);
       break; // Exit the loop after finding the first free row
     }
   }

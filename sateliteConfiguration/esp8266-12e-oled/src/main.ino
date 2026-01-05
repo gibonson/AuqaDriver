@@ -18,6 +18,15 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 #include "MODULE_LED_PIN.h"   // LED pin configuration file
 #include "MODULE_RADIO_433.h" // RF remote control configuration file
 
+const int MOTION_SENSOR = 5; // GPIO5 = D1 - Motion Sensor
+
+// Checks if motion was detected
+ICACHE_RAM_ATTR void detectsMovement()
+{
+  Serial.println("Interrupt!!!");
+  sthToSend = "yes";
+}
+
 void setup()
 {
   Serial.begin(115200);
@@ -39,12 +48,24 @@ void setup()
 
   addLog("Device started");
   sendJson("Device started", 1, "log");
+
+  pinMode(MOTION_SENSOR, INPUT_PULLUP);                                           // PIR Motion Sensor mode INPUT_PULLUP
+  attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
 }
 
 WebGui webGui;
 
 void loop()
 {
+
+  if (sthToSend == "yes")
+  {
+    Serial.println("zamiana");
+    addLog("Motion detected");
+    sendJson("Motion", 1, "Alert");
+    sthToSend = "";
+  }
+
   WiFiClient client = server.available(); // Listen for incoming clients
 
   if (client)
@@ -71,7 +92,7 @@ void loop()
               client.print(page); // wyślij całą stronę
               client.flush();     // upewnij się, że wszystko trafiło do TCP
               // delay(20);          // krótka pauza na wysłanie (można zmniejszyć)
-              client.stop();      // Close the connection (1)
+              client.stop(); // Close the connection (1)
             }
             else if (header.indexOf("logs") >= 0)
             {
