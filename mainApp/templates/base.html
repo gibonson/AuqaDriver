@@ -46,8 +46,8 @@
 
 <body>
    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <div class="container-fluid">
-         <a class="navbar-brand" href="#"><img src="/static/LogoBIG.png" alt="Logo" style="width:40px;"
+      <div class="container">
+         <a class="navbar-brand" href="{{url_for('dashboard')}}"><img src="/static/LogoBIG.png" alt="Logo" style="width:40px;"
                class="rounded-pill"></a>
          <div>
             <ul class="navbar-nav">
@@ -117,16 +117,12 @@
                      <li><a class="dropdown-item" href="{{url_for('get_jobs')}}"><i class='fa fa-cog'></i> Jobs</a></li>
                      <li><a class="dropdown-item" href="{{url_for('email_send')}}"><i class='fa fa-clock-o'></i>Email Send</a></li>
                      <li><a class="dropdown-item" href="{{url_for('get_logs')}}"><i class="fa fa-low-vision"></i>Logs</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('get_report_all')}}"><i class='fa fa-table'></i>Get Report All</a></li>
+                     <li><a class="dropdown-item" href="{{url_for('archive_add_manually')}}"><i class='fa fa-hand-spock-o'></i> Add Manually</a></li>
                   </ul>
                </li>
                <li class="nav-item"><a class="nav-link" href="{{url_for('archive_search')}}"><i
                         class='fa fa-search'></i> Archive Search</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('get_report_all')}}"><i class='fa fa-table'></i>
-                     Get Report All</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('dashboard')}}"><i class='fa fa-table'></i>
-                     Dashboard</a></li>
-               <li class="nav-item"><a class="nav-link" href="{{url_for('archive_add_manually')}}"><i
-                        class='fa fa-hand-spock-o'></i> Add Manually</a></li>
             </ul>
          </div>
       </div>

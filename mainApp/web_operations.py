@@ -185,7 +185,68 @@ class WebContentCollector:
 
                 else:
                     print("totally not json")
+                    eventAddress =  eventAddress + "/" + eventPayload
+                    attempt = 1
+                    for attempt in range(2):
+                        try:
+                            response = requests.post(eventAddress, timeout=5)
+                            print(response.status_code)
+                            print(response.raise_for_status())
+                            if response.status_code == 200:
+                                logger.error(
+                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+                                )
+                                requestData = response.json()
+                                requestData["requestID"] = self.requestID
+                                ResponseTrigger(requestData)
 
+                                break
+                            else:
+                                logger.error(
+                                    f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+                                )
+                                requestData = {
+                                    "requestID": self.requestID,
+                                    "addInfo": "Other  error "
+                                    + str(response.status_code)
+                                    + ". Attempt:"
+                                    + str(attempt),
+                                    "deviceIP": eventAddress,
+                                    "deviceName": "",
+                                    "type": "error",
+                                    "value": 0,
+                                }
+                            ResponseTrigger(requestData)
+                            
+                        except requests.exceptions.Timeout:
+
+                            logger.error(
+                                f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
+                            )
+                            requestData = {
+                                "requestID": self.requestID,
+                                "addInfo": "Timmeout error. Attempt:" + str(attempt),
+                                "deviceIP": eventAddress,
+                                "deviceName": "",
+                                "type": "error",
+                                "value": 0,
+                            }
+                            ResponseTrigger(requestData)
+
+                        except requests.exceptions.RequestException as e:
+
+                            logger.error(
+                                f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
+                            )
+                            requestData = {
+                                "requestID": self.requestID,
+                                "addInfo": "Other  error. Attempt:" + str(attempt),
+                                "deviceIP": eventAddress,
+                                "deviceName": "",
+                                "type": "Error",
+                                "value": 0,
+                            }
+                            ResponseTrigger(requestData)
 
     def extract_placeholders(eventLink):
         """zwraca w formie tabel

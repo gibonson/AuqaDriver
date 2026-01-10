@@ -7,7 +7,9 @@ from mainApp.routes import app
 class DashboardData:
     def __init__(self):
         DBFile = os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/db.sqlite"
+        LogFile = os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/app.log"
         self.dbSizeKB = os.path.getsize(DBFile) / 1024
+        self.logsSizeKB = os.path.getsize(LogFile) / 1024
         engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
         with engine.connect() as conn:
             sqlSelect = conn.execute(text(
@@ -21,6 +23,9 @@ class DashboardData:
 
     def getDbSizeKB(self):
         return self.dbSizeKB
+    
+    def getLogsSizeKB(self):
+        return self.logsSizeKB
 
     def get_date(self):
         """

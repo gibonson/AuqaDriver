@@ -352,6 +352,7 @@ def archive_add_manually():
 @app.route("/get_logs", methods=["GET"])
 def get_logs():
     dbSizeKB = DashboardData().getDbSizeKB()
+    logSizeKB = DashboardData().getLogsSizeKB()
     sqlTable = DashboardData().getSqlTable()
     log_file_path = os.path.join("userFiles", "app.log")
     if not os.path.exists(log_file_path):
@@ -363,7 +364,7 @@ def get_logs():
             lines = [line.strip() for line in lines if line.strip()]
             last_200_lines = lines[-200:] if len(lines) > 200 else lines
             last_200_lines.reverse()
-        return render_template_with_addons("get_logs.html", log_lines=last_200_lines, dbSizeKB=dbSizeKB, sqlTable=sqlTable,  state=str(sched.state))
+        return render_template_with_addons("get_logs.html", log_lines=last_200_lines, dbSizeKB=dbSizeKB, logSizeKB=logSizeKB, sqlTable=sqlTable,  state=str(sched.state))
 
     except Exception as e:
         flash(f"Error reading log file: {str(e)}", category="danger")
