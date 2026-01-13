@@ -23,6 +23,7 @@ from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder
 from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.event_validation import  ValidationLister, ValidationAdder, ValidationManager
 from mainApp.models.event_scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
+from mainApp.models.dashboard import DashboardLister
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
@@ -390,4 +391,6 @@ def sql_test():
     
 @app.route("/dashboard", methods=["GET"])
 def dashboard():
-    return render_template_with_addons("dashboard.html", state=str(sched.state))
+    dashboardList = DashboardLister().get_list()
+    
+    return render_template_with_addons("dashboard.html", dashboardList = dashboardList, state=str(sched.state))

@@ -7,7 +7,44 @@ AquaDriver - Job Page
 
 {% block content %}
 
+<table>
+    <thead>
+        <tr>
+            <th data-col="id">#</th>
+            <th data-col="eventAddress">eventAddress</th>
+            <th data-col="eventAddress">name</th>
+            <th data-col="eventAddress">code</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dashboardItem in dashboardList %}
+        <tr>
+            <th scope="row">{{dashboardItem.id}}</th>
+            <td>{{dashboardItem.panelItemId}}</td>
+            <td>{{dashboardItem.panelName}}</td>
+            <td>{{dashboardItem.panelCode}}</td>
+
+            </div>
+            {% endfor %}
+</table>
 
 
+<div class="row row-cols-1 row-cols-md-3 g-4 me-2">
+{% for dashboardItem in dashboardList %}
+<div class="col">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{dashboardItem.panelName}}</h5>
+            <p class="card-text">
+                {{dashboardItem.id}}</br>
+                {{dashboardItem.panelItemId}}</br>
+                {{dashboardItem.panelCode}}
+            </p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+</div>
 
+{% endfor %}
+</div>
 {% endblock %}
