@@ -56,11 +56,11 @@ class HtmlBuilder:
     HTML_MAX = "Maximum"
     HTML_VALUE_ERROR = "Empty value"
     HTML_SQL_ERROR = "SQL Error"
-    HTML_TOO_LOW = "<span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>↓↓"
-    HTML_LOW = "<span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>↓"
-    HTML_OPTIMAL = "<span style='height: 20px;  width: 20px;  background-color: green;  border-radius: 50%;  display: inline-block;'></span>↔"
-    HTML_HIGH = "<span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>↑"
-    HTML_TOO_HIGH = "<span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>↑↑"
+    HTML_TOO_LOW = "<span style='height: 20px;  width: 20px;  background-color: darkblue;  border-radius: 50%;  display: inline-block;'></span>"
+    HTML_LOW = "<span style='height: 20px;  width: 20px;  background-color: blue;  border-radius: 50%;  display: inline-block;'></span>"
+    HTML_OPTIMAL = "<span style='height: 20px;  width: 20px;  background-color: green;  border-radius: 50%;  display: inline-block;'></span>"
+    HTML_HIGH = "<span style='height: 20px;  width: 20px;  background-color: yellow;  border-radius: 50%;  display: inline-block;'></span>"
+    HTML_TOO_HIGH = "<span style='height: 20px;  width: 20px;  background-color: red;  border-radius: 50%;  display: inline-block;'></span>"
     HTML_ROW_START = "<tr>"
     HTML_ROW_END = "</tr>"
     HTML_COLUMN_START = "<td>"
@@ -105,35 +105,38 @@ class ReportCreator:
     def create_one_line(self, id):
         archiveReportConfig = ArchiveReport.query.filter_by(id = id).first()
         value = ""
-        engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-        with engine.connect() as conn:
-            query = archiveReportConfig.queryString
-            try:
-                sqlSelect = conn.execute(text(query))
-                sqlTable = []
-                for row in sqlSelect:
-                    sqlTable.append(row)
-                value = sqlTable[0][0]
-            except Exception as e:
-                logger.error(f"Error executing query: {e}")
-                value = None
+        if not archiveReportConfig:
+            table_row = "report id not found"
+        else:
+            engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
+            with engine.connect() as conn:
+                query = archiveReportConfig.queryString
+                try:
+                    sqlSelect = conn.execute(text(query))
+                    sqlTable = []
+                    for row in sqlSelect:
+                        sqlTable.append(row)
+                    value = sqlTable[0][0]
+                except Exception as e:
+                    logger.error(f"Error executing query: {e}")
+                    value = None
 
-            if value is None:
-                value = HtmlBuilder.HTML_VALUE_ERROR
-                indicator = HtmlBuilder.HTML_SQL_ERROR
-            else:
-                unit = archiveReportConfig.unit
-                if value < archiveReportConfig.minValue:
-                    indicator = HtmlBuilder.HTML_TOO_LOW
-                elif archiveReportConfig.minValue <= value < archiveReportConfig.okMinValue:
-                    indicator = HtmlBuilder.HTML_LOW
-                elif archiveReportConfig.okMinValue <= value <= archiveReportConfig.okMaxValue:
-                    indicator = HtmlBuilder.HTML_OPTIMAL
-                elif archiveReportConfig.okMaxValue < value <= archiveReportConfig.maxValue:
-                    indicator = HtmlBuilder.HTML_HIGH
-                elif archiveReportConfig.maxValue < value:
-                    indicator = HtmlBuilder.HTML_TOO_HIGH
-            table_row = HtmlBuilder.row_creator(title = archiveReportConfig.title, message = archiveReportConfig.message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
+                if value is None:
+                    value = HtmlBuilder.HTML_VALUE_ERROR
+                    indicator = HtmlBuilder.HTML_SQL_ERROR
+                else:
+                    unit = archiveReportConfig.unit
+                    if value < archiveReportConfig.minValue:
+                        indicator = HtmlBuilder.HTML_TOO_LOW
+                    elif archiveReportConfig.minValue <= value < archiveReportConfig.okMinValue:
+                        indicator = HtmlBuilder.HTML_LOW
+                    elif archiveReportConfig.okMinValue <= value <= archiveReportConfig.okMaxValue:
+                        indicator = HtmlBuilder.HTML_OPTIMAL
+                    elif archiveReportConfig.okMaxValue < value <= archiveReportConfig.maxValue:
+                        indicator = HtmlBuilder.HTML_HIGH
+                    elif archiveReportConfig.maxValue < value:
+                        indicator = HtmlBuilder.HTML_TOO_HIGH
+                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.title, message = archiveReportConfig.message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
         return table_row
         
 class ReportSender:

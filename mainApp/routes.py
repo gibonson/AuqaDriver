@@ -393,4 +393,18 @@ def sql_test():
 def dashboard():
     dashboardList = DashboardLister().get_list()
     
+    dashboardList.sort(key=lambda x: x.panelLocation)
+    
+    for dashboard in dashboardList:
+        if dashboard.panelType == "Report":
+            
+            dashboard.panelCode = ReportCreator().create_one_line(dashboard.panelItemId)
+        elif dashboard.panelType == "Event":
+            dashboard.panelCode = '<a href="' + "/event_open/" + str(dashboard.panelItemId) + '" class="btn btn-success btn-lg active"role="button" aria-pressed="true">Open</a>'
+        elif dashboard.panelType == "HTML":
+            dashboard.panelCode = dashboard.panelCode
+        else:
+            dashboard.panelCode = "UNKNOWN TYPE"
+    
+    
     return render_template_with_addons("dashboard.html", dashboardList = dashboardList, state=str(sched.state))

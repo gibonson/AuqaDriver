@@ -3,6 +3,8 @@ from flask import render_template
 from mainApp import flash
 from mainApp import logger
 from mainApp.routes import sched
+import socket
+print(socket.gethostname())
 
 def flash_message(message, category='info'):
     if category == "info":
@@ -36,7 +38,8 @@ def validate_and_log_form(form):
 def render_template_with_addons(template_name, **kwargs):
     sched_state = str(sched.state)
     addons = {
-        'state': sched_state
+        'state': sched_state,
+        'hostname': socket.gethostname()
     }
     kwargs.update(addons)
     return render_template(template_name, **kwargs)

@@ -7,13 +7,38 @@ AquaDriver - Job Page
 
 {% block content %}
 
+<div class="row row-cols-1 row-cols-md-3 g-4 me-2">
+    {% for dashboardItem in dashboardList %}
+    {% if dashboardItem.panelStatus == "Ready" %}
+    <div class="col">
+        <div class="card" style="width: 18rem; background-color: {{dashboardItem.panelBackground}};">
+            <div class="card-body">
+                <h5 class="card-title">{{dashboardItem.panelName}}</h5>
+                <p class="card-text">
+
+                    panelType: {{dashboardItem.panelType}}</br>
+                    panelCode:</br> {{dashboardItem.panelCode | safe}}</br>
+
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+</br></br></br></br></br></br></br></br></br></br></br>
 <table>
     <thead>
         <tr>
             <th data-col="id">#</th>
-            <th data-col="eventAddress">eventAddress</th>
-            <th data-col="eventAddress">name</th>
-            <th data-col="eventAddress">code</th>
+            <th data-col="panelItemId">panelItemId</th>
+            <th data-col="panelName">panelName</th>
+            <th data-col="panelName">panelType</th>
+            <th data-col="panelCode">panelCode</th>
+            <th data-col="panelCode">panelLocation</th>
+            <th data-col="panelCode">panelBackground</th>
+            <th data-col="panelCode">panelStatus</th>
         </tr>
     </thead>
     <tbody>
@@ -22,29 +47,13 @@ AquaDriver - Job Page
             <th scope="row">{{dashboardItem.id}}</th>
             <td>{{dashboardItem.panelItemId}}</td>
             <td>{{dashboardItem.panelName}}</td>
+            <td>{{dashboardItem.panelType}}</td>
             <td>{{dashboardItem.panelCode}}</td>
+            <td>{{dashboardItem.panelLocation}}</td>
+            <td>{{dashboardItem.panelBackground}}</td>
+            <td>{{dashboardItem.panelStatus}}</td>
 
             </div>
             {% endfor %}
 </table>
-
-
-<div class="row row-cols-1 row-cols-md-3 g-4 me-2">
-{% for dashboardItem in dashboardList %}
-<div class="col">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">{{dashboardItem.panelName}}</h5>
-            <p class="card-text">
-                {{dashboardItem.id}}</br>
-                {{dashboardItem.panelItemId}}</br>
-                {{dashboardItem.panelCode}}
-            </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-    </div>
-</div>
-
-{% endfor %}
-</div>
 {% endblock %}
