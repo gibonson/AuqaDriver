@@ -11,14 +11,13 @@ AquaDriver - Job Page
     {% for dashboardItem in dashboardList %}
     {% if dashboardItem.panelStatus == "Ready" %}
     <div class="col">
-        <div class="card" style="width: 18rem; background-color: {{dashboardItem.panelBackground}};">
-            <div class="card-body">
+        <div class="card h-100" style="min-height: 220px ;background-color: {{dashboardItem.panelBackground}};">
+            <div class="card-header">
                 <h5 class="card-title">{{dashboardItem.panelName}}</h5>
+            </div>
+            <div class="card-body">
                 <p class="card-text">
-
-                    panelType: {{dashboardItem.panelType}}</br>
-                    panelCode:</br> {{dashboardItem.panelCode | safe}}</br>
-
+                    </br> {{dashboardItem.panelCode | safe}}</br>
                 </p>
             </div>
         </div>
