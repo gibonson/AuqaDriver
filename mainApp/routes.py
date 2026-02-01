@@ -411,3 +411,44 @@ def dashboard():
     
     
     return render_template_with_addons("dashboard.html", dashboardList = dashboardList, state=str(sched.state))
+
+
+
+ESP32_STREAM_URL = "http://192.168.0.235:81/stream"
+
+import requests
+from flask import Response, render_template
+import re
+def mjpeg_proxy():
+    r = requests.get(ESP32_STREAM_URL, stream=True)
+
+    content_type = r.headers.get("Content-Type", "")
+    match = re.search("boundary=(.*)", content_type)
+    if not match:
+        raise RuntimeError("Brak boundary w Content-Type")
+
+    boundary = match.group(1).encode()
+    boundary = b"--" + boundary
+
+    buffer = b""
+
+    for chunk in r.iter_content(chunk_size=2048):
+        buffer += chunk
+
+        while boundary in buffer:
+            part, buffer = buffer.split(boundary, 1)
+            if b"Content-Type: image/jpeg" in part:
+                yield boundary + part
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(
+        mjpeg_proxy(),
+        mimetype="multipart/x-mixed-replace; boundary=" + 
+                 "123456789000000000000987654321"
+    )
+    
+    
+@app.route('/video')
+def index():
+    return render_template("stream.html")
