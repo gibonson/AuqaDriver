@@ -140,7 +140,7 @@ class ReportCreator:
         return table_row
         
 class ReportSender:
-    def __init__(self, reportIds):
+    def __init__(self, reportIds, notificationType = "email"):
         self.reportIds = reportIds
 
     def collect_and_send(self):

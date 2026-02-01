@@ -36,7 +36,7 @@ class ValidationLister():
             if status == "All" and actionType == "All":
                 self.Validation = Validation.query.all()
             if status == "Ready" and actionType == "All":
-                self.Validation = Validation.query.all()
+                self.Validation = Validation.query.filter(Validation.status == "Ready").all()
             elif status == "Ready" and actionType == "email":
                 self.Validation = Validation.query.filter(Validation.status == "Ready", Validation.actionType == "email").all()
             elif status == "Ready" and actionType == "event":

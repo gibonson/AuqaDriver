@@ -293,7 +293,7 @@ class PlaceholderGetter:
 
 from mainApp.models.archive import ArchiveAdder
 from mainApp.models.event_validation import ValidationLister
-from mainApp.email_operations import emailSender
+from mainApp.email_operations import emailSender, pushoverSender
 
 
 
@@ -317,12 +317,14 @@ class ResponseTrigger:
             validationLister = ValidationLister(status="Ready")
             validationList = validationLister.get_list()
 
-            boolean_condition_ignore = False
-            boolean_condition_email = False
-            boolean_condition_event = False
-            boolean_condition_match = False
+
 
             for validationItem in validationList:
+
+                boolean_condition_ignore = False
+                boolean_condition_email = False
+                boolean_condition_event = False
+                boolean_condition_match = False
 
                 if (self.deviceIP, self.deviceName, self.type, self.addInfo) == (validationItem.deviceIP, validationItem.deviceName, validationItem.type, validationItem.addInfo):
                     logger.debug(" deviceIP, deviceName, type, addinfo match")
@@ -347,37 +349,38 @@ class ResponseTrigger:
                         if validationItem.actionType == "event":
                             boolean_condition_event = True
                             logger.debug("Start event action")            
-            else:
-                logger.debug("Vdev ip, name type, addinfo not match -> adding to archive")
-            
-            if boolean_condition_ignore == True and boolean_condition_match == True:
-                logger.debug("Request to ignore")
-            elif boolean_condition_email == True and boolean_condition_match == True:
-                logger.debug("Email to send and add to archive")
-                ArchiveAdder(requestData=requestData)
+                else:
+                    logger.debug("Vdev ip, name type, addinfo not match -> adding to archive")
                 
-                print("Preparing email")
-                print(validationItem.message)
-                message = validationItem.message
-                message = message.replace("<addInfo>",validationItem.addInfo)
-                message = message.replace("<type>",validationItem.type)
-                message = message.replace("<condition>",validationItem.condition)
-                message = message.replace("<value>",str(validationItem.value))
-                message = message.replace("<self.value>",str(self.value))
-                message = message.replace("<date>",str(datetime.now().strftime('%Y-%m-%d')))
-                message = message.replace("<time>",str(datetime.now().strftime('%H:%M:%S')))
+                if boolean_condition_ignore == True and boolean_condition_match == True:
+                    logger.debug("Request to ignore")
+                elif boolean_condition_email == True and boolean_condition_match == True:
+                    logger.debug("Email to send and add to archive")
+                    ArchiveAdder(requestData=requestData)
+                    
+                    print("Preparing email")
+                    print(validationItem.message)
+                    message = validationItem.message
+                    message = message.replace("<addInfo>",validationItem.addInfo)
+                    message = message.replace("<type>",validationItem.type)
+                    message = message.replace("<condition>",validationItem.condition)
+                    message = message.replace("<value>",str(validationItem.value))
+                    message = message.replace("<self.value>",str(self.value))
+                    message = message.replace("<date>",str(datetime.now().strftime('%Y-%m-%d')))
+                    message = message.replace("<time>",str(datetime.now().strftime('%H:%M:%S')))
 
-                subject = "Notification: " + self.type + " for " + self.deviceName
-                logger.debug("Email to send. subject: " + subject + ", and message: " + message)
-                # emailSender(subject=subject, message=message)
-            elif boolean_condition_event == True and boolean_condition_event == True:
-                logger.debug("Event to start and add to archive")
-                ArchiveAdder(requestData=requestData)
-                WebContentCollector(validationItem.eventId, requestID = self.requestID).collector()
+                    subject = "Notification: " + self.type + " for " + self.deviceName
+                    logger.debug("Email to send. subject: " + subject + ", and message: " + message)
+                    # emailSender(subject=subject, message=message)
+                    pushoverSender(message=subject + message)
+                elif boolean_condition_event == True and boolean_condition_event == True:
+                    logger.debug("Event to start and add to archive")
+                    ArchiveAdder(requestData=requestData)
+                    WebContentCollector(validationItem.eventId, requestID = self.requestID).collector()
 
-            else:
-                logger.debug("Adding to archive only")
-                ArchiveAdder(requestData=requestData)
+                else:
+                    logger.debug("Adding to archive only")
+                    ArchiveAdder(requestData=requestData)
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")

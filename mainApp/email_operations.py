@@ -5,25 +5,26 @@ from configparser import ConfigParser
 from mainApp.models.archive import ArchiveAdder
 from mainApp.routes import app, flash
 from mainApp import logger
+import requests
 
 
-def emailSender(subject, message, flashMessage = False):
+def emailSender(subject, message, flashMessage=False):
     config = ConfigParser()
     config.read("userFiles/config_email.ini")
 
     try:
         context = ssl.create_default_context()
-        sender = config['EMAIL']['user_name']
-        receiver = config['EMAIL']['default_recipient']
-        user = config['EMAIL']['user_name']
-        password = config['EMAIL']['password']
-        
+        sender = config["EMAIL"]["user_name"]
+        receiver = config["EMAIL"]["default_recipient"]
+        user = config["EMAIL"]["user_name"]
+        password = config["EMAIL"]["password"]
+
         msg = MIMEMultipart("alternative")
-        text = MIMEText(message, 'html')
+        text = MIMEText(message, "html")
         msg.attach(text)
-        msg['Subject'] = subject
-        msg['From'] = sender
-        msg['To'] = receiver
+        msg["Subject"] = subject
+        msg["From"] = sender
+        msg["To"] = receiver
 
         with smtplib.SMTP("host157641.hostido.net.pl", 587) as server:
             server.starttls(context=context)
@@ -31,25 +32,62 @@ def emailSender(subject, message, flashMessage = False):
             server.sendmail(sender, receiver, msg.as_string())
             logger.info("Report sent")
             if flashMessage:
-                flash(f'Mail successfully sent!', category='success')
+                flash(f"Mail successfully sent!", category="success")
             with app.app_context():
-                requestData = {'addInfo': 'Report sent', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Log', 'value': '-',"requestID": 'EmailSender'}
-                archiveAdder = ArchiveAdder(requestData
-                                            )
+                requestData = {
+                    "addInfo": "Report sent",
+                    "deviceIP": "127.0.0.1",
+                    "deviceName": "Server",
+                    "type": "Log",
+                    "value": "-",
+                    "requestID": "EmailSender",
+                }
+                archiveAdder = ArchiveAdder(requestData)
+
     except smtplib.SMTPException as e:
         error_message = str(e)
         logger.error("An SMTP error occurred: %s", error_message)
         with app.app_context():
-            requestData = {'addInfo': 'Mail classified as SPAM', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-',"requestID": 'EmailSender'}
+            requestData = {
+                "addInfo": "Mail classified as SPAM",
+                "deviceIP": "127.0.0.1",
+                "deviceName": "Server",
+                "type": "Error",
+                "value": "-",
+                "requestID": "EmailSender",
+            }
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
-            flash('Failed to send mail.', category='danger')
-
+            flash("Failed to send mail.", category="danger")
 
     except Exception as e:
         logger.error("An error occurred: %s", str(e))
         with app.app_context():
-            requestData = {'addInfo': 'Report sent error', 'deviceIP': '127.0.0.1', 'deviceName': 'Server', 'type': 'Error', 'value': '-',"requestID": 'EmailSender'}
+            requestData = {
+                "addInfo": "Report sent error",
+                "deviceIP": "127.0.0.1",
+                "deviceName": "Server",
+                "type": "Error",
+                "value": "-",
+                "requestID": "EmailSender",
+            }
             archiveAdder = ArchiveAdder(requestData)
         if flashMessage:
-            flash('Failed to send mail.', category='danger')
+            flash("Failed to send mail.", category="danger")
+
+
+def pushoverSender(message, attachment=None):
+    config = ConfigParser()
+    config.read("userFiles/config_email.ini")
+    try:
+        r = requests.post(
+            "https://api.pushover.net/1/messages.json",
+            data={
+                "token": config["PUSHOVER"]["token"],
+                "user": config["PUSHOVER"]["user"],
+                "message": message,
+            })
+
+        logger.info("Pushover notification sent")
+    except Exception as e:
+        logger.error("Pushover notification error: %s", str(e))

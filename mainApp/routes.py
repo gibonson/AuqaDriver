@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError
 # Local application/library specific imports
 from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
-from mainApp.email_operations import emailSender
+from mainApp.email_operations import emailSender, pushoverSender
 from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_validation import AddValidation
 from mainApp.forms.add_event import AddEventLink
@@ -49,7 +49,7 @@ def create():
 
 @app.route("/")
 def hello_world():
-    return redirect(url_for("get_jobs"))
+    return redirect(url_for("dashboard"))
 
 @ app.errorhandler(404)
 def not_found(e):
@@ -378,16 +378,18 @@ def get_logs():
 
 @app.route("/sql_test", methods=["GET"])
 def sql_test():
-
-
 # gibon@GIBON-LAP:~$ for z in /sys/class/thermal/thermal_zone*/temp; do echo "$z: $(cat $z)"; done
-
     def cpu_temp_os():
         output = os.popen("cat /sys/class/thermal/thermal_zone12/temp").read().strip()
         temp_c = int(output) / 1000.0
         return f"{temp_c:.1f}°C"
 
     return cpu_temp_os()
+    
+@app.route("/pushover_test", methods=["GET"])
+def pushover_test():
+    pushoverSender("Testowa wiadomość z AuqaDriver")
+    return "done"
     
 @app.route("/dashboard", methods=["GET"])
 def dashboard():

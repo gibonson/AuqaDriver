@@ -104,6 +104,7 @@ graph TD
 
 {
 "addInfo": "BD creation",
+"requestID": "test",
 "deviceName":"Server",
 "deviceIP":"127.0.0.1",
 "type":"Alert",
