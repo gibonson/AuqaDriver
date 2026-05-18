@@ -20,6 +20,89 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 
 const int MOTION_SENSOR = 5; // GPIO5 = D1 - Motion Sensor
 
+String urlDecode(const String &str)
+{
+  String result = "";
+  for (unsigned int i = 0; i < str.length(); i++)
+  {
+    char c = str[i];
+    if (c == '+')
+    {
+      result += ' ';
+    }
+    else if (c == '%' && i + 2 < str.length())
+    {
+      char hex[3] = {str[i + 1], str[i + 2], '\0'};
+      result += (char)strtol(hex, NULL, 16);
+      i += 2;
+    }
+    else
+    {
+      result += c;
+    }
+  }
+  return result;
+}
+
+String getQueryValue(const String &query, const String &key)
+{
+  String prefix = key + "=";
+  int start = query.indexOf(prefix);
+  if (start < 0)
+  {
+    return "";
+  }
+  start += prefix.length();
+  int end = query.indexOf('&', start);
+  if (end < 0)
+  {
+    end = query.length();
+  }
+  return urlDecode(query.substring(start, end));
+}
+
+String getRequestLine(const String &headerText)
+{
+  int lineEnd = headerText.indexOf("\r\n");
+  if (lineEnd < 0)
+  {
+    lineEnd = headerText.indexOf('\n');
+  }
+  if (lineEnd < 0)
+  {
+    return headerText;
+  }
+  return headerText.substring(0, lineEnd);
+}
+
+int getContentLength(const String &headerText)
+{
+  int start = headerText.indexOf("Content-Length:");
+  if (start < 0)
+  {
+    start = headerText.indexOf("content-length:");
+  }
+  if (start < 0)
+  {
+    return 0;
+  }
+  int valueStart = headerText.indexOf(' ', start);
+  if (valueStart < 0)
+  {
+    return 0;
+  }
+  int lineEnd = headerText.indexOf('\r', valueStart);
+  if (lineEnd < 0)
+  {
+    lineEnd = headerText.indexOf('\n', valueStart);
+  }
+  if (lineEnd < 0)
+  {
+    lineEnd = headerText.length();
+  }
+  return headerText.substring(valueStart + 1, lineEnd).toInt();
+}
+
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement()
 {
@@ -105,63 +188,83 @@ void loop()
               client.stop();
               ESP.restart();
             }
+            else if (header.indexOf("GET /newConfig") >= 0)
+            {
+              disableModuleList = readDisableList();
+              String page = webGui.newConfigPage(deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, disableModuleList);
+              client.print(page);
+              client.stop(); // Close the connection (2)
+            }
+            else if (header.indexOf("POST /saveNewConfig") >= 0)
+            {
+              int contentLength = getContentLength(header);
+              String body = "";
+              unsigned long now = millis();
+              while ((int)body.length() < contentLength && millis() - now < 1000)
+              {
+                if (client.available())
+                {
+                  body += (char)client.read();
+                }
+              }
+
+              String newSSID = getQueryValue(body, "ssid");
+              String newPassword = getQueryValue(body, "password");
+              String newDeviceIP = getQueryValue(body, "deviceIP");
+              String newDeviceName = getQueryValue(body, "deviceName");
+              String newServerAddress = getQueryValue(body, "serverAddress");
+              String newDisableList = getQueryValue(body, "disableList");
+
+              if (newSSID.length() > 0)
+                deviceConfig.ssid = newSSID;
+              if (newPassword.length() > 0)
+                deviceConfig.password = newPassword;
+              if (newDeviceIP.length() > 0)
+                deviceConfig.deviceIP = newDeviceIP;
+              if (newDeviceName.length() > 0)
+                deviceConfig.deviceName = newDeviceName;
+              if (newServerAddress.length() > 0)
+                deviceConfig.serverAddress = newServerAddress;
+
+              saveConfig();
+              if (newDisableList.length() > 0)
+              {
+                saveDisableModuleList(newDisableList);
+              }
+
+              client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+              client.print("<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>");
+              client.stop();
+            }
             else if (header.indexOf("disableModuleList") >= 0)
             {
-
               disableModuleList = readDisableList();
-              // File file = LittleFS.open("/disableList.txt", "r");
-              // if (!file)
-              // {
-              //   Serial.println("Nie udało się otworzyć pliku disableList do odczytu.");
-              //   return;
-              // }
-              // disableModuleList = file.readStringUntil('\n'); // Odczytaj zawartość pliku
-              // file.close();
-              // Serial.println("Zawartość pliku disableList:");
-              // Serial.println(disableModuleList); // Wyświetl zawartość pliku
-
-              String html = "<form method='GET' action='/saveDisableList'>"
-                            "<textarea name='disableList' rows='10' cols='50'>" +
-                            disableModuleList + "</textarea><br>"
-                                                "<input type='submit' value='Save'>"
-                                                "</form>";
-              client.println("HTTP/1.1 200 OK");
-              client.println("Content-Type: text/html");
-              client.println("Connection: close");
-              client.println();
-              client.println(html);
+              client.println(disableModuleList);
+              client.stop(); // Close the connection (2)
+            }
+            else if (header.indexOf("GET /saveDisableList?") >= 0)
+            {
+              int start = header.indexOf("GET /saveDisableList?");
+              int end = header.indexOf(' ', start);
+              String query = header.substring(start + strlen("GET /saveDisableList?"), end);
+              String newContent = getQueryValue(query, "disableList");
+              saveDisableModuleList(newContent);
+              client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+              client.print("<html><body><h1>Disable list updated</h1><a href='/disableModuleList'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>");
+              client.stop();
+            }
+            else if (header.indexOf("readConfig") >= 0)
+            {
+              String configData = "SSID: " + deviceConfig.ssid + "\n" +
+                                  "Password: " + deviceConfig.password + "\n" +
+                                  "Device IP: " + deviceConfig.deviceIP + "\n" +
+                                  "Device Name: " + deviceConfig.deviceName + "\n" +
+                                  "Server Address: " + deviceConfig.serverAddress;
+              client.print(configData);
               client.stop(); // Close the connection (2)
             }
 
-            else if (header.indexOf("saveDisableList?") >= 0)
-            {
-              // Pobierz dane z URL
-              int start = header.indexOf("saveDisableList?disableList=");
-              if (start >= 0)
-              {
-                start += strlen("saveDisableList?disableList=");
-                int end = header.indexOf(" ", start); // Koniec linii GET
-                String newContent = header.substring(start, end);
-                // Zamień + na spacje i %0A na nową linię
-                newContent.replace("+", " ");
-                newContent.replace("%0A", "\n");
-                newContent.replace("%0D", "");
-                newContent.replace("%2C", ",");
-                // Zapisz do pliku
-                File file = LittleFS.open("/disableList.txt", "w");
-                if (file)
-                {
-                  file.print(newContent);
-                  file.close();
-                }
-                client.println("HTTP/1.1 200 OK");
-                client.println("Content-Type: text/html");
-                client.println("Connection: close");
-                client.println();
-                client.println("<p>File updated!</p>");
-                client.stop();
-              }
-            }
+          
 
             else if (header.indexOf("status") >= 0)
             {

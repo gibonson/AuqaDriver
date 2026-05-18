@@ -57,7 +57,7 @@ public:
   const String SEP_START = "<sep>";
   const String SEP_END = "</sep>";
   const String END_LINE = "</br>\n";
-  const String HTML_BEGIN = "HTTP/1.1 200 OK\nContent-Type: text/html\n\n"
+  const String HTML_BEGIN = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n"
                             "<!DOCTYPE html><html><head><link rel='icon' href='data:,'>\n<style>\n"
                             "html { font-family: Helvetica; font-size: 25px; text-align: center; background-color: #f2f2f2;}\n"
                             "input[type=text], input[type=number] { font-size: 20px; width:100%; padding: 12px 20px; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box}\n"
@@ -70,7 +70,10 @@ public:
                             ".button-row {display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;}\n"
                             "</style>\n</head>\n<body></br>\n"
                             "<div class='button-group button-row'>"
-                            "<a href='/disableModuleList'><button class='button'>Disable Module List</button></a>"
+                            "<a href='/'><button class='button'>Home</button></a>"
+                            "<a href='/newConfig'><button class='button'>NewConfig</button></a>"
+                            "<a href='/readConfig'><button class='button'>Read Config</button></a>"
+                            "<a href='/disableModuleList'><button class='button'>Read Disable Module List</button></a>"
                             "<a href='/logs'><button class='button'>Logs</button></a>"
                             "<a href='/status'><button class='button'>Status</button></a>"
                             "<a href='/restart'><button class='button2'>restart</button></a>"
@@ -218,5 +221,40 @@ public:
   String htmlButton2(String label, String name, String value)
   {
     return "<table><tr><td>" + label + "</td><td><a href='" + name + "'><button class='button2'>" + value + "</button></a></table>\n";
+  }
+
+  String escapeHtml(String text)
+  {
+    text.replace("&", "&amp;");
+    text.replace("<", "&lt;");
+    text.replace(">", "&gt;");
+    text.replace("\"", "&quot;");
+    return text;
+  }
+
+  String newConfigPage(String ssid, String password, String deviceIP, String deviceName, String serverAddress, String disableList)
+  {
+    String safeSSID = escapeHtml(ssid);
+    String safePassword = escapeHtml(password);
+    String safeDeviceIP = escapeHtml(deviceIP);
+    String safeDeviceName = escapeHtml(deviceName);
+    String safeServerAddress = escapeHtml(serverAddress);
+    String safeDisableList = escapeHtml(disableList);
+    safeDisableList.replace("\r", "");
+
+    String html = HTML_BEGIN;
+    html += "<h1>Device configuration</h1>" + END_LINE;
+    html += "<div class='container'><form action='/saveNewConfig' method='POST'>\n";
+    html += "<table>\n";
+    html += "<tr><td>SSID</td><td><input type='text' name='ssid' value='" + safeSSID + "'></td></tr>\n";
+    html += "<tr><td>Password</td><td><input type='text' name='password' value='" + safePassword + "'></td></tr>\n";
+    html += "<tr><td>Device IP</td><td><input type='text' name='deviceIP' value='" + safeDeviceIP + "'></td></tr>\n";
+    html += "<tr><td>Device Name</td><td><input type='text' name='deviceName' value='" + safeDeviceName + "'></td></tr>\n";
+    html += "<tr><td>Server Address</td><td><input type='text' name='serverAddress' value='" + safeServerAddress + "'></td></tr>\n";
+    html += "<tr><td>Disable list</td><td><textarea name='disableList' rows='10' cols='60'>" + safeDisableList + "</textarea></td></tr>\n";
+    html += "<tr><td colspan='2'><input type='submit' class='submit' value='Save configuration'></td></tr>\n";
+    html += "</table>\n</form></div>" + END_LINE;
+    html += HTML_END;
+    return html;
   }
 };
