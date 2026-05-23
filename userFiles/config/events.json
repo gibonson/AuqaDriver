@@ -1,0 +1,11 @@
+[
+  {
+    "eventAddress": "http://localhost:5000/test",
+    "eventDescription": "Przykładowy event testowy",
+    "eventPayload": "{\"key\": \"value\"}",
+    "eventGroupId": 1,
+    "eventStatus": "Ready",
+    "eventStatus2": "Ready2",
+    "eventStatus3": "Ready3"
+  }
+]

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}AquaDriver - Konfiguracja Eventów{% endblock %}
+
+{% block content %}
+<h1>Konfiguracja eventów</h1>
+<div class="card card-body mb-3">
+    <form method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.config_json.label(class='form-label') }}
+            {{ form.config_json(class='form-control', rows='18', style='font-family: monospace; white-space: pre;') }}
+            {% if form.config_json.errors %}
+            <div class="text-danger">{{ form.config_json.errors[0] }}</div>
+            {% endif %}
+        </div>
+        {{ form.submit(class='btn btn-primary') }}
+    </form>
+</div>
+<p>Ścieżka pliku konfiguracyjnego: <code>{{ config_path }}</code></p>
+{% endblock %}

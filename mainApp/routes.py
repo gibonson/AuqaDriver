@@ -16,9 +16,11 @@ from mainApp.forms.add_validation import AddValidation
 from mainApp.forms.add_event import AddEventLink
 from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.archive_search import ArchiveSearch
+from mainApp.forms.config_json import EventConfigForm
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
+from mainApp.config_operations import load_event_config, validate_event_config_text, backup_event_config, save_event_config, get_event_config_path, restart_application
 from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder, ArchiveReportManager
 from mainApp.models.event import  EventAdder, EventLister, EventManager
 from mainApp.models.event_validation import  ValidationLister, ValidationAdder, ValidationManager
@@ -95,6 +97,24 @@ def event_change_status(id):
     manager.change_status()
     flash(str(manager), category='danger')
     return redirect(url_for("event_list"))
+
+@app.route("/config_events", methods=['POST', 'GET'])
+def config_events():
+    form = EventConfigForm()
+    if request.method == 'GET':
+        form.config_json.data = load_event_config()
+
+    if validate_and_log_form(form=form):
+        try:
+            validate_event_config_text(form.config_json.data)
+            backup_event_config()
+            save_event_config(form.config_json.data)
+            flash_message('Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.', 'success')
+            restart_application()
+        except ValueError as validation_error:
+            flash_message(str(validation_error), 'warning')
+
+    return render_template_with_addons('config_events.html', form=form, config_path=get_event_config_path())
 
 @app.route("/event_edit/<id>", methods=['POST'])
 def event_edit(id):
