@@ -11,23 +11,23 @@ from sqlalchemy.exc import OperationalError
 from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender, pushoverSender
-from mainApp.forms.add_archive_report import AddArchiveReport
 from mainApp.forms.add_validation import AddValidation
 from mainApp.forms.add_event import AddEventLink
 from mainApp.forms.add_scheduler import AddEventScheduler
 from mainApp.forms.archive_search import ArchiveSearch
-from mainApp.forms.config_json import EventConfigForm
+from mainApp.forms.config_json import EventConfigForm, SchedulerConfigForm, ReportConfigForm
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
-from mainApp.config_operations import load_event_config, validate_event_config_text, backup_event_config, save_event_config, get_event_config_path, restart_application
-from mainApp.models.archive_report import ArchiveReportLister, ArchiveReporAdder, ArchiveReportManager
-from mainApp.models.event import  EventAdder, EventLister, EventManager
+from mainApp.config_operations import load_event_config, load_scheduler_config, load_report_config, validate_event_config_text, backup_event_config, save_event_config, get_event_config_path, restart_application
+from mainApp.config_operations import backup_scheduler_config, save_scheduler_config, get_scheduler_config_path, validate_scheduler_config_text, backup_report_config, save_report_config, get_report_config_path, validate_report_config_text
+from mainApp.models.archive_report import ArchiveReportLister
+from mainApp.models.event import EventListerJson
 from mainApp.models.event_validation import  ValidationLister, ValidationAdder, ValidationManager
-from mainApp.models.event_scheduler import EventSchedulerLister, EventSchedulerAdder, EventSchedulereManager
+from mainApp.models.event_scheduler import EventSchedulerLister
 from mainApp.models.dashboard import DashboardLister
 from mainApp.report_operations import ReportCreator
-from mainApp.scheduler_operations import sched_start
+# from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
 
@@ -70,33 +70,16 @@ def handle_operational_error(error):
 # event section
 # -----------------------------------------
 
-@app.route("/event_list", methods=['POST', 'GET'])
-def event_list():
-    form = AddEventLink()
-    if validate_and_log_form(form):
-        EventAdder(request.form.to_dict(flat=False))
-    events = EventLister().get_list()
-    return render_template_with_addons("event_list.html", Events=events, form=form)
+@app.route("/event_list_json", methods=['POST', 'GET'])
+def event_list_json():
+    events = EventListerJson().get_list()
+    return render_template_with_addons("event_list_json.html", Events=events)
 
-@app.route("/event_open/<id>")
-def event_open(id):
-    WebContentCollector(id, requestID= "Manual").collector()
+@app.route("/event_open/<eventName>")
+def event_open(eventName):
+    WebContentCollector(eventName, requestID= "Manual").collector()
     flash("Check out some recent records", category='success')
     return redirect(url_for("archive_search"))
-
-@app.route("/event_remove/<id>")
-def event_remove(id):
-    manager = EventManager(id)
-    manager.remove_event()
-    flash(str(manager), category='danger')
-    return redirect(url_for("event_list"))
-
-@app.route("/event_change_status/<id>")
-def event_change_status(id):
-    manager = EventManager(id)
-    manager.change_status()
-    flash(str(manager), category='danger')
-    return redirect(url_for("event_list"))
 
 @app.route("/config_events", methods=['POST', 'GET'])
 def config_events():
@@ -110,19 +93,9 @@ def config_events():
             backup_event_config()
             save_event_config(form.config_json.data)
             flash_message('Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.', 'success')
-            restart_application()
         except ValueError as validation_error:
             flash_message(str(validation_error), 'warning')
-
     return render_template_with_addons('config_events.html', form=form, config_path=get_event_config_path())
-
-@app.route("/event_edit/<id>", methods=['POST'])
-def event_edit(id):
-    manager = EventManager(id)
-    form = AddEventLink()
-    if validate_and_log_form(form=form):
-        manager.edit_event(request.form.to_dict(flat=False))
-    return redirect(url_for("event_list"))
 
 
 # -----------------------------------------
@@ -131,36 +104,26 @@ def event_edit(id):
 
 @app.route("/scheduler_list", methods=['POST', 'GET'])
 def scheduler_list():
-    AddEventScheduler.groupIdListUpdate()
-    form = AddEventScheduler()
-    if validate_and_log_form(form=form):
-        schedulerId = (str(form.groupId.data) + str(form.trigger.data) + str(form.day.data) + str(form.day_of_week.data) + str(form.hour.data) + str(form.minute.data) + str(form.second.data)).replace("None", "-").replace("interval", "I").replace("cron", "C")
-        EventSchedulerAdder(request.form.to_dict(flat=False), schedulerId)
-    event = EventLister().get_list()
     eventSchedulerList = EventSchedulerLister().get_list()
-    return render_template_with_addons("scheduler_list.html", eventSchedulerList=eventSchedulerList, event=event, form=form, startswith=str.startswith, int=int)
+    return render_template_with_addons("scheduler_list_json.html", eventSchedulerList=eventSchedulerList, startswith=str.startswith, int=int)
 
-@app.route("/scheduler_remove/<id>")
-def scheduler_remove(id):
-    message = EventSchedulereManager(id)
-    message.remove_function_scheduler()
-    flash(str(message), category='warning')
-    return redirect(url_for("scheduler_list"))
+@app.route("/config_scheduler", methods=['POST', 'GET'])
+def config_scheduler():
+    form = SchedulerConfigForm()
+    if request.method == 'GET':
+        form.config_json.data = load_scheduler_config()
 
-@app.route("/scheduler_change_status/<id>")
-def scheduler_change_status(id):
-    manager = EventSchedulereManager(id)
-    manager.change_status()
-    flash(str(manager), category='warning')
-    return redirect(url_for("scheduler_list"))
-
-@app.route("/event_scheduler_edit/<id>", methods=['POST'])
-def event_scheduler_edit(id):
-    manager = EventSchedulereManager(id)
-    form = AddEventScheduler()
     if validate_and_log_form(form=form):
-        manager.edit_event_scheduler(request.form.to_dict(flat=False))
-    return redirect(url_for("scheduler_list"))
+        try:
+            validate_scheduler_config_text(form.config_json.data)
+            backup_scheduler_config()
+            save_scheduler_config(form.config_json.data)
+            flash_message('Nowa konfiguracja schedulerów została zapisana. Aplikacja zostanie zrestartowana.', 'success')
+        except ValueError as validation_error:
+            flash_message(str(validation_error), 'warning')
+
+    return render_template_with_addons('config_scheduler.html', form=form, config_path=get_scheduler_config_path())
+
 
 # -----------------------------------------
 # job section
@@ -228,46 +191,41 @@ def archive_remove(id):
 # report section
 # -----------------------------------------
 
-@app.route("/report_list", methods=['POST', 'GET'])
+@app.route("/report_list")
 def report_list():
-    form = AddArchiveReport()
-    if validate_and_log_form(form):
-        ArchiveReporAdder(request.form.to_dict(flat=False))
     archiveReportList = ArchiveReportLister().get_list()
-    return render_template_with_addons("report_list.html", archiveReportList=archiveReportList, form=form)
+    return render_template_with_addons("report_list.html", archiveReportList=archiveReportList)
 
-@app.route("/get_report/<id>")
-def get_report(id):
-    one_line = ReportCreator().create_one_line(id)
+@app.route("/config_reports", methods=['POST', 'GET'])
+def config_reports():
+    form = ReportConfigForm()
+    if request.method == 'GET':
+        form.config_json.data = load_report_config()
+
+    if validate_and_log_form(form=form):
+        try:
+            validate_report_config_text(form.config_json.data)
+            backup_report_config()
+            save_report_config(form.config_json.data)
+            flash_message('Nowa konfiguracja raportów została zapisana.', 'success')
+        except ValueError as validation_error:
+            flash_message(str(validation_error), 'warning')
+
+    return render_template_with_addons(
+        'config_reports.html',
+        form=form,
+        config_path=get_report_config_path()
+    )
+
+@app.route("/get_report/<reportName>")
+def get_report(reportName):
+    one_line = ReportCreator().create_one_line(reportName)
     return one_line
 
 @app.route("/get_report_all")
 def get_report_all():
     report = ReportCreator().create_all()
     return render_template_with_addons("get_report_all.html", report=report)
-
-@app.route("/sarchive_report_remove/<id>")
-def archive_report_remove(id):
-    message = ArchiveReportManager(id)
-    message.remove()
-    flash(str(message), category='warning')
-    return redirect(url_for("report_list"))
-
-@app.route("/archive_report_hange_status/<id>")
-def archive_report_change_status(id):
-    manager = ArchiveReportManager(id)
-    manager.change_status()
-    flash(str(manager), category='warning')
-    return redirect(url_for("report_list"))
-
-@app.route("/archive_report_edit/<id>", methods=['POST'])
-def archive_report_edit(id):
-    manager = ArchiveReportManager(id)
-    form = AddArchiveReport()
-    if validate_and_log_form(form=form):
-        manager.edit(request.form.to_dict(flat=False))
-    return redirect(url_for("report_list"))
-
 
 
 # -----------------------------------------

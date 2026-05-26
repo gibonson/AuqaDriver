@@ -19,10 +19,10 @@ struct Config
   String deviceIP;
   String deviceName;
   String serverAddress;
+  String disableModuleList;
 };
 
 Config deviceConfig;
-String disableModuleList; // Lista modułów wyłączonych, oddzielonych przecinkami
 
 int inputStep = 0;        // Etap interaktywnego wprowadzania danych
 bool isInputMode = false; // Czy użytkownik wprowadza dane
@@ -41,42 +41,10 @@ void saveConfig()
   file.println(deviceConfig.deviceIP);
   file.println(deviceConfig.deviceName);
   file.println(deviceConfig.serverAddress);
+  file.println(deviceConfig.disableModuleList);
 
   file.close();
   Serial.println("Plik konfiguracyjny zapisany.");
-}
-
-void saveDisableModuleList(String moduleList)
-{
-  File file = LittleFS.open(disableModulePath, "w");
-  if (!file)
-  {
-    Serial.println("Nie udało się otworzyć pliku disableList.");
-    return;
-  }
-  file.println(moduleList); // Zapisz zawartość disableModuleList do pliku
-  file.close();
-  Serial.println("Plik disableList zapisany.");
-}
-
-String readDisableList()
-{
-  if (!LittleFS.exists(disableModulePath))
-  {
-    Serial.println("Plik disableList nie istnieje.");
-    return "";
-  }
-  File file = LittleFS.open(disableModulePath, "r");
-  if (!file)
-  {
-    Serial.println("Nie udało się otworzyć pliku disableList do odczytu.");
-    return "";
-  }
-  disableModuleList = file.readStringUntil('\n'); // Odczytaj zawartość pliku
-  file.close();
-  Serial.println("Zawartość pliku disableList:");
-  Serial.println(disableModuleList); // Wyświetl zawartość pliku
-  return disableModuleList; // Zwróć zawartość pliku
 }
 
 void readConfig()
@@ -121,6 +89,8 @@ void readSettings()
   deviceConfig.deviceName.trim();
   deviceConfig.serverAddress = configFile.readStringUntil('\n');
   deviceConfig.serverAddress.trim();
+  deviceConfig.disableModuleList = configFile.readStringUntil('\n');
+  deviceConfig.disableModuleList.trim();
 
   configFile.close();
 
@@ -130,15 +100,9 @@ void readSettings()
   Serial.println("DeviceIP: " + deviceConfig.deviceIP);
   Serial.println("DeviceName: " + deviceConfig.deviceName);
   Serial.println("serverAddress: " + deviceConfig.serverAddress);
-
-  File disableFile = LittleFS.open(disableModulePath, "r");
-  if (!disableFile)
-  {
-    Serial.println("Error opening disableList file for reading!");
-    return; // Exit if the file cannot be opened
-  }
-  disableModuleList = disableFile.readString();
+  Serial.println("disableModuleList: " + deviceConfig.disableModuleList);
 }
+
 
 void deleteConfig()
 {
@@ -161,7 +125,6 @@ void listFiles()
     Serial.printf("  %s (%d bytes)\n", dir.fileName().c_str(), dir.fileSize());
   }
 }
-
 
 void handleUserInput(String input)
 {
@@ -251,14 +214,6 @@ void configMode()
         {
           readSettings();
         }
-        else if (input == "7")
-        {
-          saveDisableModuleList(moduleList); // Create or overwrite the disableList file
-        }
-        else if (input == "8")
-        {
-          readDisableList(); // Read the disableList file
-        }
         else if (input == "9")
         {
           ESP.restart(); // Restart the ESP
@@ -289,8 +244,6 @@ void init_configuration()
       Serial.println("4 - Lista plików");
       Serial.println("5 - Wprowadź dane ręcznie i zapisz plik");
       Serial.println("6 - Odczytaj plik konfiguracyjny v2");
-      Serial.println("7 - Utwórz plik BlackList");
-      Serial.println("8 - Odczytaj plik BlackList");
       Serial.println("9 - Restart ESP");
       Serial.print("Wpisz numer i naciśnij Enter: ");
       configMode();

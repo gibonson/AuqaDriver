@@ -85,28 +85,31 @@ class ReportCreator:
         self.archive_report_id_list = archive_report_id_list
 
     def create_all(self):
-        archive_report_id_list = ArchiveReport.query.all()
+        archive_report_list = ArchiveReportLister().get_list()
         reportAll =  HtmlBuilder.HTML_START
-        for archive_report_id in archive_report_id_list:
-            reportAll += self.create_one_line(str(archive_report_id.id))
+        for archive_report in archive_report_list:
+            reportAll += self.create_one_line(archive_report.reportName)
         reportAll += HtmlBuilder.HTML_END
-        # logger.debug(reportAll)
         return reportAll
 
 
     def create_from_list(self): 
         reportAll =  HtmlBuilder.HTML_START
-        for archive_report_id in self.archive_report_id_list:
-            reportAll += self.create_one_line(archive_report_id)
+        for archive_report_name in self.archive_report_id_list:
+            reportAll += self.create_one_line(archive_report_name)
         reportAll += HtmlBuilder.HTML_END
         return reportAll
 
 
-    def create_one_line(self, id):
-        archiveReportConfig = ArchiveReport.query.filter_by(id = id).first()
+    def create_one_line(self, report_name):
+        archiveReportConfig = None
+        for report in ArchiveReportLister().get_list():
+            if report.reportName == report_name:
+                archiveReportConfig = report
+                break
         value = ""
         if not archiveReportConfig:
-            table_row = "report id not found"
+            table_row = "report not found"
         else:
             engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
             with engine.connect() as conn:
@@ -136,7 +139,7 @@ class ReportCreator:
                         indicator = HtmlBuilder.HTML_HIGH
                     elif archiveReportConfig.maxValue < value:
                         indicator = HtmlBuilder.HTML_TOO_HIGH
-                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.title, message = archiveReportConfig.message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
+                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.reportName, message = archiveReportConfig.message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
         return table_row
         
 class ReportSender:

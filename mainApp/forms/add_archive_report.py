@@ -10,7 +10,8 @@ class AddArchiveReport(FlaskForm):
     statusList = [("Ready", "Ready"),("Not Ready", "Not Ready")]
 
 
-    title = StringField(label='title', validators= [DataRequired(),Length(min=1, max=30, message='title: must be between 1 and 30 characters.')])
+    reportName = StringField(label='reportName', validators= [DataRequired(),Length(min=1, max=30, message='reportName: must be between 1 and 30 characters.')])
+    reportDescription = StringField(label='reportDescription', validators= [Optional(),Length(min=0, max=200, message='reportDescription: must be between 0 and 200 characters.')])
     minValue = IntegerField(label='minValue',validators=[Optional()])
     okMinValue = IntegerField(label='okMinValue',validators=[Optional()])
     okMaxValue = IntegerField(label='okMaxValue',validators=[Optional()])

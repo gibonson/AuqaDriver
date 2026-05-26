@@ -1,0 +1,28 @@
+[
+  {
+    "reportName": "temperature_report",
+    "reportDescription": "Raport temperatury dla grupy 1",
+    "queryString": "SELECT timestamp, value FROM archive WHERE event = 'temperature'",
+    "minValue": 0,
+    "okMinValue": 10,
+    "okMaxValue": 25,
+    "maxValue": 50,
+    "unit": "°C",
+    "reportGroupId": 1,
+    "message": "Temperatura poza bezpiecznym zakresem",
+    "status": "Ready"
+  },
+  {
+    "reportName": "humidity_report",
+    "reportDescription": "Raport wilgotności dla grupy 2",
+    "queryString": "SELECT timestamp, value FROM archive WHERE event = 'humidity'",
+    "minValue": 10,
+    "okMinValue": 30,
+    "okMaxValue": 60,
+    "maxValue": 90,
+    "unit": "%",
+    "reportGroupId": 2,
+    "message": "Wilgotność poza bezpiecznym zakresem",
+    "status": "Not Ready"
+  }
+]

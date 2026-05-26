@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AquaDriver - Event List
+{% endblock %}
+
+{% block content %}
+<h1>Event List</h1>
+
+<table id="sortingTable" class="table table-dark table-striped align-middle">
+    <thead>
+        <tr>
+            <th data-col="eventName">#</th>
+            <th data-col="eventAddress">eventAddress</th>
+            <th data-col="eventDescription">eventDescription</th>
+            <th data-col="eventPayload">eventPayload</th>
+            <th data-col="eventStatus">eventStatus</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in Events %}
+        <tr>
+            <th scope="row">{{event.eventName}}</th>
+            <td>{{event.eventAddress}}</td>
+            <td>{{event.eventDescription}}</td>
+            <td>{{event.eventPayload}}</td>
+            <td>{{event.eventStatus}}</td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{url_for('event_open', eventName = event.eventName)}}" class="btn btn-success btn-lg active"
+                        role="button" aria-pressed="true">Open</a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+        {% endfor %}
+</table>
+{% endblock %}

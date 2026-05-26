@@ -57,12 +57,12 @@ else:
 sched = APScheduler()
 
 from mainApp import routes
-from mainApp.scheduler_operations import sched_start
+# from mainApp.scheduler_operations import sched_start
 
-# start process in scheduler
-try:
-    sched_start(sched)
-    sched.start()
-    logger.critical("Scheduler started")
-except exc.OperationalError:
-    logger.critical("Scheduler startup error")
+# # start process in scheduler
+# try:
+#     sched_start(sched)
+#     sched.start()
+#     logger.critical("Scheduler started")
+# except exc.OperationalError:
+#     logger.critical("Scheduler startup error")

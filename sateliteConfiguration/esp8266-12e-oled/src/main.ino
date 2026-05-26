@@ -179,7 +179,8 @@ void loop()
             }
             else if (header.indexOf("logs") >= 0)
             {
-              client.print(getLogs());
+              responseJson(client, getLogs(), 1, "log");
+              // client.print(getLogs());
               client.stop(); // Close the connection (2)
             }
             else if (header.indexOf("restart") >= 0)
@@ -190,8 +191,7 @@ void loop()
             }
             else if (header.indexOf("GET /newConfig") >= 0)
             {
-              disableModuleList = readDisableList();
-              String page = webGui.newConfigPage(deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, disableModuleList);
+              String page = webGui.newConfigPage(deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, deviceConfig.disableModuleList);
               client.print(page);
               client.stop(); // Close the connection (2)
             }
@@ -225,42 +225,24 @@ void loop()
                 deviceConfig.deviceName = newDeviceName;
               if (newServerAddress.length() > 0)
                 deviceConfig.serverAddress = newServerAddress;
-
+              
+              deviceConfig.disableModuleList = newDisableList;
               saveConfig();
-              if (newDisableList.length() > 0)
-              {
-                saveDisableModuleList(newDisableList);
-              }
 
               client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
               client.print("<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>");
               client.stop();
             }
-            else if (header.indexOf("disableModuleList") >= 0)
-            {
-              disableModuleList = readDisableList();
-              client.println(disableModuleList);
-              client.stop(); // Close the connection (2)
-            }
-            else if (header.indexOf("GET /saveDisableList?") >= 0)
-            {
-              int start = header.indexOf("GET /saveDisableList?");
-              int end = header.indexOf(' ', start);
-              String query = header.substring(start + strlen("GET /saveDisableList?"), end);
-              String newContent = getQueryValue(query, "disableList");
-              saveDisableModuleList(newContent);
-              client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
-              client.print("<html><body><h1>Disable list updated</h1><a href='/disableModuleList'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>");
-              client.stop();
-            }
+
             else if (header.indexOf("readConfig") >= 0)
             {
               String configData = "SSID: " + deviceConfig.ssid + "\n" +
                                   "Password: " + deviceConfig.password + "\n" +
                                   "Device IP: " + deviceConfig.deviceIP + "\n" +
                                   "Device Name: " + deviceConfig.deviceName + "\n" +
-                                  "Server Address: " + deviceConfig.serverAddress;
-              client.print(configData);
+                                  "Server Address: " + deviceConfig.serverAddress + "\n" +
+                                  "Disable List: " + deviceConfig.disableModuleList;
+              responseJson(client, configData, 1, "log", "Device Config");
               client.stop(); // Close the connection (2)
             }
 

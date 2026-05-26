@@ -1,0 +1,32 @@
+[
+  {
+    "schedulerName": "shed1",
+    "schedulerDescription": "testowy sched",
+    "reportList": [12, 11
+],
+    "eventList": [ 1,2,3
+],
+    "trigger": "cron",
+    "day": 1,
+    "day_of_week": "mon",
+    "hour": 12,
+    "minute": 13,
+    "second": 14,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "shed2",
+    "schedulerDescription": "testowy sched",
+    "reportList": [12, 11
+],
+    "eventList": [4,5,6
+],
+    "trigger": "cron",
+    "day": 1,
+    "day_of_week": "",
+    "hour": 12,
+    "minute": 13,
+    "second": 14,
+    "schedulerStatus": "Ready"
+  }
+]

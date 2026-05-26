@@ -73,7 +73,6 @@ public:
                             "<a href='/'><button class='button'>Home</button></a>"
                             "<a href='/newConfig'><button class='button'>NewConfig</button></a>"
                             "<a href='/readConfig'><button class='button'>Read Config</button></a>"
-                            "<a href='/disableModuleList'><button class='button'>Read Disable Module List</button></a>"
                             "<a href='/logs'><button class='button'>Logs</button></a>"
                             "<a href='/status'><button class='button'>Status</button></a>"
                             "<a href='/restart'><button class='button2'>restart</button></a>"
@@ -251,7 +250,7 @@ public:
     html += "<tr><td>Device IP</td><td><input type='text' name='deviceIP' value='" + safeDeviceIP + "'></td></tr>\n";
     html += "<tr><td>Device Name</td><td><input type='text' name='deviceName' value='" + safeDeviceName + "'></td></tr>\n";
     html += "<tr><td>Server Address</td><td><input type='text' name='serverAddress' value='" + safeServerAddress + "'></td></tr>\n";
-    html += "<tr><td>Disable list</td><td><textarea name='disableList' rows='10' cols='60'>" + safeDisableList + "</textarea></td></tr>\n";
+    html += "<tr><td>Disable list  </td><td><input type='text' name='disableList'   value='" + safeDisableList +   "'></td></tr>\n";
     html += "<tr><td colspan='2'><input type='submit' class='submit' value='Save configuration'></td></tr>\n";
     html += "</table>\n</form></div>" + END_LINE;
     html += HTML_END;

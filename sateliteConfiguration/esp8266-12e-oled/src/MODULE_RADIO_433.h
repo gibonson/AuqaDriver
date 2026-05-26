@@ -27,8 +27,8 @@ String webForm433[19][4] = {{"pHtml", "webForm433", "", ""},
 void init_433()
 {
     String moduleName = "433";
-    Serial.println(disableModuleList);
-    if (disableModuleList.indexOf(moduleName) != -1)
+    Serial.println(deviceConfig.disableModuleList);
+    if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
         Serial.println("Module " + moduleName + " is disabled.");
     }
@@ -47,7 +47,7 @@ void init_433()
 void execute_433(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
     String moduleName = "433";
-    if (disableModuleList.indexOf(moduleName) != -1)
+    if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
         addLog("Module " + moduleName + " is disabled in disableModuleList");
         responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());

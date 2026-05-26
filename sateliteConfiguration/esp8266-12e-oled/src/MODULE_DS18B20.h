@@ -14,9 +14,9 @@ String webFormDS18B20[4][4] = {{"pHtml", "webFormDS18B20", "", ""},
 void init_ds18b20()
 {
     String moduleName = "DS18B20";
-    Serial.println(disableModuleList);
+    Serial.println(deviceConfig.disableModuleList);
 
-    if (disableModuleList.indexOf(moduleName) != -1)
+    if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
         Serial.println("Module " + moduleName + " is disabled.");
     }
@@ -31,7 +31,7 @@ void init_ds18b20()
 void execute_ds18b20(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
     String moduleName = "DS18B20";
-    if (disableModuleList.indexOf(moduleName) != -1)
+    if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
         addLog("Module " + moduleName + " is disabled in disableModuleList");
         responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
