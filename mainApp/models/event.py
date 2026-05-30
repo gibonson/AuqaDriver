@@ -26,7 +26,7 @@ class EventListerJson():
     def __init__(self):
         self.events = []
         try:
-            config_path = get_config_file_path('events.json')
+            config_path = get_config_file_path('event.json')
             if os.path.exists(config_path):
                 with open(config_path, 'r', encoding='utf-8') as config_file:
                     event_list = json.load(config_file)

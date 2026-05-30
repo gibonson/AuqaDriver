@@ -25,7 +25,7 @@ class DashboardLister:
     def __init__(self):
         self.dashboards = []
         try:
-            raw_dashboards = load_json_config('dashboards.json', default=[])
+            raw_dashboards = load_json_config('dashboard.json', default=[])
             if not isinstance(raw_dashboards, list):
                 raw_dashboards = []
             for dashboard_data in raw_dashboards:

@@ -38,7 +38,7 @@ class ValidationLister:
     def __init__(self, status='All', actionType='All'):
         self.Validation = []
         try:
-            raw_validations = load_json_config('event_validations.json', default=[])
+            raw_validations = load_json_config('event_validation.json', default=[])
             if not isinstance(raw_validations, list):
                 raw_validations = []
             for raw in raw_validations:

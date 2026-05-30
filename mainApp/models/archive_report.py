@@ -35,7 +35,7 @@ class ArchiveReportLister:
         self.reportGroupId = reportGroupId
         self.archiveReport = []
         try:
-            report_list = load_json_config('archive_reports.json', default=[])
+            report_list = load_json_config('archive_report.json', default=[])
             if not isinstance(report_list, list):
                 report_list = []
             for report_data in report_list:

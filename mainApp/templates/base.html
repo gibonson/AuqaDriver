@@ -107,19 +107,39 @@
                   <i class="fa fa-server"></i> Proto space
                </a>
                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('config_events') }}"><i class="fa fa-cog"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event') }}"><i
+                           class="fa fa-cog"></i>
                         config_events</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_table') }}"><i class="fa fa-list"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event') }}"><i
+                           class="fa fa-list"></i>
                         event_list</a></li>
 
-                  <li><a class="dropdown-item" href="{{ url_for('config_scheduler') }}"><i class="fa fa-clock-o"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event_scheduler') }}"><i
+                           class="fa fa-clock-o"></i>
                         config_scheduler</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_scheduler_table') }}"><i class="fa fa-list"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_scheduler') }}"><i
+                           class="fa fa-list"></i>
                         scheduler_list</a></li>
 
-                  <li><a class="dropdown-item" href="{{ url_for('config_reports') }}"><i class="fa fa-cog"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='archive_report') }}"><i
+                           class="fa fa-cog"></i>
                         config_reports</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='archive_report_table') }}"><i class="fa fa-list"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='archive_report') }}"><i
+                           class="fa fa-list"></i>
+                        report_list</a></li>
+
+                  <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='dashboard') }}"><i
+                           class="fa fa-cog"></i>
+                        config_dashboard</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='dashboard') }}"><i
+                           class="fa fa-list"></i>
+                        report_list</a></li>
+
+                  <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event_validation') }}"><i
+                           class="fa fa-cog"></i>
+                        config_reports</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_validation') }}"><i
+                           class="fa fa-list"></i>
                         report_list</a></li>
 
                </ul>

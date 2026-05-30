@@ -12,7 +12,8 @@ from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.email_operations import emailSender, pushoverSender
 from mainApp.forms.archive_search import ArchiveSearch
-from mainApp.forms.config_json import EventConfigForm, SchedulerConfigForm, ReportConfigForm
+# from mainApp.forms.config_json import EventConfigForm, SchedulerConfigForm, ReportConfigForm
+from mainApp.forms.config_json import ConfigForm
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
@@ -67,94 +68,56 @@ def handle_operational_error(error):
 # table section
 # -----------------------------------------
 
-# event_table
-# event_scheduler_table
-# event_validation_table
-# dashboard_table
-# archive_report_table
+# event
+# event_scheduler
+# event_validation
+# dashboard
+# archive_report
 
 @app.route("/get_table/<tableName>")
 def get_table(tableName):
     table = []
-    if tableName == "event_table":
+    if tableName == "event":
         table = EventListerJson().get_list()
-    elif tableName == "event_scheduler_table":
+    elif tableName == "event_scheduler":
         table = EventSchedulerLister().get_list()
-    elif tableName == "event_validation_table":
+    elif tableName == "event_validation":
         table = ValidationLister().get_list()
-    elif tableName == "archive_report_table":
+    elif tableName == "archive_report":
         table = ArchiveReportLister().get_list()
-    elif tableName == "dashboard_table":
+    elif tableName == "dashboard":
         table = DashboardLister().get_list()
-    return render_template_with_addons(f"{tableName}.html", table=table, datetime=datetime)
+    return render_template_with_addons(f"{tableName}-table.html", table=table, datetime=datetime)
 
 
 # -----------------------------------------
 # config section
 # -----------------------------------------
 
-
-@app.route("/config_events", methods=['POST', 'GET'])
-def config_events():
-    form = EventConfigForm()
+@app.route("/config_table/<tableName>", methods=['POST', 'GET'])
+def config_table(tableName):
+    form = ConfigForm()
     if request.method == 'GET':
-        form.config_json.data = load_config_text('events.json')
+        form.config_json.data = load_config_text(f'{tableName}.json')
 
     if validate_and_log_form(form=form):
         try:
-            validate_event_config_text(form.config_json.data)
-            backup_config_file('events.json')
-            save_config_text('events.json', form.config_json.data)
-            flash_message('Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.', 'success')
+            
+#             validate_event_config_text(form.config_json.data)
+#             validate_scheduler_config_text(form.config_json.data)
+#             validate_report_config_text(form.config_json.data)
+            backup_config_file(f"{tableName}.json")
+            save_config_text(f"{tableName}.json", form.config_json.data)
+            flash_message(f"{tableName}Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.", 'success')
         except ValueError as validation_error:
             flash_message(str(validation_error), 'warning')
-    return render_template_with_addons('config_events.html', form=form, config_path=get_config_file_path('events.json'))
-
-
-@app.route("/config_scheduler", methods=['POST', 'GET'])
-def config_scheduler():
-    form = SchedulerConfigForm()
-    if request.method == 'GET':
-        form.config_json.data = load_config_text('events_scheduler.json')
-
-    if validate_and_log_form(form=form):
-        try:
-            validate_scheduler_config_text(form.config_json.data)
-            backup_config_file('events_scheduler.json')
-            save_config_text('events_scheduler.json', form.config_json.data)
-            flash_message('Nowa konfiguracja schedulerów została zapisana. Aplikacja zostanie zrestartowana.', 'success')
-        except ValueError as validation_error:
-            flash_message(str(validation_error), 'warning')
-
-    return render_template_with_addons('config_scheduler.html', form=form, config_path=get_config_file_path('events_scheduler.json'))
-
-
-@app.route("/config_reports", methods=['POST', 'GET'])
-def config_reports():
-    form = ReportConfigForm()
-    if request.method == 'GET':
-        form.config_json.data = load_config_text('archive_reports.json')
-
-    if validate_and_log_form(form=form):
-        try:
-            validate_report_config_text(form.config_json.data)
-            backup_config_file('archive_reports.json')
-            save_config_text('archive_reports.json', form.config_json.data)
-            flash_message('Nowa konfiguracja raportów została zapisana.', 'success')
-        except ValueError as validation_error:
-            flash_message(str(validation_error), 'warning')
-
-    return render_template_with_addons(
-        'config_reports.html',
-        form=form,
-        config_path=get_config_file_path('archive_reports.json')
-    )
+            
+    return render_template_with_addons(f"{tableName}-config.html", form=form, config_path=get_config_file_path(f"{tableName}.json"))
 
 
 # -----------------------------------------
 # test section
 # -----------------------------------------
-
 
 @app.route("/event_open/<eventName>")
 def event_open(eventName):
