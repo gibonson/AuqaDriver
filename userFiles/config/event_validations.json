@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "description": "Alarm temperatury powyżej progu",
+    "deviceIP": "192.168.0.10",
+    "deviceName": "Sensor1",
+    "addInfo": "Temp",
+    "type": "Temperature",
+    "condition": "more",
+    "value": 30,
+    "actionType": "email",
+    "status": "Ready",
+    "eventId": 1,
+    "message": "Temperatura jest wyższa niż 30°C"
+  },
+  {
+    "id": 2,
+    "description": "Sprawdzenie ciśnienia dla innego urządzenia",
+    "deviceIP": "192.168.0.20",
+    "deviceName": "Sensor2",
+    "addInfo": "Pressure",
+    "type": "Pressure",
+    "condition": "less",
+    "value": 100,
+    "actionType": "event",
+    "status": "Ready",
+    "eventId": 2,
+    "message": "Wysłano powiązane zdarzenie dla niskiego ciśnienia"
+  }
+]

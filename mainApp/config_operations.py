@@ -2,9 +2,23 @@ import os
 import json
 import shutil
 import datetime
-import sys
 
-from mainApp import app, logger
+from mainApp import logger
+
+
+# def get_table_by_name(table_name):
+#     table_mapping = {
+#         'eventConfig': 'event_config.json',
+#         'reportConfig': 'report_config.json',
+#         'dashboardConfig': 'dashboard_config.json',
+#         'validationConfig': 'validation_config.json',
+#         'schedulerConfig': 'scheduler_config.json'
+#     }
+#     return table_mapping.get(table_name, None)
+
+# def get_table(table_name):
+    
+    
 
 
 def get_config_dir():
@@ -17,55 +31,63 @@ def get_config_backup_dir():
     os.makedirs(config_dir, exist_ok=True)
     return config_dir
 
-def get_event_config_path():
-    return os.path.join(get_config_dir(), 'events.json')
+def get_config_file_path(file_name, subfolder=None):
+    config_dir = get_config_dir()
+    if subfolder:
+        config_dir = os.path.join(config_dir, subfolder)
+        os.makedirs(config_dir, exist_ok=True)
+    return os.path.join(config_dir, file_name)
 
 
-def get_event_config_backup_path():
+def get_config_backup_file_path(file_name, subfolder=None):
+    backup_dir = get_config_backup_dir()
+    if subfolder:
+        backup_dir = os.path.join(backup_dir, subfolder)
+        os.makedirs(backup_dir, exist_ok=True)
+    name, ext = os.path.splitext(file_name)
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    return os.path.join(get_config_backup_dir(), f'events_{timestamp}.json')
+    return os.path.join(backup_dir, f'{name}_{timestamp}{ext}')
 
 
-def get_scheduler_config_path():
-    return os.path.join(get_config_dir(), 'events_scheduler.json')
-
-
-def get_scheduler_config_backup_path():
-    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    return os.path.join(get_config_backup_dir(), f'events_scheduler_{timestamp}.json')
-
-
-def get_report_config_path():
-    return os.path.join(get_config_dir(), 'archive_reports.json')
-
-
-def get_report_config_backup_path():
-    timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-    return os.path.join(get_config_backup_dir(), f'archive_reports_{timestamp}.json')
-
-
-def load_event_config():
-    path = get_event_config_path()
+def load_json_config(file_name, subfolder=None, default=None):
+    path = get_config_file_path(file_name, subfolder=subfolder)
     if not os.path.exists(path):
-        save_event_config(json.dumps([], indent=2))
+        save_json_config(file_name, default if default is not None else [], subfolder=subfolder)
+    with open(path, 'r', encoding='utf-8') as config_file:
+        return json.load(config_file)
+
+
+def save_json_config(file_name, data, subfolder=None):
+    path = get_config_file_path(file_name, subfolder=subfolder)
+    with open(path, 'w', encoding='utf-8') as config_file:
+        json.dump(data, config_file, indent=2, ensure_ascii=False)
+    return path
+
+
+def load_config_text(file_name, default='[]', subfolder=None):
+    path = get_config_file_path(file_name, subfolder=subfolder)
+    if not os.path.exists(path):
+        save_config_text(file_name, default, subfolder=subfolder)
     with open(path, 'r', encoding='utf-8') as config_file:
         return config_file.read()
 
 
-def load_scheduler_config():
-    path = get_scheduler_config_path()
-    if not os.path.exists(path):
-        save_scheduler_config(json.dumps([], indent=2))
-    with open(path, 'r', encoding='utf-8') as config_file:
-        return config_file.read()
+def save_config_text(file_name, text, subfolder=None):
+    path = get_config_file_path(file_name, subfolder=subfolder)
+    with open(path, 'w', encoding='utf-8') as config_file:
+        config_file.write(text)
+    logger.info(f'Konfiguracja zapisana w: {path}')
+    return path
 
 
-def load_report_config():
-    path = get_report_config_path()
-    if not os.path.exists(path):
-        save_report_config(json.dumps([], indent=2))
-    with open(path, 'r', encoding='utf-8') as config_file:
-        return config_file.read()
+def backup_config_file(file_name, subfolder=None):
+    path = get_config_file_path(file_name, subfolder=subfolder)
+    if os.path.exists(path):
+        backup_path = get_config_backup_file_path(file_name, subfolder=subfolder)
+        shutil.copy2(path, backup_path)
+        logger.info(f'Backup konfiguracji zapisano w: {backup_path}')
+        return backup_path
+    return None
 
 
 def parse_config_text(text):
@@ -117,6 +139,43 @@ def validate_report_config_text(text):
     return validate_report_config_object(config)
 
 
+def validate_dashboard_config_text(text):
+    config = parse_config_text(text)
+    return validate_dashboard_config_object(config)
+
+
+def validate_dashboard_config_object(config):
+    if not isinstance(config, list):
+        raise ValueError('Konfiguracja dashboardów musi być listą obiektów.')
+
+    seen_ids = set()
+    for index, dashboard in enumerate(config, start=1):
+        if not isinstance(dashboard, dict):
+            raise ValueError(f'Dashboard #{index} musi być obiektem JSON.')
+
+        required_keys = ['panelType', 'panelItemId', 'panelLocation', 'panelName', 'panelCode', 'panelStatus']
+        for key in required_keys:
+            if key not in dashboard:
+                raise ValueError(f'Dashboard #{index}: brak pola {key}.')
+
+        if not dashboard.get('panelType'):
+            raise ValueError(f'Dashboard #{index}: panelType nie może być pusty.')
+        if dashboard.get('panelItemId') is None or str(dashboard.get('panelItemId')) == '':
+            raise ValueError(f'Dashboard #{index}: panelItemId nie może być puste.')
+        if not dashboard.get('panelLocation'):
+            raise ValueError(f'Dashboard #{index}: panelLocation nie może być puste.')
+        if not dashboard.get('panelName'):
+            raise ValueError(f'Dashboard #{index}: panelName nie może być puste.')
+        if dashboard.get('panelCode') is None:
+            raise ValueError(f'Dashboard #{index}: panelCode nie może być puste.')
+
+        status = dashboard.get('panelStatus')
+        if status not in ['Active', 'Inactive']:
+            raise ValueError(f'Dashboard #{index}: panelStatus musi być "Active" lub "Inactive".')
+
+    return config
+
+
 def validate_report_config_object(config):
     if not isinstance(config, list):
         raise ValueError('Konfiguracja raportów musi być listą obiektów.')
@@ -158,9 +217,89 @@ def validate_report_config_object(config):
     return config
 
 
+def validate_validation_config_text(text):
+    config = parse_config_text(text)
+    return validate_validation_config_object(config)
+
+
 def validate_scheduler_config_text(text):
     config = parse_config_text(text)
     return validate_scheduler_config_object(config)
+
+
+def validate_validation_config_object(config):
+    if not isinstance(config, list):
+        raise ValueError('Konfiguracja walidacji musi być listą obiektów.')
+
+    seen_ids = set()
+    allowed_conditions = ['less', 'more', 'equal']
+    allowed_action_types = ['email', 'event', 'ignore']
+    allowed_status_values = ['Ready', 'Not Ready', 'Not ready']
+
+    for index, validation in enumerate(config, start=1):
+        if not isinstance(validation, dict):
+            raise ValueError(f'Walidacja #{index} musi być obiektem JSON.')
+
+        required_keys = ['id', 'description', 'deviceIP', 'deviceName', 'addInfo', 'type', 'condition', 'value', 'actionType', 'status']
+        for key in required_keys:
+            if key not in validation:
+                raise ValueError(f'Walidacja #{index}: brak pola {key}.')
+
+        validation_id = validation.get('id')
+        try:
+            validation_id_int = int(validation_id)
+        except (ValueError, TypeError):
+            raise ValueError(f'Walidacja #{index}: pole id musi być liczbą całkowitą.')
+        if validation_id_int in seen_ids:
+            raise ValueError(f'Walidacja #{index}: duplikat id "{validation_id_int}".')
+        seen_ids.add(validation_id_int)
+
+        description = validation.get('description')
+        if not description:
+            raise ValueError(f'Walidacja #{index}: description nie może być puste.')
+
+        deviceIP = validation.get('deviceIP')
+        if not deviceIP:
+            raise ValueError(f'Walidacja #{index}: deviceIP nie może być pusty.')
+
+        deviceName = validation.get('deviceName')
+        if not deviceName:
+            raise ValueError(f'Walidacja #{index}: deviceName nie może być pusty.')
+
+        addInfo = validation.get('addInfo')
+        if not addInfo:
+            raise ValueError(f'Walidacja #{index}: addInfo nie może być puste.')
+
+        type_value = validation.get('type')
+        if not type_value:
+            raise ValueError(f'Walidacja #{index}: type nie może być pusty.')
+
+        condition = validation.get('condition')
+        if condition not in allowed_conditions:
+            raise ValueError(f'Walidacja #{index}: condition musi być jednym z {allowed_conditions}.')
+
+        value = validation.get('value')
+        try:
+            int(value)
+        except (ValueError, TypeError):
+            raise ValueError(f'Walidacja #{index}: pole value musi być liczbą.')
+
+        action_type = validation.get('actionType')
+        if action_type not in allowed_action_types:
+            raise ValueError(f'Walidacja #{index}: actionType musi być jednym z {allowed_action_types}.')
+
+        status = validation.get('status')
+        if status not in allowed_status_values:
+            raise ValueError(f'Walidacja #{index}: status musi być "Ready" lub "Not Ready".')
+
+        event_id = validation.get('eventId')
+        if event_id is not None and event_id != '':
+            try:
+                int(event_id)
+            except (ValueError, TypeError):
+                raise ValueError(f'Walidacja #{index}: pole eventId musi być liczbą lub puste.')
+
+    return config
 
 
 def validate_scheduler_config_object(config):
@@ -225,58 +364,6 @@ def validate_scheduler_config_object(config):
     return config
 
 
-def backup_event_config():
-    path = get_event_config_path()
-    if os.path.exists(path):
-        backup_path = get_event_config_backup_path()
-        shutil.copy2(path, backup_path)
-        logger.info(f'Backup konfiguracji eventów zapisano w: {backup_path}')
-        return backup_path
-    return None
-
-
-def backup_report_config():
-    path = get_report_config_path()
-    if os.path.exists(path):
-        backup_path = get_report_config_backup_path()
-        shutil.copy2(path, backup_path)
-        logger.info(f'Backup konfiguracji raportów zapisano w: {backup_path}')
-        return backup_path
-    return None
-
-
-def backup_scheduler_config():
-    path = get_scheduler_config_path()
-    if os.path.exists(path):
-        backup_path = get_scheduler_config_backup_path()
-        shutil.copy2(path, backup_path)
-        logger.info(f'Backup konfiguracji schedulerów zapisano w: {backup_path}')
-        return backup_path
-    return None
-
-
-def save_event_config(text):
-    path = get_event_config_path()
-    with open(path, 'w', encoding='utf-8') as config_file:
-        config_file.write(text)
-    logger.info(f'Konfiguracja eventów zapisana w: {path}')
-    return path
-
-
-def save_report_config(text):
-    path = get_report_config_path()
-    with open(path, 'w', encoding='utf-8') as config_file:
-        config_file.write(text)
-    logger.info(f'Konfiguracja raportów zapisana w: {path}')
-    return path
-
-
-def save_scheduler_config(text):
-    path = get_scheduler_config_path()
-    with open(path, 'w', encoding='utf-8') as config_file:
-        config_file.write(text)
-    logger.info(f'Konfiguracja schedulerów zapisana w: {path}')
-    return path
 
 
 def restart_application():

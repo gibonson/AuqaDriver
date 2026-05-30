@@ -80,20 +80,6 @@
                {% endif %}
             </li>
 
-            {# ---- Lists ---- #}
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                  <i class="fa fa-list"></i> Lists and Forms
-               </a>
-               <ul class="dropdown-menu">
-
-                  <li><a class="dropdown-item" href="{{ url_for('report_list') }}"><i class="fa fa-calendar"></i>
-                        Report</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('validation_list') }}"><i class="fa fa-bell-o"></i>
-                        Validation</a></li>
-               </ul>
-            </li>
-
             {# ---- Admin ---- #}
             <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -123,17 +109,17 @@
                <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{ url_for('config_events') }}"><i class="fa fa-cog"></i>
                         config_events</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('event_list_json') }}"><i class="fa fa-list"></i> Event
-                        List (JSON)</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('scheduler_list') }}"><i class="fa fa-clock-o"></i>
-                        Scheduler</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_table') }}"><i class="fa fa-list"></i>
+                        event_list</a></li>
+
                   <li><a class="dropdown-item" href="{{ url_for('config_scheduler') }}"><i class="fa fa-clock-o"></i>
                         config_scheduler</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_scheduler_table') }}"><i class="fa fa-list"></i>
+                        scheduler_list</a></li>
 
-                  <li><a class="dropdown-item" href="{{ url_for('config_reports') }}"><i class="fa fa-clock-o"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('config_reports') }}"><i class="fa fa-cog"></i>
                         config_reports</a></li>
-
-                  <li><a class="dropdown-item" href="{{ url_for('report_list') }}"><i class="fa fa-clock-o"></i>
+                  <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='archive_report_table') }}"><i class="fa fa-list"></i>
                         report_list</a></li>
 
                </ul>

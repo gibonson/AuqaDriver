@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AquaDriver - Notification List
+{% endblock %}
+
+
+{% block content %}
+<h1>Validation List</h1>
+<table class="table table-striped table-dark  table-fixed" style="width: 100%">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Description</th>
+            <th>Device IP</th>
+            <th>Device Name</th>
+            <th>Additional Info</th>
+            <th>Type</th>
+            <th>Condition</th>
+            <th>Value</th>
+            <th>validation Type</th>
+            <th>Event ID</th>
+            <th>Message</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for validation in table %}
+        <tr>
+            <td>{{validation.id}}</td>
+            <td>{{validation.description}}</td>
+            <td>{{validation.deviceIP}}</td>
+            <td>{{validation.deviceName}}</td>
+            <td>{{validation.addInfo}}</td>
+            <td>{{validation.type}}</td>
+            <td>{{validation.condition}}</td>
+            <td>{{validation.value}}</td>
+            <td>{{validation.actionType}}</td>
+            <td>{{validation.eventId}}</td>
+            <td>{{validation.message}}</td>
+            <td>{{validation.status}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

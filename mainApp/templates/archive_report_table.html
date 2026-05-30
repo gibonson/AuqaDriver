@@ -29,7 +29,7 @@ AquaDriver - Archive Report List
         </tr>
     </thead>
     <tbody>
-        {% for archiveReportRow in archiveReportList %}
+        {% for archiveReportRow in table %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>{{ archiveReportRow.reportName }}</td>

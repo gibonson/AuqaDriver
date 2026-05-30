@@ -1,7 +1,7 @@
 import json
 import os
 
-from mainApp.config_operations import get_scheduler_config_path
+from mainApp.config_operations import get_config_file_path
 from mainApp import logger
 
 
@@ -37,7 +37,7 @@ class EventSchedulerLister():
     def __init__(self):
         self.eventScheduler = []
         try:
-            config_path = get_scheduler_config_path()
+            config_path = get_config_file_path('events_scheduler.json')
             if os.path.exists(config_path):
                 with open(config_path, 'r', encoding='utf-8') as config_file:
                     scheduler_list = json.load(config_file)
