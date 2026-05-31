@@ -1,5 +1,5 @@
 from mainApp import logger
-from mainApp.config_operations import load_json_config
+from mainApp.config_operations import load_config_text
 
 
 class ArchiveReport:
@@ -35,7 +35,7 @@ class ArchiveReportLister:
         self.reportGroupId = reportGroupId
         self.archiveReport = []
         try:
-            report_list = load_json_config('archive_report.json', default=[])
+            report_list = load_config_text('archive_report.json', default=[])
             if not isinstance(report_list, list):
                 report_list = []
             for report_data in report_list:
@@ -70,7 +70,7 @@ class GetReportIdsListWhenGroupId:
         self.reportGroupId = reportGroupId
         self.ids = []
         try:
-            report_list = load_json_config('archive_reports.json', default=[])
+            report_list = load_config_text('archive_reports.json', default=[])
             if not isinstance(report_list, list):
                 report_list = []
             self.ids = [report.get('reportName') for report in report_list if isinstance(report, dict) and report.get('reportGroupId') == self.reportGroupId and report.get('status') == 'Ready']

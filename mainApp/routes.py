@@ -17,7 +17,7 @@ from mainApp.forms.config_json import ConfigForm
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
-from mainApp.config_operations import load_config_text, save_config_text, backup_config_file, get_config_file_path, validate_event_config_text, validate_report_config_text, validate_scheduler_config_text, restart_application
+from mainApp.config_operations import load_config_text, save_config_text, backup_config_file, get_config_file_path, restart_application, parse_config_text
 from mainApp.models.archive_report import ArchiveReportLister
 from mainApp.models.event import EventListerJson
 from mainApp.models.event_validation import  ValidationLister
@@ -48,7 +48,7 @@ def create():
 
 @app.route("/")
 def hello_world():
-    return redirect(url_for("dashboard"))
+    return redirect(url_for("get_jobs"))
 
 @ app.errorhandler(404)
 def not_found(e):
@@ -102,10 +102,7 @@ def config_table(tableName):
 
     if validate_and_log_form(form=form):
         try:
-            
-#             validate_event_config_text(form.config_json.data)
-#             validate_scheduler_config_text(form.config_json.data)
-#             validate_report_config_text(form.config_json.data)
+            parse_config_text(form.config_json.data)  # Walidacja JSON-a
             backup_config_file(f"{tableName}.json")
             save_config_text(f"{tableName}.json", form.config_json.data)
             flash_message(f"{tableName}Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.", 'success')

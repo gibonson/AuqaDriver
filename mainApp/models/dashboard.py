@@ -1,4 +1,4 @@
-from mainApp.config_operations import load_json_config
+from mainApp.config_operations import load_config_text
 from mainApp import logger
 
 class Dashboard:
@@ -25,7 +25,7 @@ class DashboardLister:
     def __init__(self):
         self.dashboards = []
         try:
-            raw_dashboards = load_json_config('dashboard.json', default=[])
+            raw_dashboards = load_config_text('dashboard.json', default=[])
             if not isinstance(raw_dashboards, list):
                 raw_dashboards = []
             for dashboard_data in raw_dashboards:

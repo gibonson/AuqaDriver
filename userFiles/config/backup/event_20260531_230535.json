@@ -12,5 +12,13 @@
     "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
     "eventPayload": "{\"key\": \"value2\"}",
     "eventStatus": "Not Ready"
+  },
+  {
+    "eventName": 3,
+    "eventAddress": "http://localhost:5000/test2",
+    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
+    "eventPayload": "{\"key\": \"value2\"}",
+    "eventStatus": "Not Ready"
   }
+
 ]

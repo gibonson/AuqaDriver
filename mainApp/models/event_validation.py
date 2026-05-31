@@ -1,7 +1,7 @@
 import json
 import os
 
-from mainApp.config_operations import load_json_config
+from mainApp.config_operations import load_config_text
 from mainApp import logger
 
 class Validation:
@@ -38,7 +38,7 @@ class ValidationLister:
     def __init__(self, status='All', actionType='All'):
         self.Validation = []
         try:
-            raw_validations = load_json_config('event_validation.json', default=[])
+            raw_validations = load_config_text('event_validation.json', default=[])
             if not isinstance(raw_validations, list):
                 raw_validations = []
             for raw in raw_validations:
