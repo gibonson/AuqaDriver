@@ -1,5 +1,5 @@
 from mainApp import logger
-from mainApp.config_operations import load_config_text
+from mainApp.config_operations import load_config_json
 
 
 class ArchiveReport:
@@ -31,16 +31,11 @@ class ArchiveReport:
 
 
 class ArchiveReportLister:
-    def __init__(self, reportGroupId=None):
-        self.reportGroupId = reportGroupId
+    def __init__(self):
         self.archiveReport = []
         try:
-            report_list = load_config_text('archive_report.json', default=[])
-            if not isinstance(report_list, list):
-                report_list = []
+            report_list = load_config_json('archive_report.json')
             for report_data in report_list:
-                if not isinstance(report_data, dict):
-                    continue
                 report = ArchiveReport(
                     reportName=report_data.get('reportName'),
                     reportDescription=report_data.get('reportDescription'),
@@ -55,27 +50,8 @@ class ArchiveReportLister:
                     status=report_data.get('status'),
                 )
                 self.archiveReport.append(report)
-            if self.reportGroupId is not None:
-                self.archiveReport = [report for report in self.archiveReport if report.reportGroupId == self.reportGroupId]
         except Exception as e:
             logger.error(f"An error occurred while fetching archive report: {e}")
-            self.archiveReport = []
 
     def get_list(self):
         return self.archiveReport
-
-
-class GetReportIdsListWhenGroupId:
-    def __init__(self, reportGroupId):
-        self.reportGroupId = reportGroupId
-        self.ids = []
-        try:
-            report_list = load_config_text('archive_reports.json', default=[])
-            if not isinstance(report_list, list):
-                report_list = []
-            self.ids = [report.get('reportName') for report in report_list if isinstance(report, dict) and report.get('reportGroupId') == self.reportGroupId and report.get('status') == 'Ready']
-        except Exception as e:
-            logger.error(f"An error occurred while fetching report names: {e}")
-
-    def get_ids(self):
-        return self.ids

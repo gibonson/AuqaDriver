@@ -2,7 +2,7 @@ import requests
 import re
 import json
 from datetime import datetime
-from mainApp.models.event import Event
+from mainApp.models.event import EventGetByEventName
 # from mainApp.models.device import Device
 # from mainApp.response_operation import ResponseTrigger
 from mainApp.dashboard_data import DashboardData
@@ -10,285 +10,191 @@ from mainApp import app, logger
 
 
 class WebContentCollector:
-    def __init__(self, id, requestID="A"):
-        self.id = id
+    def __init__(self, eventName, requestID="A"):
+        self.eventName = eventName
         if requestID == "A":
             self.requestID = "A" + str(int(datetime.now().timestamp()))
         else:
             self.requestID = requestID
 
     def collector(self):
-        with app.app_context():
-            event = Event.query.get(self.id)
-            if event is None:
-                print("Event not found")
-                # response = requests.get(eventAddress, timeout=5)
-            # elif event.deviceId == 0:
-            #     httpLink = event.eventLink
-            #     print("httpLink: " + httpLink)
-            #     try:
-            #         response = requests.get(httpLink, timeout=5)
-            #         jsonResponse = response.json()
-            #         print("response: " + str(response.content))
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " temperatura",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "°C",
-            #             "value": jsonResponse["temperatura"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " predkosc wiatru",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "km/h",
-            #             "value": jsonResponse["predkosc_wiatru"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " kierunek wiatru",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "°",
-            #             "value": jsonResponse["kierunek_wiatru"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " wilgotnosc",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "%",
-            #             "value": jsonResponse["wilgotnosc_wzgledna"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " opad",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "mm",
-            #             "value": jsonResponse["suma_opadu"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #         requestData = {
-            #             "requestID": self.requestID,
-            #             "addInfo": jsonResponse["stacja"] + " cisnienie",
-            #             "deviceIP": "danepubliczne",
-            #             "deviceName": "API IMGW",
-            #             "type": "hPa",
-            #             "value": jsonResponse["cisnienie"],
-            #         }
-            #         ResponseTrigger(requestData)
-            #     except requests.exceptions.Timeout:
-
-            #         logger.error(f"Timeout error while trying to reach {httpLink}")
-            #         # return {"error": "Connection timeout"}
-            #     except requests.exceptions.RequestException as e:
-
-            #         logger.error(f"Request error: {e} while trying to reach {httpLink}")
-            #         # return {"error": "Connection error"}
-
+        event = EventGetByEventName(self.eventName).get_event()    
+        if event is None or event.eventStatus != "Ready":
+            print("Event not found or not ready")
+        else:
+            print("Event found: ")
+            print(str(event.eventAddress))
+            print(str(event.eventPayload))
+            received_values2 = InjectValuesIntoPayload(event.eventPayload).getPayload()
+            print("var2: " + str(received_values2))
+       
+            if event.eventType == "JSON":
+                print("Event JSON")
+                
+            elif event.eventType == "HTTP":
+                print("Event HTTP")
+                
             else:
-                event = Event.query.get(self.id)
-                eventAddress = event.eventAddress
-                eventPayload = event.eventPayload   
-                eventGroupId = event.eventGroupId
+                print("Event type not supported")       
+       
 
-                placeholders = WebContentCollector.extract_placeholders(eventPayload)
-                resolver = PlaceholderGetter(placeholders)
-                received_values = resolver.vlue_getter()
 
-                print(eventPayload)
-                print(received_values)
-                print(placeholders)
+class InjectValuesIntoPayload:
+    def __init__(self, payload):
+        self.payload = payload
+        
+    def getPayload(self):
+        valuesToChange = re.findall(r"<<(.*?)>>", self.payload)
+        dashboardData = DashboardData()
+        for value in valuesToChange:
+            valueToInject = dashboardData.get_placeholder_value(value)
+            self.payload = self.payload.replace(f"<<{value}>>", str(valueToInject))
+        return self.payload 
 
-                if (eventPayload.startswith("{") and eventPayload.endswith("}")): 
-                    jsonEvent = self.inject_values_into_link(eventPayload, received_values)
-                    jsonEvent = json.loads(jsonEvent)
-                    jsonEvent["requestID"] = self.requestID
-                    print("httpLink: " + eventAddress)                   
-                    print("type of meaasge: " + str(type(jsonEvent)))
-                    print(jsonEvent)
-                    attempt = 1
-                    for attempt in range(2):
-                        try:
-                            attempt += 1
-                            response = requests.post(
-                                eventAddress, json=jsonEvent, timeout=5
-                            )
-                            print(response.status_code)
-                            print(
-                                response.raise_for_status()
-                            )  # Sprawdza, czy odpowiedź jest poprawna
-                            print("response: " + str(response.content))
-                            print("response:", response.text)
-                            if response.status_code == 200:
-                                logger.error(
-                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
-                                )
-                                requestData = response.json()
-                                requestData["requestID"] = self.requestID
-                                ResponseTrigger(requestData)
+      
+       
+        #         if (eventPayload.startswith("{") and eventPayload.endswith("}")): 
+        #             jsonEvent = self.inject_values_into_link(eventPayload, received_values)
+        #             jsonEvent = json.loads(jsonEvent)
+        #             jsonEvent["requestID"] = self.requestID
+        #             print("httpLink: " + eventAddress)                   
+        #             print("type of meaasge: " + str(type(jsonEvent)))
+        #             print(jsonEvent)
+        #             attempt = 1
+        #             for attempt in range(2):
+        #                 try:
+        #                     attempt += 1
+        #                     response = requests.post(
+        #                         eventAddress, json=jsonEvent, timeout=5
+        #                     )
+        #                     print(response.status_code)
+        #                     print(
+        #                         response.raise_for_status()
+        #                     )  # Sprawdza, czy odpowiedź jest poprawna
+        #                     print("response: " + str(response.content))
+        #                     print("response:", response.text)
+        #                     if response.status_code == 200:
+        #                         logger.error(
+        #                             f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+        #                         )
+        #                         requestData = response.json()
+        #                         requestData["requestID"] = self.requestID
+        #                         ResponseTrigger(requestData)
 
-                                break
-                            else:
-                                logger.error(
-                                    f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
-                                )
-                                requestData = {
-                                    "requestID": self.requestID,
-                                    "addInfo": "Other  error "
-                                    + str(response.status_code)
-                                    + ". Attempt:"
-                                    + str(attempt),
-                                    "deviceIP": eventAddress,
-                                    "deviceName": "",
-                                    "type": "error",
-                                    "value": 0,
-                                }
-                            ResponseTrigger(requestData)
+        #                         break
+        #                     else:
+        #                         logger.error(
+        #                             f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+        #                         )
+        #                         requestData = {
+        #                             "requestID": self.requestID,
+        #                             "addInfo": "Other  error "
+        #                             + str(response.status_code)
+        #                             + ". Attempt:"
+        #                             + str(attempt),
+        #                             "deviceIP": eventAddress,
+        #                             "deviceName": "",
+        #                             "type": "error",
+        #                             "value": 0,
+        #                         }
+        #                     ResponseTrigger(requestData)
 
-                        except requests.exceptions.Timeout:
+        #                 except requests.exceptions.Timeout:
 
-                            logger.error(
-                                f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
-                            )
-                            requestData = {
-                                "requestID": self.requestID,
-                                "addInfo": "Timmeout error. Attempt:" + str(attempt),
-                                "deviceIP": eventAddress,
-                                "deviceName": "",
-                                "type": "error",
-                                "value": 0,
-                            }
-                            ResponseTrigger(requestData)
+        #                     logger.error(
+        #                         f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
+        #                     )
+        #                     requestData = {
+        #                         "requestID": self.requestID,
+        #                         "addInfo": "Timmeout error. Attempt:" + str(attempt),
+        #                         "deviceIP": eventAddress,
+        #                         "deviceName": "",
+        #                         "type": "error",
+        #                         "value": 0,
+        #                     }
+        #                     ResponseTrigger(requestData)
 
-                        except requests.exceptions.RequestException as e:
+        #                 except requests.exceptions.RequestException as e:
 
-                            logger.error(
-                                f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
-                            )
-                            requestData = {
-                                "requestID": self.requestID,
-                                "addInfo": "Other  error. Attempt:" + str(attempt),
-                                "deviceIP": eventAddress,
-                                "deviceName": "",
-                                "type": "Error",
-                                "value": 0,
-                            }
-                            ResponseTrigger(requestData)
+        #                     logger.error(
+        #                         f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
+        #                     )
+        #                     requestData = {
+        #                         "requestID": self.requestID,
+        #                         "addInfo": "Other  error. Attempt:" + str(attempt),
+        #                         "deviceIP": eventAddress,
+        #                         "deviceName": "",
+        #                         "type": "Error",
+        #                         "value": 0,
+        #                     }
+        #                     ResponseTrigger(requestData)
 
-                else:
-                    print("totally not json")
-                    eventAddress =  eventAddress + "/" + eventPayload
-                    attempt = 1
-                    for attempt in range(2):
-                        try:
-                            response = requests.post(eventAddress, timeout=5)
-                            print(response.status_code)
-                            print(response.raise_for_status())
-                            if response.status_code == 200:
-                                logger.error(
-                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
-                                )
-                                requestData = response.json()
-                                requestData["requestID"] = self.requestID
-                                ResponseTrigger(requestData)
+        #         else:
+        #             print("totally not json")
+        #             eventAddress =  eventAddress + "/" + eventPayload
+        #             attempt = 1
+        #             for attempt in range(2):
+        #                 try:
+        #                     response = requests.post(eventAddress, timeout=5)
+        #                     print(response.status_code)
+        #                     print(response.raise_for_status())
+        #                     if response.status_code == 200:
+        #                         logger.error(
+        #                             f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+        #                         )
+        #                         requestData = response.json()
+        #                         requestData["requestID"] = self.requestID
+        #                         ResponseTrigger(requestData)
 
-                                break
-                            else:
-                                logger.error(
-                                    f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
-                                )
-                                requestData = {
-                                    "requestID": self.requestID,
-                                    "addInfo": "Other  error "
-                                    + str(response.status_code)
-                                    + ". Attempt:"
-                                    + str(attempt),
-                                    "deviceIP": eventAddress,
-                                    "deviceName": "",
-                                    "type": "error",
-                                    "value": 0,
-                                }
-                            ResponseTrigger(requestData)
+        #                         break
+        #                     else:
+        #                         logger.error(
+        #                             f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {eventAddress}"
+        #                         )
+        #                         requestData = {
+        #                             "requestID": self.requestID,
+        #                             "addInfo": "Other  error "
+        #                             + str(response.status_code)
+        #                             + ". Attempt:"
+        #                             + str(attempt),
+        #                             "deviceIP": eventAddress,
+        #                             "deviceName": "",
+        #                             "type": "error",
+        #                             "value": 0,
+        #                         }
+        #                     ResponseTrigger(requestData)
                             
-                        except requests.exceptions.Timeout:
+        #                 except requests.exceptions.Timeout:
 
-                            logger.error(
-                                f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
-                            )
-                            requestData = {
-                                "requestID": self.requestID,
-                                "addInfo": "Timmeout error. Attempt:" + str(attempt),
-                                "deviceIP": eventAddress,
-                                "deviceName": "",
-                                "type": "error",
-                                "value": 0,
-                            }
-                            ResponseTrigger(requestData)
+        #                     logger.error(
+        #                         f"Attempt: {attempt}. Timeout error while trying to reach {eventAddress}"
+        #                     )
+        #                     requestData = {
+        #                         "requestID": self.requestID,
+        #                         "addInfo": "Timmeout error. Attempt:" + str(attempt),
+        #                         "deviceIP": eventAddress,
+        #                         "deviceName": "",
+        #                         "type": "error",
+        #                         "value": 0,
+        #                     }
+        #                     ResponseTrigger(requestData)
 
-                        except requests.exceptions.RequestException as e:
+        #                 except requests.exceptions.RequestException as e:
 
-                            logger.error(
-                                f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
-                            )
-                            requestData = {
-                                "requestID": self.requestID,
-                                "addInfo": "Other  error. Attempt:" + str(attempt),
-                                "deviceIP": eventAddress,
-                                "deviceName": "",
-                                "type": "Error",
-                                "value": 0,
-                            }
-                            ResponseTrigger(requestData)
-
-    def extract_placeholders(eventLink):
-        """zwraca w formie tabel
-        nazwy wszystkich zmiennych w linku
-        znajdujących sie w <<>>"""
-        pattern = r"<<(.*?)>>"  # Wzorzec do znajdowania tekstu w <<>>
-        return re.findall(pattern, eventLink)
-
-    def inject_values_into_link(self, eventLink, received_values):
-        """
-        Zastępuje placeholdery w eventLink odpowiednimi wartościami.
-        Args:
-            eventLink (str): Link zawierający placeholdery w formacie <<placeholder>>.
-            values (dict): Słownik z wartościami dla placeholderów.
-        Returns:
-            str: Link z wstrzykniętymi wartościami.
-        """
-        for placeholder, value in received_values.items():
-            eventLink = eventLink.replace(f"<<{placeholder}>>", str(value))
-        return eventLink
+        #                     logger.error(
+        #                         f"Attempt: {attempt}. Request error: {e} while trying to reach {eventAddress}"
+        #                     )
+        #                     requestData = {
+        #                         "requestID": self.requestID,
+        #                         "addInfo": "Other  error. Attempt:" + str(attempt),
+        #                         "deviceIP": eventAddress,
+        #                         "deviceName": "",
+        #                         "type": "Error",
+        #                         "value": 0,
+        #                     }
+        #                     ResponseTrigger(requestData)
 
 
-class PlaceholderGetter:
-    def __init__(self, placeholders):
-        """
-        Inicjalizuje klasę z listą placeholderów.
-        Args:
-            placeholders (list): Lista placeholderów do przetworzenia.
-        """
-        self.placeholders = placeholders
-        self.dashboard_data = DashboardData()  # Inicjalizacja DashboardData
-
-    def vlue_getter(self):
-        """
-        Przetwarza listę placeholderów i przypisuje im odpowiednie wartości.
-        Returns:
-            dict: Słownik z przypisanymi wartościami dla placeholderów.
-        """
-        return {
-            placeholder: self.dashboard_data.get_placeholder_value(placeholder)
-            for placeholder in self.placeholders
-        }
 
 
 from mainApp.models.archive import ArchiveAdder

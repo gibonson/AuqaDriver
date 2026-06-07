@@ -1,8 +1,6 @@
-import json
-import os
-
-from mainApp.config_operations import load_config_text
 from mainApp import logger
+from mainApp.config_operations import load_config_json
+
 
 class Validation:
     def __init__(
@@ -38,12 +36,8 @@ class ValidationLister:
     def __init__(self, status='All', actionType='All'):
         self.Validation = []
         try:
-            raw_validations = load_config_text('event_validation.json', default=[])
-            if not isinstance(raw_validations, list):
-                raw_validations = []
-            for raw in raw_validations:
-                if not isinstance(raw, dict):
-                    continue
+            raw_validation_list = load_config_json('event_validation.json')
+            for raw in raw_validation_list:
                 validation = Validation(
                     id=raw.get('id'),
                     description=raw.get('description'),
@@ -61,7 +55,6 @@ class ValidationLister:
                 self.Validation.append(validation)
         except Exception as e:
             logger.error(f'An error occurred while fetching Validation: {e}')
-            self.Validation = []
 
     def get_list(self):
         return self.Validation

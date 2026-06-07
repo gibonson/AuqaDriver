@@ -1,16 +1,18 @@
 [
   {
-    "eventName": 1,
+    "eventName": "1",
     "eventAddress": "http://localhost:5000/test",
+    "eventType": "HTTP",
     "eventDescription": "Przykładowy event testowy",
     "eventPayload": "",
     "eventStatus": "Ready"
   },
   {
-    "eventName": 2,
+    "eventName": "10",
     "eventAddress": "http://localhost:5000/test2",
+    "eventType": "JSON",
     "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"key\": \"value2\"}",
-    "eventStatus": "Not Ready"
+    "eventPayload": "{\"key\": \"<<date>>,<<time>>,<<date>>\"}",
+    "eventStatus": "Ready"
   }
 ]

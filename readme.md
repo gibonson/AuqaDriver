@@ -89,7 +89,8 @@ graph TD
 "value":10
 }
 
-### TO DO
-
-- add [API](https://danepubliczne.imgw.pl/apiinfo)
-
+# event
+# event_scheduler
+# event_validation
+# dashboard
+# archive_report

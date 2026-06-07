@@ -1,8 +1,5 @@
-import json
-import os
-
-from mainApp.config_operations import get_config_file_path
 from mainApp import logger
+from mainApp.config_operations import load_config_json
 
 
 class EventScheduler():
@@ -37,12 +34,9 @@ class EventSchedulerLister():
     def __init__(self):
         self.eventScheduler = []
         try:
-            config_path = get_config_file_path('event_scheduler.json')
-            if os.path.exists(config_path):
-                with open(config_path, 'r', encoding='utf-8') as config_file:
-                    scheduler_list = json.load(config_file)
-                for scheduler_data in scheduler_list:
-                    scheduler = EventScheduler(
+            scheduler_list = load_config_json('event_scheduler.json')
+            for scheduler_data in scheduler_list:
+                scheduler = EventScheduler(
                         schedulerName=scheduler_data.get('schedulerName'),
                         schedulerDescription=scheduler_data.get('schedulerDescription'),
                         reportList=scheduler_data.get('reportList'),
@@ -55,7 +49,7 @@ class EventSchedulerLister():
                         second=scheduler_data.get('second'),
                         schedulerStatus=scheduler_data.get('schedulerStatus'),
                     )
-                    self.eventScheduler.append(scheduler)
+                self.eventScheduler.append(scheduler)
         except Exception as e:
             logger.error(f"An error occurred while fetching EventScheduler: {e}")
 

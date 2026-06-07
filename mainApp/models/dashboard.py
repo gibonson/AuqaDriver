@@ -1,5 +1,5 @@
-from mainApp.config_operations import load_config_text
 from mainApp import logger
+from mainApp.config_operations import load_config_json
 
 class Dashboard:
     def __init__(
@@ -25,12 +25,8 @@ class DashboardLister:
     def __init__(self):
         self.dashboards = []
         try:
-            raw_dashboards = load_config_text('dashboard.json', default=[])
-            if not isinstance(raw_dashboards, list):
-                raw_dashboards = []
-            for dashboard_data in raw_dashboards:
-                if not isinstance(dashboard_data, dict):
-                    continue
+            raw_dashboard_list = load_config_json('dashboard.json')
+            for dashboard_data in raw_dashboard_list:
                 dashboard = Dashboard(
                     panelType=dashboard_data.get('panelType'),
                     panelItemId=dashboard_data.get('panelItemId'),

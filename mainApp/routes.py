@@ -63,16 +63,9 @@ def handle_operational_error(error):
     return render_template_with_addons('500.html')
 
 
-
 # -----------------------------------------
 # table section
 # -----------------------------------------
-
-# event
-# event_scheduler
-# event_validation
-# dashboard
-# archive_report
 
 @app.route("/get_table/<tableName>")
 def get_table(tableName):
@@ -99,7 +92,6 @@ def config_table(tableName):
     form = ConfigForm()
     if request.method == 'GET':
         form.config_json.data = load_config_text(f'{tableName}.json')
-
     if validate_and_log_form(form=form):
         try:
             parse_config_text(form.config_json.data)  # Walidacja JSON-a
@@ -108,7 +100,6 @@ def config_table(tableName):
             flash_message(f"{tableName}Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.", 'success')
         except ValueError as validation_error:
             flash_message(str(validation_error), 'warning')
-            
     return render_template_with_addons(f"{tableName}-config.html", form=form, config_path=get_config_file_path(f"{tableName}.json"))
 
 
@@ -131,8 +122,6 @@ def get_report(reportName):
 def get_report_all():
     report = ReportCreator().create_all()
     return render_template_with_addons("get_report_all.html", report=report)
-
-
 
 
 
