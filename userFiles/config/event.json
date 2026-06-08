@@ -1,7 +1,7 @@
 [
   {
     "eventName": "1",
-    "eventAddress": "http://localhost:5000/test",
+    "eventAddress": "http://localhost:5001/api/addEventapi",
     "eventType": "HTTP",
     "eventDescription": "Przykładowy event testowy",
     "eventPayload": "",
@@ -9,10 +9,26 @@
   },
   {
     "eventName": "10",
-    "eventAddress": "http://localhost:5000/test2",
+    "eventAddress": "http://localhost:5000/api/addEvent",
     "eventType": "JSON",
     "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"key\": \"<<date>>,<<time>>,<<date>>\"}",
+    "eventPayload": "{\"addInfosss\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "11",
+    "eventAddress": "http://localhost:5000/api/addEvent",
+    "eventType": "JSON",
+    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
+    "eventPayload": "{\"addInfo\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
+    "eventStatus": "Ready"
+  }  ,
+  {
+    "eventName": "12",
+    "eventAddress": "http://localhost:6666/api/addEvent",
+    "eventType": "JSON",
+    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
+    "eventPayload": "{\"addInfo\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
     "eventStatus": "Ready"
   }
 ]
