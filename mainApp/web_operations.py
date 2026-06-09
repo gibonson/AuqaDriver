@@ -141,7 +141,7 @@ class ResponseTrigger:
                             should_archive = False
                             break
                             
-                        elif validationItem.actionType == "email":
+                        elif validationItem.actionType == "email" or validationItem.actionType == "pushover":
                             logger.debug("Email to send and add to archive")
                             
                             message = validationItem.message
@@ -155,13 +155,15 @@ class ResponseTrigger:
 
                             subject = "Notification: " + self.type + " for " + self.deviceName
                             logger.debug("Email to send. subject: " + subject + ", and message: " + message)
-                            pushoverSender(message=subject + message)
-                            break 
-                            
+                            if validationItem.actionType == "email":
+                                emailSender(subject=subject, message=message)
+                            if validationItem.actionType == "pushover":
+                                pushoverSender(message=subject + message)
+                             
                         elif validationItem.actionType == "event":
                             logger.debug("Event to start and add to archive")
                             WebContentCollector(validationItem.eventId, requestID=self.requestID).collector()
-                            break 
+
                 else:
                     logger.debug("Vdev ip, name type, addinfo not match")
 

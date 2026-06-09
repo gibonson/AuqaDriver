@@ -12,7 +12,6 @@ from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
 from mainApp.notification_operations import emailSender, pushoverSender
 from mainApp.forms.archive_search import ArchiveSearch
-# from mainApp.forms.config_json import EventConfigForm, SchedulerConfigForm, ReportConfigForm
 from mainApp.forms.config_json import ConfigForm
 from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
@@ -27,20 +26,6 @@ from mainApp.report_operations import ReportCreator
 # from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
 from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
-
-# -----------------------------------------
-# create new DB
-# -----------------------------------------
-
-@app.route("/create")
-def create():
-    with app.app_context():
-        db.create_all()
-        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1','deviceName': 'Server', 'type': 'Log', 'value': 0}
-        ArchiveAdder(requestData)
-        flash_message("New database has been created","info")
-    return redirect(url_for("get_jobs"))
-
 
 # -----------------------------------------
 # start page and 404
@@ -62,6 +47,14 @@ def handle_operational_error(error):
         flash_message(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
     return render_template_with_addons('500.html')
 
+@app.route("/create")
+def create():
+    with app.app_context():
+        db.create_all()
+        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1','deviceName': 'Server', 'type': 'Log', 'value': 0}
+        ArchiveAdder(requestData)
+        flash_message("New database has been created","info")
+    return redirect(url_for("get_jobs"))
 
 # -----------------------------------------
 # table section
@@ -123,6 +116,11 @@ def get_report_all():
     report = ReportCreator().create_all()
     return render_template_with_addons("get_report_all.html", report=report)
 
+@app.route('/email_send', methods=['POST', 'GET'])
+def email_send():
+    pushoverSender("Testowa wiadomość z AuqaDriver")
+    emailSender(subject="subject", message="Testowa wiadomość z AuqaDriver")
+    return "check email and phone"
 
 
 # -----------------------------------------
@@ -197,19 +195,6 @@ def archive_add_manually():
                        'deviceName':  requestDataRaw["deviceName"][0], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0], 'requestID': 'M' + str(int(datetime.now().timestamp()))}
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
-
-
-
-# -----------------------------------------
-# email sender
-# -----------------------------------------
-
-@app.route('/email_send', methods=['POST', 'GET'])
-def email_send():
-    form = EmailSend()
-    if validate_and_log_form(form):
-        emailSender(form.subject.data, form.message.data, flashMessage=True)
-    return render_template_with_addons("email_send.html", form=form)
 
 
 # -----------------------------------------
@@ -288,10 +273,6 @@ def sql_test():
 
     return cpu_temp_os()
     
-@app.route("/pushover_test", methods=["GET"])
-def pushover_test():
-    pushoverSender("Testowa wiadomość z AuqaDriver")
-    return "done"
     
 @app.route("/dashboard", methods=["GET"])
 def dashboard():

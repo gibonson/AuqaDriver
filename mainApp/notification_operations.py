@@ -11,7 +11,9 @@ import requests
 def emailSender(subject, message, flashMessage=False):
     config = ConfigParser()
     config.read("userFiles/config_email.ini")
-
+    
+    statusMessage = ""
+    
     try:
         context = ssl.create_default_context()
         sender = config["EMAIL"]["user_name"]
@@ -30,55 +32,40 @@ def emailSender(subject, message, flashMessage=False):
             server.starttls(context=context)
             server.login(user, password)
             server.sendmail(sender, receiver, msg.as_string())
-            logger.info("Report sent")
+            statusMessage = "Report sent"
             if flashMessage:
                 flash(f"Mail successfully sent!", category="success")
-            with app.app_context():
-                requestData = {
-                    "addInfo": "Report sent",
-                    "deviceIP": "127.0.0.1",
-                    "deviceName": "Server",
-                    "type": "Log",
-                    "value": "-",
-                    "requestID": "EmailSender",
-                }
-                archiveAdder = ArchiveAdder(requestData)
 
     except smtplib.SMTPException as e:
-        error_message = str(e)
-        logger.error("An SMTP error occurred: %s", error_message)
-        with app.app_context():
-            requestData = {
-                "addInfo": "Mail classified as SPAM",
-                "deviceIP": "127.0.0.1",
-                "deviceName": "Server",
-                "type": "Error",
-                "value": "-",
-                "requestID": "EmailSender",
-            }
-            archiveAdder = ArchiveAdder(requestData)
+        statusMessage = f"An SMTP error occurred: {str(e)}"
         if flashMessage:
             flash("Failed to send mail.", category="danger")
 
     except Exception as e:
-        logger.error("An error occurred: %s", str(e))
-        with app.app_context():
-            requestData = {
-                "addInfo": "Report sent error",
-                "deviceIP": "127.0.0.1",
-                "deviceName": "Server",
-                "type": "Error",
-                "value": "-",
-                "requestID": "EmailSender",
-            }
-            archiveAdder = ArchiveAdder(requestData)
+        statusMessage = f"An error occurred: {str(e)}"
         if flashMessage:
             flash("Failed to send mail.", category="danger")
+    
+    if statusMessage != "":
+        logger.info(statusMessage)
+        with app.app_context():
+            requestData = {
+                    "addInfo": statusMessage,
+                    "deviceIP": "127.0.0.1",
+                    "deviceName": "Server",
+                    "type": "log",
+                    "value": "-",
+                    "requestID": "emailSender",
+                }
+            ArchiveAdder(requestData)
 
 
 def pushoverSender(message, attachment=None):
     config = ConfigParser()
     config.read("userFiles/config_email.ini")
+    
+    statusMessage = ""
+
     try:
         r = requests.post(
             "https://api.pushover.net/1/messages.json",
@@ -87,7 +74,19 @@ def pushoverSender(message, attachment=None):
                 "user": config["PUSHOVER"]["user"],
                 "message": message,
             })
-
-        logger.info("Pushover notification sent")
+        statusMessage = "Pushover notification sent"
     except Exception as e:
-        logger.error("Pushover notification error: %s", str(e))
+        statusMessage = f"Pushover notification error: {str(e)}"
+        
+    if statusMessage != "":
+        logger.info(statusMessage)
+        with app.app_context():
+            requestData = {
+                    "addInfo": statusMessage,
+                    "deviceIP": "127.0.0.1",
+                    "deviceName": "Server",
+                    "type": "log",
+                    "value": "-",
+                    "requestID": "pushoverSender",
+                }
+            ArchiveAdder(requestData)
