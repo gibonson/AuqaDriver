@@ -9,10 +9,10 @@
   },
   {
     "eventName": "10",
-    "eventAddress": "http://localhost:5000/api/addEvent",
+    "eventAddress": "http://192.168.0.196",
     "eventType": "JSON",
     "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"addInfosss\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
+    "eventPayload": "{\"function\": \"lcd\", \"value1\": \"<<date>>,<<time>>\"}",
     "eventStatus": "Ready"
   },
   {
