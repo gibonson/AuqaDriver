@@ -10,7 +10,7 @@ from sqlalchemy.exc import OperationalError
 # Local application/library specific imports
 from mainApp import app, db, logger, sched
 from mainApp.dashboard_data import DashboardData
-from mainApp.email_operations import emailSender, pushoverSender
+from mainApp.notification_operations import emailSender, pushoverSender
 from mainApp.forms.archive_search import ArchiveSearch
 # from mainApp.forms.config_json import EventConfigForm, SchedulerConfigForm, ReportConfigForm
 from mainApp.forms.config_json import ConfigForm

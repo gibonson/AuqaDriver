@@ -26,5 +26,19 @@
     "status": "Ready",
     "eventId": 2,
     "message": "Wysłano powiązane zdarzenie dla niskiego ciśnienia"
+  },
+  {
+    "id": 3,
+    "description": "emailtestowy",
+    "deviceIP": "192.168.0.196",
+    "deviceName": "LCD-test",
+    "addInfo": "OLED updated",
+    "type": "log",
+    "condition": "equal",
+    "value": 1,
+    "actionType": "email",
+    "status": "Ready",
+    "eventId": 2,
+    "message": "Wysłano <addInfo> zdarzenie dla niskiego ciśnienia"
   }
 ]

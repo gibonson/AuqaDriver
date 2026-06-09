@@ -3,7 +3,7 @@ import time
 from mainApp import app, logger
 from mainApp.routes import create_engine, text
 from mainApp.models.archive_report import ArchiveReport
-from mainApp.email_operations import emailSender
+from mainApp.notification_operations import emailSender
 
 class HtmlBuilder:
     HTML_START = '''

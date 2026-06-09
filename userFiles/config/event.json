@@ -25,7 +25,7 @@
   }  ,
   {
     "eventName": "12",
-    "eventAddress": "http://localhost:6666/api/addEvent",
+    "eventAddress": "http://192.1.1.1:6666/api/addEvent",
     "eventType": "JSON",
     "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
     "eventPayload": "{\"addInfo\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
