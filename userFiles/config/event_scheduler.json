@@ -2,25 +2,35 @@
   {
     "schedulerName": "shed1",
     "schedulerDescription": "testowy sched",
-    "reportList": [12, 11
-],
-    "eventList": [ 1,2,3
-],
-    "trigger": "cron",
+    "reportList": [
+      6,
+      7
+    ],
+    "eventList": [
+      8,
+      9,
+      0
+    ],
+    "trigger": "interval",
     "day": 1,
     "day_of_week": "mon",
-    "hour": 12,
-    "minute": 13,
-    "second": 14,
+    "hour": 0,
+    "minute": 0,
+    "second": 10,
     "schedulerStatus": "Ready"
   },
   {
     "schedulerName": "shed2",
     "schedulerDescription": "testowy sched",
-    "reportList": [12, 11
-],
-    "eventList": [4,5,6
-],
+    "reportList": [
+      12,
+      11
+    ],
+    "eventList": [
+      4,
+      5,
+      6
+    ],
     "trigger": "cron",
     "day": 1,
     "day_of_week": "",

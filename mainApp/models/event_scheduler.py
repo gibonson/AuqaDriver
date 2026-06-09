@@ -19,8 +19,8 @@ class EventScheduler():
     ):
         self.schedulerName = schedulerName
         self.schedulerDescription = schedulerDescription
-        self.ReportList = reportList or []
-        self.EventList = eventList or []
+        self.reportList = reportList or []
+        self.eventList = eventList or []
         self.trigger = trigger
         self.day_of_week = day_of_week
         self.day = day
@@ -55,3 +55,16 @@ class EventSchedulerLister():
 
     def get_list(self):
         return self.eventScheduler
+    
+    
+class EventSchedulerGetBySchedulerName():
+    def __init__(self, schedulerName):
+        self.schedulerName = schedulerName
+
+    def get_event(self):
+        eventSchedulerListerist = EventSchedulerLister().get_list()
+        for eventScheduler in eventSchedulerListerist:
+            if eventScheduler.schedulerName == self.schedulerName:
+                print(eventScheduler)
+                return eventScheduler
+        return None

@@ -2,7 +2,7 @@ import requests
 import re
 import json
 from datetime import datetime
-from mainApp.dashboard_data import DashboardData
+from mainApp.utils import DashboardData
 from mainApp import app, logger
 from mainApp.models.event import EventGetByEventName
 from mainApp.models.archive import ArchiveAdder

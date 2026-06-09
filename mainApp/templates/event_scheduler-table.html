@@ -24,14 +24,14 @@ AquaDriver - Scheduler List
         <tr>
             <td>{{eventScheduler.schedulerName}}</td>
             <td>{{eventScheduler.schedulerDescription}}</td>
-            <td>{{eventScheduler.ReportList}}</td>
-            <td>{{eventScheduler.EventList}}</td>
+            <td>{{eventScheduler.reportList}}</td>
+            <td>{{eventScheduler.eventList}}</td>
             <td>{{eventScheduler.trigger}}<br>[{{eventScheduler.day}}-{{eventScheduler.day_of_week}}-{{eventScheduler.hour}}:{{eventScheduler.minute}}:{{eventScheduler.second}}]
             </td>
             <td>{{eventScheduler.schedulerStatus}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('start_job', runschedulerId = eventScheduler.schedulerId)}}"
+                    <a href="{{url_for('start_job', runschedulerId = eventScheduler.schedulerName)}}"
                         class="btn btn-success btn-lg active" role="button" aria-pressed="true">Start Job</a>
                 </div>
             </td>

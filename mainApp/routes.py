@@ -9,11 +9,9 @@ from sqlalchemy.exc import OperationalError
 
 # Local application/library specific imports
 from mainApp import app, db, logger, sched
-from mainApp.dashboard_data import DashboardData
 from mainApp.notification_operations import emailSender, pushoverSender
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.config_json import ConfigForm
-from mainApp.forms.send_email import EmailSend
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
 from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
 from mainApp.config_operations import load_config_text, save_config_text, backup_config_file, get_config_file_path, restart_application, parse_config_text
@@ -23,9 +21,9 @@ from mainApp.models.event_validation import  ValidationLister
 from mainApp.models.event_scheduler import EventSchedulerLister
 from mainApp.models.dashboard import DashboardLister
 from mainApp.report_operations import ReportCreator
-# from mainApp.scheduler_operations import sched_start
+from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
-from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons
+from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons, DashboardData
 
 # -----------------------------------------
 # start page and 404
@@ -239,8 +237,8 @@ def add_event():
 
 @app.route("/get_logs", methods=["GET"])
 def get_logs():
-    dbSizeKB = DashboardData().getDbSizeKB()
-    logSizeKB = DashboardData().getLogsSizeKB()
+    dbSizeKB = DashboardData().get_placeholder_value("getDbSize")
+    logSizeKB = DashboardData().get_placeholder_value("getLogSize")
     sqlTable = DashboardData().getSqlTable()
     log_file_path = os.path.join("userFiles", "app.log")
     if not os.path.exists(log_file_path):
