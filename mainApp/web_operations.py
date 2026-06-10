@@ -21,10 +21,10 @@ class WebContentCollector:
     def collector(self):
         event = EventGetByEventName(self.eventName).get_event()    
         if event is None or event.eventStatus != "Ready":
-            logger.debug(f"Event {self.eventName} not found or not ready")
+            logger.error(f"Event {self.eventName} not found or not ready")
         else:
             eventPayloadAfterInjection = InjectValuesIntoPayload(event.eventPayload).getPayload()
-            print("Event found, address: " + str(event.eventAddress) + ", Payload: " + str(event.eventPayload) + " -> " + str(eventPayloadAfterInjection))
+            logger.info("Event found, address: " + str(event.eventAddress) + ", Payload: " + str(event.eventPayload) + " -> " + str(eventPayloadAfterInjection))
 
             errorMessage = ""
 
@@ -34,18 +34,18 @@ class WebContentCollector:
                     attempt += 1
 
                     if event.eventType == "JSON":
-                        print("Event JSON")
+                        logger.info("Event JSON")
                         jsonEvent = json.loads(eventPayloadAfterInjection)
                         jsonEvent["requestID"] = self.requestID
-                        print("Type of meaasge: " + str(type(jsonEvent)) + " " + str(jsonEvent))
+                        logger.info("Type of meaasge: " + str(type(jsonEvent)) + " " + str(jsonEvent))
                         response = requests.post(event.eventAddress, json=jsonEvent, timeout=5)
                         ("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
 
                     elif event.eventType == "HTTP":
-                        print("Event HTTP")
+                        logger.info("Event HTTP")
                         eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
                         response = requests.post(eventAddress, timeout=5)
-                        print("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
+                        logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
                     
                     else:
                         errorMessage = "Event type not supported"    
@@ -111,7 +111,6 @@ class ResponseTrigger:
             self.value = requestData["value"]
             self.requestID = requestData["requestID"]
 
-            logger.debug("Checking validation list")
             validationLister = ValidationLister(status="Ready")
             validationList = validationLister.get_list()
 
@@ -119,21 +118,16 @@ class ResponseTrigger:
 
             for validationItem in validationList:
                 if (self.deviceIP, self.deviceName, self.type, self.addInfo) == (validationItem.deviceIP, validationItem.deviceName, validationItem.type, validationItem.addInfo):
-                    logger.debug("deviceIP, deviceName, type, addinfo match")
-                    
                     boolean_condition_match = False
                     
                     if validationItem.condition == "less" and int(validationItem.value) > int(self.value):
-                        logger.debug("less condition match")
                         boolean_condition_match = True
                     elif validationItem.condition == "more" and int(validationItem.value) < int(self.value):
-                        logger.debug("more condition match")
                         boolean_condition_match = True
                     elif validationItem.condition == "equal" and int(validationItem.value) == int(self.value):
-                        logger.debug("equal condition match")
                         boolean_condition_match = True
                     else:
-                        logger.debug("condition not match, skipping to next validation item")
+                        logger.debug("Condition not match, skipping to next validation item")
 
                     if boolean_condition_match:
                         if validationItem.actionType == "ignore":
@@ -154,7 +148,7 @@ class ResponseTrigger:
                             message = message.replace("<time>", str(datetime.now().strftime('%H:%M:%S')))
 
                             subject = "Notification: " + self.type + " for " + self.deviceName
-                            logger.debug("Email to send. subject: " + subject + ", and message: " + message)
+                            logger.debug(validationItem.actionType + ", subject: " + subject + ", and message: " + message)
                             if validationItem.actionType == "email":
                                 emailSender(subject=subject, message=message)
                             if validationItem.actionType == "pushover":

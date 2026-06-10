@@ -55,6 +55,15 @@ def create():
     return redirect(url_for("get_jobs"))
 
 # -----------------------------------------
+# json
+# -----------------------------------------
+
+@app.post('/api/addEvent')
+def add_event():
+    ResponseTrigger(requestData=request.get_json())
+    return "OK"
+
+# -----------------------------------------
 # table section
 # -----------------------------------------
 
@@ -72,7 +81,6 @@ def get_table(tableName):
     elif tableName == "dashboard":
         table = DashboardLister().get_list()
     return render_template_with_addons(f"{tableName}-table.html", table=table, datetime=datetime)
-
 
 # -----------------------------------------
 # config section
@@ -93,7 +101,6 @@ def config_table(tableName):
             flash_message(str(validation_error), 'warning')
     return render_template_with_addons(f"{tableName}-config.html", form=form, config_path=get_config_file_path(f"{tableName}.json"))
 
-
 # -----------------------------------------
 # test section
 # -----------------------------------------
@@ -112,14 +119,12 @@ def get_report(reportName):
 @app.route("/get_report_all")
 def get_report_all():
     report = ReportCreator().create_all()
-    return render_template_with_addons("get_report_all.html", report=report)
+    return report
 
 @app.route('/email_send', methods=['POST', 'GET'])
 def email_send():
     pushoverSender("Testowa wiadomość z AuqaDriver")
-    emailSender(subject="subject", message="Testowa wiadomość z AuqaDriver")
     return "check email and phone"
-
 
 # -----------------------------------------
 # job section
@@ -154,7 +159,6 @@ def start_job(runschedulerId):
         sched.start()
     sched_start(sched, runschedulerId)
     return redirect(url_for("get_jobs"))
-
 
 # -----------------------------------------
 # archive section
@@ -194,7 +198,6 @@ def archive_add_manually():
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
 
-
 # -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
@@ -219,17 +222,6 @@ def start():
 def shutdown():
     # sched.remove_all_jobs() # sched.pause() # sched.delete_all_jobs() # sched.pause()# sched.shutdown(wait=False)
     return redirect(url_for("get_jobs"))
-
-
-# -----------------------------------------
-# json
-# -----------------------------------------
-
-@app.post('/api/addEvent')
-def add_event():
-    ResponseTrigger(requestData=request.get_json())
-    return "OK"
-
 
 # -----------------------------------------
 # get_logs
@@ -256,22 +248,10 @@ def get_logs():
         flash(f"Error reading log file: {str(e)}", category="danger")
         abort(404)
     
-    
 # -----------------------------------------
-# get_logs
+# experimental
 # -----------------------------------------
 
-@app.route("/sql_test", methods=["GET"])
-def sql_test():
-# gibon@GIBON-LAP:~$ for z in /sys/class/thermal/thermal_zone*/temp; do echo "$z: $(cat $z)"; done
-    def cpu_temp_os():
-        output = os.popen("cat /sys/class/thermal/thermal_zone12/temp").read().strip()
-        temp_c = int(output) / 1000.0
-        return f"{temp_c:.1f}°C"
-
-    return cpu_temp_os()
-    
-    
 @app.route("/dashboard", methods=["GET"])
 def dashboard():
     dashboardList = DashboardLister().get_list()
@@ -290,9 +270,8 @@ def dashboard():
     #     else:
     #         dashboard.panelCode = "UNKNOWN TYPE"
     
-    
-    return render_template_with_addons("dashboard.html", dashboardList = dashboardList, state=str(sched.state))
 
+    return render_template_with_addons("dashboard-table.html", dashboardList = dashboardList, state=str(sched.state))
 
 
 ESP32_STREAM_URL = "http://192.168.0.235:81/stream"

@@ -56,6 +56,6 @@ def add_job_to_scheduler(sched, job_type, scheduler_id, args, trigger, day, day_
             else:
                 sched.add_job(id=scheduler_id, func=globals()[job_type], args=[args], trigger=trigger, hour=hour, minute=minute, second=second, max_instances=10)
         else:
-            logger.debug("Invalid job type")
+            logger.error("Invalid job type")
     except Exception as e:
         logger.error(f"Error adding job to scheduler: {e}")

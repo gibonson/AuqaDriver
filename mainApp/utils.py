@@ -77,7 +77,6 @@ class DashboardData:
             
         elif placeholder == "getDbSize":
             DBFile = os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/db.sqlite"
-            print(DBFile)
             self.dbSizeKB = os.path.getsize(DBFile) / 1024
             return self.dbSizeKB
             

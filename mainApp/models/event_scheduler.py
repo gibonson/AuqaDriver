@@ -65,6 +65,5 @@ class EventSchedulerGetBySchedulerName():
         eventSchedulerListerist = EventSchedulerLister().get_list()
         for eventScheduler in eventSchedulerListerist:
             if eventScheduler.schedulerName == self.schedulerName:
-                print(eventScheduler)
                 return eventScheduler
         return None
