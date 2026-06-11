@@ -10,7 +10,7 @@ import requests
 
 def emailSender(subject, message, flashMessage=False):
     config = ConfigParser()
-    config.read("userFiles/config_email.ini")
+    config.read("userFiles/config/config_email.ini")
     
     statusMessage = ""
     
@@ -62,7 +62,7 @@ def emailSender(subject, message, flashMessage=False):
 
 def pushoverSender(message, attachment=None):
     config = ConfigParser()
-    config.read("userFiles/config_email.ini")
+    config.read("userFiles/config/config_email.ini")
     
     statusMessage = ""
 

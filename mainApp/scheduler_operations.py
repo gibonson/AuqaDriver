@@ -1,17 +1,15 @@
 from mainApp.web_operations import WebContentCollector
 from mainApp.report_operations import ReportSender
 from mainApp import logger
-from mainApp.models.event import Event, EventListerJson, EventGetByEventName
-from mainApp.models.archive_report import ArchiveReport, ArchiveReportLister
 from mainApp.models.event_scheduler import EventSchedulerGetBySchedulerName, EventSchedulerLister
 
 def event_trigger(schedulerName):
         eventSchedulerDetail = EventSchedulerGetBySchedulerName(schedulerName).get_event()
-
+        logger.debug(f"Scheduler to run: {schedulerName}")
         for eventId in eventSchedulerDetail.eventList:
             print(eventId)
-            # webContentCollector = WebContentCollector(eventId)
-            # webContentCollector.collector()
+            webContentCollector = WebContentCollector(eventId)
+            webContentCollector.collector()
                 
         for reportID in eventSchedulerDetail.reportList:
             print(reportID)           

@@ -19,70 +19,68 @@ class WebContentCollector:
             self.requestID = requestID
 
     def collector(self):
-        event = EventGetByEventName(self.eventName).get_event()    
-        if event is None or event.eventStatus != "Ready":
-            logger.error(f"Event {self.eventName} not found or not ready")
-        else:
-            eventPayloadAfterInjection = InjectValuesIntoPayload(event.eventPayload).getPayload()
-            logger.info("Event found, address: " + str(event.eventAddress) + ", Payload: " + str(event.eventPayload) + " -> " + str(eventPayloadAfterInjection))
+        with app.app_context():
+            event = EventGetByEventName(self.eventName).get_event()    
+            if event is None or event.eventStatus != "Ready":
+                logger.error(f"Event {self.eventName} not found or not ready")
+            else:
+                eventPayloadAfterInjection = InjectValuesIntoPayload(event.eventPayload).getPayload()
+                logger.info("Event found, address: " + str(event.eventAddress) + ", Payload: " + str(event.eventPayload) + " -> " + str(eventPayloadAfterInjection))
 
-            errorMessage = ""
+                errorMessage = ""
 
-            attempt = 0
-            for attempt in range(3):
-                try:
-                    attempt += 1
+                attempt = 0
+                for attempt in range(3):
+                    try:
+                        attempt += 1
 
-                    if event.eventType == "JSON":
-                        logger.info("Event JSON")
-                        jsonEvent = json.loads(eventPayloadAfterInjection)
-                        jsonEvent["requestID"] = self.requestID
-                        logger.info("Type of meaasge: " + str(type(jsonEvent)) + " " + str(jsonEvent))
-                        response = requests.post(event.eventAddress, json=jsonEvent, timeout=5)
-                        ("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
+                        if event.eventType == "JSON":
+                            jsonEvent = json.loads(eventPayloadAfterInjection)
+                            jsonEvent["requestID"] = self.requestID
+                            response = requests.post(event.eventAddress, json=jsonEvent, timeout=5)
+                            logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
 
-                    elif event.eventType == "HTTP":
-                        logger.info("Event HTTP")
-                        eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
-                        response = requests.post(eventAddress, timeout=5)
-                        logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
-                    
-                    else:
-                        errorMessage = "Event type not supported"    
-
-                    if response.status_code == 200:
-                        logger.debug(
-                            f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
-                        )
-                        try:
-                            requestData = response.json()
-                            requestData["requestID"] = self.requestID
-                            ResponseTrigger(requestData)
-                        except (ValueError, json.JSONDecodeError) as json_err:
-                            errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {response.text}"
+                        elif event.eventType == "HTTP":
+                            eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
+                            response = requests.post(eventAddress, timeout=5)
+                            logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
                         
-                        break
-                    
-                    else:
-                        errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                        else:
+                            errorMessage = "Event type not supported"    
 
-                except requests.exceptions.Timeout:
-                        errorMessage = f"Attempt: {attempt}. Timeout error while trying to reach {event.eventAddress}"
+                        if response.status_code == 200:
+                            logger.debug(
+                                f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                            )
+                            try:
+                                requestData = response.json()
+                                requestData["requestID"] = self.requestID
+                                ResponseTrigger(requestData)
+                            except (ValueError, json.JSONDecodeError) as json_err:
+                                errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {response.text}"
+                            
+                            break
+                        
+                        else:
+                            errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
 
-                except requests.exceptions.RequestException as e:
-                        errorMessage= f"Attempt: {attempt}. Request error: {e} while trying to reach {event.eventAddress}"
-                       
-            if errorMessage != "":
-                logger.error(errorMessage)
-                requestData = {
-                    "requestID": self.requestID,
-                    "addInfo": errorMessage,
-                    "deviceIP": event.eventAddress,
-                    "deviceName": "",
-                    "type": "Error",
-                    "value": 0,
-                }
-                ResponseTrigger(requestData)
+                    except requests.exceptions.Timeout:
+                            errorMessage = f"Attempt: {attempt}. Timeout error while trying to reach {event.eventAddress}"
+
+                    except requests.exceptions.RequestException as e:
+                            errorMessage= f"Attempt: {attempt}. Request error: {e} while trying to reach {event.eventAddress}"
+                        
+                if errorMessage != "":
+                    logger.error(errorMessage)
+                    requestData = {
+                        "requestID": self.requestID,
+                        "addInfo": errorMessage,
+                        "deviceIP": event.eventAddress,
+                        "deviceName": "",
+                        "type": "Error",
+                        "value": 0,
+                    }
+                    ResponseTrigger(requestData)
 
 
 
@@ -126,8 +124,6 @@ class ResponseTrigger:
                         boolean_condition_match = True
                     elif validationItem.condition == "equal" and int(validationItem.value) == int(self.value):
                         boolean_condition_match = True
-                    else:
-                        logger.debug("Condition not match, skipping to next validation item")
 
                     if boolean_condition_match:
                         if validationItem.actionType == "ignore":
@@ -136,8 +132,7 @@ class ResponseTrigger:
                             break
                             
                         elif validationItem.actionType == "email" or validationItem.actionType == "pushover":
-                            logger.debug("Email to send and add to archive")
-                            
+
                             message = validationItem.message
                             message = message.replace("<addInfo>", validationItem.addInfo)
                             message = message.replace("<type>", validationItem.type)
@@ -158,8 +153,6 @@ class ResponseTrigger:
                             logger.debug("Event to start and add to archive")
                             WebContentCollector(validationItem.eventId, requestID=self.requestID).collector()
 
-                else:
-                    logger.debug("Vdev ip, name type, addinfo not match")
 
             if should_archive:
                 ArchiveAdder(requestData=requestData)

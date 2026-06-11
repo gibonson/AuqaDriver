@@ -3,6 +3,6 @@ __pycache__
 venv
 .vscode
 wifiPass.h
-userFiles/config_email.ini
+userFiles/config/config_email.ini
 userFiles/db.sqlite
 userFiles/app.log

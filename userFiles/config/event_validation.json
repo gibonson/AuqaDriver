@@ -35,7 +35,7 @@
     "addInfo": "OLED updated",
     "type": "log",
     "condition": "equal",
-    "value": 1,
+    "value": 0,
     "actionType": "email",
     "status": "Ready",
     "eventId": 2,

@@ -3,13 +3,13 @@
     "schedulerName": "shed1",
     "schedulerDescription": "testowy sched",
     "reportList": [
-      6,
-      7
+      "6",
+      "7"
     ],
     "eventList": [
-      8,
-      9,
-      0
+      "1",
+      "10",
+      "12"
     ],
     "trigger": "interval",
     "day": 1,
@@ -23,13 +23,13 @@
     "schedulerName": "shed2",
     "schedulerDescription": "testowy sched",
     "reportList": [
-      12,
-      11
+      "12",
+      "11"
     ],
     "eventList": [
-      4,
-      5,
-      6
+      "1",
+      "10",
+      "12"
     ],
     "trigger": "cron",
     "day": 1,
