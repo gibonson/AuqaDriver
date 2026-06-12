@@ -2,7 +2,7 @@ from datetime import datetime
 import time
 from mainApp import app, logger
 from mainApp.routes import create_engine, text
-from mainApp.models.archive_report import ArchiveReport
+from mainApp.models.archive_report import ArchiveReportLister
 from mainApp.notification_operations import emailSender
 
 class HtmlBuilder:
@@ -121,7 +121,7 @@ class ReportCreator:
                         sqlTable.append(row)
                     value = sqlTable[0][0]
                 except Exception as e:
-                    logger.error(f"Error executing query: {e}")
+                    logger.error(f"Error executing report query: {e}")
                     value = None
 
                 if value is None:
@@ -139,7 +139,15 @@ class ReportCreator:
                         indicator = HtmlBuilder.HTML_HIGH
                     elif archiveReportConfig.maxValue < value:
                         indicator = HtmlBuilder.HTML_TOO_HIGH
-                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.reportName, message = archiveReportConfig.message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
+                        
+                message = archiveReportConfig.message
+                
+                message = message.replace("<<unit>>", archiveReportConfig.unit)
+                message = message.replace("<<value>>", str(value))
+                message = message.replace("<<date>>", str(datetime.now().strftime('%Y-%m-%d')))
+                message = message.replace("<<time>>", str(datetime.now().strftime('%H:%M:%S')))
+                
+                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.reportName, message = message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
         return table_row
         
 class ReportSender:
@@ -150,5 +158,5 @@ class ReportSender:
         with app.app_context():
             reportCreator = ReportCreator(archive_report_id_list= self.reportIds)
             report = reportCreator.create_from_list()
-            logger.debug(f"Message to sent: {report}")
-            emailSender( "raport", report)
+            logger.debug(f"Report sent")
+            # emailSender( "raport", report)

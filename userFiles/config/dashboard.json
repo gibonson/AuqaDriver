@@ -4,17 +4,26 @@
     "panelItemId": 1,
     "panelLocation": "left",
     "panelName": "Event panel",
-    "panelCode": "<a href=\"/event_open/1\" class=\"btn btn-success\">Open Event 1</a>",
-    "panelBackground": "#ffffff",
-    "panelStatus": "Active"
+    "panelCode": "12",
+    "panelBackground": "#0000ff",
+    "panelStatus": "Ready"
   },
   {
     "panelType": "HTML",
     "panelItemId": "html1",
-    "panelLocation": "right",
+    "panelLocation": "left",
     "panelName": "Welcome panel",
     "panelCode": "<h3>AuqaDriver Dashboard</h3><p>Przykładowa zawartość</p>",
-    "panelBackground": "#f0f0f0",
-    "panelStatus": "Active"
+    "panelBackground": "#00ff0",
+    "panelStatus": "Ready"
+  },
+  {
+    "panelType": "Report",
+    "panelItemId": "html1",
+    "panelLocation": "right",
+    "panelName": "Welcome panel",
+    "panelCode": "error report1",
+    "panelBackground": "#ff0000",
+    "panelStatus": "Ready"
   }
 ]

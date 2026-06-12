@@ -3,8 +3,8 @@
     "schedulerName": "shed1",
     "schedulerDescription": "testowy sched",
     "reportList": [
-      "6",
-      "7"
+      "error report",
+      "error report3"
     ],
     "eventList": [
       "1",
@@ -23,8 +23,8 @@
     "schedulerName": "shed2",
     "schedulerDescription": "testowy sched",
     "reportList": [
-      "12",
-      "11"
+      "error report1",
+      "1error report2"
     ],
     "eventList": [
       "1",

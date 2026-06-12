@@ -13,9 +13,7 @@ class ArchiveReport:
         maxValue,
         unit,
         message,
-        reportGroupId,
         reportDescription=None,
-        status=None,
     ):
         self.reportName = reportName
         self.reportDescription = reportDescription
@@ -26,8 +24,6 @@ class ArchiveReport:
         self.maxValue = maxValue
         self.unit = unit
         self.message = message
-        self.reportGroupId = reportGroupId
-        self.status = status
 
 
 class ArchiveReportLister:
@@ -46,8 +42,6 @@ class ArchiveReportLister:
                     maxValue=report_data.get('maxValue'),
                     unit=report_data.get('unit'),
                     message=report_data.get('message'),
-                    reportGroupId=report_data.get('reportGroupId'),
-                    status=report_data.get('status'),
                 )
                 self.archiveReport.append(report)
         except Exception as e:

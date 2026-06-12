@@ -6,32 +6,6 @@ AquaDriver - Job Page
 
 
 {% block content %}
-
-
-    <h2>Podgląd z ESP32</h2>
-    <img src="{{ url_for('video_feed') }}" width="640">
-
-
-<div class="row row-cols-1 row-cols-md-3 g-4 me-2">
-    {% for dashboardItem in dashboardList %}
-    {% if dashboardItem.panelStatus == "Ready" %}
-    <div class="col">
-        <div class="card h-100" style="min-height: 220px ;background-color: {{dashboardItem.panelBackground}};">
-            <div class="card-header">
-                <h5 class="card-title">{{dashboardItem.panelName}}</h5>
-            </div>
-            <div class="card-body">
-                <p class="card-text">
-                    </br> {{dashboardItem.panelCode | safe}}</br>
-                </p>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-</div>
-
-</br></br></br></br></br></br></br></br></br></br></br>
 <table>
     <thead>
         <tr>

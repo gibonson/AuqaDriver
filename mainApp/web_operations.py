@@ -155,6 +155,7 @@ class ResponseTrigger:
 
 
             if should_archive:
+                requestData["addInfo"] = requestData["addInfo"][:30]
                 ArchiveAdder(requestData=requestData)
 
         except Exception as e:

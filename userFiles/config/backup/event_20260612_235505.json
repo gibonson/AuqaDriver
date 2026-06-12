@@ -3,7 +3,7 @@
     "eventName": "1",
     "eventAddress": "http://localhost:5001/api/addEventapi",
     "eventType": "HTTP",
-    "eventDescription": "Przykładowy event testowy2222",
+    "eventDescription": "Przykładowy event testowy",
     "eventPayload": "",
     "eventStatus": "Ready"
   },

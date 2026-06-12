@@ -42,8 +42,8 @@
    </style>
 </head>
 
-<body class="p-3 m-0 border-0 bd-example m-0 border-0">
-
+<body class="d-flex flex-column min-vh-100">
+   
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-2">
 
       <a class="navbar-brand me-3" href="{{ url_for('dashboard') }}">
@@ -83,18 +83,20 @@
             {# ---- Admin ---- #}
             <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                  <i class="fa fa-server"></i> Admin space
+                  <i class="fa fa-server"></i> Admin
                </a>
                <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{ url_for('get_jobs') }}"><i class="fa fa-cog"></i> Jobs</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('email_send') }}"><i class="fa fa-envelope"></i>
-                        Email</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('get_logs') }}"><i class="fa fa-file-text"></i> Logs</a>
-                  </li>
-                  <li><a class="dropdown-item" href="{{ url_for('get_report_all') }}"><i class="fa fa-table"></i>
-                        Reports</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('archive_add_manually') }}"><i
                            class="fa fa-hand-spock-o"></i> Add</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('get_logs') }}"><i class="fa fa-file-text"></i> Logs</a>
+                  </li>
+                  <div class="dropdown-divider"></div>
+                  <li><a class="dropdown-item" href="{{ url_for('email_send') }}"><i class="fa fa-envelope"></i>
+                        Email Test</a></li>
+                   <li><a class="dropdown-item" href="{{ url_for('get_report_all') }}"><i class="fa fa-table"></i>
+                        Reports Test</a></li>
+
                </ul>
             </li>
 
@@ -102,43 +104,43 @@
             {# ---- proto ---- #}
             <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                  <i class="fa fa-server"></i> Proto space
+                  <i class="fa fa-server"></i> Config
                </a>
                <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event') }}"><i
                            class="fa fa-cog"></i>
-                        events_config</a></li>
+                        Events Edit</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event') }}"><i
                            class="fa fa-list"></i>
-                        event_list</a></li>
-
+                        Event List</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event_scheduler') }}"><i
                            class="fa fa-clock-o"></i>
-                        scheduler_config</a></li>
+                        Scheduler Edit</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_scheduler') }}"><i
                            class="fa fa-list"></i>
-                        scheduler_list</a></li>
-
+                        Scheduler List</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='archive_report') }}"><i
                            class="fa fa-cog"></i>
-                        reports_config</a></li>
+                        Reports Edit</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='archive_report') }}"><i
                            class="fa fa-list"></i>
-                        reports_list</a></li>
-
+                        Reports List</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='dashboard') }}"><i
                            class="fa fa-cog"></i>
-                        dashboard_config</a></li>
+                        Dashboard Edit</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='dashboard') }}"><i
                            class="fa fa-list"></i>
-                        dashboard_list</a></li>
-
+                        Dashboard List</a></li>
+                  <div class="dropdown-divider"></div>
                   <li><a class="dropdown-item" href="{{ url_for('config_table', tableName='event_validation') }}"><i
                            class="fa fa-cog"></i>
-                        event_validation_config</a></li>
+                        Event Validation Edit</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('get_table', tableName='event_validation') }}"><i
                            class="fa fa-list"></i>
-                        event_validation_list</a></li>
+                        Event Validation List</a></li>
 
                </ul>
             </li>
@@ -169,16 +171,18 @@
       {% endwith %}
    </div>
 
+<main class="flex-grow-1">
    <div class="container">
-      <div class="text-center overflow-scroll">
+      <div class="text-center">
          {% block content %}
          {% endblock %}
       </div>
    </div>
+</main>
 
-   <div class="text-center p-4 bg-dark margin-top-4">
-      © 2024 Copyright: Jakub Palica
-   </div>
+<footer class="text-center p-4 bg-dark">
+    © 2026 Copyright: Jakub Palica
+</footer>
 
    <style>
       body {

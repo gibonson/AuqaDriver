@@ -7,12 +7,17 @@ def event_trigger(schedulerName):
         eventSchedulerDetail = EventSchedulerGetBySchedulerName(schedulerName).get_event()
         logger.debug(f"Scheduler to run: {schedulerName}")
         for eventId in eventSchedulerDetail.eventList:
-            print(eventId)
             webContentCollector = WebContentCollector(eventId)
             webContentCollector.collector()
-                
-        for reportID in eventSchedulerDetail.reportList:
-            print(reportID)           
+        
+        reportSender = ReportSender(eventSchedulerDetail.reportList)
+        reportSender.collect_and_send()
+
+        
+        
+        # for reportID in eventSchedulerDetail.reportList:
+        #     print(reportID)
+            
             # reportSender = ReportSender(archiveDetail.get_ids())
             # reportSender.collect_and_send()
 

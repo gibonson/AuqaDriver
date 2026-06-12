@@ -258,20 +258,20 @@ def dashboard():
     
     dashboardList.sort(key=lambda x: x.panelLocation)
     
-    # for dashboard in dashboardList:
-    #     if dashboard.panelCode is None:
-    #         dashboard.panelCode = ""
-    #     # if dashboard.panelType == "Report":
-    #     #     dashboard.panelCode = str(dashboard.panelCode) + "</br>" + ReportCreator().create_one_line(dashboard.panelItemId)
-    #     # elif dashboard.panelType == "Event":
-    #         dashboard.panelCode = dashboard.panelCode + "</br>" + '<a href="' + "/event_open/" + str(dashboard.panelItemId) + '" class="btn btn-success btn-lg active"role="button" aria-pressed="true">Open</a>'
-    #     elif dashboard.panelType == "HTML":
-    #         dashboard.panelCode = dashboard.panelCode
-    #     else:
-    #         dashboard.panelCode = "UNKNOWN TYPE"
+    for dashboard in dashboardList:
+        if dashboard.panelCode is None:
+            dashboard.panelCode = ""
+        if dashboard.panelType == "Report":
+            dashboard.panelCode = str(dashboard.panelCode) + "</br>" + ReportCreator().create_one_line(dashboard.panelCode)
+        elif dashboard.panelType == "Event":
+            dashboard.panelCode = '<a href="' + "/event_open/" + str(dashboard.panelCode) + '" class="btn btn-success btn-lg active"role="button" aria-pressed="true">Open event: ' + dashboard.panelCode + '</a>'
+        elif dashboard.panelType == "HTML":
+            dashboard.panelCode = dashboard.panelCode
+        else:
+            dashboard.panelCode = "UNKNOWN TYPE"
     
 
-    return render_template_with_addons("dashboard-table.html", dashboardList = dashboardList, state=str(sched.state))
+    return render_template_with_addons("main.html", dashboardList = dashboardList, state=str(sched.state))
 
 
 ESP32_STREAM_URL = "http://192.168.0.235:81/stream"
