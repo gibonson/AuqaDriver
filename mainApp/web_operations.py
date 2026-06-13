@@ -31,9 +31,9 @@ class WebContentCollector:
 
                 attempt = 0
                 for attempt in range(3):
+                    response = None
                     try:
                         attempt += 1
-
                         if event.eventType == "JSON":
                             jsonEvent = json.loads(eventPayloadAfterInjection)
                             jsonEvent["requestID"] = self.requestID
@@ -42,27 +42,29 @@ class WebContentCollector:
 
                         elif event.eventType == "HTTP":
                             eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
+                            print(eventAddress)
                             response = requests.post(eventAddress, timeout=5)
                             logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
                         
                         else:
                             errorMessage = "Event type not supported"    
 
-                        if response.status_code == 200:
-                            logger.debug(
-                                f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
-                            )
-                            try:
-                                requestData = response.json()
-                                requestData["requestID"] = self.requestID
-                                ResponseTrigger(requestData)
-                            except (ValueError, json.JSONDecodeError) as json_err:
-                                errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {response.text}"
+                        if response is not None:
+                            if response.status_code == 200:
+                                logger.debug(
+                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                                )
+                                try:
+                                    requestData = response.json()
+                                    requestData["requestID"] = self.requestID
+                                    ResponseTrigger(requestData)
+                                except (ValueError, json.JSONDecodeError) as json_err:
+                                    errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {response.text}"
+                                
+                                break
                             
-                            break
-                        
-                        else:
-                            errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                            else:
+                                errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
 
                     except requests.exceptions.Timeout:
                             errorMessage = f"Attempt: {attempt}. Timeout error while trying to reach {event.eventAddress}"

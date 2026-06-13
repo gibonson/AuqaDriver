@@ -1,57 +1,35 @@
 [
   {
-    "reportName": "temperature_report",
+    "reportName": "PIR_sensor",
     "reportDescription": "Raport temperatury dla grupy 1",
-    "queryString": "SELECT timestamp, value FROM archive WHERE event = 'temperature'",
-    "minValue": 0,
-    "okMinValue": 10,
+    "queryString": "SELECT SUM(value) FROM archive WHERE addInfo = 'Motion' AND timestamp >= strftime('%s','now') - 86400;",
+    "minValue": 500,
+    "okMinValue": 100,
+    "okMaxValue": 1500,
+    "maxValue": 2000,
+    "unit": "",
+    "message": ""
+  },
+  {
+    "reportName": "DHT22_temperature",
+    "reportDescription": "DHT22_temperature description",
+    "queryString": "SELECT round(AVG(value),2) AS avg_last_24h FROM archive WHERE deviceName = 'Korytarz' AND addInfo = 'DHT22 temperature: ' AND timestamp >= strftime('%s','now') - 86400;",
+    "minValue": 15,
+    "okMinValue": 20,
     "okMaxValue": 25,
+    "maxValue": 30,
+    "unit": "stC",
+    "message": ""
+  },
+  {
+    "reportName": "DHT22_humidity",
+    "reportDescription": "DHT22_humidity description",
+    "queryString": "SELECT round(AVG(value),2) AS avg_last_24h FROM archive WHERE deviceName = 'Korytarz' AND addInfo = 'DHT22 humidity: ' AND timestamp >= strftime('%s','now') - 86400;",
+    "minValue": 20,
+    "okMinValue": 30,
+    "okMaxValue": 40,
     "maxValue": 50,
-    "unit": "°C",
-    "message": "Temperatura poza bezpiecznym zakresem"
-  },
-  {
-    "reportName": "error report",
-    "reportDescription": "Raport wilgotności dla grupy 2",
-    "queryString": "SELECT COUNT(*) AS liczba_rekordow FROM archive",
-    "minValue": 10000,
-    "okMinValue": 12996,
-    "okMaxValue": 13996,
-    "maxValue": 14996,
     "unit": "%",
-    "message": "Wilgotność <<time>>poza bezpiecznym zakresem"
-  },
-  {
-    "reportName": "error report1",
-    "reportDescription": "Raport wilgotności dla grupy 2",
-    "queryString": "SELECT COUNT(*) AS liczba_rekordow FROM archive",
-    "minValue": 10000,
-    "okMinValue": 12996,
-    "okMaxValue": 13996,
-    "maxValue": 14996,
-    "unit": "%",
-    "message": "Wilgotność <<time>>poza bezpiecznym zakresem"
-  },
-  {
-    "reportName": "error report2",
-    "reportDescription": "Raport wilgotności dla grupy 2",
-    "queryString": "SELECT COUNT(*) AS liczba_rekordow FROM archive",
-    "minValue": 10000,
-    "okMinValue": 12996,
-    "okMaxValue": 13996,
-    "maxValue": 14996,
-    "unit": "%",
-    "message": "Wilgotność <<time>>poza bezpiecznym zakresem"
-  },
-  {
-    "reportName": "error report3",
-    "reportDescription": "Raport wilgotności dla grupy 2",
-    "queryString": "SELECT COUNT(*) AS liczba_rekordow FROM archive",
-    "minValue": 10000,
-    "okMinValue": 12996,
-    "okMaxValue": 13996,
-    "maxValue": 14996,
-    "unit": "%",
-    "message": "Wilgotność <<time>>poza bezpiecznym zakresem"
+    "message": ""
   }
 ]

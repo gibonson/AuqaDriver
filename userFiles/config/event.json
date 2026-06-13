@@ -1,34 +1,82 @@
 [
   {
-    "eventName": "1",
-    "eventAddress": "http://localhost:5001/api/addEventapi",
+    "eventName": "akw1",
+    "eventAddress": "http://192.168.0.184",
     "eventType": "HTTP",
-    "eventDescription": "Przykładowy event testowy2222",
-    "eventPayload": "",
+    "eventDescription": "akwarium_restart",
+    "eventPayload": "restart",
     "eventStatus": "Ready"
   },
   {
-    "eventName": "10",
-    "eventAddress": "http://192.168.0.196",
+    "eventName": "akw2",
+    "eventAddress": "http://192.168.0.184",
     "eventType": "JSON",
-    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"function\": \"lcd\", \"value1\": \"<<date>>,<<time>>\"}",
+    "eventDescription": "akwarium_DS18B20",
+    "eventPayload": "{\"function\" : \"getDS18B20\"}",
     "eventStatus": "Ready"
   },
   {
-    "eventName": "11",
-    "eventAddress": "http://localhost:5000/api/addEvent",
-    "eventType": "JSON",
-    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"addInfo\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
+    "eventName": "kor1",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "HTTP",
+    "eventDescription": "korytarz_restart",
+    "eventPayload": "restart",
     "eventStatus": "Ready"
-  }  ,
+  },
   {
-    "eventName": "12",
-    "eventAddress": "http://192.1.1.1:6666/api/addEvent",
+    "eventName": "kor2",
+    "eventAddress": "http://192.168.0.185",
     "eventType": "JSON",
-    "eventDescription": "Kolejny przykładowy event testowy,trochę długi tekst z dziwnymi znakami ale robi ćoś tam",
-    "eventPayload": "{\"addInfo\": \"<<date>>,<<time>>,<<date>>\", \"deviceName\": \"TEST\", \"deviceIP\": \"1.1.1.1\", \"type\": \"ALET\", \"value\": 10}",
+    "eventDescription": "korytarz_hello_on",
+    "eventPayload": "{\"function\" : \"led_pin_2\", \"ledState\":\"on\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor3",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "korytarz_hello_off",
+    "eventPayload": "{\"function\" : \"led_pin_2\", \"ledState\":\"off\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor4",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "akwarium_on",
+    "eventPayload": "{\"function\" : \"433socket2ON\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor5",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "akwarium_off",
+    "eventPayload": "{\"function\" : \"433socket2OFF\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor6",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "paladarium_on",
+    "eventPayload": "{\"function\" : \"433socket1ON\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor7",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "paladarium_off",
+    "eventPayload": "{\"function\" : \"433socket1OFF\"}",
+    "eventStatus": "Ready"
+  },
+  {
+    "eventName": "kor8",
+    "eventAddress": "http://192.168.0.185",
+    "eventType": "JSON",
+    "eventDescription": "getDHT22",
+    "eventPayload": "{\"function\" : \"getDHT22\"}",
     "eventStatus": "Ready"
   }
 ]

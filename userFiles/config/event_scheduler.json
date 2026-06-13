@@ -1,42 +1,62 @@
 [
   {
-    "schedulerName": "shed1",
-    "schedulerDescription": "testowy sched",
-    "reportList": [
-      "error report",
-      "error report3"
-    ],
+    "schedulerName": "sched0-restart",
+    "schedulerDescription": "akwa+paladarium ON",
+    "reportList": [],
     "eventList": [
-      "1",
-      "10",
-      "12"
+      "akw1",
+      "kor1"
     ],
     "trigger": "interval",
-    "day": 1,
-    "day_of_week": "mon",
-    "hour": 0,
+    "day": 0,
+    "hour": 1,
     "minute": 0,
-    "second": 10,
+    "second": 0,
     "schedulerStatus": "Ready"
   },
   {
-    "schedulerName": "shed2",
-    "schedulerDescription": "testowy sched",
-    "reportList": [
-      "error report1",
-      "1error report2"
-    ],
+    "schedulerName": "sched1",
+    "schedulerDescription": "akwa+paladarium ON",
+    "reportList": [],
     "eventList": [
-      "1",
-      "10",
-      "12"
+      "kor4",
+      "kor6"
+    ],
+    "trigger": "interval",
+    "day": 0,
+    "hour": 10,
+    "minute": 0,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "sched2",
+    "schedulerDescription": "akwa+paladarium OFF",
+    "reportList": [],
+    "eventList": [
+      "kor5",
+      "kor7"
+    ],
+    "trigger": "interval",
+    "day": 0,
+    "hour": 18,
+    "minute": 0,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "sched3",
+    "schedulerDescription": "testowy sched",
+    "reportList": [],
+    "eventList": [
+      "kor8",
+      "akw2"
     ],
     "trigger": "cron",
-    "day": 1,
-    "day_of_week": "",
-    "hour": 12,
-    "minute": 13,
-    "second": 14,
+    "day": 0,
+    "hour": 0,
+    "minute": 5,
+    "second": 0,
     "schedulerStatus": "Ready"
   }
 ]
