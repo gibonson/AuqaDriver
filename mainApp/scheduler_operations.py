@@ -9,9 +9,9 @@ def event_trigger(schedulerName):
         for eventId in eventSchedulerDetail.eventList:
             webContentCollector = WebContentCollector(eventId)
             webContentCollector.collector()
-        
-        reportSender = ReportSender(eventSchedulerDetail.reportList)
-        reportSender.collect_and_send()
+        if eventSchedulerDetail.reportList != []:
+            reportSender = ReportSender(eventSchedulerDetail.reportList)
+            reportSender.collect_and_send()
 
         
         

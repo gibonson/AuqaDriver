@@ -123,6 +123,7 @@ def get_report_all():
 
 @app.route('/email_send', methods=['POST', 'GET'])
 def email_send():
+    emailSender(subject="test", message="wiadomosc testowa")
     pushoverSender("Testowa wiadomość z AuqaDriver")
     return "check email and phone"
 

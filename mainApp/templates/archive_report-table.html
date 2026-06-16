@@ -11,17 +11,12 @@ AquaDriver - Archive Report List
     <thead>
         <tr>
             <th>#</th>
-            <th>Report Name</th>
+            <th>Name</th>
             <th>Description</th>
             <th>queryString</th>
-            <th>Min Value</th>
-            <th>OK Min Value</th>
-            <th>OK Max Value</th>
-            <th>Max Value</th>
+            <th>Min - OK_Min - OK_Max - Max</th>
             <th>unit</th>
-            <th>reportGroupId</th>
             <th>message</th>
-            <th>status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -31,15 +26,14 @@ AquaDriver - Archive Report List
             <td>{{ loop.index }}</td>
             <td>{{ archiveReportRow.reportName }}</td>
             <td>{{ archiveReportRow.reportDescription }}</td>
-            <td>{{ archiveReportRow.queryString }}</td>
-            <td>{{ archiveReportRow.minValue }}</td>
-            <td>{{ archiveReportRow.okMinValue }}</td>
-            <td>{{ archiveReportRow.okMaxValue }}</td>
-            <td>{{ archiveReportRow.maxValue }}</td>
+            <td class="text-truncate-custom" data-bs-toggle="tooltip" data-bs-placement="top"
+                title="{{ archiveReportRow.queryString }}">
+                <code>{{ archiveReportRow.queryString }}</code>
+            </td>
+            <td>{{ archiveReportRow.minValue }} - {{ archiveReportRow.okMinValue }} - {{ archiveReportRow.okMaxValue }}
+                - {{ archiveReportRow.maxValue }}</td>
             <td>{{ archiveReportRow.unit }}</td>
-            <td>{{ archiveReportRow.reportGroupId }}</td>
             <td>{{ archiveReportRow.message }}</td>
-            <td>{{ archiveReportRow.status }}</td>
             <td>
                 <a href="{{ url_for('get_report', reportName=archiveReportRow.reportName) }}"
                     class="btn btn-success btn-sm">Open</a>

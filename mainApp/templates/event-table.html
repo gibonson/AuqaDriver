@@ -5,24 +5,24 @@ AquaDriver - Event List
 {% endblock %}
 
 {% block content %}
-<h1>Event List</h1>
+<h2>Event List</h2>
 
 <table id="sortingTable" class="table table-dark table-striped align-middle">
     <thead>
         <tr>
-            <th data-col="eventName">#</th>
-            <th data-col="eventAddress">eventAddress</th>
-            <th data-col="eventDescription">eventDescription</th>
-            <th data-col="eventType">eventType</th>
-            <th data-col="eventPayload">eventPayload</th>
-            <th data-col="eventStatus">eventStatus</th>
+            <th>#</th>
+            <th>Address</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>ePayload</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
     <tbody>
         {% for event in table %}
         <tr>
-            <th scope="row">{{event.eventName}}</th>
+            <td>{{event.eventName}}</td>
             <td>{{event.eventAddress}}</td>
             <td>{{event.eventDescription}}</td>
             <td>{{event.eventType}}</td>
@@ -30,12 +30,13 @@ AquaDriver - Event List
             <td>{{event.eventStatus}}</td>
             <td>
                 <div class="btn-group">
-                    <a href="{{url_for('event_open', eventName = event.eventName)}}" class="btn btn-success btn-lg active"
-                        role="button" aria-pressed="true">Open</a>
+                    <a href="{{url_for('event_open', eventName = event.eventName)}}"
+                        class="btn btn-success btn-sm">Open</a>
                 </div>
             </td>
         </tr>
-    </tbody>
         {% endfor %}
+
+    </tbody>
 </table>
 {% endblock %}

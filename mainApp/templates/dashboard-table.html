@@ -6,23 +6,23 @@ AquaDriver - Job Page
 
 
 {% block content %}
-<table>
+<h2>Dashboard List</h2>
+
+<table id="sortingTable" class="table table-dark table-striped align-middle">
     <thead>
         <tr>
-            <th data-col="id">#</th>
-            <th data-col="panelItemId">panelItemId</th>
-            <th data-col="panelName">panelName</th>
-            <th data-col="panelName">panelType</th>
-            <th data-col="panelCode">panelCode</th>
-            <th data-col="panelCode">panelLocation</th>
-            <th data-col="panelCode">panelBackground</th>
-            <th data-col="panelCode">panelStatus</th>
+            <th>ItemId</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Code</th>
+            <th>Location</th>
+            <th>Background</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         {% for dashboardItem in table %}
         <tr>
-            <th scope="row">{{dashboardItem.id}}</th>
             <td>{{dashboardItem.panelItemId}}</td>
             <td>{{dashboardItem.panelName}}</td>
             <td>{{dashboardItem.panelType}}</td>
@@ -30,8 +30,8 @@ AquaDriver - Job Page
             <td>{{dashboardItem.panelLocation}}</td>
             <td>{{dashboardItem.panelBackground}}</td>
             <td>{{dashboardItem.panelStatus}}</td>
-
-            </div>
-            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

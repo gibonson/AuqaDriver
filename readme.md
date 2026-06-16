@@ -8,9 +8,6 @@ AquaDriver also offers the ability to notify users of important events via email
 
 ## TECHNOLOGY
 
-1. Linux – Operating System
-    - Provides a stable and reliable environment for running applications, especially when combined with Docker, offering great configuration flexibility.
-
 1. Docker – Isolation and Containerization
     - Allows the application to run in containers, providing flexibility, easy deployment, and environmental isolation, enhancing performance and security.
 
