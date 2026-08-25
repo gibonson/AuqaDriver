@@ -13,59 +13,92 @@ from mainApp.notification_operations import emailSender, pushoverSender
 from mainApp.forms.archive_search import ArchiveSearch
 from mainApp.forms.config_json import ConfigForm
 from mainApp.forms.add_archive_manual import AddArchiveManualRecord
-from mainApp.models.archive import ArchiveAdder, ArchiveLister, ArchiveManager, ArchiveSearchList
-from mainApp.config_operations import load_config_text, save_config_text, backup_config_file, get_config_file_path, restart_application, parse_config_text
+from mainApp.models.archive import (
+    ArchiveAdder,
+    ArchiveLister,
+    ArchiveManager,
+    ArchiveSearchList,
+)
+from mainApp.config_operations import (
+    load_config_text,
+    save_config_text,
+    backup_config_file,
+    get_config_file_path,
+    restart_application,
+    parse_config_text,
+)
 from mainApp.models.archive_report import ArchiveReportLister
 from mainApp.models.event import EventListerJson
-from mainApp.models.event_validation import  ValidationLister
+from mainApp.models.event_validation import ValidationLister
 from mainApp.models.event_scheduler import EventSchedulerLister
 from mainApp.models.dashboard import DashboardLister
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
-from mainApp.utils import flash_message, validate_and_log_form, render_template_with_addons, DashboardData
+from mainApp.utils import (
+    flash_message,
+    validate_and_log_form,
+    render_template_with_addons,
+    DashboardData,
+)
 
 # -----------------------------------------
 # start page and 404
 # -----------------------------------------
 
+
 @app.route("/")
 def hello_world():
     return redirect(url_for("get_jobs"))
 
-@ app.errorhandler(404)
+
+@app.errorhandler(404)
 def not_found(e):
     flash_message("404!", category="warning")
-    return render_template_with_addons('404.html')
+    return render_template_with_addons("404.html")
+
 
 @app.errorhandler(OperationalError)
 def handle_operational_error(error):
-    flash_message(f"OperationalError: {error}", 'danger')
+    flash_message(f"OperationalError: {error}", "danger")
     if "no such table" in str(error):
-        flash_message(Markup("Try to <a href='/create'>create new DB</a>"), category='danger')
-    return render_template_with_addons('500.html')
+        flash_message(
+            Markup("Try to <a href='/create'>create new DB</a>"), category="danger"
+        )
+    return render_template_with_addons("500.html")
+
 
 @app.route("/create")
 def create():
     with app.app_context():
         db.create_all()
-        requestData = {'addInfo': 'BD creation', 'deviceIP': '127.0.0.1','deviceName': 'Server', 'type': 'Log', 'value': 0}
+        requestData = {
+            "addInfo": "BD creation",
+            "deviceIP": "127.0.0.1",
+            "deviceName": "Server",
+            "type": "Log",
+            "value": 0,
+        }
         ArchiveAdder(requestData)
-        flash_message("New database has been created","info")
+        flash_message("New database has been created", "info")
     return redirect(url_for("get_jobs"))
+
 
 # -----------------------------------------
 # json
 # -----------------------------------------
 
-@app.post('/api/addEvent')
+
+@app.post("/api/addEvent")
 def add_event():
     ResponseTrigger(requestData=request.get_json())
     return "OK"
 
+
 # -----------------------------------------
 # table section
 # -----------------------------------------
+
 
 @app.route("/get_table/<tableName>")
 def get_table(tableName):
@@ -80,79 +113,109 @@ def get_table(tableName):
         table = ArchiveReportLister().get_list()
     elif tableName == "dashboard":
         table = DashboardLister().get_list()
-    return render_template_with_addons(f"{tableName}-table.html", table=table, datetime=datetime)
+    return render_template_with_addons(
+        f"{tableName}-table.html", table=table, datetime=datetime
+    )
+
 
 # -----------------------------------------
 # config section
 # -----------------------------------------
 
-@app.route("/config_table/<tableName>", methods=['POST', 'GET'])
+
+@app.route("/config_table/<tableName>", methods=["POST", "GET"])
 def config_table(tableName):
     form = ConfigForm()
-    if request.method == 'GET':
-        form.config_json.data = load_config_text(f'{tableName}.json')
+    if request.method == "GET":
+        form.config_json.data = load_config_text(f"{tableName}.json")
     if validate_and_log_form(form=form):
         try:
             parse_config_text(form.config_json.data)  # Walidacja JSON-a
             backup_config_file(f"{tableName}.json")
             save_config_text(f"{tableName}.json", form.config_json.data)
-            flash_message(f"{tableName}Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.", 'success')
+            flash_message(
+                f"{tableName}Nowa konfiguracja eventów została zapisana. Aplikacja zostanie zrestartowana.",
+                "success",
+            )
         except ValueError as validation_error:
-            flash_message(str(validation_error), 'warning')
-    return render_template_with_addons(f"{tableName}-config.html", form=form, config_path=get_config_file_path(f"{tableName}.json"))
+            flash_message(str(validation_error), "warning")
+    return render_template_with_addons(
+        f"{tableName}-config.html",
+        form=form,
+        config_path=get_config_file_path(f"{tableName}.json"),
+    )
+
 
 # -----------------------------------------
 # test section
 # -----------------------------------------
 
+
 @app.route("/event_open/<eventName>")
 def event_open(eventName):
-    WebContentCollector(eventName, requestID= "Manual").collector()
-    flash("Check out some recent records", category='success')
+    WebContentCollector(eventName, requestID="Manual").collector()
+    flash("Check out some recent records", category="success")
     return redirect(url_for("archive_search"))
+
 
 @app.route("/get_report/<reportName>")
 def get_report(reportName):
     one_line = ReportCreator().create_one_line(reportName)
     return one_line
 
+
 @app.route("/get_report_all")
 def get_report_all():
     report = ReportCreator().create_all()
     return report
 
-@app.route('/email_send', methods=['POST', 'GET'])
+
+@app.route("/email_send", methods=["POST", "GET"])
 def email_send():
     emailSender(subject="test", message="wiadomosc testowa")
     pushoverSender("Testowa wiadomość z AuqaDriver")
     return "check email and phone"
 
+
 # -----------------------------------------
 # job section
 # -----------------------------------------
+
 
 @app.route("/get_jobs")
 def get_jobs():
     logger.debug(sched.get_jobs())
     for job in sched.get_jobs():
-        logger.info("JOB ID:" + job.id + " JOB NAME:" + job.name + " JOB TRIGGER:" +
-                    str(job.trigger) + " NEXT JOB:" + str(job.next_run_time))
-    return render_template_with_addons('get_jobs.html', get_jobs=sched.get_jobs())
+        logger.info(
+            "JOB ID:"
+            + job.id
+            + " JOB NAME:"
+            + job.name
+            + " JOB TRIGGER:"
+            + str(job.trigger)
+            + " NEXT JOB:"
+            + str(job.next_run_time)
+        )
+    return render_template_with_addons("get_jobs.html", get_jobs=sched.get_jobs())
+
 
 @app.route("/pause_job/<id>")
 def pause_job(id):
     sched.pause_job(id)
     return redirect(url_for("get_jobs"))
 
+
 @app.route("/resume_job/<id>")
 def resume_job(id):
     sched.resume_job(id)
     return redirect(url_for("get_jobs"))
 
+
 @app.route("/remove_job/<id>")
 def remove_job(id):
     sched.remove_job(id)
     return redirect(url_for("get_jobs"))
+
 
 @app.route("/start_job/<runschedulerId>")
 def start_job(runschedulerId):
@@ -161,11 +224,13 @@ def start_job(runschedulerId):
     sched_start(sched, runschedulerId)
     return redirect(url_for("get_jobs"))
 
+
 # -----------------------------------------
 # archive section
 # -----------------------------------------
 
-@app.route("/archive_search", methods=['POST', 'GET'])
+
+@app.route("/archive_search", methods=["POST", "GET"])
 def archive_search():
     ArchiveSearch.archive_search_lists_update()
     form = ArchiveSearch()
@@ -179,39 +244,58 @@ def archive_search():
         formatSearchEndDate = form.timestampEnd.data
         archiveSearch = ArchiveSearchList(request.form.to_dict(flat=False))
         archive = archiveSearch.get_list()
-    return render_template_with_addons("archive_search.html", archive=archive, datetime=datetime, form=form, formatedMinusOneDayDate=formatSearchStartDate, formatedCurrentDate=formatSearchEndDate)
+    return render_template_with_addons(
+        "archive_search.html",
+        archive=archive,
+        datetime=datetime,
+        form=form,
+        formatedMinusOneDayDate=formatSearchStartDate,
+        formatedCurrentDate=formatSearchEndDate,
+    )
+
 
 @app.route("/archive_remove/<id>")
 def archive_remove(id):
     manager = ArchiveManager(id)
     manager.remove_archive()
-    flash(str(manager), category='danger')
+    flash(str(manager), category="danger")
     return redirect(url_for("archive_search"))
 
 
-@app.route("/archive_add_manually", methods=['POST', 'GET'])
+@app.route("/archive_add_manually", methods=["POST", "GET"])
 def archive_add_manually():
     form = AddArchiveManualRecord()
     if validate_and_log_form(form):
         requestDataRaw = request.form.to_dict(flat=False)
-        requestData = {'addInfo': requestDataRaw["addInfo"][0], 'deviceIP': requestDataRaw["deviceIP"][0],
-                       'deviceName':  requestDataRaw["deviceName"][0], 'type': requestDataRaw["type"][0], 'value': requestDataRaw["value"][0], 'comment': requestDataRaw["comment"][0], 'requestID': 'M' + str(int(datetime.now().timestamp()))}
+        requestData = {
+            "addInfo": requestDataRaw["addInfo"][0],
+            "deviceIP": requestDataRaw["deviceIP"][0],
+            "deviceName": requestDataRaw["deviceName"][0],
+            "type": requestDataRaw["type"][0],
+            "value": requestDataRaw["value"][0],
+            "comment": requestDataRaw["comment"][0],
+            "requestID": "M" + str(int(datetime.now().timestamp())),
+        }
         ResponseTrigger(requestData=requestData)
     return render_template_with_addons("archive_add_manually.html", form=form)
+
 
 # -----------------------------------------
 # Global Scheduler Operation
 # -----------------------------------------
+
 
 @app.route("/pause")
 def pause():
     sched.pause()
     return redirect(url_for("get_jobs"))
 
+
 @app.route("/resume")
 def resume():
     sched.resume()
     return redirect(url_for("get_jobs"))
+
 
 @app.route("/start")
 def start():
@@ -219,14 +303,17 @@ def start():
     sched_start(sched)
     return redirect(url_for("get_jobs"))
 
+
 @app.route("/shutdown")
 def shutdown():
     # sched.remove_all_jobs() # sched.pause() # sched.delete_all_jobs() # sched.pause()# sched.shutdown(wait=False)
     return redirect(url_for("get_jobs"))
 
+
 # -----------------------------------------
 # get_logs
 # -----------------------------------------
+
 
 @app.route("/get_logs", methods=["GET"])
 def get_logs():
@@ -243,36 +330,57 @@ def get_logs():
             lines = [line.strip() for line in lines if line.strip()]
             last_200_lines = lines[-200:] if len(lines) > 200 else lines
             last_200_lines.reverse()
-        return render_template_with_addons("get_logs.html", log_lines=last_200_lines, dbSizeKB=dbSizeKB, logSizeKB=logSizeKB, sqlTable=sqlTable,  state=str(sched.state))
+        return render_template_with_addons(
+            "get_logs.html",
+            log_lines=last_200_lines,
+            dbSizeKB=dbSizeKB,
+            logSizeKB=logSizeKB,
+            sqlTable=sqlTable,
+            state=str(sched.state),
+        )
 
     except Exception as e:
         flash(f"Error reading log file: {str(e)}", category="danger")
         abort(404)
-    
+
+
 # -----------------------------------------
 # experimental
 # -----------------------------------------
 
+
 @app.route("/dashboard", methods=["GET"])
 def dashboard():
     dashboardList = DashboardLister().get_list()
-    
+
     dashboardList.sort(key=lambda x: x.panelLocation)
-    
+
     for dashboard in dashboardList:
         if dashboard.panelCode is None:
             dashboard.panelCode = ""
         if dashboard.panelType == "Report":
-            dashboard.panelCode = str(dashboard.panelCode) + "</br>" + ReportCreator().create_one_line(dashboard.panelCode)
+            dashboard.panelCode = (
+                str(dashboard.panelCode)
+                + "</br>"
+                + ReportCreator().create_one_line(dashboard.panelCode)
+            )
         elif dashboard.panelType == "Event":
-            dashboard.panelCode = '<a href="' + "/event_open/" + str(dashboard.panelCode) + '" class="btn btn-success btn-lg active"role="button" aria-pressed="true">Open event: ' + dashboard.panelCode + '</a>'
+            dashboard.panelCode = (
+                '<a href="'
+                + "/event_open/"
+                + str(dashboard.panelCode)
+                + '" class="btn btn-success btn-lg active"role="button" aria-pressed="true">Open event: '
+                + dashboard.panelCode
+                + "</a>"
+            )
         elif dashboard.panelType == "HTML":
             dashboard.panelCode = dashboard.panelCode
         else:
             dashboard.panelCode = "UNKNOWN TYPE"
-    
 
-    return render_template_with_addons("main.html", dashboardList = dashboardList, state=str(sched.state))
+    return render_template_with_addons(
+        "main.html", dashboardList=dashboardList, state=str(sched.state)
+    )
 
 
 ESP32_STREAM_URL = "http://192.168.0.235:81/stream"
@@ -280,6 +388,8 @@ ESP32_STREAM_URL = "http://192.168.0.235:81/stream"
 import requests
 from flask import Response, render_template
 import re
+
+
 def mjpeg_proxy():
     r = requests.get(ESP32_STREAM_URL, stream=True)
 
@@ -301,15 +411,38 @@ def mjpeg_proxy():
             if b"Content-Type: image/jpeg" in part:
                 yield boundary + part
 
-@app.route('/video_feed')
+
+@app.route("/video_feed")
 def video_feed():
     return Response(
         mjpeg_proxy(),
-        mimetype="multipart/x-mixed-replace; boundary=" + 
-                 "123456789000000000000987654321"
+        mimetype="multipart/x-mixed-replace; boundary="
+        + "123456789000000000000987654321",
     )
-    
-    
-@app.route('/video')
+
+
+@app.route("/video")
 def index():
     return render_template("stream.html")
+
+
+@app.route("/capture")
+def capture():
+    url = "http://192.168.0.235/capture"
+    SAVE_DIR = "userFiles/media"
+    
+    
+    os.makedirs(SAVE_DIR, exist_ok=True)
+    response = requests.get(url, timeout=5)
+    if response.status_code == 200:
+        filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
+        filepath = os.path.join(SAVE_DIR, filename)
+
+        with open(filepath, "wb") as f:
+            f.write(response.content)
+
+        print(f"Picture saver: {filepath}")
+    else:
+        print("Error:", response.status_code)
+
+    return "done"
