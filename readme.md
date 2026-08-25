@@ -33,46 +33,6 @@ AquaDriver also offers the ability to notify users of important events via email
 1. Bootstrap – Framework for Responsive User Interfaces
     - Used to create aesthetically pleasing, responsive, and user-friendly web interfaces that adjust to different devices and screen resolutions.
 
-## DIAGRAM
-
-```mermaid
-graph TD
-    subgraph WiFi_Network["Home Wi-Fi"]
-        subgraph Hub[Aqua Driver Hub]
-            DB[(Archive)]
-        end
-        Sat1[ESP8266 + 433MHz]
-        Sat2[ESP8266 + Sensors]
-        Sat3[ESP8266 + LoRa]
-
-
-        Hub <-- HTTP --> Sat1
-        Sat1 -- JSON --> Hub
-
-        Hub <-- HTTP --> Sat2
-        Sat2 -- JSON --> Hub
-
-        Hub <-- HTTP --> Sat3
-        Sat3 -- JSON --> Hub
-    end
-
-    subgraph LoRa_Devices["LoRa"]
-        LoRaSat1[Arduino + LoRa]
-        LoRaSat2[Arduino + LoRa]
-    end
-
-    subgraph 433_Devices["433MHz"]
-        433Socket1[Socket]
-        433Socket2[Socket]
-    end
-
-    Sat1 -- 433MHz --> 433Socket1
-    Sat1 -- 433MHz --> 433Socket2
-
-    Sat3 <-- LoRa --> LoRaSat1
-    Sat3 <-- LoRa --> LoRaSat2
-```
-
 ## CONFIGURATION
 
 ### JSON EXAMPLE
@@ -85,10 +45,3 @@ graph TD
 "type":"Alert",
 "value":10
 }
-
-# event
-# event_scheduler
-# event_validation
-# dashboard
-# archive_report
-tagtag

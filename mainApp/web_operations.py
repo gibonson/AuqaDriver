@@ -1,6 +1,8 @@
 import requests
 import re
 import json
+import os
+
 from datetime import datetime
 from mainApp.utils import DashboardData
 from mainApp import app, logger
@@ -46,25 +48,44 @@ class WebContentCollector:
                             response = requests.post(eventAddress, timeout=5)
                             logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
                         
+                        elif event.eventType == "PHOTO":
+                            eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
+                            print(eventAddress)
+                            response = requests.get(eventAddress, timeout=5)
+                            SAVE_DIR = "userFiles/media"
+
+                            if response.status_code == 200:
+                                filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
+                                filepath = os.path.join(SAVE_DIR, self.eventName + "_" + filename)
+
+                                with open(filepath, "wb") as f:
+                                    f.write(response.content)
+
+                                print(f"Picture saver: {filepath}")
+                            else:
+                                print("Error:", response.status_code)
+                            logger.info("Response: " + str(response.status_code) + ", " + filename + " ")
+                        
                         else:
                             errorMessage = "Event type not supported"    
 
                         if response is not None:
                             if response.status_code == 200:
                                 logger.debug(
-                                    f"Attempt: {attempt}. success: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                                    f"Attempt: {attempt}. success: {response.status_code} response: {str(response.text[:100])} while trying to reach {event.eventAddress}"
                                 )
                                 try:
                                     requestData = response.json()
+                                    
                                     requestData["requestID"] = self.requestID
                                     ResponseTrigger(requestData)
                                 except (ValueError, json.JSONDecodeError) as json_err:
-                                    errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {response.text}"
+                                    errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {str(response.text[:100])}"
                                 
                                 break
                             
                             else:
-                                errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {response.text} while trying to reach {event.eventAddress}"
+                                errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {str(response.text[:100])} while trying to reach {event.eventAddress}"
 
                     except requests.exceptions.Timeout:
                             errorMessage = f"Attempt: {attempt}. Timeout error while trying to reach {event.eventAddress}"

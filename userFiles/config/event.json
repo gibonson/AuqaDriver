@@ -78,5 +78,13 @@
     "eventDescription": "getDHT22",
     "eventPayload": "{\"function\" : \"getDHT22\"}",
     "eventStatus": "Ready"
+  },
+  {
+    "eventName": "cam1",
+    "eventAddress": "http://192.168.0.235",
+    "eventType": "PHOTO",
+    "eventDescription": "getTestPicture",
+    "eventPayload": "capture",
+    "eventStatus": "Ready"
   }
 ]
