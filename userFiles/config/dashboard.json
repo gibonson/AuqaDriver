@@ -2,8 +2,8 @@
   {
     "panelType": "Event",
     "panelItemId": 1,
-    "panelLocation": "left",
-    "panelName": "Event panel",
+    "panelLocation": "2",
+    "panelName": "Event panel 1",
     "panelCode": "12",
     "panelBackground": "#0000ff",
     "panelStatus": "Ready"
@@ -11,8 +11,8 @@
   {
     "panelType": "HTML",
     "panelItemId": "html1",
-    "panelLocation": "left",
-    "panelName": "Welcome panel",
+    "panelLocation": "3",
+    "panelName": "Welcome panel 2",
     "panelCode": "<h3>AuqaDriver Dashboard</h3><p>Przykładowa zawartość</p>",
     "panelBackground": "#00ff0",
     "panelStatus": "Ready"
@@ -20,9 +20,45 @@
   {
     "panelType": "Report",
     "panelItemId": "html1",
-    "panelLocation": "right",
-    "panelName": "Welcome panel",
+    "panelLocation": "1",
+    "panelName": "Welcome panel 3",
     "panelCode": "error report1",
+    "panelBackground": "#ff0000",
+    "panelStatus": "Ready"
+  },
+  {
+    "panelType": "Report",
+    "panelItemId": "html1",
+    "panelLocation": "1",
+    "panelName": "Welcome panel 4",
+    "panelCode": "error report1",
+    "panelBackground": "#ff0000",
+    "panelStatus": "Ready"
+  },
+  {
+    "panelType": "Report",
+    "panelItemId": "html1",
+    "panelLocation": "1",
+    "panelName": "Welcome panel 5",
+    "panelCode": "error report1",
+    "panelBackground": "#ff0000",
+    "panelStatus": "Ready"
+  },
+  {
+    "panelType": "Photo",
+    "panelItemId": "html1",
+    "panelLocation": "1",
+    "panelName": "picture panel 5",
+    "panelCode": "cam1",
+    "panelBackground": "#ff0000",
+    "panelStatus": "Ready"
+  },
+  {
+    "panelType": "Stream",
+    "panelItemId": "html1",
+    "panelLocation": "1",
+    "panelName": "Stream panel 5",
+    "panelCode": "192.168.0.235:81",
     "panelBackground": "#ff0000",
     "panelStatus": "Ready"
   }

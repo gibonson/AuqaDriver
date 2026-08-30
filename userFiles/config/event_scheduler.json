@@ -58,5 +58,19 @@
     "minute": 5,
     "second": 0,
     "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "cam1cam1",
+    "schedulerDescription": "testowy cam1",
+    "reportList": [],
+    "eventList": [
+      "cam1"
+    ],
+    "trigger": "interval",
+    "day": 0,
+    "hour": 0,
+    "minute": 1,
+    "second": 0,
+    "schedulerStatus": "Ready"
   }
 ]

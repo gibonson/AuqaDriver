@@ -1,9 +1,19 @@
 # Standard library imports
 from datetime import datetime, timedelta
 import os
+import glob
 
 # Third-party imports
-from flask import Markup, flash, jsonify, redirect, request, url_for, abort
+from flask import (
+    Markup,
+    flash,
+    jsonify,
+    redirect,
+    request,
+    url_for,
+    abort,
+    send_from_directory,
+)
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 
@@ -345,8 +355,14 @@ def get_logs():
 
 
 # -----------------------------------------
-# experimental
+# experimental dashboard
 # -----------------------------------------
+
+
+@app.route("/media/<path:filename>")
+def serve_media(filename):
+    media_folder = os.path.abspath("userFiles/media")
+    return send_from_directory(media_folder, filename)
 
 
 @app.route("/dashboard", methods=["GET"])
@@ -373,6 +389,27 @@ def dashboard():
                 + dashboard.panelCode
                 + "</a>"
             )
+        elif dashboard.panelType == "Photo":
+            DIR_PATH = "userFiles/media"
+            search_pattern = os.path.join(DIR_PATH, "cam1*")
+            matching_files = glob.glob(search_pattern)
+
+            if not matching_files:
+                dashboard.panelCode = "<p>Brak zdjęć do wyświetlenia</p>"
+
+            else:
+                newest_file_path = max(matching_files, key=os.path.getmtime)
+                file_name = os.path.basename(newest_file_path)
+                dashboard.panelCode = (
+                    f'<img src="/media/{file_name}" alt="pic" style="max-width:100%;">'
+                )
+
+        elif dashboard.panelType == "Stream":
+            dashboard.panelCode = (
+                f'<a href="/video_feed/{dashboard.panelCode}" class="btn btn-success btn-sm">'
+                f'<img src="/video_feed/{dashboard.panelCode}" width="320"></a>'
+            )
+
         elif dashboard.panelType == "HTML":
             dashboard.panelCode = dashboard.panelCode
         else:
@@ -383,15 +420,26 @@ def dashboard():
     )
 
 
-ESP32_STREAM_URL = "http://192.168.0.235:81/stream"
+# -----------------------------------------
+# experimental stream/capture
+# -----------------------------------------
 
 import requests
 from flask import Response, render_template
 import re
 
 
-def mjpeg_proxy():
-    r = requests.get(ESP32_STREAM_URL, stream=True)
+@app.route("/video_feed/<ESP32_STREAM_URL>")
+def video_feed(ESP32_STREAM_URL):
+    return Response(
+        mjpeg_proxy(ESP32_STREAM_URL),
+        mimetype="multipart/x-mixed-replace; boundary="
+        + "123456789000000000000987654321",
+    )
+
+
+def mjpeg_proxy(ESP32_STREAM_URL):
+    r = requests.get("http://" + ESP32_STREAM_URL + "/stream", stream=True)
 
     content_type = r.headers.get("Content-Type", "")
     match = re.search("boundary=(.*)", content_type)
@@ -412,26 +460,18 @@ def mjpeg_proxy():
                 yield boundary + part
 
 
-@app.route("/video_feed")
-def video_feed():
-    return Response(
-        mjpeg_proxy(),
-        mimetype="multipart/x-mixed-replace; boundary="
-        + "123456789000000000000987654321",
+@app.route("/video/<ESP32_STREAM_URL>")
+def video(ESP32_STREAM_URL):
+    return render_template_with_addons(
+        "stream.html", ESP32_STREAM_URL=ESP32_STREAM_URL, state=str(sched.state)
     )
-
-
-@app.route("/video")
-def index():
-    return render_template("stream.html")
 
 
 @app.route("/capture")
 def capture():
     url = "http://192.168.0.235/capture"
     SAVE_DIR = "userFiles/media"
-    
-    
+
     os.makedirs(SAVE_DIR, exist_ok=True)
     response = requests.get(url, timeout=5)
     if response.status_code == 200:

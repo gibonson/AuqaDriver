@@ -74,6 +74,8 @@ class WebContentCollector:
                                 logger.debug(
                                     f"Attempt: {attempt}. success: {response.status_code} response: {str(response.text[:100])} while trying to reach {event.eventAddress}"
                                 )
+                                if event.eventType == "PHOTO":
+                                    break
                                 try:
                                     requestData = response.json()
                                     
