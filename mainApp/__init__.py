@@ -17,7 +17,7 @@ class Config(object):
     baseDir = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles"
     logger.debug("Path to DB: " + baseDir)
     # Config app
-    SECRET_KEY = '7d441f27d441f27567d441f2b6176a'
+    SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
     # Config scheduler
     SCHEDULER_API_ENABLED = True
     JSONIFY_PRETTYPRINT_REGULAR = True

@@ -39,19 +39,19 @@ class WebContentCollector:
                         if event.eventType == "JSON":
                             jsonEvent = json.loads(eventPayloadAfterInjection)
                             jsonEvent["requestID"] = self.requestID
-                            response = requests.post(event.eventAddress, json=jsonEvent, timeout=5)
+                            response = requests.post(event.eventAddress, json=jsonEvent, timeout=2)
                             logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
 
                         elif event.eventType == "HTTP":
                             eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
                             print(eventAddress)
-                            response = requests.post(eventAddress, timeout=5)
+                            response = requests.post(eventAddress, timeout=2)
                             logger.info("Response: " + str(response.status_code) + ", " + str(response.content) + " " + response.text)
                         
                         elif event.eventType == "PHOTO":
                             eventAddress =  event.eventAddress + "/" + eventPayloadAfterInjection
                             print(eventAddress)
-                            response = requests.get(eventAddress, timeout=5)
+                            response = requests.get(eventAddress, timeout=2)
                             SAVE_DIR = "userFiles/media"
 
                             if response.status_code == 200:

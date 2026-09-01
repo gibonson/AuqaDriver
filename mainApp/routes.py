@@ -16,6 +16,7 @@ from flask import (
 )
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
+from collections import deque
 
 # Local application/library specific imports
 from mainApp import app, db, logger, sched
@@ -335,10 +336,11 @@ def get_logs():
         flash("Log file does not exist!", category="danger")
         abort(404)
     try:
-        with open(log_file_path, "r") as log_file:
-            lines = log_file.readlines()
-            lines = [line.strip() for line in lines if line.strip()]
-            last_200_lines = lines[-200:] if len(lines) > 200 else lines
+        with open(log_file_path, "r", encoding="utf-8") as log_file:
+            # deque z maxlen=200 automatycznie "odrzuca" stare linie, trzymając w RAM tylko najnowsze 200
+            last_200_lines = list(deque(log_file, maxlen=200))
+            
+            last_200_lines = [line.strip() for line in last_200_lines if line.strip()]
             last_200_lines.reverse()
         return render_template_with_addons(
             "get_logs.html",
@@ -439,25 +441,37 @@ def video_feed(ESP32_STREAM_URL):
 
 
 def mjpeg_proxy(ESP32_STREAM_URL):
-    r = requests.get("http://" + ESP32_STREAM_URL + "/stream", stream=True)
+    if not ESP32_STREAM_URL.startswith("192.168."):
+        print("Odrzucono próbę połączenia z nieznanym adresem IP.")
+        yield b""
+        return
 
-    content_type = r.headers.get("Content-Type", "")
-    match = re.search("boundary=(.*)", content_type)
-    if not match:
-        raise RuntimeError("Brak boundary w Content-Type")
+    stream_url = "http://" + ESP32_STREAM_URL + "/stream"
+    
+    try:
+        r = requests.get(stream_url, stream=True, timeout=5)
 
-    boundary = match.group(1).encode()
-    boundary = b"--" + boundary
+        content_type = r.headers.get("Content-Type", "")
+        match = re.search("boundary=(.*)", content_type)
+        if not match:
+            boundary_str = "123456789000000000000987654321" 
+        else:
+            boundary_str = match.group(1)
 
-    buffer = b""
+        boundary = b"--" + boundary_str.encode()
+        buffer = b""
 
-    for chunk in r.iter_content(chunk_size=2048):
-        buffer += chunk
+        for chunk in r.iter_content(chunk_size=4096):
+            buffer += chunk
 
-        while boundary in buffer:
-            part, buffer = buffer.split(boundary, 1)
-            if b"Content-Type: image/jpeg" in part:
-                yield boundary + part
+            while boundary in buffer:
+                part, buffer = buffer.split(boundary, 1)
+                if b"Content-Type: image/jpeg" in part:
+                    yield boundary + part
+                    
+    except requests.exceptions.RequestException as e:
+        print(f"Błąd połączenia ze strumieniem wideo ({ESP32_STREAM_URL}): {e}")
+        yield b""
 
 
 @app.route("/video/<ESP32_STREAM_URL>")
