@@ -76,16 +76,12 @@ class DashboardData:
             return datetime.now().strftime("%H:%M:%S")
 
         elif placeholder == "getLogSize":
-            LogFile = (
-                os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/app.log"
-            )
+            LogFile = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles', 'app.log'))
             self.logsSizeKB = os.path.getsize(LogFile) / 1024
             return self.logsSizeKB
 
         elif placeholder == "getDbSize":
-            DBFile = (
-                os.path.abspath(os.path.dirname(__file__)) + "/../userFiles/db.sqlite"
-            )
+            DBFile = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles', 'db.sqlite'))
             self.dbSizeKB = os.path.getsize(DBFile) / 1024
             return self.dbSizeKB
 

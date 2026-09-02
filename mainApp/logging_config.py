@@ -1,4 +1,5 @@
 import logging
+import os
 
 def setup_logging():
     logger = logging.getLogger(__name__)
@@ -8,7 +9,11 @@ def setup_logging():
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
     # add heandler for file
-    file_handler = logging.FileHandler('userFiles/app.log', encoding='utf-8')
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles'))
+    os.makedirs(base_dir, exist_ok=True)
+    log_path = os.path.join(base_dir, 'app.log')
+    
+    file_handler = logging.FileHandler(log_path, encoding='utf-8')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
 

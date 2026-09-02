@@ -62,6 +62,8 @@ class WebContentCollector:
                                     f.write(response.content)
 
                                 print(f"Picture saver: {filepath}")
+                                errorMessage = f"Picture: {filepath}, Attempt: {attempt}. success: {response.status_code}, Address: {event.eventAddress}"
+
                             else:
                                 print("Error:", response.status_code)
                             logger.info("Response: " + str(response.status_code) + ", " + filename + " ")
@@ -83,8 +85,7 @@ class WebContentCollector:
                                     ResponseTrigger(requestData)
                                 except (ValueError, json.JSONDecodeError) as json_err:
                                     errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {str(response.text[:100])}"
-                                
-                                break
+                                    break
                             
                             else:
                                 errorMessage = f"Attempt: {attempt}. error response: {response.status_code} response: {str(response.text[:100])} while trying to reach {event.eventAddress}"

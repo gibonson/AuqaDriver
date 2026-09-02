@@ -51,6 +51,9 @@ def add_job_to_scheduler(sched, job_type, scheduler_id, args, trigger, day, day_
     try:
         if trigger == "interval":
             sched.add_job(id=scheduler_id, func=globals()[job_type], args=[args], trigger=trigger, hours=hour, minutes=minute, seconds=second, max_instances=10)
+            if int(hour) == 0 and int(minute) == 0 and int(second) == 0:
+                logger.error(f"Scheduler '{scheduler_id}' ma ustawiony interwał 0. Pomijam.")
+                return
         elif trigger == "cron":
             if day > 0:
                 sched.add_job(id=scheduler_id, func=globals()[job_type], args=[args], trigger=trigger, day=day, hour=hour, minute=minute, second=second, max_instances=10)

@@ -41,7 +41,7 @@
     "panelLocation": "1",
     "panelName": "Welcome panel 5",
     "panelCode": "error report1",
-    "panelBackground": "#ff0000",
+    "panelBackground": "#2b3042",
     "panelStatus": "Ready"
   },
   {
@@ -50,7 +50,7 @@
     "panelLocation": "1",
     "panelName": "picture panel 5",
     "panelCode": "cam1",
-    "panelBackground": "#ff0000",
+    "panelBackground": "#2b3042",
     "panelStatus": "Ready"
   },
   {
@@ -59,7 +59,7 @@
     "panelLocation": "1",
     "panelName": "Stream panel 5",
     "panelCode": "192.168.0.235:81",
-    "panelBackground": "#ff0000",
+    "panelBackground": "#2b3042",
     "panelStatus": "Ready"
   }
 ]
