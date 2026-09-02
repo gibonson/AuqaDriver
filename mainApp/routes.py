@@ -102,7 +102,7 @@ def create():
 
 @app.post("/api/addEvent")
 def add_event():
-    ResponseTrigger(requestData=request.get_json())
+    ResponseTrigger(requestData=request.get_json()).execute()
     return "OK"
 
 

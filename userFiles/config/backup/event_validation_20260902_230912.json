@@ -61,7 +61,7 @@
     "deviceIP": "127.0.0.1",
     "deviceName": "Server",
     "addInfo": " App Start",
-    "type": "Log",
+    "type": "log",
     "condition": "equal",
     "value": 0,
     "actionType": "pushover",

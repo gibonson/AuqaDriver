@@ -82,7 +82,7 @@ class WebContentCollector:
                                     requestData = response.json()
                                     
                                     requestData["requestID"] = self.requestID
-                                    ResponseTrigger(requestData)
+                                    ResponseTrigger(requestData).execute()
                                 except (ValueError, json.JSONDecodeError) as json_err:
                                     errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {str(response.text[:100])}"
                                     break
@@ -126,15 +126,19 @@ class InjectValuesIntoPayload:
 
 class ResponseTrigger:
     def __init__(self, requestData: dict) -> None:
-        logger.debug(f"Request to validation: {requestData}")
-        try:
-            self.addInfo = requestData["addInfo"]
-            self.deviceName = requestData["deviceName"]
-            self.deviceIP = requestData["deviceIP"]
-            self.type = requestData["type"]
-            self.value = requestData["value"]
-            self.requestID = requestData["requestID"]
+        # __init__ tylko przygotowuje dane (zabezpieczone przez .get())
+        self.requestData = requestData
+        self.addInfo = requestData.get("addInfo", "")
+        self.deviceName = requestData.get("deviceName", "")
+        self.deviceIP = requestData.get("deviceIP", "")
+        self.type = requestData.get("type", "")
+        self.value = requestData.get("value", 0)
+        self.requestID = requestData.get("requestID", "")
 
+    def execute(self) -> None:
+        # Metoda execute() robi faktyczną robotę (logika biznesowa)
+        logger.debug(f"Request to validation: {self.requestData}")
+        try:
             validationLister = ValidationLister(status="Ready")
             validationList = validationLister.get_list()
 
@@ -157,8 +161,7 @@ class ResponseTrigger:
                             should_archive = False
                             break
                             
-                        elif validationItem.actionType == "email" or validationItem.actionType == "pushover":
-
+                        elif validationItem.actionType in ["email", "pushover"]:
                             message = validationItem.message
                             message = message.replace("<addInfo>", validationItem.addInfo)
                             message = message.replace("<type>", validationItem.type)
@@ -168,8 +171,9 @@ class ResponseTrigger:
                             message = message.replace("<date>", str(datetime.now().strftime('%Y-%m-%d')))
                             message = message.replace("<time>", str(datetime.now().strftime('%H:%M:%S')))
 
-                            subject = "Notification: " + self.type + " for " + self.deviceName
-                            logger.debug(validationItem.actionType + ", subject: " + subject + ", and message: " + message)
+                            subject = f"Notification: {self.type} for {self.deviceName}"
+                            logger.debug(f"{validationItem.actionType}, subject: {subject}, and message: {message}")
+                            
                             if validationItem.actionType == "email":
                                 emailSender(subject=subject, message=message)
                             if validationItem.actionType == "pushover":
@@ -177,13 +181,13 @@ class ResponseTrigger:
                              
                         elif validationItem.actionType == "event":
                             logger.debug("Event to start and add to archive")
+                            # Tutaj kolejna klasa od razu z poprawnym użyciem jej metody .collector()
                             WebContentCollector(validationItem.eventId, requestID=self.requestID).collector()
 
-
             if should_archive:
-                requestData["addInfo"] = requestData["addInfo"][:30]
-                ArchiveAdder(requestData=requestData)
+                self.requestData["addInfo"] = self.requestData["addInfo"][:30]
+                # Pamiętaj o użyciu .save(), które dodaliśmy poprzednio!
+                ArchiveAdder(requestData=self.requestData).save()
 
         except Exception as e:
-            logger.error(f"An error occurred: {e}")
-            self.message = "Error: Record could not be parsed"
+            logger.error(f"An error occurred in ResponseTrigger: {e}")

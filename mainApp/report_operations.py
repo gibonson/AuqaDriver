@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 from mainApp import app, logger
-from mainApp.routes import create_engine, text
+from sqlalchemy import create_engine, text
 from mainApp.models.archive_report import ArchiveReportLister
 from mainApp.notification_operations import emailSender
 

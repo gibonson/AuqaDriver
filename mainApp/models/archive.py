@@ -1,4 +1,4 @@
-from mainApp.routes import db
+from mainApp import db
 from mainApp import logger
 from datetime import datetime, timedelta
 import time

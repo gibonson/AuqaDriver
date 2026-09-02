@@ -5,6 +5,7 @@ import datetime
 
 from mainApp import logger
 
+_CONFIG_CACHE = {}
 
 def get_config_file_path(file_name):
     config_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles', 'config'))
@@ -21,9 +22,15 @@ def get_config_backup_file_path(file_name):
 
 
 def load_config_json(file_name):
+    if file_name in _CONFIG_CACHE:
+        return _CONFIG_CACHE[file_name]
+        
     path = get_config_file_path(file_name)
     with open(path, 'r', encoding='utf-8') as config_file:
-        return json.load(config_file)
+        data = json.load(config_file)
+        
+        _CONFIG_CACHE[file_name] = data
+        return data
 
 
 def load_config_text(file_name):
@@ -38,6 +45,11 @@ def save_config_text(file_name, text):
     path = get_config_file_path(file_name)
     with open(path, 'w', encoding='utf-8') as config_file:
         config_file.write(text)
+    
+    # KRYTYCZNE: Po edycji konfiguracji przez użytkownika, musimy wyczyścić zdezaktualizowany Cache!
+    if file_name in _CONFIG_CACHE:
+        del _CONFIG_CACHE[file_name]
+        
     logger.info(f'Konfiguracja zapisana w: {path}')
     return path
 
