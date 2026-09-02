@@ -1,47 +1,51 @@
-# AQUADRIVER
+# AquaDriver
 
-## DESCRIPTION
+## 1. Business Description
 
-AquaDriver is an application designed for managing simple automation, allowing easy control of devices in a home or office environment. It runs on the Flask platform in a Linux environment with Docker, ensuring high flexibility and reliability.
-The application enables communication with devices such as ESP and Arduino through the LAN network, allowing for automated scheduling of light switching, socket control, and sensor data reading. With these features, you can remotely control your devices and monitor the status of various systems in real time.
-AquaDriver also offers the ability to notify users of important events via email, ensuring full control over automation processes even when you don't have direct access to the application. Additionally, the application allows for generating simple reports that help with analysis and documentation of activities.
+**AquaDriver** is a lightweight, self-hosted central management system for home and office IoT automation. Designed to operate completely offline within a local network (LAN), it serves as the brain for microcontrollers like ESP8266 and Arduino. 
 
-## TECHNOLOGY
+Instead of relying on third-party cloud services, AquaDriver provides a private, secure, and customizable hub to schedule tasks, monitor sensors, and control physical devices (such as relays, lights, and water pumps). It automatically collects data, evaluates predefined rules, and triggers real-time alerts or subsequent actions, making it ideal for managing aquariums, terrariums, smart lighting, and environmental monitoring.
 
-1. Docker – Isolation and Containerization
-    - Allows the application to run in containers, providing flexibility, easy deployment, and environmental isolation, enhancing performance and security.
+**Core Value Proposition:**
+*   **100% Local Processing:** Fast response times and high privacy with no cloud dependency.
+*   **Rule-Based Automation:** Automatically trigger physical actions or notifications (Email, Pushover) when sensor readings hit specific thresholds.
+*   **Advanced Scheduling:** Built-in cron and interval task manager for daily routines.
+*   **Visual Dashboard:** Centralized web interface to monitor cameras, device statuses, and historical logs.
 
-1. Python – Programming Language
-    - Used for building the backend logic of the application, managing data, and automating processes.
+---
 
-1. Flask – Web Framework (Python)
-    - Handles HTTP routing and JSON support for communication with devices and APIs.
+## 2. Technology Stack
 
-1. APScheduler – Task Scheduling Library
-    - Used to plan and manage cyclic tasks, such as scheduled switching on and off of devices, data retrieval, and monitoring device statuses.
+*   **Backend:** Python 3, Flask
+*   **Task Scheduling:** APScheduler
+*   **Database:** SQLite + SQLAlchemy (ORM)
+*   **Frontend:** HTML, Bootstrap 5, DataTables
+*   **Deployment:** Designed for Docker / Linux environments
+*   **IoT Communication:** HTTP, JSON, MJPEG Streaming
 
-1. ESP & Arduino – IoT Devices
-    - Programmed using Arduino IDE and C/C++.
-    - Supports various modules, such as sensors, communication modules (Wi-Fi, Bluetooth), and control devices (relays, motors), allowing customization and expansion of the automation system.
+---
 
-1. SQLite – Database
-    - A lightweight, local database used for storing device configurations, event histories, and other application data, ensuring quick data ccess.
+## 3. Improvement Checkpoints (Known Issues & Suggestions)
 
-1. Web Interface – Web Interface
-    - Allows management of devices and configuration of the application through a web browser, offering a simple and intuitive user interface.
+Below is a checklist of architectural and security improvements to ensure the application remains stable as it scales.
 
-1. Bootstrap – Framework for Responsive User Interfaces
-    - Used to create aesthetically pleasing, responsive, and user-friendly web interfaces that adjust to different devices and screen resolutions.
+- [ ] **Fix SQL Injection Vulnerabilities:** Avoid using string concatenation (`+`) to build SQL queries in `__init__.py` and `report_operations.py`. Use parameterized queries (`:variable_name`) built into SQLAlchemy to prevent database corruption.
+- [ ] **Solve Circular Imports:** The `routes.py` file imports `models`, but `models` import `db` from `routes.py` (or `mainApp`). This makes the application fragile. Move the `db` initialization to a separate `extensions.py` file.
+- [ ] **Handle Synchronous Blocking:** Currently, `requests.get/post` calls to ESP devices happen in the main Flask thread. If a device is offline, Flask waits (blocks) until the timeout, slowing down the whole web interface. *Suggestion:* Move HTTP triggers to background threads or use asynchronous requests.
+- [ ] **Scheduler Duplication on Production:** If deployed with multiple Gunicorn workers, `APScheduler` will run multiple times, triggering devices simultaneously. *Suggestion:* Run the scheduler as a completely separate background script or use a lock mechanism.
+- [ ] **Unbounded Database Growth:** The `archive` table grows infinitely. *Suggestion:* Add a scheduled maintenance task to automatically delete logs older than 30 days.
 
-## CONFIGURATION
+---
 
-### JSON EXAMPLE
+## 4. Code Simplifications (What to Remove or Move)
 
-{
-"addInfo": "BD creation",
-"requestID": "test",
-"deviceName":"Server",
-"deviceIP":"127.0.0.1",
-"type":"Alert",
-"value":10
-}
+The codebase has great logic but can be simplified to make it easier to read and maintain.
+
+- [ ] **Move JSON configs to the Database:** Currently, events, dashboards, and validations are stored in separate `.json` files. This requires complex file reading, caching, and forms. *Move these into SQLite tables*. It will drastically simplify your code, enable direct editing via the dashboard, and remove the need for `config_operations.py`.
+- [ ] **Remove "Wrapper" Classes:** Classes like `ArchiveLister`, `EventListerJson`, and `ValidationLister` only do one thing: fetch a list. They add unnecessary complexity. *Suggestion:* Replace them with simple functions (e.g., `def get_all_events():`) or use direct SQLAlchemy queries in your routes.
+- [ ] **Stop using `__init__` for Actions:** Classes like `ArchiveAdder` and `ResponseTrigger` execute heavy logic (saving to DB, sending emails) right when they are created. *Suggestion:* Keep `__init__` strictly for assigning variables, and create an `.execute()` or `.save()` method for the actual work (partially done, but requires enforcement across the app).
+- [ ] **Implement Flask Blueprints:** `routes.py` is getting too large. Split it into logical modules (Blueprints):
+    *   `routes_dashboard.py` (web interface)
+    *   `routes_api.py` (ESP communication)
+    *   `routes_admin.py` (logs, jobs, config)
+- [ ] **Consolidate Config Forms:** You have multiple forms doing the exact same thing (editing JSON text). Once moved to the database, you can replace the JSON text areas with standard CRUD (Create, Read, Update, Delete) tables for easier management.
