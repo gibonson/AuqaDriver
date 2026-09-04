@@ -1,7 +1,7 @@
 // Wi-Fi and HTTP libraries
 #include <ESP8266WiFi.h>        // Load Wi-Fi library
 #include <ESP8266HTTPClient.h>  // HTTP client for ESP8266
-//#include <HttpClient.h>         // HTTP client library
+#include <ESP8266WebServer.h>     // Dedykowany serwer HTTP
 
 // Wi-Fi and HTTP configuration
 #define CONFIG_TIMEOUT 5000  // Data waiting time
@@ -13,7 +13,7 @@ unsigned long previousTime = 0;        // Previous time
 const long timeoutTime = 500;          // Timeout time in milliseconds
 
 //Server configuration
-WiFiServer server(80);                 // Set web server port number to 80
+ESP8266WebServer server(80);                 // Set web server port number to 80
 IPAddress gateway(192, 168, 1, 1);     // Set your Gateway IP address
 IPAddress subnet(255, 255, 0, 0);
 IPAddress primaryDNS(8, 8, 8, 8);    //optional

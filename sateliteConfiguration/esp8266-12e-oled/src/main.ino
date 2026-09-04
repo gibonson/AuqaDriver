@@ -2,7 +2,7 @@
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // app version
-#define APP_VERSION "0.0.2"
+#define APP_VERSION "0.0.3"
 
 // Project files list
 String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of modules available in the system
@@ -21,93 +21,93 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 const int MOTION_SENSOR = 5;          // GPIO5 = D1 - Motion Sensor
 volatile bool motionDetected = false; // Data to send over HTTP
 
-String urlDecode(const String &str)
-{
-  String result = "";
-  for (unsigned int i = 0; i < str.length(); i++)
-  {
-    char c = str[i];
-    if (c == '+')
-    {
-      result += ' ';
-    }
-    else if (c == '%' && i + 2 < str.length())
-    {
-      char hex[3] = {str[i + 1], str[i + 2], '\0'};
-      result += (char)strtol(hex, NULL, 16);
-      i += 2;
-    }
-    else
-    {
-      result += c;
-    }
-  }
-  return result;
-}
-
-String getQueryValue(const String &query, const String &key)
-{
-  String prefix = key + "=";
-  int start = query.indexOf(prefix);
-  if (start < 0)
-  {
-    return "";
-  }
-  start += prefix.length();
-  int end = query.indexOf('&', start);
-  if (end < 0)
-  {
-    end = query.length();
-  }
-  return urlDecode(query.substring(start, end));
-}
-
-String getRequestLine(const String &headerText)
-{
-  int lineEnd = headerText.indexOf("\r\n");
-  if (lineEnd < 0)
-  {
-    lineEnd = headerText.indexOf('\n');
-  }
-  if (lineEnd < 0)
-  {
-    return headerText;
-  }
-  return headerText.substring(0, lineEnd);
-}
-
-int getContentLength(const String &headerText)
-{
-  int start = headerText.indexOf("Content-Length:");
-  if (start < 0)
-  {
-    start = headerText.indexOf("content-length:");
-  }
-  if (start < 0)
-  {
-    return 0;
-  }
-  int valueStart = headerText.indexOf(' ', start);
-  if (valueStart < 0)
-  {
-    return 0;
-  }
-  int lineEnd = headerText.indexOf('\r', valueStart);
-  if (lineEnd < 0)
-  {
-    lineEnd = headerText.indexOf('\n', valueStart);
-  }
-  if (lineEnd < 0)
-  {
-    lineEnd = headerText.length();
-  }
-  return headerText.substring(valueStart + 1, lineEnd).toInt();
-}
-
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement()
 {
   motionDetected = true;
+}
+
+WebGui webGui;
+
+void setupRouting()
+{
+  server.on("/", HTTP_GET, []()
+            {
+              server.setContentLength(CONTENT_LENGTH_UNKNOWN); // Tryb strumieniowania
+              server.send(200, "text/html", "");               // Wysyłamy same nagłówki
+              webGui.streamWebPage(webGuiTable, getLogs()); // Nasza funkcja (bez argumentu server.client!)
+              server.sendContent(""); // ZAMYKA strumień HTML!
+            });
+  server.on("/newConfig", HTTP_GET, []()
+            {
+              server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+              server.send(200, "text/html", "");
+              webGui.streamNewConfigPage(deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, deviceConfig.disableModuleList);
+              server.sendContent(""); // ZAMYKA strumień HTML!
+            });
+
+  // Nowy serwer automatycznie dekoduje parametry formularza POST!
+  server.on("/saveNewConfig", HTTP_POST, []()
+            {
+    if (server.hasArg("ssid")) deviceConfig.ssid = server.arg("ssid");
+    if (server.hasArg("password")) deviceConfig.password = server.arg("password");
+    if (server.hasArg("deviceIP")) deviceConfig.deviceIP = server.arg("deviceIP");
+    if (server.hasArg("deviceName")) deviceConfig.deviceName = server.arg("deviceName");
+    if (server.hasArg("serverAddress")) deviceConfig.serverAddress = server.arg("serverAddress");
+    if (server.hasArg("disableList")) deviceConfig.disableModuleList = server.arg("disableList");
+    
+    saveConfig();
+    server.send(200, "text/html", "<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>"); });
+
+  server.on("/logs", HTTP_GET, []()
+            {
+    responseJson(getLogs(), 1, "log"); });
+
+  server.on("/status", HTTP_GET, []()
+            {
+  
+    responseJson("Connection ok", 1, "log", "Device Status"); });
+
+  server.on("/readConfig", HTTP_GET, []()
+            {
+    String configData = "SSID: " + deviceConfig.ssid + "\nPassword: " + deviceConfig.password + "\nDevice IP: " + deviceConfig.deviceIP + "\nDevice Name: " + deviceConfig.deviceName + "\nServer Address: " + deviceConfig.serverAddress + "\nDisable List: " + deviceConfig.disableModuleList;
+    responseJson(configData, 1, "log", "Device Config"); });
+
+  server.on("/restart", HTTP_GET, []()
+            {
+    responseJson("Reset", 1, "log", "Device Status");
+    delay(500);
+    ESP.restart(); });
+
+  server.on("/json", HTTP_POST, []()
+            {
+    String jsonString = server.arg("plain"); // Automatyczne pobranie ciała (body) JSON
+    StaticJsonDocument<400> jsonDoc;
+    DeserializationError error = deserializeJson(jsonDoc, jsonString);
+
+    if (error) {
+      server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
+      return;
+    }
+
+    if (jsonDoc["requestID"].isNull()) jsonDoc["requestID"] = "Device request";
+    
+    String func = jsonDoc["function"].as<String>();
+
+    if (func == "lcd") execute_oled(jsonDoc);
+    else if (func == "builtinLed") execute_builtinLed(jsonDoc);
+    else if (func == "led_pin_2") execute_led_pin_2(jsonDoc);
+    else if (func == "led_pin_3") execute_led_pin_3(jsonDoc);
+    else if (func == "led_pin_4") execute_led_pin_4(jsonDoc);
+    else if (func == "led_pin_5") execute_led_pin_5(jsonDoc);
+    else if (func == "led_pin_all") execute_led_pin_all(jsonDoc);
+    else if (func == "getDHT22") execute_dht22(jsonDoc);
+    else if (func == "getDS18B20") execute_ds18b20(jsonDoc);
+    else if (func.indexOf("433") >= 0) execute_433(jsonDoc);
+    else {
+      addLog("Unknown function in JSON: " + func);
+      responseJson("Unknown function", 0, "error", jsonDoc["requestID"].as<String>());
+    } });
 }
 
 void setup()
@@ -134,9 +134,8 @@ void setup()
 
   pinMode(MOTION_SENSOR, INPUT_PULLUP);                                           // PIR Motion Sensor mode INPUT_PULLUP
   attachInterrupt(digitalPinToInterrupt(MOTION_SENSOR), detectsMovement, RISING); // Set motionSensor pin as interrupt, assign interrupt function and set RISING mode
+  setupRouting();
 }
-
-WebGui webGui;
 
 void loop()
 {
@@ -149,224 +148,6 @@ void loop()
     sendJson("Motion", 1, "Alert");
   }
 
-  handleLedSequence(); // Checking LEDs without blocking
-
-  WiFiClient client = server.available(); // Listen for incoming clients
-
-  if (client)
-  {
-    Serial.println("\nNew Client."); // print a message out in the serial port
-    String currentLine = "";         // make a String to hold incoming data from the client
-
-    while (client.connected())
-    { // loop while the client's connected
-      if (client.available())
-      {                         // if there's bytes to read from the client,
-        char c = client.read(); // read a byte, then
-        Serial.write(c);        // print it out the serial monitor
-        header += c;
-        if (c == '\n')
-        { // if the byte is a newline character
-          // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0)
-          {
-            if (header.indexOf("GET / HTTP/1.1") >= 0)
-            {
-              webGui.streamWebPage(client, webGuiTable, getLogs());
-              client.flush(); // upewnij się, że wszystko trafiło do TCP
-              client.stop();  // Close the connection (1)
-            }
-            else if (header.indexOf("logs") >= 0)
-            {
-              responseJson(client, getLogs(), 1, "log");
-              // client.print(getLogs());
-              client.stop(); // Close the connection (2)
-            }
-            else if (header.indexOf("restart") >= 0)
-            {
-              responseJson(client, "Reset", 1, "log", "Device Status");
-              client.stop();
-              ESP.restart();
-            }
-            else if (header.indexOf("GET /newConfig") >= 0)
-            {
-              webGui.streamNewConfigPage(client, deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, deviceConfig.disableModuleList);
-              client.flush(); // upewnij się, że wszystko trafiło do TCP
-
-              client.stop(); // Close the connection (2)
-            }
-            else if (header.indexOf("POST /saveNewConfig") >= 0)
-            {
-              int contentLength = getContentLength(header);
-              String body = "";
-              unsigned long now = millis();
-              while ((int)body.length() < contentLength && millis() - now < 1000)
-              {
-                if (client.available())
-                {
-                  body += (char)client.read();
-                }
-              }
-
-              String newSSID = getQueryValue(body, "ssid");
-              String newPassword = getQueryValue(body, "password");
-              String newDeviceIP = getQueryValue(body, "deviceIP");
-              String newDeviceName = getQueryValue(body, "deviceName");
-              String newServerAddress = getQueryValue(body, "serverAddress");
-              String newDisableList = getQueryValue(body, "disableList");
-
-              if (newSSID.length() > 0)
-                deviceConfig.ssid = newSSID;
-              if (newPassword.length() > 0)
-                deviceConfig.password = newPassword;
-              if (newDeviceIP.length() > 0)
-                deviceConfig.deviceIP = newDeviceIP;
-              if (newDeviceName.length() > 0)
-                deviceConfig.deviceName = newDeviceName;
-              if (newServerAddress.length() > 0)
-                deviceConfig.serverAddress = newServerAddress;
-
-              deviceConfig.disableModuleList = newDisableList;
-              saveConfig();
-
-              client.print("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
-              client.print("<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>");
-              client.stop();
-            }
-
-            else if (header.indexOf("readConfig") >= 0)
-            {
-              String configData = "SSID: " + deviceConfig.ssid + "\n" +
-                                  "Password: " + deviceConfig.password + "\n" +
-                                  "Device IP: " + deviceConfig.deviceIP + "\n" +
-                                  "Device Name: " + deviceConfig.deviceName + "\n" +
-                                  "Server Address: " + deviceConfig.serverAddress + "\n" +
-                                  "Disable List: " + deviceConfig.disableModuleList;
-              responseJson(client, configData, 1, "log", "Device Config");
-              client.stop(); // Close the connection (2)
-            }
-
-            else if (header.indexOf("status") >= 0)
-            {
-              responseJson(client, "Connection ok", 1, "log", "Device Status");
-              client.stop(); // Close the connection (2)
-            }
-            else if (header.indexOf("json") >= 0)
-            {
-              String jsonString = ""; // Zmienna do przechowywania odebranego JSON-a
-
-              while (client.available())
-              {
-                char c = client.read();
-                jsonString += c; // Dodaj odebrane dane do ciągu znaków
-              }
-
-              // Parsowanie odebranego JSON-a
-              Serial.print(jsonString);
-              StaticJsonDocument<400> jsonDoc; // Rozmiar dokumentu zależy od wielkości JSON-a
-
-              // Parsowanie JSON
-              DeserializationError error = deserializeJson(jsonDoc, jsonString);
-
-              if (error)
-              {
-                Serial.print("Parsing JSON error: ");
-                Serial.println(error.c_str());
-                client.stop(); // Close the connection (3) - missing in original, should be added here to close on error
-                return;
-              }
-
-              Serial.println("Parsing JSON...");
-
-              for (JsonPair kv : jsonDoc.as<JsonObject>())
-              {
-                Serial.print(kv.key().c_str());
-                Serial.print(": ");
-                Serial.println(kv.value().as<String>());
-              }
-              if (!jsonDoc["requestID"].isNull())
-              {
-                addLog("Received requestID: " + jsonDoc["requestID"].as<String>());
-              }
-              else
-              {
-                addLog("No requestID in JSON (empyt or null)");
-                jsonDoc["requestID"] = "Device request";
-              }
-
-              // here add all functions to handle JSON requests
-              if (jsonDoc["function"] == "lcd") // Oled display fun
-              {
-                execute_oled(client, jsonDoc); // Execute OLED display function
-              }
-              else if (jsonDoc["function"] == "builtinLed")
-              {
-                execute_builtinLed(client, jsonDoc); // Execute built-in LED function
-              }
-              else if (jsonDoc["function"] == "led_pin_2")
-              {
-                execute_led_pin_2(client, jsonDoc); // Execute LED pin 3 function
-              }
-              else if (jsonDoc["function"] == "led_pin_3")
-              {
-                execute_led_pin_3(client, jsonDoc); // Execute LED pin 3 function
-              }
-              else if (jsonDoc["function"] == "led_pin_4")
-              {
-                execute_led_pin_4(client, jsonDoc); // Execute LED pin 5 function
-              }
-              else if (jsonDoc["function"] == "led_pin_5")
-              {
-                execute_led_pin_5(client, jsonDoc); // Execute LED pin 5 function
-              }
-              else if (jsonDoc["function"] == "led_pin_all")
-              {
-                execute_led_pin_all(client, jsonDoc); // Execute LED pin all function
-              }
-              else if (jsonDoc["function"] == "getDHT22")
-              {
-                execute_dht22(client, jsonDoc); // Read DHT22 sensor data
-              }
-              else if (jsonDoc["function"] == "getDS18B20")
-              {
-                execute_ds18b20(client, jsonDoc); // Read DS18B20 sensor data
-              }
-              else if (String(jsonDoc["function"]).indexOf("433") >= 0)
-              {
-                execute_433(client, jsonDoc); // Execute 433 function
-              }
-              else
-              {
-                addLog("Unknown function in JSON: " + jsonDoc["function"].as<String>());
-                responseJson(client, "Unknown function", 0, "error", jsonDoc["requestID"].as<String>());
-              }
-              client.stop(); // Close the connection (4)
-            }
-            else
-            {
-              addLog("Unknown request");
-              client.stop(); // Close the connection (5)
-            }
-            Serial.println("Client disconnected.");
-            break;
-          }
-          else
-          { // if you got a newline, then clear currentLine
-            currentLine = "";
-          }
-        }
-        else if (c != '\r')
-        {                   // if you got anything else but a carriage return character,
-          currentLine += c; // add it to the end of the currentLine
-        }
-      }
-    }
-    header = ""; // Clear the header variable
-    delay(10);
-    client.stop(); // Close the connection (7) -- this is a final safety, but may be redundant if already closed above
-    Serial.println("Client disconnected.\n");
-  }
-  // Add a delay here to slow down requests and avoid error 104
-  delay(100); // 1 second delay between handling clients
+  handleLedSequence();   // Checking LEDs without blocking
+  server.handleClient(); // <--- Ta JEDNA komenda obsługuje teraz całą sieć WWW i zapytania!
 }

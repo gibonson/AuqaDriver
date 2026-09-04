@@ -30,13 +30,13 @@ void init_ds18b20()
     }
 }
 
-void execute_ds18b20(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
 {
     String moduleName = "DS18B20";
     if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
         addLog("Module " + moduleName + " is disabled in disableModuleList");
-        responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
+        responseJson("Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
     }
     else
     {
@@ -48,13 +48,12 @@ void execute_ds18b20(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
         if (newT == DEVICE_DISCONNECTED_C)
         {
             addLog("Error: DS18B20 sensor disconnected");
-            responseJson(client, "DS18B20 sensor disconnected", 0, "error", jsonDoc["requestID"].as<String>());
+            responseJson("DS18B20 sensor disconnected", 0, "error", jsonDoc["requestID"].as<String>());
             sendJson("DS18B20 sensor disconnected: ", 0, "error", jsonDoc["requestID"].as<String>());
         }
         // float newT = random(20, 30); // Simulated temperature value
         addLog("DS18B20 sensor data: Temperature = " + String(newT) + "°C");
-        responseJson(client, "DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
+        responseJson("DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
         sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
-        client.stop();
     }
 }

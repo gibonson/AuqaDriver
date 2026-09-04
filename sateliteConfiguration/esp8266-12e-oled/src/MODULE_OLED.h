@@ -72,13 +72,13 @@ void handle_oled(String value1, String value2, String value3, String value4, Str
   display->display();
 }
 
-void execute_oled(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_oled(StaticJsonDocument<400> jsonDoc)
 {
   String moduleName = "OLED";
   if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
   {
     addLog("Module " + moduleName + " is disabled in disableModuleList");
-    responseJson(client, "Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
   }
   else
   {
@@ -92,7 +92,7 @@ void execute_oled(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
     String value8 = jsonDoc["value8"].as<String>();
 
     addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
-    responseJson(client, "OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
     handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
   }
 }

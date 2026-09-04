@@ -27,7 +27,7 @@ void sendJson(String addInfo, int value, String type, String requestID = "")
   }
 }
 
-void responseJson(WiFiClient &client, String addInfo, int value, String type, String requestID = "")
+void responseJson(String addInfo, int value, String type, String requestID = "")
 {
   StaticJsonDocument<400> jsonDoc;
   jsonDoc["requestID"] = requestID;
@@ -37,13 +37,9 @@ void responseJson(WiFiClient &client, String addInfo, int value, String type, St
   jsonDoc["type"] = type;
   jsonDoc["value"] = value;
 
-  // Serializacja JSON do ciągu znaków
   String jsonString;
   serializeJson(jsonDoc, jsonString);
 
   // Wyślij JSON do klienta
-  client.print("HTTP/1.1 200 OK\r\n");
-  client.print("Content-Type: application/json\r\n");
-  client.print("Connection: close\r\n\r\n");
-  client.print(jsonString);
+  server.send(200, "application/json", jsonString);
 }

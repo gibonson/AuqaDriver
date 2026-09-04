@@ -77,175 +77,118 @@ void init_led_pins()
   pinMode(LED_PIN_5, OUTPUT);
 }
 
-void execute_builtinLed(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_builtinLed(StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_1, HIGH);
     addLog("builtinLed - ON");
-    responseJson(client, "builtinLed ON", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("builtinLed ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_1, LOW);
     addLog("builtinLed - OFF");
-    responseJson(client, "builtinLed OFF", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("builtinLed OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
     addLog("Unknown LED state: " + ledState);
-    responseJson(client, "Unknown builtinLed state", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Unknown builtinLed state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
 
-void execute_led_pin_2(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_2(StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_2, HIGH);
     addLog("led_pin_2 - ON");
-    responseJson(client, "led_pin_2 ON", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_2 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_2, LOW);
     addLog("led_pin_2 - OFF");
-    responseJson(client, "led_pin_2 OFF", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_2 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
     addLog("Unknown LED state: " + ledState);
-    responseJson(client, "Unknown led_pin_2 state", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Unknown led_pin_2 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
 
-void execute_led_pin_3(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_3(StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_3, HIGH);
     addLog("led_pin_3 - ON");
-    responseJson(client, "led_pin_3 ON", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_3 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_3, LOW);
     addLog("led_pin_3 - OFF");
-    responseJson(client, "led_pin_3 OFF", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_3 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
     addLog("Unknown LED state: " + ledState);
-    responseJson(client, "Unknown led_pin_3 state", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Unknown led_pin_3 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
 
-void execute_led_pin_4(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_4(StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_4, HIGH);
     addLog("led_pin_4 - ON");
-    responseJson(client, "led_pin_4 ON", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_4 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_4, LOW);
     addLog("led_pin_4 - OFF");
-    responseJson(client, "led_pin_4 OFF", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_4 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
     addLog("Unknown LED state: " + ledState);
-    responseJson(client, "Unknown led_pin_4 state", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Unknown led_pin_4 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
 
-void execute_led_pin_5(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
 {
   String ledState = jsonDoc["ledState"].as<String>();
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_5, HIGH);
     addLog("led_pin_5 - ON");
-    responseJson(client, "led_pin_5 ON", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_5 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_5, LOW);
     addLog("led_pin_5 - OFF");
-    responseJson(client, "led_pin_5 OFF", 1, "log", jsonDoc["requestID"].as<String>());
+    responseJson("led_pin_5 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
     addLog("Unknown LED state: " + ledState);
-    responseJson(client, "Unknown led_pin_5 state", 0, "error", jsonDoc["requestID"].as<String>());
+    responseJson("Unknown led_pin_5 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
 
-// void execute_led_pin_all(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
-// {
-//   int value1 = jsonDoc["value1"];
-//   int value2 = jsonDoc["value2"];
-//   int value3 = jsonDoc["value3"];
-//   int value4 = jsonDoc["value4"];
-//   int value5 = jsonDoc["value5"];
 
-//   Serial.println("value1: " + String(value1));
-//   Serial.println("value2: " + String(value2));
-//   Serial.println("value3: " + String(value3));
-//   Serial.println("value4: " + String(value4));
-//   Serial.println("value5: " + String(value5));
-
-//   responseJson(client, "led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
-//   sendJson("led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
-
-//   digitalWrite(LED_PIN_1, HIGH);
-//   addLog("led_pin_1 - ON");
-//   sendJson("led_pin_1_on", value5, "log", jsonDoc["requestID"].as<String>());
-//   delay(value1 * 1000);
-//   digitalWrite(LED_PIN_1, LOW);
-//   addLog("led_pin_1 - OFF");
-//   sendJson("led_pin_1_off", value1, "log", jsonDoc["requestID"].as<String>());
-
-//   digitalWrite(LED_PIN_2, HIGH);
-//   addLog("led_pin_2 - ON");
-//   sendJson("led_pin_2_on", value5, "log", jsonDoc["requestID"].as<String>());
-//   delay(value2 * 1000);
-//   digitalWrite(LED_PIN_2, LOW);
-//   addLog("led_pin_2 - OFF");
-//   sendJson("led_pin_2_off", value2, "log", jsonDoc["requestID"].as<String>());
-
-//   digitalWrite(LED_PIN_3, HIGH);
-//   addLog("led_pin_3 - ON");
-//   sendJson("led_pin_3_on", value5, "log", jsonDoc["requestID"].as<String>());
-//   delay(value3 * 1000);
-//   digitalWrite(LED_PIN_3, LOW);
-//   addLog("led_pin_3 - OFF");
-//   sendJson("led_pin_3_off", value3, "log", jsonDoc["requestID"].as<String>());
-
-//   digitalWrite(LED_PIN_4, HIGH);
-//   addLog("led_pin_4 - ON");
-//   sendJson("led_pin_4_on", value5, "log", jsonDoc["requestID"].as<String>());
-//   delay(value4 * 1000);
-//   digitalWrite(LED_PIN_4, LOW);
-//   addLog("led_pin_4 - OFF");
-//   sendJson("led_pin_4_off", value5, "log", jsonDoc["requestID"].as<String>());
-
-//   digitalWrite(LED_PIN_5, HIGH);
-//   addLog("led_pin_5 - ON");
-//   sendJson("led_pin_5_on", value5, "log", jsonDoc["requestID"].as<String>());
-//   delay(value5 * 1000);
-//   digitalWrite(LED_PIN_5, LOW);
-//   addLog("led_pin_5 - OFF");
-//   sendJson("led_pin_5_off", value5, "log", jsonDoc["requestID"].as<String>());
-// }
-
-void execute_led_pin_all(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+void execute_led_pin_all(StaticJsonDocument<400> jsonDoc)
 {
   sequenceDelays[0] = jsonDoc["value1"].as<int>() * 1000;
   sequenceDelays[1] = jsonDoc["value2"].as<int>() * 1000;
@@ -263,7 +206,7 @@ void execute_led_pin_all(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
   sendJson("led_pin_all started", 1, "log", sequenceReqID);
 
   // 3. OD RAZU odpowiadamy klientowi (brak blokowania)
-  responseJson(client, "led_pin_all started", 1, "log", sequenceReqID);
+  responseJson("led_pin_all started", 1, "log", sequenceReqID);
   client.stop(); 
 }
 
