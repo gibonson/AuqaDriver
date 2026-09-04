@@ -1,3 +1,5 @@
+#pragma once
+
 #include <DHT.h> // DHT sensor library
 
 // DHT sensor setup

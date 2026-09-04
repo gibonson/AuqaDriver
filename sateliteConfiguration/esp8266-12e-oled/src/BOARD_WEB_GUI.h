@@ -1,3 +1,5 @@
+#pragma once
+
 // WEB LAYOUT CONFIGURATION
 String webGuiTable[100][4];
 
@@ -121,59 +123,69 @@ public:
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
   const String HTML_ERROR = "\n";
 
-  String generator(String webContent[100][4], String logs = "no logs")
+  void streamWebPage(WiFiClient &client, String webContent[100][4], String logs = "no logs")
   {
-    String html = "";
-    html = HTML_BEGIN + "<h1>" + deviceConfig.deviceName + "</h1>" + END_LINE;
-    html = html + "<div class='container'>" + "<textarea id='logs' readonly name='logs' rows='11' cols='80'>" + logs + "</textarea></br>\n"
-                                                                                                                       "</div>";
+    client.print(HTML_BEGIN);
+    client.print("<h1>");
+    client.print(deviceConfig.deviceName);
+    client.print("</h1>");
+    client.print(END_LINE);
+
+    client.print("<div class='container'><textarea id='logs' readonly name='logs' rows='11' cols='80'>");
+    client.print(logs);
+    client.print("</textarea></br>\n</div>");
 
     for (int htmlLine = 0; htmlLine < 100; htmlLine++)
     {
-      // Serial.println(webContent[htmlLine][0] + webContent[htmlLine][1] + webContent[htmlLine][2] + webContent[htmlLine][3]);
+      if (webContent[htmlLine][0] == "")
+        continue; // Optymalizacja: pomijamy puste wiersze
+
       if (webContent[htmlLine][0] == "hHtml")
       {
-        html = html + hHtml(webContent[htmlLine][1]);
+        client.print(hHtml(webContent[htmlLine][1]));
       }
       else if (webContent[htmlLine][0] == "pHtml")
       {
-        html = html + pHtml(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(pHtml(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else if (webContent[htmlLine][0] == "formBegin")
       {
-        html = html + formBegin(webContent[htmlLine][1]);
+        client.print(formBegin(webContent[htmlLine][1]));
       }
       else if (webContent[htmlLine][0] == "formText")
       {
-        html = html + formText(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(formText(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else if (webContent[htmlLine][0] == "formNumber")
       {
-        html = html + formNumber(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(formNumber(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else if (webContent[htmlLine][0] == "formHidden")
       {
-        html = html + formHidden(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(formHidden(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else if (webContent[htmlLine][0] == "formEnd")
       {
-        html = html + formEnd(webContent[htmlLine][1]);
+        client.print(formEnd(webContent[htmlLine][1]));
       }
       else if (webContent[htmlLine][0] == "button")
       {
-        html = html + htmlButton(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(htmlButton(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else if (webContent[htmlLine][0] == "button2")
       {
-        html = html + htmlButton2(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]);
+        client.print(htmlButton2(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
       }
       else
       {
-        html = html + HTML_ERROR;
+        client.print(HTML_ERROR);
       }
     }
-    html = html + "<h6>APP Version: " + APP_VERSION + "</h6>" + HTML_END;
-    return html;
+
+    client.print("<h6>APP Version: ");
+    client.print(String(APP_VERSION));
+    client.print("</h6>");
+    client.print(HTML_END);
   }
 
   String hHtml(String text)
@@ -231,7 +243,7 @@ public:
     return text;
   }
 
-  String newConfigPage(String ssid, String password, String deviceIP, String deviceName, String serverAddress, String disableList)
+  void streamNewConfigPage(WiFiClient &client, String ssid, String password, String deviceIP, String deviceName, String serverAddress, String disableList)
   {
     String safeSSID = escapeHtml(ssid);
     String safePassword = escapeHtml(password);
@@ -241,19 +253,22 @@ public:
     String safeDisableList = escapeHtml(disableList);
     safeDisableList.replace("\r", "");
 
-    String html = HTML_BEGIN;
-    html += "<h1>Device configuration</h1>" + END_LINE;
-    html += "<div class='container'><form action='/saveNewConfig' method='POST'>\n";
-    html += "<table>\n";
-    html += "<tr><td>SSID</td><td><input type='text' name='ssid' value='" + safeSSID + "'></td></tr>\n";
-    html += "<tr><td>Password</td><td><input type='text' name='password' value='" + safePassword + "'></td></tr>\n";
-    html += "<tr><td>Device IP</td><td><input type='text' name='deviceIP' value='" + safeDeviceIP + "'></td></tr>\n";
-    html += "<tr><td>Device Name</td><td><input type='text' name='deviceName' value='" + safeDeviceName + "'></td></tr>\n";
-    html += "<tr><td>Server Address</td><td><input type='text' name='serverAddress' value='" + safeServerAddress + "'></td></tr>\n";
-    html += "<tr><td>Disable list  </td><td><input type='text' name='disableList'   value='" + safeDisableList +   "'></td></tr>\n";
-    html += "<tr><td colspan='2'><input type='submit' class='submit' value='Save configuration'></td></tr>\n";
-    html += "</table>\n</form></div>" + END_LINE;
-    html += HTML_END;
-    return html;
+    client.print(HTML_BEGIN);
+    client.print("<h1>Device configuration</h1>");
+    client.print(END_LINE);
+    client.print("<div class='container'><form action='/saveNewConfig' method='POST'>\n");
+    client.print("<table>\n");
+
+    client.print("<tr><td>SSID</td><td><input type='text' name='ssid' value='" + safeSSID + "'></td></tr>\n");
+    client.print("<tr><td>Password</td><td><input type='text' name='password' value='" + safePassword + "'></td></tr>\n");
+    client.print("<tr><td>Device IP</td><td><input type='text' name='deviceIP' value='" + safeDeviceIP + "'></td></tr>\n");
+    client.print("<tr><td>Device Name</td><td><input type='text' name='deviceName' value='" + safeDeviceName + "'></td></tr>\n");
+    client.print("<tr><td>Server Address</td><td><input type='text' name='serverAddress' value='" + safeServerAddress + "'></td></tr>\n");
+    client.print("<tr><td>Disable list  </td><td><input type='text' name='disableList'   value='" + safeDisableList + "'></td></tr>\n");
+
+    client.print("<tr><td colspan='2'><input type='submit' class='submit' value='Save configuration'></td></tr>\n");
+    client.print("</table>\n</form></div>");
+    client.print(END_LINE);
+    client.print(HTML_END);
   }
 };

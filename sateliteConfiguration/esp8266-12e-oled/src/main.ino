@@ -2,7 +2,7 @@
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // app version
-#define APP_VERSION "0.0.1"
+#define APP_VERSION "0.0.2"
 
 // Project files list
 String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of modules available in the system
@@ -18,7 +18,8 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 #include "MODULE_LED_PIN.h"   // LED pin configuration file
 #include "MODULE_RADIO_433.h" // RF remote control configuration file
 
-const int MOTION_SENSOR = 5; // GPIO5 = D1 - Motion Sensor
+const int MOTION_SENSOR = 5;          // GPIO5 = D1 - Motion Sensor
+volatile bool motionDetected = false; // Data to send over HTTP
 
 String urlDecode(const String &str)
 {
@@ -106,8 +107,7 @@ int getContentLength(const String &headerText)
 // Checks if motion was detected
 ICACHE_RAM_ATTR void detectsMovement()
 {
-  Serial.println("Interrupt!!!");
-  sthToSend = "yes";
+  motionDetected = true;
 }
 
 void setup()
@@ -141,13 +141,15 @@ WebGui webGui;
 void loop()
 {
 
-  if (sthToSend == "yes")
+  if (motionDetected == true)
   {
-    Serial.println("zamiana");
+    motionDetected = false;
+    Serial.println("Interrupt!!! - Motion detected");
     addLog("Motion detected");
     sendJson("Motion", 1, "Alert");
-    sthToSend = "";
   }
+
+  handleLedSequence(); // Checking LEDs without blocking
 
   WiFiClient client = server.available(); // Listen for incoming clients
 
@@ -171,11 +173,9 @@ void loop()
           {
             if (header.indexOf("GET / HTTP/1.1") >= 0)
             {
-              String page = webGui.generator(webGuiTable, getLogs());
-              client.print(page); // wyślij całą stronę
-              client.flush();     // upewnij się, że wszystko trafiło do TCP
-              // delay(20);          // krótka pauza na wysłanie (można zmniejszyć)
-              client.stop(); // Close the connection (1)
+              webGui.streamWebPage(client, webGuiTable, getLogs());
+              client.flush(); // upewnij się, że wszystko trafiło do TCP
+              client.stop();  // Close the connection (1)
             }
             else if (header.indexOf("logs") >= 0)
             {
@@ -191,8 +191,9 @@ void loop()
             }
             else if (header.indexOf("GET /newConfig") >= 0)
             {
-              String page = webGui.newConfigPage(deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, deviceConfig.disableModuleList);
-              client.print(page);
+              webGui.streamNewConfigPage(client, deviceConfig.ssid, deviceConfig.password, deviceConfig.deviceIP, deviceConfig.deviceName, deviceConfig.serverAddress, deviceConfig.disableModuleList);
+              client.flush(); // upewnij się, że wszystko trafiło do TCP
+
               client.stop(); // Close the connection (2)
             }
             else if (header.indexOf("POST /saveNewConfig") >= 0)
@@ -225,7 +226,7 @@ void loop()
                 deviceConfig.deviceName = newDeviceName;
               if (newServerAddress.length() > 0)
                 deviceConfig.serverAddress = newServerAddress;
-              
+
               deviceConfig.disableModuleList = newDisableList;
               saveConfig();
 
@@ -245,8 +246,6 @@ void loop()
               responseJson(client, configData, 1, "log", "Device Config");
               client.stop(); // Close the connection (2)
             }
-
-          
 
             else if (header.indexOf("status") >= 0)
             {

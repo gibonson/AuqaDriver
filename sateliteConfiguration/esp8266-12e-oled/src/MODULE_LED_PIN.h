@@ -1,8 +1,16 @@
+#pragma once
+
 const int LED_PIN_1 = 2;  // GPIO2 = D4 = ESP LED - LED_PIN_1
 const int LED_PIN_2 = 13; // GPIO13= D7 - Relay 1 control pin
 const int LED_PIN_3 = 15; // GPIO15= D8 - Relay 2 control pin
 const int LED_PIN_4 = 3;  // GPIO3= RX - Relay 3 control pin
 const int LED_PIN_5 = 1;  // GPIO1 = TX - Relay 4 control pin
+
+const int sequencePins[5] = {LED_PIN_1, LED_PIN_2, LED_PIN_3, LED_PIN_4, LED_PIN_5};
+unsigned long sequenceDelays[5];
+int currentLedStep = -1; // -1 oznacza, że sekwencja nie jest aktywna
+unsigned long ledStepStartTime = 0;
+String sequenceReqID = "";
 
 String webFormBuiltinLed[49][4] = {{"pHtml", "webFormLed", "", ""},
                                    {"formBegin", "", "form", ""},
@@ -179,60 +187,112 @@ void execute_led_pin_5(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
   }
 }
 
+// void execute_led_pin_all(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
+// {
+//   int value1 = jsonDoc["value1"];
+//   int value2 = jsonDoc["value2"];
+//   int value3 = jsonDoc["value3"];
+//   int value4 = jsonDoc["value4"];
+//   int value5 = jsonDoc["value5"];
+
+//   Serial.println("value1: " + String(value1));
+//   Serial.println("value2: " + String(value2));
+//   Serial.println("value3: " + String(value3));
+//   Serial.println("value4: " + String(value4));
+//   Serial.println("value5: " + String(value5));
+
+//   responseJson(client, "led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
+//   sendJson("led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
+
+//   digitalWrite(LED_PIN_1, HIGH);
+//   addLog("led_pin_1 - ON");
+//   sendJson("led_pin_1_on", value5, "log", jsonDoc["requestID"].as<String>());
+//   delay(value1 * 1000);
+//   digitalWrite(LED_PIN_1, LOW);
+//   addLog("led_pin_1 - OFF");
+//   sendJson("led_pin_1_off", value1, "log", jsonDoc["requestID"].as<String>());
+
+//   digitalWrite(LED_PIN_2, HIGH);
+//   addLog("led_pin_2 - ON");
+//   sendJson("led_pin_2_on", value5, "log", jsonDoc["requestID"].as<String>());
+//   delay(value2 * 1000);
+//   digitalWrite(LED_PIN_2, LOW);
+//   addLog("led_pin_2 - OFF");
+//   sendJson("led_pin_2_off", value2, "log", jsonDoc["requestID"].as<String>());
+
+//   digitalWrite(LED_PIN_3, HIGH);
+//   addLog("led_pin_3 - ON");
+//   sendJson("led_pin_3_on", value5, "log", jsonDoc["requestID"].as<String>());
+//   delay(value3 * 1000);
+//   digitalWrite(LED_PIN_3, LOW);
+//   addLog("led_pin_3 - OFF");
+//   sendJson("led_pin_3_off", value3, "log", jsonDoc["requestID"].as<String>());
+
+//   digitalWrite(LED_PIN_4, HIGH);
+//   addLog("led_pin_4 - ON");
+//   sendJson("led_pin_4_on", value5, "log", jsonDoc["requestID"].as<String>());
+//   delay(value4 * 1000);
+//   digitalWrite(LED_PIN_4, LOW);
+//   addLog("led_pin_4 - OFF");
+//   sendJson("led_pin_4_off", value5, "log", jsonDoc["requestID"].as<String>());
+
+//   digitalWrite(LED_PIN_5, HIGH);
+//   addLog("led_pin_5 - ON");
+//   sendJson("led_pin_5_on", value5, "log", jsonDoc["requestID"].as<String>());
+//   delay(value5 * 1000);
+//   digitalWrite(LED_PIN_5, LOW);
+//   addLog("led_pin_5 - OFF");
+//   sendJson("led_pin_5_off", value5, "log", jsonDoc["requestID"].as<String>());
+// }
+
 void execute_led_pin_all(WiFiClient &client, StaticJsonDocument<400> jsonDoc)
 {
-  int value1 = jsonDoc["value1"];
-  int value2 = jsonDoc["value2"];
-  int value3 = jsonDoc["value3"];
-  int value4 = jsonDoc["value4"];
-  int value5 = jsonDoc["value5"];
+  sequenceDelays[0] = jsonDoc["value1"].as<int>() * 1000;
+  sequenceDelays[1] = jsonDoc["value2"].as<int>() * 1000;
+  sequenceDelays[2] = jsonDoc["value3"].as<int>() * 1000;
+  sequenceDelays[3] = jsonDoc["value4"].as<int>() * 1000;
+  sequenceDelays[4] = jsonDoc["value5"].as<int>() * 1000;
+  sequenceReqID = jsonDoc["requestID"].as<String>();
 
-  Serial.println("value1: " + String(value1));
-  Serial.println("value2: " + String(value2));
-  Serial.println("value3: " + String(value3));
-  Serial.println("value4: " + String(value4));
-  Serial.println("value5: " + String(value5));
-
-  responseJson(client, "led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
-  sendJson("led_pin_all", 1, "log", jsonDoc["requestID"].as<String>());
-
-  digitalWrite(LED_PIN_1, HIGH);
+  // 2. Startujemy pierwszy krok sekwencji
+  currentLedStep = 0;
+  digitalWrite(sequencePins[0], HIGH);
+  ledStepStartTime = millis(); // włączamy stoper
+  
   addLog("led_pin_1 - ON");
-  sendJson("led_pin_1_on", value5, "log", jsonDoc["requestID"].as<String>());
-  delay(value1 * 1000);
-  digitalWrite(LED_PIN_1, LOW);
-  addLog("led_pin_1 - OFF");
-  sendJson("led_pin_1_off", value1, "log", jsonDoc["requestID"].as<String>());
+  sendJson("led_pin_all started", 1, "log", sequenceReqID);
 
-  digitalWrite(LED_PIN_2, HIGH);
-  addLog("led_pin_2 - ON");
-  sendJson("led_pin_2_on", value5, "log", jsonDoc["requestID"].as<String>());
-  delay(value2 * 1000);
-  digitalWrite(LED_PIN_2, LOW);
-  addLog("led_pin_2 - OFF");
-  sendJson("led_pin_2_off", value2, "log", jsonDoc["requestID"].as<String>());
+  // 3. OD RAZU odpowiadamy klientowi (brak blokowania)
+  responseJson(client, "led_pin_all started", 1, "log", sequenceReqID);
+  client.stop(); 
+}
 
-  digitalWrite(LED_PIN_3, HIGH);
-  addLog("led_pin_3 - ON");
-  sendJson("led_pin_3_on", value5, "log", jsonDoc["requestID"].as<String>());
-  delay(value3 * 1000);
-  digitalWrite(LED_PIN_3, LOW);
-  addLog("led_pin_3 - OFF");
-  sendJson("led_pin_3_off", value3, "log", jsonDoc["requestID"].as<String>());
+// Ta funkcja będzie ciągle "nasłuchiwać" w głównej pętli
+void handleLedSequence()
+{
+  // Jeśli sekwencja jest aktywna (kroki od 0 do 4)
+  if (currentLedStep >= 0 && currentLedStep < 5)
+  {
+    // Jeśli upłynął czas dla obecnego pinu
+    if (millis() - ledStepStartTime >= sequenceDelays[currentLedStep])
+    {
+      // Wyłącz obecny pin
+      digitalWrite(sequencePins[currentLedStep], LOW);
+      addLog("led_pin_" + String(currentLedStep + 1) + " - OFF");
 
-  digitalWrite(LED_PIN_4, HIGH);
-  addLog("led_pin_4 - ON");
-  sendJson("led_pin_4_on", value5, "log", jsonDoc["requestID"].as<String>());
-  delay(value4 * 1000);
-  digitalWrite(LED_PIN_4, LOW);
-  addLog("led_pin_4 - OFF");
-  sendJson("led_pin_4_off", value5, "log", jsonDoc["requestID"].as<String>());
+      currentLedStep++; // Przejdź do następnego kroku
 
-  digitalWrite(LED_PIN_5, HIGH);
-  addLog("led_pin_5 - ON");
-  sendJson("led_pin_5_on", value5, "log", jsonDoc["requestID"].as<String>());
-  delay(value5 * 1000);
-  digitalWrite(LED_PIN_5, LOW);
-  addLog("led_pin_5 - OFF");
-  sendJson("led_pin_5_off", value5, "log", jsonDoc["requestID"].as<String>());
+      // Jeśli to nie koniec, włącz następny pin
+      if (currentLedStep < 5)
+      {
+        digitalWrite(sequencePins[currentLedStep], HIGH);
+        addLog("led_pin_" + String(currentLedStep + 1) + " - ON");
+        ledStepStartTime = millis(); // reset stopera
+      }
+      else
+      {
+        currentLedStep = -1; // Zakończ sekwencję
+      }
+    }
+  }
 }

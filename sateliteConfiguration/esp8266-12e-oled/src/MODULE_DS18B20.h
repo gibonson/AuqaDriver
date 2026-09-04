@@ -1,3 +1,5 @@
+#pragma once
+
 #include <OneWire.h>           // OneWire library
 #include <DallasTemperature.h> // DS18B20 Dallas Temperature library
 

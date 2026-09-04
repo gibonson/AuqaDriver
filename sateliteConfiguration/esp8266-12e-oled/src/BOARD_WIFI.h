@@ -8,7 +8,6 @@
 String header;                         // Variable to store the HTTP request
 HTTPClient http;                       // HTTP client instance
 WiFiClient client;                     // Wi-Fi client instance
-String sthToSend = "";                 // Data to send over HTTP
 unsigned long currentTime = millis();  // Current time
 unsigned long previousTime = 0;        // Previous time
 const long timeoutTime = 500;          // Timeout time in milliseconds

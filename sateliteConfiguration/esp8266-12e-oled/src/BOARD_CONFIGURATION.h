@@ -1,3 +1,5 @@
+#pragma once
+
 const char *configFilePath = "/config.txt";
 const char *disableModulePath = "/disableList.txt";
 #include <LittleFS.h> // ESP file system libraries, which store the Wi-Fi configuration file, device name, type and server address (json)

@@ -1,3 +1,5 @@
+#pragma once
+
 // Supports sending json to server address. Requires deviceConfig from Configuration.h file
 
 void sendJson(String addInfo, int value, String type, String requestID = "")
