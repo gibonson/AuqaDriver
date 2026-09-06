@@ -1,4 +1,4 @@
-
+#pragma once
 
 #include "RCSwitch.h"
 
@@ -6,25 +6,28 @@
 RCSwitch mySwitch = RCSwitch();  // Initialize RF switch
 const int RC_TRANSMITER_PIN = 0; // GPIO0 = D3 Transmitter data pin
 
-String webForm433[19][4] = {{"pHtml", "webForm433", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket1ON"},
-                            {"formEnd", "socket1ON", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket1OFF"},
-                            {"formEnd", "socket1OFF", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket2ON"},
-                            {"formEnd", "socket2ON", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket2OFF"},
-                            {"formEnd", "socket2OFF", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket3ON"},
-                            {"formEnd", "socket3ON", "", ""},
-                            {"formBegin", "", "form", ""},
-                            {"formHidden", "", "function", "433socket3OFF"},
-                            {"formEnd", "socket3OFF", "", ""}};
+void render433Gui()
+{
+    server.sendContent(webGui.pHtml("webForm433"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket1ON"));
+    server.sendContent(webGui.formEnd("socket1ON"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket1OFF"));
+    server.sendContent(webGui.formEnd("socket1OFF"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket2ON"));
+    server.sendContent(webGui.formEnd("socket2ON"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket2OFF"));
+    server.sendContent(webGui.formEnd("socket2OFF"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket3ON"));
+    server.sendContent(webGui.formEnd("socket3ON"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "433socket3OFF"));
+    server.sendContent(webGui.formEnd("socket3OFF"));
+}
 
 void init_433()
 {
@@ -37,7 +40,7 @@ void init_433()
     else
     {
         Serial.println("Initializing module: " + moduleName);
-        addNewFormToWebGuiTable(webForm433, sizeof(webForm433) / sizeof(webForm433[0]));
+        registerModuleGui(render433Gui);
 
         mySwitch.enableTransmit(RC_TRANSMITER_PIN); // Transmitter is connected to Arduino Pin #0
         mySwitch.setProtocol(1);                    // Optional set protocol (default is 1, will work for most outlets)

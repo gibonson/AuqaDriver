@@ -12,6 +12,9 @@ String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of module
 #include "BOARD_WIFI.h"          // Wi-Fi management file
 #include "BOARD_JSON.h"
 #include "BOARD_WEB_GUI.h" // Web GUI management file
+
+WebGui webGui;
+
 #include "MODULE_OLED.h"
 #include "MODULE_DS18B20.h"   // DS18B20 configuration file
 #include "MODULE_DHT22.h"     // DHT22 configuration file
@@ -27,17 +30,16 @@ ICACHE_RAM_ATTR void detectsMovement()
   motionDetected = true;
 }
 
-WebGui webGui;
-
 void setupRouting()
 {
   server.on("/", HTTP_GET, []()
             {
               server.setContentLength(CONTENT_LENGTH_UNKNOWN); // Tryb strumieniowania
               server.send(200, "text/html", "");               // Wysyłamy same nagłówki
-              webGui.streamWebPage(webGuiTable, getLogs()); // Nasza funkcja (bez argumentu server.client!)
-              server.sendContent(""); // ZAMYKA strumień HTML!
+              webGui.streamWebPage(getLogs());                 // Nasza funkcja (bez argumentu server.client!)
+              server.sendContent("");                          // ZAMYKA strumień HTML!
             });
+            
   server.on("/newConfig", HTTP_GET, []()
             {
               server.setContentLength(CONTENT_LENGTH_UNKNOWN);
@@ -60,13 +62,10 @@ void setupRouting()
     server.send(200, "text/html", "<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>"); });
 
   server.on("/logs", HTTP_GET, []()
-            {
-    responseJson(getLogs(), 1, "log"); });
+            { responseJson(getLogs(), 1, "log"); });
 
   server.on("/status", HTTP_GET, []()
-            {
-  
-    responseJson("Connection ok", 1, "log", "Device Status"); });
+            { responseJson("Connection ok", 1, "log", "Device Status"); });
 
   server.on("/readConfig", HTTP_GET, []()
             {
@@ -84,12 +83,10 @@ void setupRouting()
     String jsonString = server.arg("plain"); // Automatyczne pobranie ciała (body) JSON
     StaticJsonDocument<400> jsonDoc;
     DeserializationError error = deserializeJson(jsonDoc, jsonString);
-
     if (error) {
       server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
       return;
     }
-
     if (jsonDoc["requestID"].isNull()) jsonDoc["requestID"] = "Device request";
     
     String func = jsonDoc["function"].as<String>();

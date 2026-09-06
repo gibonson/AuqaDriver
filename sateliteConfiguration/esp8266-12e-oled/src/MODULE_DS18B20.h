@@ -8,10 +8,13 @@ const int ONE_WIRE_BUS = 16;         // GPIO16 = D0 pin connected to the  sensor
 OneWire oneWire(ONE_WIRE_BUS);       // Setup a oneWire instance to communicate with any OneWire devices
 DallasTemperature sensors(&oneWire); // Pass our oneWire reference to Dallas Temperature sensor
 
-String webFormDS18B20[4][4] = {{"pHtml", "webFormDS18B20", "", ""},
-                               {"formBegin", "", "form", ""},
-                               {"formHidden", "", "function", "getDS18B20"},
-                               {"formEnd", "Get sensor value DS18B20", "", ""}};
+void renderDS18B20Gui()
+{
+    server.sendContent(webGui.pHtml("webFormDS18B20"));
+    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formHidden("", "function", "getDS18B20"));
+    server.sendContent(webGui.formEnd("Get sensor value DS18B20"));
+}
 
 void init_ds18b20()
 {
@@ -25,7 +28,9 @@ void init_ds18b20()
     else
     {
         Serial.println("Initializing module: " + moduleName);
-        addNewFormToWebGuiTable(webFormDS18B20, sizeof(webFormDS18B20) / sizeof(webFormDS18B20[0]));
+
+        registerModuleGui(renderDS18B20Gui);
+
         sensors.begin(); // Initialize the DS18B20 sensor
     }
 }

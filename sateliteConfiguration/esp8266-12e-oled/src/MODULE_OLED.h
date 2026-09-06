@@ -13,18 +13,21 @@
 #define OLED_SCL D6         // They swap SDA with SCL ;)
 Adafruit_SSD1306 *display;
 
-String webFormOLED[12][4] = {{"pHtml", "webFormOLED", "", ""},
-                             {"formBegin", "", "form", ""},
-                             {"formHidden", "", "function", "lcd"},
-                             {"formText", "Text to send:", "value1", "1"},
-                             {"formText", "Text to send:", "value2", "1"},
-                             {"formText", "Text to send:", "value3", "1"},
-                             {"formText", "Text to send:", "value4", "1"},
-                             {"formText", "Text to send:", "value5", "1"},
-                             {"formText", "Text to send:", "value6", "1"},
-                             {"formText", "Text to send:", "value7", "1"},
-                             {"formText", "Text to send:", "value8", "1"},
-                             {"formEnd", "Send to LCD", "", ""}};
+void renderOledGui()
+{
+  server.sendContent(webGui.pHtml("webFormOLED"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "lcd"));
+  server.sendContent(webGui.formText("Text to send:", "value1", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value2", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value3", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value4", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value5", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value6", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value7", "1"));
+  server.sendContent(webGui.formText("Text to send:", "value8", "1"));
+  server.sendContent(webGui.formEnd("Send to LCD"));
+}
 
 // to void setup
 void init_oled()
@@ -38,8 +41,7 @@ void init_oled()
   }
   else
   {
-
-    addNewFormToWebGuiTable(webFormOLED, sizeof(webFormOLED) / sizeof(webFormOLED[0]));
+    registerModuleGui(renderOledGui);
     display = new Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
     // OLED used nonstandard SDA and SCL pins
     Wire.begin(D5, D6);

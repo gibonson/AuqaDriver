@@ -12,64 +12,62 @@ int currentLedStep = -1; // -1 oznacza, że sekwencja nie jest aktywna
 unsigned long ledStepStartTime = 0;
 String sequenceReqID = "";
 
-String webFormBuiltinLed[49][4] = {{"pHtml", "webFormLed", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "builtinLed"},
-                                   {"formHidden", "", "ledState", "on"},
-                                   {"formEnd", "Led ON", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "builtinLed"},
-                                   {"formHidden", "", "ledState", "off"},
-                                   {"formEnd", "Led OFF", "", ""},
-
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_2"},
-                                   {"formHidden", "", "ledState", "on"},
-                                   {"formEnd", "Led 2", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_2"},
-                                   {"formHidden", "", "ledState", "off"},
-                                   {"formEnd", "Led 2", "", ""},
-
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_3"},
-                                   {"formHidden", "", "ledState", "on"},
-                                   {"formEnd", "Led 3", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_3"},
-                                   {"formHidden", "", "ledState", "off"},
-                                   {"formEnd", "Led 3", "", ""},
-
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_4"},
-                                   {"formHidden", "", "ledState", "on"},
-                                   {"formEnd", "Led 4", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_4"},
-                                   {"formHidden", "", "ledState", "off"},
-                                   {"formEnd", "Led 4", "", ""},
-
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_5"},
-                                   {"formHidden", "", "ledState", "on"},
-                                   {"formEnd", "Led 5", "", ""},
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_5"},
-                                   {"formHidden", "", "ledState", "off"},
-                                   {"formEnd", "Led 5", "", ""},
-
-                                   {"formBegin", "", "form", ""},
-                                   {"formHidden", "", "function", "led_pin_all"},
-                                   {"formText", "builtinLed", "value1", "1"},
-                                   {"formText", "led_pin_2", "value2", "1"},
-                                   {"formText", "led_pin_3", "value3", "1"},
-                                   {"formText", "led_pin_4", "value4", "1"},
-                                   {"formText", "led_pin_5", "value5", "1"},
-                                   {"formEnd", "Start timer", "", ""}};
+void renderLEDGui()
+{
+  server.sendContent(webGui.pHtml("webFormLed"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "builtinLed"));
+  server.sendContent(webGui.formHidden("", "ledState", "on"));
+  server.sendContent(webGui.formEnd("Led ON"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "builtinLed"));
+  server.sendContent(webGui.formHidden("", "ledState", "off"));
+  server.sendContent(webGui.formEnd("Led OFF"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_2"));
+  server.sendContent(webGui.formHidden("", "ledState", "on"));
+  server.sendContent(webGui.formEnd("Led 2"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_2"));
+  server.sendContent(webGui.formHidden("", "ledState", "off"));
+  server.sendContent(webGui.formEnd("Led 2"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_3"));
+  server.sendContent(webGui.formHidden("", "ledState", "on"));
+  server.sendContent(webGui.formEnd("Led 3"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_3"));
+  server.sendContent(webGui.formHidden("", "ledState", "off"));
+  server.sendContent(webGui.formEnd("Led 3"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_4"));
+  server.sendContent(webGui.formHidden("", "ledState", "on"));
+  server.sendContent(webGui.formEnd("Led 4"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_4"));
+  server.sendContent(webGui.formHidden("", "ledState", "off"));
+  server.sendContent(webGui.formEnd("Led 4"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_5"));
+  server.sendContent(webGui.formHidden("", "ledState", "on"));
+  server.sendContent(webGui.formEnd("Led 5"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_5"));
+  server.sendContent(webGui.formHidden("", "ledState", "off"));
+  server.sendContent(webGui.formEnd("Led 5"));
+  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formHidden("", "function", "led_pin_all"));
+  server.sendContent(webGui.formText("builtinLed", "value1", "1"));
+  server.sendContent(webGui.formText("led_pin_2", "value2", "1"));
+  server.sendContent(webGui.formText("led_pin_3", "value3", "1"));
+  server.sendContent(webGui.formText("led_pin_4", "value4", "1"));
+  server.sendContent(webGui.formText("led_pin_5", "value5", "1"));
+  server.sendContent(webGui.formEnd("Start timer"));
+}
 
 void init_led_pins()
 {
-  addNewFormToWebGuiTable(webFormBuiltinLed, sizeof(webFormBuiltinLed) / sizeof(webFormBuiltinLed[0]));
+  registerModuleGui(renderLEDGui);
   pinMode(LED_PIN_1, OUTPUT);
   pinMode(LED_PIN_2, OUTPUT);
   pinMode(LED_PIN_3, OUTPUT);
@@ -187,7 +185,6 @@ void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
   }
 }
 
-
 void execute_led_pin_all(StaticJsonDocument<400> jsonDoc)
 {
   sequenceDelays[0] = jsonDoc["value1"].as<int>() * 1000;
@@ -201,13 +198,13 @@ void execute_led_pin_all(StaticJsonDocument<400> jsonDoc)
   currentLedStep = 0;
   digitalWrite(sequencePins[0], HIGH);
   ledStepStartTime = millis(); // włączamy stoper
-  
+
   addLog("led_pin_1 - ON");
   sendJson("led_pin_all started", 1, "log", sequenceReqID);
 
   // 3. OD RAZU odpowiadamy klientowi (brak blokowania)
   responseJson("led_pin_all started", 1, "log", sequenceReqID);
-  client.stop(); 
+  client.stop();
 }
 
 // Ta funkcja będzie ciągle "nasłuchiwać" w głównej pętli

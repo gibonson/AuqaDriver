@@ -1,31 +1,15 @@
 #pragma once
 
-// WEB LAYOUT CONFIGURATION
-String webGuiTable[100][4];
+typedef void (*ModuleGuiRenderer)(); // Typ: Wskaźnik na funkcję rysującą
+ModuleGuiRenderer guiRenderers[15];  // Tablica pomieści maksymalnie 15 modułów (zużywa tylko kilkadziesiąt bajtów RAM!)
+int registeredModulesCount = 0;
 
-void addNewFormToWebGuiTable(String newForm[][4], int newFormRows)
+void registerModuleGui(ModuleGuiRenderer renderer)
 {
-  int tableSize = sizeof(webGuiTable) / sizeof(webGuiTable[0]); // Calculate the size of the webGuiTable array
-
-  int firstFree = 0;
-  for (int i = 0; i < tableSize; i++)
+  if (registeredModulesCount < 15)
   {
-    // Serial.print("wiersz: " + String(i) + " ");
-
-    if (webGuiTable[i][0] == "")
-    {
-      firstFree = i; // Find the first free row in the webGuiTable array
-      break; // Exit the loop after finding the first free row
-    }
-  }
-
-  // Copy 3 rows from newForm to webGuiTable starting at firstFree
-  for (int k = 0; k < newFormRows; k++)
-  {
-    for (int m = 0; m < 4; m++)
-    {
-      webGuiTable[firstFree + k][m] = newForm[k][m]; // Fill the webGuiTable array with the newForm data
-    }
+    guiRenderers[registeredModulesCount] = renderer;
+    registeredModulesCount++;
   }
 }
 
@@ -98,7 +82,7 @@ public:
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
   const String HTML_ERROR = "\n";
 
-  void streamWebPage(String webContent[100][4], String logs = "no logs")
+  void streamWebPage(String logs = "no logs")
   {
     server.sendContent(HTML_BEGIN);
     server.sendContent("<h1>");
@@ -110,51 +94,9 @@ public:
     server.sendContent(logs);
     server.sendContent("</textarea></br>\n</div>");
 
-    for (int htmlLine = 0; htmlLine < 100; htmlLine++)
+    for (int i = 0; i < registeredModulesCount; i++)
     {
-      if (webContent[htmlLine][0] == "")
-        continue; // Optymalizacja: pomijamy puste wiersze
-
-      if (webContent[htmlLine][0] == "hHtml")
-      {
-        server.sendContent(hHtml(webContent[htmlLine][1]));
-      }
-      else if (webContent[htmlLine][0] == "pHtml")
-      {
-        server.sendContent(pHtml(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else if (webContent[htmlLine][0] == "formBegin")
-      {
-        server.sendContent(formBegin(webContent[htmlLine][1]));
-      }
-      else if (webContent[htmlLine][0] == "formText")
-      {
-        server.sendContent(formText(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else if (webContent[htmlLine][0] == "formNumber")
-      {
-        server.sendContent(formNumber(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else if (webContent[htmlLine][0] == "formHidden")
-      {
-        server.sendContent(formHidden(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else if (webContent[htmlLine][0] == "formEnd")
-      {
-        server.sendContent(formEnd(webContent[htmlLine][1]));
-      }
-      else if (webContent[htmlLine][0] == "button")
-      {
-        server.sendContent(htmlButton(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else if (webContent[htmlLine][0] == "button2")
-      {
-        server.sendContent(htmlButton2(webContent[htmlLine][1], webContent[htmlLine][2], webContent[htmlLine][3]));
-      }
-      else
-      {
-        server.sendContent(HTML_ERROR);
-      }
+      guiRenderers[i]();
     }
 
     server.sendContent("<h6>APP Version: ");
@@ -168,14 +110,13 @@ public:
     return "<h1>" + text + "</h1>\n";
   }
 
-  String pHtml(String text, String text2, String text3)
+  String pHtml(String text)
   {
-    return "<h3>" + text + text2 + text3 + "</h3>\n";
+    return "<h3>" + text + "</h3>\n";
   }
 
   String formBegin(String action)
   {
-    // return "<form action='" + action + "'>\n<table>\n";
     return "<form class='json-form' action = json >\n<table>\n";
   }
 
