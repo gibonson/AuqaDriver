@@ -10,7 +10,7 @@ DHT dht(DHT_PIN, DHTTYPE); // Initialize DHT sensor
 void renderDHT22Gui()
 {
     server.sendContent(webGui.pHtml("webFormDHT22"));
-    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formBegin());
     server.sendContent(webGui.formHidden("", "function", "getDHT22"));
     server.sendContent(webGui.formEnd("Get sensor value DHT22"));
 }
@@ -36,7 +36,6 @@ void execute_dht22(StaticJsonDocument<400> jsonDoc)
     String moduleName = "DHT22";
     if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
-        addLog("Module " + moduleName + " is disabled in disableModuleList");
         responseJson("Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
     }
     else
@@ -45,7 +44,6 @@ void execute_dht22(StaticJsonDocument<400> jsonDoc)
         // float newH = random(40, 60); // Simulated humidity value
         float newT = dht.readTemperature();
         float newH = dht.readHumidity();
-        addLog("Simulated DHT22 data: Temperature = " + String(newT) + "°C, Humidity = " + String(newH) + "%");
         responseJson("DHT22 data", 1, "log", jsonDoc["requestID"].as<String>());
         sendJson("DHT22 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
         sendJson("DHT22 humidity: ", newH, "%", jsonDoc["requestID"].as<String>());

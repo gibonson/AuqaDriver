@@ -90,7 +90,7 @@ public:
     server.sendContent("</h1>");
     server.sendContent(END_LINE);
 
-    server.sendContent("<div class='container'><textarea id='logs' readonly name='logs' rows='11' cols='80'>");
+    server.sendContent("<div class='container'><textarea id='logs' readonly name='logs' rows='11' cols='120'>");
     server.sendContent(logs);
     server.sendContent("</textarea></br>\n</div>");
 
@@ -115,7 +115,7 @@ public:
     return "<h3>" + text + "</h3>\n";
   }
 
-  String formBegin(String action)
+  String formBegin()
   {
     return "<form class='json-form' action = json >\n<table>\n";
   }

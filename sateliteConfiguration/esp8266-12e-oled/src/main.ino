@@ -2,7 +2,7 @@
 #include <ArduinoJson.h> // JSON library for Arduino, used to create and parse JSON objects
 
 // app version
-#define APP_VERSION "0.0.3"
+#define APP_VERSION "0.0.4"
 
 // Project files list
 String moduleList = "DS18B20,DHT22,OLED,BuiltinLed,RADIO_433"; // List of modules available in the system
@@ -39,7 +39,7 @@ void setupRouting()
               webGui.streamWebPage(getLogs());                 // Nasza funkcja (bez argumentu server.client!)
               server.sendContent("");                          // ZAMYKA strumień HTML!
             });
-            
+
   server.on("/newConfig", HTTP_GET, []()
             {
               server.setContentLength(CONTENT_LENGTH_UNKNOWN);
@@ -48,7 +48,6 @@ void setupRouting()
               server.sendContent(""); // ZAMYKA strumień HTML!
             });
 
-  // Nowy serwer automatycznie dekoduje parametry formularza POST!
   server.on("/saveNewConfig", HTTP_POST, []()
             {
     if (server.hasArg("ssid")) deviceConfig.ssid = server.arg("ssid");
@@ -101,10 +100,7 @@ void setupRouting()
     else if (func == "getDHT22") execute_dht22(jsonDoc);
     else if (func == "getDS18B20") execute_ds18b20(jsonDoc);
     else if (func.indexOf("433") >= 0) execute_433(jsonDoc);
-    else {
-      addLog("Unknown function in JSON: " + func);
-      responseJson("Unknown function", 0, "error", jsonDoc["requestID"].as<String>());
-    } });
+    else responseJson("Unknown function: " + func, 0, "error", jsonDoc["requestID"].as<String>()); });
 }
 
 void setup()
@@ -126,7 +122,6 @@ void setup()
   init_dht22();    // Initialize DHT22 sensor configuration
   init_433();      // Initialize RF 433 module
 
-  addLog("Device started");
   sendJson("Device started", 1, "log");
 
   pinMode(MOTION_SENSOR, INPUT_PULLUP);                                           // PIR Motion Sensor mode INPUT_PULLUP
@@ -141,8 +136,7 @@ void loop()
   {
     motionDetected = false;
     Serial.println("Interrupt!!! - Motion detected");
-    addLog("Motion detected");
-    sendJson("Motion", 1, "Alert");
+    sendJson("Motion detected", 1, "Alert");
   }
 
   handleLedSequence();   // Checking LEDs without blocking

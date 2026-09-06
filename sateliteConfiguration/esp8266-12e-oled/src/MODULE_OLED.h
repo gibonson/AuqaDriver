@@ -16,7 +16,7 @@ Adafruit_SSD1306 *display;
 void renderOledGui()
 {
   server.sendContent(webGui.pHtml("webFormOLED"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "lcd"));
   server.sendContent(webGui.formText("Text to send:", "value1", "1"));
   server.sendContent(webGui.formText("Text to send:", "value2", "1"));
@@ -79,7 +79,6 @@ void execute_oled(StaticJsonDocument<400> jsonDoc)
   String moduleName = "OLED";
   if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
   {
-    addLog("Module " + moduleName + " is disabled in disableModuleList");
     responseJson("Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
   }
   else
@@ -93,7 +92,6 @@ void execute_oled(StaticJsonDocument<400> jsonDoc)
     String value7 = jsonDoc["value7"].as<String>();
     String value8 = jsonDoc["value8"].as<String>();
 
-    addLog("Received OLED data: " + value1 + ", " + value2 + ", " + value3 + ", " + value4 + ", " + value5 + ", " + value6 + ", " + value7 + ", " + value8);
     responseJson("OLED updated", 1, "log", jsonDoc["requestID"].as<String>());
     handle_oled(value1, value2, value3, value4, value5, value6, value7, value8);
   }

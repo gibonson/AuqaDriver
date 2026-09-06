@@ -11,7 +11,7 @@ DallasTemperature sensors(&oneWire); // Pass our oneWire reference to Dallas Tem
 void renderDS18B20Gui()
 {
     server.sendContent(webGui.pHtml("webFormDS18B20"));
-    server.sendContent(webGui.formBegin(""));
+    server.sendContent(webGui.formBegin());
     server.sendContent(webGui.formHidden("", "function", "getDS18B20"));
     server.sendContent(webGui.formEnd("Get sensor value DS18B20"));
 }
@@ -40,7 +40,6 @@ void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
     String moduleName = "DS18B20";
     if (deviceConfig.disableModuleList.indexOf(moduleName) != -1)
     {
-        addLog("Module " + moduleName + " is disabled in disableModuleList");
         responseJson("Module " + moduleName + " is disabled in disableModuleList", 0, "error", jsonDoc["requestID"].as<String>());
     }
     else
@@ -52,12 +51,10 @@ void execute_ds18b20(StaticJsonDocument<400> jsonDoc)
         Serial.println(newT);
         if (newT == DEVICE_DISCONNECTED_C)
         {
-            addLog("Error: DS18B20 sensor disconnected");
             responseJson("DS18B20 sensor disconnected", 0, "error", jsonDoc["requestID"].as<String>());
             sendJson("DS18B20 sensor disconnected: ", 0, "error", jsonDoc["requestID"].as<String>());
         }
         // float newT = random(20, 30); // Simulated temperature value
-        addLog("DS18B20 sensor data: Temperature = " + String(newT) + "°C");
         responseJson("DS18B20 data", 1, "log", jsonDoc["requestID"].as<String>());
         sendJson("DS18B20 temperature: ", newT, "°C", jsonDoc["requestID"].as<String>());
     }

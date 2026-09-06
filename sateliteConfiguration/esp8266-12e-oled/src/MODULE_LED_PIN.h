@@ -15,47 +15,47 @@ String sequenceReqID = "";
 void renderLEDGui()
 {
   server.sendContent(webGui.pHtml("webFormLed"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "builtinLed"));
   server.sendContent(webGui.formHidden("", "ledState", "on"));
   server.sendContent(webGui.formEnd("Led ON"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "builtinLed"));
   server.sendContent(webGui.formHidden("", "ledState", "off"));
   server.sendContent(webGui.formEnd("Led OFF"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_2"));
   server.sendContent(webGui.formHidden("", "ledState", "on"));
-  server.sendContent(webGui.formEnd("Led 2"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 2 ON"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_2"));
   server.sendContent(webGui.formHidden("", "ledState", "off"));
-  server.sendContent(webGui.formEnd("Led 2"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 2 OFF"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_3"));
   server.sendContent(webGui.formHidden("", "ledState", "on"));
-  server.sendContent(webGui.formEnd("Led 3"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 3 ON"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_3"));
   server.sendContent(webGui.formHidden("", "ledState", "off"));
-  server.sendContent(webGui.formEnd("Led 3"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 3 OFF"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_4"));
   server.sendContent(webGui.formHidden("", "ledState", "on"));
-  server.sendContent(webGui.formEnd("Led 4"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 4 ON"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_4"));
   server.sendContent(webGui.formHidden("", "ledState", "off"));
-  server.sendContent(webGui.formEnd("Led 4"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 4 OFF"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_5"));
   server.sendContent(webGui.formHidden("", "ledState", "on"));
-  server.sendContent(webGui.formEnd("Led 5"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 5 ON"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_5"));
   server.sendContent(webGui.formHidden("", "ledState", "off"));
-  server.sendContent(webGui.formEnd("Led 5"));
-  server.sendContent(webGui.formBegin(""));
+  server.sendContent(webGui.formEnd("Led 5 OFF"));
+  server.sendContent(webGui.formBegin());
   server.sendContent(webGui.formHidden("", "function", "led_pin_all"));
   server.sendContent(webGui.formText("builtinLed", "value1", "1"));
   server.sendContent(webGui.formText("led_pin_2", "value2", "1"));
@@ -81,18 +81,15 @@ void execute_builtinLed(StaticJsonDocument<400> jsonDoc)
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_1, HIGH);
-    addLog("builtinLed - ON");
     responseJson("builtinLed ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_1, LOW);
-    addLog("builtinLed - OFF");
     responseJson("builtinLed OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
-    addLog("Unknown LED state: " + ledState);
     responseJson("Unknown builtinLed state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
@@ -103,18 +100,15 @@ void execute_led_pin_2(StaticJsonDocument<400> jsonDoc)
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_2, HIGH);
-    addLog("led_pin_2 - ON");
     responseJson("led_pin_2 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_2, LOW);
-    addLog("led_pin_2 - OFF");
     responseJson("led_pin_2 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
-    addLog("Unknown LED state: " + ledState);
     responseJson("Unknown led_pin_2 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
@@ -125,13 +119,11 @@ void execute_led_pin_3(StaticJsonDocument<400> jsonDoc)
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_3, HIGH);
-    addLog("led_pin_3 - ON");
     responseJson("led_pin_3 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_3, LOW);
-    addLog("led_pin_3 - OFF");
     responseJson("led_pin_3 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
@@ -147,18 +139,15 @@ void execute_led_pin_4(StaticJsonDocument<400> jsonDoc)
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_4, HIGH);
-    addLog("led_pin_4 - ON");
     responseJson("led_pin_4 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_4, LOW);
-    addLog("led_pin_4 - OFF");
     responseJson("led_pin_4 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
-    addLog("Unknown LED state: " + ledState);
     responseJson("Unknown led_pin_4 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
@@ -169,18 +158,15 @@ void execute_led_pin_5(StaticJsonDocument<400> jsonDoc)
   if (ledState == "on")
   {
     digitalWrite(LED_PIN_5, HIGH);
-    addLog("led_pin_5 - ON");
     responseJson("led_pin_5 ON", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else if (ledState == "off")
   {
     digitalWrite(LED_PIN_5, LOW);
-    addLog("led_pin_5 - OFF");
     responseJson("led_pin_5 OFF", 1, "log", jsonDoc["requestID"].as<String>());
   }
   else
   {
-    addLog("Unknown LED state: " + ledState);
     responseJson("Unknown led_pin_5 state", 0, "error", jsonDoc["requestID"].as<String>());
   }
 }
@@ -199,10 +185,7 @@ void execute_led_pin_all(StaticJsonDocument<400> jsonDoc)
   digitalWrite(sequencePins[0], HIGH);
   ledStepStartTime = millis(); // włączamy stoper
 
-  addLog("led_pin_1 - ON");
   sendJson("led_pin_all started", 1, "log", sequenceReqID);
-
-  // 3. OD RAZU odpowiadamy klientowi (brak blokowania)
   responseJson("led_pin_all started", 1, "log", sequenceReqID);
   client.stop();
 }
