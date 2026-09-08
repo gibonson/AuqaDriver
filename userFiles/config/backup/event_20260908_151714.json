@@ -41,7 +41,7 @@
   },
   {
     "eventName": "kor4",
-    "eventAddress": "http://192.168.0.185/json",
+    "eventAddress": "http://192.168.0.185",
     "eventType": "JSON",
     "eventDescription": "akwarium_on",
     "eventPayload": "{\"function\" : \"433socket2ON\"}",
@@ -49,7 +49,7 @@
   },
   {
     "eventName": "kor5",
-    "eventAddress": "http://192.168.0.185/json",
+    "eventAddress": "http://192.168.0.185",
     "eventType": "JSON",
     "eventDescription": "akwarium_off",
     "eventPayload": "{\"function\" : \"433socket2OFF\"}",
@@ -73,7 +73,7 @@
   },
   {
     "eventName": "kor8",
-    "eventAddress": "http://192.168.0.185/json",
+    "eventAddress": "http://192.168.0.185",
     "eventType": "JSON",
     "eventDescription": "getDHT22",
     "eventPayload": "{\"function\" : \"getDHT22\"}",

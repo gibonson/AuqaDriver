@@ -83,6 +83,7 @@ class WebContentCollector:
                                     
                                     requestData["requestID"] = self.requestID
                                     ResponseTrigger(requestData).execute()
+                                    break
                                 except (ValueError, json.JSONDecodeError) as json_err:
                                     errorMessage = f"Attempt: {attempt}. Received 200 OK, but failed to parse JSON. Error: {json_err}. Response text: {str(response.text[:100])}"
                                     break
@@ -106,7 +107,7 @@ class WebContentCollector:
                         "type": "Error",
                         "value": 0,
                     }
-                    ResponseTrigger(requestData)
+                    ResponseTrigger(requestData).execute()
 
 
 

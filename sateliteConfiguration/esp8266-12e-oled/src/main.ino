@@ -34,10 +34,10 @@ void setupRouting()
 {
   server.on("/", HTTP_GET, []()
             {
-              server.setContentLength(CONTENT_LENGTH_UNKNOWN); // Tryb strumieniowania
-              server.send(200, "text/html", "");               // Wysyłamy same nagłówki
-              webGui.streamWebPage(getLogs());                 // Nasza funkcja (bez argumentu server.client!)
-              server.sendContent("");                          // ZAMYKA strumień HTML!
+              server.setContentLength(CONTENT_LENGTH_UNKNOWN);                     // Tryb strumieniowania
+              server.send(200, "text/html", "");                                   // Wysyłamy same nagłówki
+              webGui.streamWebPage(); // Nasza funkcja (bez argumentu server.client!)
+              server.sendContent("");                                              // ZAMYKA strumień HTML!
             });
 
   server.on("/newConfig", HTTP_GET, []()
@@ -61,15 +61,29 @@ void setupRouting()
     server.send(200, "text/html", "<html><body><h1>Configuration updated</h1><p>Your settings were saved.</p><a href='/newConfig'><button class='button'>Back</button></a><a href='/'><button class='button'>Home</button></a></body></html>"); });
 
   server.on("/logs", HTTP_GET, []()
-            { responseJson(getLogs(), 1, "log"); });
+            {
+              server.setContentLength(CONTENT_LENGTH_UNKNOWN);
+              server.send(200, "text/plain", "");
+
+              int start = (logIndex + LOG_SIZE - logCount) % LOG_SIZE;
+              for (int i = 0; i < logCount; i++)
+              {
+                int idx = (start + i) % LOG_SIZE;
+                if (logs[idx].length() > 0)
+                {
+                  server.sendContent(logs[idx] + "\n"); // Wysyłamy log po logu
+                }
+              }
+              server.sendContent(""); // Koniec strumienia
+            });
 
   server.on("/status", HTTP_GET, []()
             { responseJson("Connection ok", 1, "log", "Device Status"); });
 
   server.on("/readConfig", HTTP_GET, []()
             {
-    String configData = "SSID: " + deviceConfig.ssid + "\nPassword: " + deviceConfig.password + "\nDevice IP: " + deviceConfig.deviceIP + "\nDevice Name: " + deviceConfig.deviceName + "\nServer Address: " + deviceConfig.serverAddress + "\nDisable List: " + deviceConfig.disableModuleList;
-    responseJson(configData, 1, "log", "Device Config"); });
+          String configData = "SSID: " + deviceConfig.ssid + "\nPassword: " + deviceConfig.password + "\nDevice IP: " + deviceConfig.deviceIP + "\nDevice Name: " + deviceConfig.deviceName + "\nServer Address: " + deviceConfig.serverAddress + "\nDisable List: " + deviceConfig.disableModuleList;
+          responseJson(configData, 1, "log", "Device Config"); });
 
   server.on("/restart", HTTP_GET, []()
             {

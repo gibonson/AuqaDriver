@@ -82,7 +82,7 @@ public:
   const String RESULT_LOG_END = "</body>\n<a href='javascript:history.back()'><button class='button'>Go Back</button></a>";
   const String HTML_ERROR = "\n";
 
-  void streamWebPage(String logs = "no logs")
+  void streamWebPage()
   {
     server.sendContent(HTML_BEGIN);
     server.sendContent("<h1>");
@@ -91,7 +91,20 @@ public:
     server.sendContent(END_LINE);
 
     server.sendContent("<div class='container'><textarea id='logs' readonly name='logs' rows='11' cols='120'>");
-    server.sendContent(logs);
+
+    // --- POCZĄTEK STRUMIENIOWANIA LOGÓW ---
+    int start = (logIndex + LOG_SIZE - logCount) % LOG_SIZE;
+    for (int i = 0; i < logCount; i++)
+    {
+      int idx = (start + i) % LOG_SIZE;
+      if (logs[idx].length() > 0)
+      {
+        // Wysyłamy pojedynczy log z tablicy + znak nowej linii HTML (&#13;&#10;)
+        server.sendContent(logs[idx] + "&#13;&#10;");
+      }
+    }
+    // --- KONIEC STRUMIENIOWANIA LOGÓW ---
+
     server.sendContent("</textarea></br>\n</div>");
 
     for (int i = 0; i < registeredModulesCount; i++)
