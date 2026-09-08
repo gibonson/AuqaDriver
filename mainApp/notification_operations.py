@@ -85,7 +85,7 @@ def emailSender(subject, message, flashMessage=False):
                 "value": "-",
                 "requestID": "emailSender",
             }
-            ArchiveAdder(requestData)
+            ArchiveAdder(requestData).save()
 
 
 def pushoverSender(message, attachment=None):
@@ -123,4 +123,4 @@ def pushoverSender(message, attachment=None):
                 "value": "-",
                 "requestID": "pushoverSender",
             }
-            ArchiveAdder(requestData)
+            ArchiveAdder(requestData).save()

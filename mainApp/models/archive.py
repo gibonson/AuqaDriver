@@ -72,23 +72,28 @@ class ArchiveSearchList():
 
 class ArchiveAdder():
     def __init__(self, requestData: dict):
-        self.message = 'Added to archive'
-        logger.info("Adding record to archive")
+        self.requestData = requestData
+        self.message = 'Ready to add'
 
+    def save(self):
+        logger.info("Adding record to archive")
         try:
-            logger.debug("Values to add: %s", requestData)
+            logger.debug("Values to add: %s", self.requestData)
             timestamp = round(time.time())
-            addInfo = requestData["addInfo"]
-            deviceName = requestData["deviceName"]
-            deviceIP = requestData["deviceIP"]
-            type = requestData["type"]
-            value = requestData["value"]
-            requestID = requestData["requestID"]
-            comment = requestData["comment"] if "comment" in requestData else None
-            add_to_archiwe = Archive(timestamp=timestamp, deviceIP=deviceIP,
-                                    deviceName=deviceName, addInfo=addInfo, value=value, type=type, requestID=requestID, comment=comment)
-            db.session.add(add_to_archiwe)
+            
+            add_to_archive = Archive(
+                timestamp=timestamp, 
+                deviceIP=self.requestData.get("deviceIP", ""),
+                deviceName=self.requestData.get("deviceName", ""), 
+                addInfo=self.requestData.get("addInfo", ""), 
+                value=self.requestData.get("value", 0), 
+                type=self.requestData.get("type", ""), 
+                requestID=self.requestData.get("requestID", ""), 
+                comment=self.requestData.get("comment")
+            )
+            db.session.add(add_to_archive)
             db.session.commit()
+            self.message = 'Added to archive'
 
         except Exception as e:
             logger.error(f"An error occurred: {e}")

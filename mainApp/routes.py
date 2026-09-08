@@ -90,7 +90,7 @@ def create():
             "type": "Log",
             "value": 0,
         }
-        ArchiveAdder(requestData)
+        ArchiveAdder(requestData).save()
         flash_message("New database has been created", "info")
     return redirect(url_for("get_jobs"))
 
