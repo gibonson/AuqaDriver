@@ -1,0 +1,62 @@
+[
+  {
+    "schedulerName": "sched0-restart",
+    "schedulerDescription": "akwa+paladarium ON",
+    "reportList": [],
+    "eventList": [
+      "akw1",
+      "kor1"
+    ],
+    "trigger": "cron",
+    "day": 0,
+    "hour": 1,
+    "minute": 0,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "sched1",
+    "schedulerDescription": "akwa+paladarium ON",
+    "reportList": [],
+    "eventList": [
+      "kor4",
+      "kor6"
+    ],
+    "trigger": "cron",
+    "day": 0,
+    "hour": 10,
+    "minute": 0,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "sched2",
+    "schedulerDescription": "akwa+paladarium OFF",
+    "reportList": [],
+    "eventList": [
+      "kor5",
+      "kor7"
+    ],
+    "trigger": "cron",
+    "day": 0,
+    "hour": 18,
+    "minute": 0,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  },
+  {
+    "schedulerName": "sched3",
+    "schedulerDescription": "testowy sched",
+    "reportList": [],
+    "eventList": [
+      "kor8",
+      "akw2"
+    ],
+    "trigger": "interval",
+    "day": 0,
+    "hour": 0,
+    "minute": 5,
+    "second": 0,
+    "schedulerStatus": "Ready"
+  }
+]

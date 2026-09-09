@@ -41,9 +41,9 @@ Below is a checklist of architectural and security improvements to ensure the ap
 
 The codebase has great logic but can be simplified to make it easier to read and maintain.
 
-- [ ] **Move JSON configs to the Database:** Currently, events, dashboards, and validations are stored in separate `.json` files. This requires complex file reading, caching, and forms. *Move these into SQLite tables*. It will drastically simplify your code, enable direct editing via the dashboard, and remove the need for `config_operations.py`.
+
 - [ ] **Remove "Wrapper" Classes:** Classes like `ArchiveLister`, `EventListerJson`, and `ValidationLister` only do one thing: fetch a list. They add unnecessary complexity. *Suggestion:* Replace them with simple functions (e.g., `def get_all_events():`) or use direct SQLAlchemy queries in your routes.
-- [ ] **Stop using `__init__` for Actions:** Classes like `ArchiveAdder` and `ResponseTrigger` execute heavy logic (saving to DB, sending emails) right when they are created. *Suggestion:* Keep `__init__` strictly for assigning variables, and create an `.execute()` or `.save()` method for the actual work (partially done, but requires enforcement across the app).
+
 - [ ] **Implement Flask Blueprints:** `routes.py` is getting too large. Split it into logical modules (Blueprints):
     *   `routes_dashboard.py` (web interface)
     *   `routes_api.py` (ESP communication)

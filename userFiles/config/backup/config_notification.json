@@ -1,0 +1,11 @@
+{
+  "EMAIL": {
+    "USER_NAME": "notyfikacje@q3em.pl",
+    "PASSWORD": "SigmaOrionis77!",
+    "DEFAULT_RECIPIENT": "jakubpalica@gmail.com"
+  },
+  "PUSHOVER": {
+    "TOKEN": "agc597vvk25eurvd4nda242z5wbj63",
+    "USER": "utzzgbyusmzdmarc1tvopc67jnfexf"
+  }
+}
