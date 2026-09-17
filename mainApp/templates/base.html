@@ -13,6 +13,7 @@
    <!-- Font Awesome -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
    <title>{% block title %}{% endblock %}</title>
 
@@ -42,7 +43,6 @@
 
       th,
       td {
-         width: 10%;
          padding: 8px;
          text-align: left;
          border-top: 1px solid #ddd;
@@ -51,6 +51,10 @@
       table,
       form {
          width: 100%;
+      }
+
+      .container {
+         max-width: 1600px !important;
       }
 
       .text-truncate-custom {
@@ -67,104 +71,107 @@
 
    <nav class="navbar navbar-expand-lg navbar-dark px-2">
 
-      <a class="navbar-brand me-3" href="{{ url_for('dashboard') }}"><img src="/static/LogoBIG.png" alt="Logo"
-            width="50" style="margin-top: 8px;"></a>
+      <div class="container">
 
-      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
-         <span class="navbar-toggler-icon"></span>
-      </button>
+         <a class="navbar-brand me-3" href="{{ url_for('dashboard') }}"><img src="/static/LogoBIG.png" alt="Logo"
+               width="50" style="margin-top: 8px;"></a>
 
-      <div class="collapse navbar-collapse" id="nav">
-         <ul class="navbar-nav gap-2">
+         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+            <span class="navbar-toggler-icon"></span>
+         </button>
 
-            {# ---- Scheduler ---- #}
-            {% set scheduler = {
-            "1": ("success", "RUNNING", "pause", "Pause", "pause"),
-            "2": ("warning", "PAUSED", "resume", "Resume", "play")
-            }.get(state) %}
+         <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav gap-2">
 
-            <li class="nav-item dropdown">
-               {% if scheduler %}
-               <a class="btn btn-{{ scheduler[0] }} dropdown-toggle" data-bs-toggle="dropdown">
-                  Scheduler: {{ scheduler[1] }}
-               </a>
-               <ul class="dropdown-menu">
-                  <li>
-                     <a class="dropdown-item" href="{{ url_for(scheduler[2]) }}">
-                        <i class="fa fa-{{ scheduler[4] }}"></i> {{ scheduler[3] }}
-                     </a>
-                  </li>
-               </ul>
-               {% else %}
-               <span class="btn btn-secondary disabled">Status Unknown</span>
-               {% endif %}
-            </li>
+               {# ---- Scheduler ---- #}
+               {% set scheduler = {
+               "1": ("success", "RUNNING", "pause", "Pause", "pause"),
+               "2": ("warning", "PAUSED", "resume", "Resume", "play")
+               }.get(state) %}
 
-            {# ---- Admin ---- #}
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                  <i class="fa fa-server"></i> Admin
-               </a>
-               <ul class="dropdown-menu">
-
-                  {% set tables = [
-                  ('get_jobs', 'Jobs', 'fa-cog'),
-                  ('archive_add_manually', 'Add', 'fa fa-hand-spock-o'),
-                  ('get_logs', 'Logs', 'fa fa-file-text'),
-                  ('email_send', 'Email Test', 'fa-envelope'),
-                  ('get_report_all', 'Reports Test', 'fa fa-table')
-                  ] %}
-
-                  {% for table_name, display_name, icon in tables %}
-                  <li>
-                     <a class="dropdown-item" href="{{ url_for(table_name)}}">
-                        <i class="fa {{ icon }}"></i> {{ display_name }}
-                     </a>
-                  </li>
-                  {% endfor %}
-               </ul>
-            </li>
-
-            {# ---- Config ---- #}
-            <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                  <i class="fa fa-server"></i> Config
-               </a>
-               <ul class="dropdown-menu">
-                  {% set tables = [
-                  ('event', 'Events', 'fa-cog'),
-                  ('event_scheduler', 'Scheduler', 'fa-clock-o'),
-                  ('archive_report', 'Reports', 'fa-cog'),
-                  ('dashboard', 'Dashboard', 'fa-cog'),
-                  ('event_validation', 'Event Validation', 'fa-cog')
-                  ] %}
-
-                  {% for table_name, display_name, icon in tables %}
-                  <li>
-                     <a class="dropdown-item" href="{{ url_for('config_table', tableName=table_name) }}">
-                        <i class="fa {{ icon }}"></i> {{ display_name }} Edit
-                     </a>
-                  </li>
-                  <li>
-                     <a class="dropdown-item" href="{{ url_for('get_table', tableName=table_name) }}">
-                        <i class="fa fa-list"></i> {{ display_name }} List
-                     </a>
-                  </li>
-                  {% if not loop.last %}
-                  <div class="dropdown-divider"></div>
+               <li class="nav-item dropdown">
+                  {% if scheduler %}
+                  <a class="btn btn-{{ scheduler[0] }} dropdown-toggle" data-bs-toggle="dropdown">
+                     Scheduler: {{ scheduler[1] }}
+                  </a>
+                  <ul class="dropdown-menu">
+                     <li>
+                        <a class="dropdown-item" href="{{ url_for(scheduler[2]) }}">
+                           <i class="fa fa-{{ scheduler[4] }}"></i> {{ scheduler[3] }}
+                        </a>
+                     </li>
+                  </ul>
+                  {% else %}
+                  <span class="btn btn-secondary disabled">Status Unknown</span>
                   {% endif %}
-                  {% endfor %}
-               </ul>
-            </li>
+               </li>
 
-            <li class="nav-item">
-               <a class="nav-link" href="{{ url_for('archive_search') }}">
-                  <i class="fa fa-search"></i> Archive Search
-               </a>
-            </li>
-         </ul>
+               {# ---- Admin ---- #}
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                     <i class="fa fa-server"></i> Admin
+                  </a>
+                  <ul class="dropdown-menu">
 
-         <span class="navbar-text ms-auto">host: {{ hostname }}</span>
+                     {% set tables = [
+                     ('get_jobs', 'Jobs', 'fa-cog'),
+                     ('archive_add_manually', 'Add', 'fa fa-hand-spock-o'),
+                     ('get_logs', 'Logs', 'fa fa-file-text'),
+                     ('email_send', 'Email Test', 'fa-envelope'),
+                     ('get_report_all', 'Reports Test', 'fa fa-table')
+                     ] %}
+
+                     {% for table_name, display_name, icon in tables %}
+                     <li>
+                        <a class="dropdown-item" href="{{ url_for(table_name)}}">
+                           <i class="fa {{ icon }}"></i> {{ display_name }}
+                        </a>
+                     </li>
+                     {% endfor %}
+                  </ul>
+               </li>
+
+               {# ---- Config ---- #}
+               <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                     <i class="fa fa-server"></i> Config
+                  </a>
+                  <ul class="dropdown-menu">
+                     {% set tables = [
+                     ('event', 'Events', 'fa-cog'),
+                     ('event_scheduler', 'Scheduler', 'fa-clock-o'),
+                     ('archive_report', 'Reports', 'fa-cog'),
+                     ('dashboard', 'Dashboard', 'fa-cog'),
+                     ('event_validation', 'Event Validation', 'fa-cog')
+                     ] %}
+
+                     {% for table_name, display_name, icon in tables %}
+                     <li>
+                        <a class="dropdown-item" href="{{ url_for('config_table', tableName=table_name) }}">
+                           <i class="fa {{ icon }}"></i> {{ display_name }} Edit
+                        </a>
+                     </li>
+                     <li>
+                        <a class="dropdown-item" href="{{ url_for('get_table', tableName=table_name) }}">
+                           <i class="fa fa-list"></i> {{ display_name }} List
+                        </a>
+                     </li>
+                     {% if not loop.last %}
+                     <div class="dropdown-divider"></div>
+                     {% endif %}
+                     {% endfor %}
+                  </ul>
+               </li>
+
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('archive_search') }}">
+                     <i class="fa fa-search"></i> Archive Search
+                  </a>
+               </li>
+            </ul>
+
+            <span class="navbar-text ms-auto">host: {{ hostname }}</span>
+         </div>
       </div>
    </nav>
 
@@ -199,12 +206,14 @@
    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
    <script>
       $(document).ready(function () {
          $('#sortingTable').DataTable({
             "order": [[0, "desc"]],   // default sort column index and direction
-            "pageLength": 25
+            "pageLength": 25,
+            responsive: true
          });
       });
    </script>
