@@ -4,6 +4,7 @@ venv
 .vscode
 wifiPass.h
 userFiles/media
+userFiles/config/backup
 userFiles/config/config_notification.json
 userFiles/db.sqlite
 userFiles/app.log
