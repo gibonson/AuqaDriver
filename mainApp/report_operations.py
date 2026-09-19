@@ -2,7 +2,7 @@ from datetime import datetime
 import time
 from mainApp import app, logger
 from sqlalchemy import create_engine, text
-from mainApp.models.archive_report import ArchiveReportLister
+from mainApp.models.archive_report import ReportManager
 from mainApp.notification_operations import emailSender
 
 class HtmlBuilder:
@@ -85,7 +85,7 @@ class ReportCreator:
         self.archive_report_id_list = archive_report_id_list
 
     def create_all(self):
-        archive_report_list = ArchiveReportLister().get_list()
+        archive_report_list = ReportManager().get_all()
         reportAll =  HtmlBuilder.HTML_START
         for archive_report in archive_report_list:
             reportAll += self.create_one_line(archive_report.reportName)
@@ -103,7 +103,7 @@ class ReportCreator:
 
     def create_one_line(self, report_name):
         archiveReportConfig = None
-        for report in ArchiveReportLister().get_list():
+        for report in ReportManager().get_all():
             if report.reportName == report_name:
                 archiveReportConfig = report
                 break

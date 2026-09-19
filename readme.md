@@ -22,30 +22,3 @@ Instead of relying on third-party cloud services, AquaDriver provides a private,
 *   **Frontend:** HTML, Bootstrap 5, DataTables
 *   **Deployment:** Designed for Docker / Linux environments
 *   **IoT Communication:** HTTP, JSON, MJPEG Streaming
-
----
-
-## 3. Improvement Checkpoints (Known Issues & Suggestions)
-
-Below is a checklist of architectural and security improvements to ensure the application remains stable as it scales.
-
-- [ ] **Fix SQL Injection Vulnerabilities:** Avoid using string concatenation (`+`) to build SQL queries in `__init__.py` and `report_operations.py`. Use parameterized queries (`:variable_name`) built into SQLAlchemy to prevent database corruption.
-- [ ] **Solve Circular Imports:** The `routes.py` file imports `models`, but `models` import `db` from `routes.py` (or `mainApp`). This makes the application fragile. Move the `db` initialization to a separate `extensions.py` file.
-- [ ] **Handle Synchronous Blocking:** Currently, `requests.get/post` calls to ESP devices happen in the main Flask thread. If a device is offline, Flask waits (blocks) until the timeout, slowing down the whole web interface. *Suggestion:* Move HTTP triggers to background threads or use asynchronous requests.
-- [ ] **Scheduler Duplication on Production:** If deployed with multiple Gunicorn workers, `APScheduler` will run multiple times, triggering devices simultaneously. *Suggestion:* Run the scheduler as a completely separate background script or use a lock mechanism.
-- [ ] **Unbounded Database Growth:** The `archive` table grows infinitely. *Suggestion:* Add a scheduled maintenance task to automatically delete logs older than 30 days.
-
----
-
-## 4. Code Simplifications (What to Remove or Move)
-
-The codebase has great logic but can be simplified to make it easier to read and maintain.
-
-
-- [ ] **Remove "Wrapper" Classes:** Classes like `ArchiveLister`, `EventListerJson`, and `ValidationLister` only do one thing: fetch a list. They add unnecessary complexity. *Suggestion:* Replace them with simple functions (e.g., `def get_all_events():`) or use direct SQLAlchemy queries in your routes.
-
-- [ ] **Implement Flask Blueprints:** `routes.py` is getting too large. Split it into logical modules (Blueprints):
-    *   `routes_dashboard.py` (web interface)
-    *   `routes_api.py` (ESP communication)
-    *   `routes_admin.py` (logs, jobs, config)
-- [ ] **Consolidate Config Forms:** You have multiple forms doing the exact same thing (editing JSON text). Once moved to the database, you can replace the JSON text areas with standard CRUD (Create, Read, Update, Delete) tables for easier management.

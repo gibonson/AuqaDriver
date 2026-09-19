@@ -32,9 +32,9 @@ class Validation:
         self.message = message
 
 
-class ValidationLister:
-    def __init__(self, status='All', actionType='All'):
-        self.Validation = []
+class ValidationManager:
+    def __init__(self):
+        self.validations = []
         try:
             raw_validation_list = load_config_json('event_validation.json')
             for raw in raw_validation_list:
@@ -52,10 +52,14 @@ class ValidationLister:
                     eventId=raw.get('eventId'),
                     message=raw.get('message', '')
                 )
-                self.Validation.append(validation)
+                self.validations.append(validation)
         except Exception as e:
             logger.error(f'An error occurred while fetching Validation: {e}')
 
-    def get_list(self):
-        return self.Validation
+    def get_all(self):
+        return self.validations
+    
+    def get_ready(self):
+        ready = filter(lambda x: x.status == "Ready", self.validations)
+        return list(ready)
     

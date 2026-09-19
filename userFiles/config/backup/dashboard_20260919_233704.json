@@ -6,7 +6,7 @@
     "panelName": "Event panel 66666",
     "panelCode": "12",
     "panelBackground": "#0000ff",
-    "panelStatus": "Ready"
+    "panelStatus": "Not Ready"
   },
   {
     "panelType": "HTML",

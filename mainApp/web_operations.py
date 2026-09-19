@@ -6,9 +6,9 @@ import os
 from datetime import datetime
 from mainApp.utils import DashboardData
 from mainApp import app, logger
-from mainApp.models.event import EventGetByEventName
+from mainApp.models.event import EventManager
 from mainApp.models.archive import ArchiveAdder
-from mainApp.models.event_validation import ValidationLister
+from mainApp.models.event_validation import ValidationManager
 from mainApp.notification_operations import emailSender, pushoverSender
 
 
@@ -22,7 +22,7 @@ class WebContentCollector:
 
     def collector(self):
         with app.app_context():
-            event = EventGetByEventName(self.eventName).get_event()    
+            event = EventManager().get_by_name(self.eventName)    
             if event is None or event.eventStatus != "Ready":
                 logger.error(f"Event {self.eventName} not found or not ready")
             else:
@@ -140,8 +140,7 @@ class ResponseTrigger:
         # Metoda execute() robi faktyczną robotę (logika biznesowa)
         logger.debug(f"Request to validation: {self.requestData}")
         try:
-            validationLister = ValidationLister(status="Ready")
-            validationList = validationLister.get_list()
+            validationList = ValidationManager().get_ready()
 
             should_archive = True
 

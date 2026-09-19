@@ -26,7 +26,7 @@ class ArchiveReport:
         self.message = message
 
 
-class ArchiveReportLister:
+class ReportManager:
     def __init__(self):
         self.archiveReport = []
         try:
@@ -47,5 +47,5 @@ class ArchiveReportLister:
         except Exception as e:
             logger.error(f"An error occurred while fetching archive report: {e}")
 
-    def get_list(self):
+    def get_all(self):
         return self.archiveReport

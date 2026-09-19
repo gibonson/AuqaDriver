@@ -1,10 +1,10 @@
 from mainApp.web_operations import WebContentCollector
 from mainApp.report_operations import ReportSender
 from mainApp import logger
-from mainApp.models.event_scheduler import EventSchedulerGetBySchedulerName, EventSchedulerLister
+from mainApp.models.event_scheduler import EventSchedulerManager
 
 def event_trigger(schedulerName):
-        eventSchedulerDetail = EventSchedulerGetBySchedulerName(schedulerName).get_event()
+        eventSchedulerDetail = EventSchedulerManager().get_by_name(schedulerName)
         logger.debug(f"Scheduler to run: {schedulerName}")
         for eventId in eventSchedulerDetail.eventList:
             webContentCollector = WebContentCollector(eventId)
@@ -26,9 +26,9 @@ def sched_start(sched, schedulerNameToRun = None):
     logger.info("Scheduler starts running")
     eventSchedulerLister = []
     if schedulerNameToRun == None:
-        eventSchedulerLister = EventSchedulerLister().get_list()
+        eventSchedulerLister = EventSchedulerManager().get_all()
     else:
-        eventSchedulerDetail = EventSchedulerGetBySchedulerName(schedulerNameToRun).get_event()
+        eventSchedulerDetail = EventSchedulerManager().get_by_name(schedulerNameToRun)
         eventSchedulerLister.append(eventSchedulerDetail)
 
     for eventScheduler in eventSchedulerLister:

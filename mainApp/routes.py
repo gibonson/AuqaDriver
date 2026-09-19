@@ -38,11 +38,11 @@ from mainApp.config_operations import (
     restart_application,
     parse_config_text,
 )
-from mainApp.models.archive_report import ArchiveReportLister
-from mainApp.models.event import EventListerJson
-from mainApp.models.event_validation import ValidationLister
-from mainApp.models.event_scheduler import EventSchedulerLister
-from mainApp.models.dashboard import DashboardLister
+from mainApp.models.archive_report import ReportManager
+from mainApp.models.event import EventManager
+from mainApp.models.event_validation import ValidationManager
+from mainApp.models.event_scheduler import EventSchedulerManager
+from mainApp.models.dashboard import DashboardManager
 from mainApp.report_operations import ReportCreator
 from mainApp.scheduler_operations import sched_start
 from mainApp.web_operations import WebContentCollector, ResponseTrigger
@@ -115,15 +115,15 @@ def add_event():
 def get_table(tableName):
     table = []
     if tableName == "event":
-        table = EventListerJson().get_list()
+        table = EventManager().get_all()
     elif tableName == "event_scheduler":
-        table = EventSchedulerLister().get_list()
+        table = EventSchedulerManager().get_all()
     elif tableName == "event_validation":
-        table = ValidationLister().get_list()
+        table = ValidationManager().get_all()
     elif tableName == "archive_report":
-        table = ArchiveReportLister().get_list()
+        table = ReportManager().get_all()
     elif tableName == "dashboard":
-        table = DashboardLister().get_list()
+        table = DashboardManager().get_all()
     return render_template_with_addons(
         f"{tableName}-table.html", table=table, datetime=datetime
     )
@@ -369,7 +369,7 @@ def serve_media(filename):
 
 @app.route("/dashboard", methods=["GET"])
 def dashboard():
-    dashboardList = DashboardLister().get_list()
+    dashboardList = DashboardManager().get_ready()
 
     dashboardList.sort(key=lambda x: x.panelLocation)
 

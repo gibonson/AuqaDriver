@@ -21,7 +21,7 @@ class Dashboard:
         self.panelStatus = panelStatus
 
 
-class DashboardLister:
+class DashboardManager:
     def __init__(self):
         self.dashboards = []
         try:
@@ -34,12 +34,15 @@ class DashboardLister:
                     panelName=dashboard_data.get('panelName'),
                     panelCode=dashboard_data.get('panelCode'),
                     panelBackground=dashboard_data.get('panelBackground'),
-                    panelStatus=dashboard_data.get('panelStatus', 'Active'),
+                    panelStatus=dashboard_data.get('panelStatus'),
                 )
                 self.dashboards.append(dashboard)
         except Exception as e:
             logger.error(f"An error occurred while fetching dashboards: {e}")
 
-    def get_list(self):
+    def get_all(self):
         return self.dashboards
     
+    def get_ready(self):
+        ready = filter(lambda x : x.panelStatus == "Ready", self.dashboards)
+        return list(ready)

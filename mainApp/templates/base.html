@@ -169,8 +169,10 @@
                   </a>
                </li>
             </ul>
-
-            <span class="navbar-text ms-auto">host: {{ hostname }}</span>
+            <span class="navbar-text ms-auto" style="cursor: help;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ app_description }}">
+               AquaDriver v{{ app_version }}</br>
+               host: {{ hostname }}
+            </span>
          </div>
       </div>
    </nav>

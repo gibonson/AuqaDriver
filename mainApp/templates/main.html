@@ -9,7 +9,6 @@ AquaDriver - Job Page
 
 <div class="row row-cols-1 row-cols-md-3 g-4 me-2">
     {% for dashboardItem in dashboardList %}
-    {% if dashboardItem.panelStatus == "Ready" %}
     <div class="col">
         <div class="card h-100" style="min-height: 220px ;background-color: {{dashboardItem.panelBackground}}">
             <div class="card-header">
@@ -22,7 +21,6 @@ AquaDriver - Job Page
             </div>
         </div>
     </div>
-    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

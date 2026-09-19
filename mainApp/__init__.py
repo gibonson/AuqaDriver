@@ -8,10 +8,13 @@ import time
 import os
 
 from mainApp.logging_config import setup_logging
+
+__version__ = "0.5.0"
+__description__ = "AquaDriver - Home IoT Automation Hub"
+
 logger = setup_logging()
 logger.critical("\n")
-logger.critical("App start")
-
+logger.critical(f"App start v{__version__}: {__description__}")
 
 class Config(object):
     baseDir = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles"

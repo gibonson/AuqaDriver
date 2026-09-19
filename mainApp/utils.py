@@ -3,6 +3,7 @@ from flask import render_template
 from mainApp import flash
 from mainApp import logger
 from mainApp.routes import sched
+from mainApp import __version__, __description__
 import socket
 
 
@@ -38,7 +39,12 @@ def validate_and_log_form(form):
 
 def render_template_with_addons(template_name, **kwargs):
     sched_state = str(sched.state)
-    addons = {"state": sched_state, "hostname": socket.gethostname()}
+    addons = {
+        "state": sched_state,
+        "hostname": socket.gethostname(),
+        "app_version": __version__,
+        "app_description": __description__
+    }
     kwargs.update(addons)
     return render_template(template_name, **kwargs)
 
@@ -76,12 +82,16 @@ class DashboardData:
             return datetime.now().strftime("%H:%M:%S")
 
         elif placeholder == "getLogSize":
-            LogFile = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles', 'app.log'))
+            LogFile = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), "..", "userFiles", "app.log")
+            )
             self.logsSizeKB = os.path.getsize(LogFile) / 1024
             return self.logsSizeKB
 
         elif placeholder == "getDbSize":
-            DBFile = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'userFiles', 'db.sqlite'))
+            DBFile = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), "..", "userFiles", "db.sqlite")
+            )
             self.dbSizeKB = os.path.getsize(DBFile) / 1024
             return self.dbSizeKB
 
