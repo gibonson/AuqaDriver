@@ -1,9 +1,13 @@
-from flask import render_template
-
-from mainApp import flash
-from mainApp import logger
-from mainApp import __version__, __description__
+import os
+import time
 import socket
+from datetime import datetime
+
+from flask import render_template, flash
+from sqlalchemy import text
+
+from mainApp import logger, __version__, __description__
+from mainApp.extensions import db, sched
 
 
 def flash_message(message, category="info"):
@@ -26,7 +30,7 @@ def validate_and_log_form(form):
     if form.errors:
         message = f"An error occurred while processing the form: {form.errors}"
         flash_message(message, "warning")
-    return False
+        return False
 
 
 # info = DEBUG - wszystkie detale
@@ -37,41 +41,32 @@ def validate_and_log_form(form):
 
 
 def render_template_with_addons(template_name, **kwargs):
-    
-    from mainApp.routes import sched
-    
+
     sched_state = str(sched.state)
     addons = {
         "state": sched_state,
         "hostname": socket.gethostname(),
         "app_version": __version__,
-        "app_description": __description__
+        "app_description": __description__,
     }
     kwargs.update(addons)
     return render_template(template_name, **kwargs)
 
 
-import os
-from datetime import datetime
-import time
-from sqlalchemy import create_engine, text
-from mainApp.routes import app
-
-
 class DashboardData:
     def __init__(self):
-        engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-        with engine.connect() as conn:
-            seven_days_ago = int(time.time()) - (7 * 24 * 3600)
-            sqlSelect = conn.execute(text(f"""
+        seven_days_ago = int(time.time()) - (7 * 24 * 3600)
+        
+        sqlSelect = db.session.execute(text(f"""
                 SELECT deviceIP, deviceName, type, addInfo, count(value) as number_of_queries, round(avg(value),2) as average 
                 FROM archive 
                 WHERE timestamp >= {seven_days_ago}
                 GROUP BY deviceIP, type, addInfo
             """))
-            self.sqlTable = []
-            for row in sqlSelect:
-                self.sqlTable.append(row)
+        
+        self.sqlTable = []
+        for row in sqlSelect:
+            self.sqlTable.append(row)
 
     def getSqlTable(self):
         return self.sqlTable
@@ -87,15 +82,17 @@ class DashboardData:
             LogFile = os.path.abspath(
                 os.path.join(os.path.dirname(__file__), "..", "userFiles", "app.log")
             )
-            self.logsSizeKB = os.path.getsize(LogFile) / 1024
-            return self.logsSizeKB
+            if os.path.exists(LogFile):
+                return round(os.path.getsize(LogFile) / 1024, 2)
+            return 0
 
         elif placeholder == "getDbSize":
             DBFile = os.path.abspath(
                 os.path.join(os.path.dirname(__file__), "..", "userFiles", "db.sqlite")
             )
-            self.dbSizeKB = os.path.getsize(DBFile) / 1024
-            return self.dbSizeKB
+            if os.path.exists(DBFile):
+                return round(os.path.getsize(DBFile) / 1024, 2)
+            return 0
 
         else:
             return "UnknownValue"

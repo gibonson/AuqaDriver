@@ -1,4 +1,26 @@
-from flask import Blueprint
+import os
+import glob
+from datetime import datetime
+
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    request,
+    url_for,
+    send_from_directory,
+)
+
+from mainApp import app
+from mainApp.extensions import sched
+from mainApp.models.dashboard import DashboardManager
+from mainApp.web_operations import WebContentCollector, ResponseTrigger
+from mainApp.report_operations import ReportCreator
+from mainApp.notification_operations import emailSender, pushoverSender
+from mainApp.utils import (
+    validate_and_log_form,
+    render_template_with_addons,
+)
 
 dev_bp = Blueprint("dev", __name__, url_prefix="/dev")
 
@@ -100,10 +122,6 @@ def dashboard():
     )
 
 
-# -----------------------------------------
-# experimental stream/capture
-# -----------------------------------------
-
 import requests
 from flask import Response, render_template
 import re
@@ -178,3 +196,29 @@ def capture():
         print("Error:", response.status_code)
 
     return "done"
+
+
+# -----------------------------------------
+# archive_add_manually
+# -----------------------------------------
+
+
+from mainApp.forms.add_archive_manual import AddArchiveManualRecord
+
+
+@app.route("/archive_add_manually", methods=["POST", "GET"])
+def archive_add_manually():
+    form = AddArchiveManualRecord()
+    if validate_and_log_form(form):
+        requestDataRaw = request.form.to_dict(flat=False)
+        requestData = {
+            "addInfo": requestDataRaw["addInfo"][0],
+            "deviceIP": requestDataRaw["deviceIP"][0],
+            "deviceName": requestDataRaw["deviceName"][0],
+            "type": requestDataRaw["type"][0],
+            "value": requestDataRaw["value"][0],
+            "comment": requestDataRaw["comment"][0],
+            "requestID": "M" + str(int(datetime.now().timestamp())),
+        }
+        ResponseTrigger(requestData=requestData)
+    return render_template_with_addons("archive_add_manually.html", form=form)

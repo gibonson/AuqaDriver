@@ -1,6 +1,6 @@
-from mainApp import db
+from mainApp.extensions import db
 from mainApp import logger
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 
 

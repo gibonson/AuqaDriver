@@ -1,4 +1,21 @@
-from flask import Blueprint
+from datetime import datetime, timedelta
+
+from flask import (
+    Blueprint,
+    request,
+    flash,
+    redirect,
+    url_for,
+)
+
+from mainApp import app
+from mainApp.utils import render_template_with_addons
+from mainApp.forms.archive_search import ArchiveSearch
+from mainApp.models.archive import (
+    ArchiveLister,
+    ArchiveManager,
+    ArchiveSearchList,
+)
 
 core_bp = Blueprint("core", __name__, url_prefix="/core")
 
@@ -38,21 +55,3 @@ def archive_remove(id):
     manager.remove_archive()
     flash(str(manager), category="danger")
     return redirect(url_for("archive_search"))
-
-
-@app.route("/archive_add_manually", methods=["POST", "GET"])
-def archive_add_manually():
-    form = AddArchiveManualRecord()
-    if validate_and_log_form(form):
-        requestDataRaw = request.form.to_dict(flat=False)
-        requestData = {
-            "addInfo": requestDataRaw["addInfo"][0],
-            "deviceIP": requestDataRaw["deviceIP"][0],
-            "deviceName": requestDataRaw["deviceName"][0],
-            "type": requestDataRaw["type"][0],
-            "value": requestDataRaw["value"][0],
-            "comment": requestDataRaw["comment"][0],
-            "requestID": "M" + str(int(datetime.now().timestamp())),
-        }
-        ResponseTrigger(requestData=requestData)
-    return render_template_with_addons("archive_add_manually.html", form=form)

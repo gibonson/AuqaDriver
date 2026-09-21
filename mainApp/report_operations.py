@@ -1,12 +1,14 @@
 from datetime import datetime
-import time
-from mainApp import app, logger
-from sqlalchemy import create_engine, text
+from sqlalchemy import text
+
+from mainApp import logger
+from mainApp.extensions import db
 from mainApp.models.archive_report import ReportManager
 from mainApp.notification_operations import emailSender
 
+
 class HtmlBuilder:
-    HTML_START = '''
+    HTML_START = """
             <!DOCTYPE html>
             <html>
                 <body>
@@ -44,12 +46,12 @@ class HtmlBuilder:
                         <th>Unit</th>
                         <th>Indicator</th>
                     </tr>
-            '''
-    HTML_END = '''
+            """
+    HTML_END = """
                     </table>
                 </body>
             </html>
-        '''
+        """
     HTML_AVG = "Average"
     HTML_SUM = "Sum"
     HTML_MIN = "Minimum"
@@ -64,11 +66,11 @@ class HtmlBuilder:
     HTML_ROW_START = "<tr>"
     HTML_ROW_END = "</tr>"
     HTML_COLUMN_START = "<td>"
-    HTML_COLUMN_END =  "</td>"
+    HTML_COLUMN_END = "</td>"
 
     @staticmethod
-    def row_creator(title, message, unit, value ,indicator):
-        tableText = f'''
+    def row_creator(title, message, unit, value, indicator):
+        tableText = f"""
                     {HtmlBuilder.HTML_ROW_START}
                         {HtmlBuilder.HTML_COLUMN_START}{title}{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{message}{HtmlBuilder.HTML_COLUMN_END}
@@ -76,30 +78,28 @@ class HtmlBuilder:
                         {HtmlBuilder.HTML_COLUMN_START}{unit}{HtmlBuilder.HTML_COLUMN_END}
                         {HtmlBuilder.HTML_COLUMN_START}{indicator}{HtmlBuilder.HTML_COLUMN_END}
                     {HtmlBuilder.HTML_ROW_END}
-        '''
+        """
         return tableText
 
 
 class ReportCreator:
-    def __init__(self, archive_report_id_list = None):
+    def __init__(self, archive_report_id_list=None):
         self.archive_report_id_list = archive_report_id_list
 
     def create_all(self):
         archive_report_list = ReportManager().get_all()
-        reportAll =  HtmlBuilder.HTML_START
+        reportAll = HtmlBuilder.HTML_START
         for archive_report in archive_report_list:
             reportAll += self.create_one_line(archive_report.reportName)
         reportAll += HtmlBuilder.HTML_END
         return reportAll
 
-
-    def create_from_list(self): 
-        reportAll =  HtmlBuilder.HTML_START
+    def create_from_list(self):
+        reportAll = HtmlBuilder.HTML_START
         for archive_report_name in self.archive_report_id_list:
             reportAll += self.create_one_line(archive_report_name)
         reportAll += HtmlBuilder.HTML_END
         return reportAll
-
 
     def create_one_line(self, report_name):
         archiveReportConfig = None
@@ -111,52 +111,75 @@ class ReportCreator:
         if not archiveReportConfig:
             table_row = "report not found"
         else:
-            engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
-            with engine.connect() as conn:
-                query = archiveReportConfig.queryString
-                try:
-                    sqlSelect = conn.execute(text(query))
-                    sqlTable = []
-                    for row in sqlSelect:
-                        sqlTable.append(row)
-                    value = sqlTable[0][0]
-                except Exception as e:
-                    logger.error(f"Error executing report query: {e}")
-                    value = None
+            query = archiveReportConfig.queryString
+            try:
+                sqlSelect = db.session.execute(text(query))
+                sqlTable = []
+                for row in sqlSelect:
+                    sqlTable.append(row)
+                value = sqlTable[0][0]
+            except Exception as e:
+                logger.error(f"Error executing report query: {e}")
+                value = None
 
-                if value is None:
-                    value = HtmlBuilder.HTML_VALUE_ERROR
-                    indicator = HtmlBuilder.HTML_SQL_ERROR
-                else:
-                    unit = archiveReportConfig.unit
-                    if value < archiveReportConfig.minValue:
-                        indicator = HtmlBuilder.HTML_TOO_LOW
-                    elif archiveReportConfig.minValue <= value < archiveReportConfig.okMinValue:
-                        indicator = HtmlBuilder.HTML_LOW
-                    elif archiveReportConfig.okMinValue <= value <= archiveReportConfig.okMaxValue:
-                        indicator = HtmlBuilder.HTML_OPTIMAL
-                    elif archiveReportConfig.okMaxValue < value <= archiveReportConfig.maxValue:
-                        indicator = HtmlBuilder.HTML_HIGH
-                    elif archiveReportConfig.maxValue < value:
-                        indicator = HtmlBuilder.HTML_TOO_HIGH
-                        
-                message = archiveReportConfig.message
-                
-                message = message.replace("<<unit>>", archiveReportConfig.unit)
-                message = message.replace("<<value>>", str(value))
-                message = message.replace("<<date>>", str(datetime.now().strftime('%Y-%m-%d')))
-                message = message.replace("<<time>>", str(datetime.now().strftime('%H:%M:%S')))
-                
-                table_row = HtmlBuilder.row_creator(title = archiveReportConfig.reportName, message = message, value= value, unit = archiveReportConfig.unit ,indicator = indicator)
+            if value is None:
+                value = HtmlBuilder.HTML_VALUE_ERROR
+                indicator = HtmlBuilder.HTML_SQL_ERROR
+            else:
+                unit = archiveReportConfig.unit
+                if value < archiveReportConfig.minValue:
+                    indicator = HtmlBuilder.HTML_TOO_LOW
+                elif (
+                    archiveReportConfig.minValue
+                    <= value
+                    < archiveReportConfig.okMinValue
+                ):
+                    indicator = HtmlBuilder.HTML_LOW
+                elif (
+                    archiveReportConfig.okMinValue
+                    <= value
+                    <= archiveReportConfig.okMaxValue
+                ):
+                    indicator = HtmlBuilder.HTML_OPTIMAL
+                elif (
+                    archiveReportConfig.okMaxValue
+                    < value
+                    <= archiveReportConfig.maxValue
+                ):
+                    indicator = HtmlBuilder.HTML_HIGH
+                elif archiveReportConfig.maxValue < value:
+                    indicator = HtmlBuilder.HTML_TOO_HIGH
+
+            message = archiveReportConfig.message
+
+            message = message.replace("<<unit>>", archiveReportConfig.unit)
+            message = message.replace("<<value>>", str(value))
+            message = message.replace(
+                "<<date>>", str(datetime.now().strftime("%Y-%m-%d"))
+            )
+            message = message.replace(
+                "<<time>>", str(datetime.now().strftime("%H:%M:%S"))
+            )
+
+            table_row = HtmlBuilder.row_creator(
+                title=archiveReportConfig.reportName,
+                message=message,
+                value=value,
+                unit=archiveReportConfig.unit,
+                indicator=indicator,
+            )
         return table_row
-        
+
+
 class ReportSender:
-    def __init__(self, reportIds, notificationType = "email"):
+    def __init__(self, reportIds, notificationType="email"):
         self.reportIds = reportIds
 
     def collect_and_send(self):
+        from mainApp import app
+
         with app.app_context():
-            reportCreator = ReportCreator(archive_report_id_list= self.reportIds)
+            reportCreator = ReportCreator(archive_report_id_list=self.reportIds)
             report = reportCreator.create_from_list()
             logger.debug(f"Report sent")
             # emailSender( "raport", report)

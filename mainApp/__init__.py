@@ -1,10 +1,9 @@
+from mainApp.extensions import db, sched
 from flask import Flask, flash
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import insert, exc
 from sqlalchemy_utils.functions import database_exists
-from flask_apscheduler import APScheduler
 
-import time 
+import time
 import os
 
 from mainApp.logging_config import setup_logging
@@ -16,29 +15,31 @@ logger = setup_logging()
 logger.critical("\n")
 logger.critical(f"App start v{__version__}: {__description__}")
 
+
 class Config(object):
-    baseDir = os.path.abspath(os.path.dirname(__file__))   + "/../userFiles"
+    baseDir = os.path.abspath(os.path.dirname(__file__)) + "/../userFiles"
     logger.debug("Path to DB: " + baseDir)
     # Config app
-    SECRET_KEY = os.environ.get('SECRET_KEY', os.urandom(24))
+    SECRET_KEY = os.environ.get("SECRET_KEY", os.urandom(24))
     # Config scheduler
     SCHEDULER_API_ENABLED = True
     JSONIFY_PRETTYPRINT_REGULAR = True
     # Config DB
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(baseDir, 'db.sqlite')
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(baseDir, "db.sqlite")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 # Init app
-app = Flask(__name__, static_folder='../static')
+app = Flask(__name__, static_folder="../static")
 app.config.from_object(Config())
 
 # Init db
-db = SQLAlchemy()
 db.init_app(app)
 
 if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
     logger.info("Database exists")
     from sqlalchemy import create_engine, text
+
     engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"], echo=True)
     with engine.connect() as conn:
         timestamp = str(round(time.time()))
@@ -48,8 +49,19 @@ if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
         type = "Log"
         value = 0
         try:
-            conn.execute(text('INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("' +
-                     timestamp + '" , "' + deviceIP + '" , "' + deviceName + '" ," ' + addInfo + '", "0", "Log")'))
+            conn.execute(
+                text(
+                    'INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("'
+                    + timestamp
+                    + '" , "'
+                    + deviceIP
+                    + '" , "'
+                    + deviceName
+                    + '" ," '
+                    + addInfo
+                    + '", "0", "Log")'
+                )
+            )
             conn.commit()
         except exc.SQLAlchemyError as e:
             logger.error(f"Database error: {e}")
@@ -57,8 +69,7 @@ else:
     logger.critical("Database does not exist")
 
 # Init scheduler
-sched = APScheduler()
-
+sched.init_app(app)
 
 from mainApp.routes_core import core_bp
 from mainApp.routes_admin import admin_bp

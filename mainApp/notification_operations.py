@@ -1,11 +1,12 @@
 import smtplib, ssl
+import requests
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from mainApp.models.archive import ArchiveAdder
-from mainApp.routes import app, flash
+from flask import flash
+
 from mainApp import logger
+from mainApp.models.archive import ArchiveAdder
 from mainApp.config_operations import load_config_json
-import requests
 
 
 def loadNotificationConfig():
@@ -32,7 +33,7 @@ def loadNotificationConfig():
 
 
 def emailSender(subject, message, flashMessage=False):
-    
+
     statusMessage = ""
 
     try:
@@ -47,7 +48,6 @@ def emailSender(subject, message, flashMessage=False):
         receiver = config["EMAIL"]["DEFAULT_RECIPIENT"]
         user = config["EMAIL"]["USER_NAME"]
         password = config["EMAIL"]["PASSWORD"]
-
 
         msg = MIMEMultipart("alternative")
         text = MIMEText(message, "html")
@@ -76,6 +76,9 @@ def emailSender(subject, message, flashMessage=False):
 
     if statusMessage != "":
         logger.info(statusMessage)
+
+        from mainApp import app
+
         with app.app_context():
             requestData = {
                 "addInfo": statusMessage,
@@ -114,6 +117,9 @@ def pushoverSender(message, attachment=None):
 
     if statusMessage != "":
         logger.info(statusMessage)
+        
+        from mainApp import app
+        
         with app.app_context():
             requestData = {
                 "addInfo": statusMessage,
