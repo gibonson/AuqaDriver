@@ -59,7 +59,20 @@ else:
 # Init scheduler
 sched = APScheduler()
 
+
+from mainApp.routes_core import core_bp
+from mainApp.routes_admin import admin_bp
+from mainApp.routes_api import api_bp
+from mainApp.routes_dev import dev_bp
+
+
 from mainApp import routes
+
+app.register_blueprint(core_bp)
+app.register_blueprint(admin_bp)
+app.register_blueprint(api_bp)
+app.register_blueprint(dev_bp)
+
 from mainApp.scheduler_operations import sched_start
 
 # # start process in scheduler

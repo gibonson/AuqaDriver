@@ -1,9 +1,11 @@
-from mainApp.web_operations import WebContentCollector
 from mainApp.report_operations import ReportSender
 from mainApp import logger
 from mainApp.models.event_scheduler import EventSchedulerManager
 
 def event_trigger(schedulerName):
+    
+        from mainApp.web_operations import WebContentCollector
+    
         eventSchedulerDetail = EventSchedulerManager().get_by_name(schedulerName)
         logger.debug(f"Scheduler to run: {schedulerName}")
         for eventId in eventSchedulerDetail.eventList:

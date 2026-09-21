@@ -2,7 +2,6 @@ from flask import render_template
 
 from mainApp import flash
 from mainApp import logger
-from mainApp.routes import sched
 from mainApp import __version__, __description__
 import socket
 
@@ -38,6 +37,9 @@ def validate_and_log_form(form):
 
 
 def render_template_with_addons(template_name, **kwargs):
+    
+    from mainApp.routes import sched
+    
     sched_state = str(sched.state)
     addons = {
         "state": sched_state,
