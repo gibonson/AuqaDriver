@@ -8,7 +8,7 @@ import os
 
 from mainApp.logging_config import setup_logging
 
-__version__ = "0.5.1"
+__version__ = "0.5.2"
 __description__ = "AquaDriver - Home IoT Automation Hub"
 
 logger = setup_logging()
