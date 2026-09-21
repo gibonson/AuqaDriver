@@ -155,7 +155,7 @@ def remove_job(id):
 def start_job(runschedulerId):
     if sched.state == 0:
         sched.start()
-    sched_start(sched, runschedulerId)
+    sched_start(runschedulerId)
     return redirect(url_for("get_jobs"))
 
 
@@ -179,7 +179,7 @@ def resume():
 @app.route("/start")
 def start():
     sched.start()
-    sched_start(sched)
+    sched_start()
     return redirect(url_for("get_jobs"))
 
 

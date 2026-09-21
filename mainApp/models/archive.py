@@ -120,3 +120,26 @@ class ArchiveManager:
 
     def __str__(self) -> str:
         return self.message
+    
+    
+class ArchiveCleaner:
+    @staticmethod
+    def remove_old_records(days=7):
+        # Definiujemy, które typy rekordów uznajemy za "śmieci systemowe"
+        noise_types = ['Log', 'log', 'Error', 'error']
+        
+        try:
+            cutoff_time = int(time.time()) - (days * 24 * 3600)
+            
+            deleted_count = Archive.query.filter(
+                Archive.timestamp < cutoff_time,
+                Archive.type.in_(noise_types)
+            ).delete(synchronize_session=False)
+            
+            db.session.commit()
+            
+            if deleted_count > 0:
+                logger.info(f"Database cleanup: Removed {deleted_count} old system logs (older than {days} days).")
+        except Exception as e:
+            logger.error(f"Error during database cleanup: {e}")
+            db.session.rollback()

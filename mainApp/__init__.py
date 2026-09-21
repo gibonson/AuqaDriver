@@ -49,20 +49,21 @@ if database_exists(app.config["SQLALCHEMY_DATABASE_URI"]):
         type = "Log"
         value = 0
         try:
-            conn.execute(
-                text(
-                    'INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) VALUES ("'
-                    + timestamp
-                    + '" , "'
-                    + deviceIP
-                    + '" , "'
-                    + deviceName
-                    + '" ," '
-                    + addInfo
-                    + '", "0", "Log")'
-                )
-            )
-            conn.commit()
+            query = text("""
+                INSERT INTO archive (timestamp, deviceIP, deviceName, addInfo, value, type) 
+                VALUES (:timestamp, :deviceIP, :deviceName, :addInfo, :value, :type)
+            """)
+            
+            conn.execute(query, {
+                "timestamp": timestamp,
+                "deviceIP": deviceIP,
+                "deviceName": deviceName,
+                "addInfo": addInfo,
+                "value": value,
+                "type": type
+            })
+            conn.commit()    
+
         except exc.SQLAlchemyError as e:
             logger.error(f"Database error: {e}")
 else:
@@ -88,7 +89,7 @@ from mainApp.scheduler_operations import sched_start
 
 # # start process in scheduler
 try:
-    sched_start(sched)
+    sched_start()
     sched.start()
     logger.critical("Scheduler started")
 except exc.OperationalError:
